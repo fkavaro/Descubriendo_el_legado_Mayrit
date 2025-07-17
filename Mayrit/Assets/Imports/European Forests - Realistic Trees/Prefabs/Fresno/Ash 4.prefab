@@ -894,8 +894,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7646664120431551016}
   - {fileID: 8819766849690509135}
@@ -913,8 +913,8 @@ LODGroup:
   serializedVersion: 2
   m_LocalReferencePoint: {x: -0.07757878, y: 3.3880155, z: 0.30338287}
   m_Size: 6.793489
-  m_FadeMode: 0
-  m_AnimateCrossFading: 0
+  m_FadeMode: 1
+  m_AnimateCrossFading: 1
   m_LastLODIsBillboard: 0
   m_LODs:
   - screenRelativeHeight: 0.25
