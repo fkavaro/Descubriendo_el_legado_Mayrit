@@ -990,8 +990,8 @@ MonoBehaviour:
   - {fileID: -2873552459973909284}
   - {fileID: 1850493002239772847}
   - {fileID: -3757835839786493400}
-  - {fileID: 5323342725865259563}
   - {fileID: -4988856650826479718}
+  - {fileID: 5323342725865259563}
   - {fileID: -1375425445597482554}
 --- !u!114 &1142777632297148762
 MonoBehaviour:
@@ -1149,7 +1149,7 @@ MonoBehaviour:
     m_Value: 1
   radius:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 1
   spatialBilateralAggressiveness:
     m_OverrideState: 0
     m_Value: 0.15
