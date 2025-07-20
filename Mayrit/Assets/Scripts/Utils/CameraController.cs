@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 /// <summary>
-/// Camera controller supporting WASD movement, scroll zoom, right-click rotation, and middle-click panning.
+/// Camera controller supporting WASD movement, edge scrolling, zoom and orbit relative to mouse pointer.
 /// All movement is independent of Time.timeScale.
 /// </summary>
 [RequireComponent(typeof(Camera))]
@@ -19,9 +19,6 @@ public class CameraController : MonoBehaviour
     [Tooltip("Speed of camera zoom with scroll wheel.")]
     public float scrollSpeed = 10f;
 
-    //[Tooltip("Speed of camera panning with middle mouse button.")]
-    //public float panSpeed = 0.5f;
-
     [Header("Rotation Settings")]
     [Tooltip("Mouse sensitivity for camera rotation.")]
     public float rotationSensitivity = 5f;
@@ -33,13 +30,16 @@ public class CameraController : MonoBehaviour
     [Tooltip("Maximum allowed X, Y, Z positions (positive and negative) for the camera.")]
     public Vector3 movementLimits;
 
-    //private Vector3 lastMousePosition;
-    //private bool isPanning = false;
+    float heightFactor = 1f; // Used to interpolate movement and zoom speed according to interpolated height
+    float interpolatedHeight;
+
     GameInputActions inputActions;
     InputAction moveAction;
     InputAction lookAction;
     InputAction scrollAction;
     InputAction rotateButtonAction;
+
+    private Camera cam;
 
     void Awake()
     {
@@ -49,6 +49,7 @@ public class CameraController : MonoBehaviour
         lookAction = inputActions.Camera.Look;
         scrollAction = inputActions.Camera.Zoom;
         rotateButtonAction = inputActions.Camera.Rotate;
+        cam = GetComponent<Camera>();
     }
 
     void Update()
@@ -57,93 +58,87 @@ public class CameraController : MonoBehaviour
         ClampPosition();
     }
 
-    /// <summary>
-    /// Handles all input for movement, rotation, zoom, and panning.
-    /// </summary>
     private void HandleInput()
     {
         HandleMovementInput();
-        HandleScrollZoom();
-        //HandlePanningInput();
+        HandleScrollInput();
         HandleRotationInput();
     }
 
     /// <summary>
-    /// Handles WASD/arrow key movement.
+    /// Moves the camera in its local XZ plane, but keeps its Y (height) unchanged.
     /// </summary>
     private void HandleMovementInput()
     {
         Vector2 movementInput = moveAction.ReadValue<Vector2>();
-        //float moveX = Input.GetAxis("Horizontal");
-        //float moveY = Input.GetAxis("Vertical");
 
         if (edgeScrolling)
         {
-            Vector2 mousePos = lookAction.ReadValue<Vector2>();
+            Vector2 mousePos = Mouse.current.position.ReadValue();
 
             if (mousePos.x < edgeSize)
-                movementInput.x += 1f;
-            else if (mousePos.x > Screen.width - edgeSize)
                 movementInput.x -= 1f;
+            else if (mousePos.x > Screen.width - edgeSize)
+                movementInput.x += 1f;
 
             if (mousePos.y < edgeSize)
-                movementInput.y += 1f;
-            else if (mousePos.y > Screen.height - edgeSize)
                 movementInput.y -= 1f;
+            else if (mousePos.y > Screen.height - edgeSize)
+                movementInput.y += 1f;
         }
 
-        // Move in local X and Y (XZ plane)
-        Vector3 move = new(movementInput.x, 0, movementInput.y);
-        if (move.sqrMagnitude > 0.0001f)
+        Vector3 localRight = transform.right;
+        Vector3 localForward = transform.forward;
+        localRight.y = 0f;
+        localForward.y = 0f;
+        localRight.Normalize();
+        localForward.Normalize();
+
+        Vector3 movement = localRight * movementInput.x + localForward * movementInput.y;
+
+        if (movement.sqrMagnitude > 0.0001f)
         {
-            transform.Translate(movementSpeed * Time.unscaledDeltaTime * move.normalized, Space.Self);
+            movement = movementSpeed * heightFactor * Time.unscaledDeltaTime * movement.normalized;
+            Vector3 newPosition = transform.position + movement;
+            newPosition.y = transform.position.y; // Maintain height
+            transform.position = newPosition;
         }
     }
 
     /// <summary>
-    /// Handles zooming in/out with the mouse scroll wheel (moves along camera's forward axis).
+    /// Handles zooming in/out with the mouse scroll wheel (moves toward/away from point under mouse).
     /// </summary>
-    private void HandleScrollZoom()
+    private void HandleScrollInput()
     {
         Vector2 scroll = scrollAction.ReadValue<Vector2>();
         float scrollInput = scroll.y;
-        //float scrollInput = Input.GetAxis("Mouse ScrollWheel");
 
         if (Mathf.Abs(scrollInput) > 0.0001f)
         {
-            // Move along camera's forward axis for intuitive zoom
-            Vector3 zoom = scrollInput * scrollSpeed * transform.forward;
-            transform.position += zoom;
+            Vector3 mouseWorldPoint = GetMouseWorldPoint();
+            float zoomAmount = scrollInput * scrollSpeed * heightFactor;
+
+            if (mouseWorldPoint != Vector3.positiveInfinity)
+            {
+                Vector3 direction = (mouseWorldPoint - transform.position).normalized;
+                float distance = Vector3.Distance(transform.position, mouseWorldPoint);
+
+                // Prevent overshooting the target point
+                if (zoomAmount > 0 && zoomAmount > distance - 0.1f)
+                    zoomAmount = distance - 0.1f;
+
+                transform.position += direction * zoomAmount;
+            }
+            else
+            {
+                // fallback: zoom along forward
+                transform.position += zoomAmount * transform.forward;
+            }
         }
     }
 
     /// <summary>
-    /// Handles panning with the middle mouse button.
-    /// </summary>
-    // private void HandlePanningInput()
-    // {
-    //     if (Input.GetMouseButtonDown(2))
-    //     {
-    //         isPanning = true;
-    //         lastMousePosition = Input.mousePosition;
-    //     }
-    //     if (Input.GetMouseButtonUp(2))
-    //     {
-    //         isPanning = false;
-    //     }
-    //     if (isPanning)
-    //     {
-    //         Vector3 mouseDelta = Input.mousePosition - lastMousePosition;
-    //         lastMousePosition = Input.mousePosition;
-
-    //         // Pan in local X and Y axes (screen space to world space)
-    //         Vector3 pan = panSpeed * Time.unscaledDeltaTime * (-mouseDelta.x * transform.right + -mouseDelta.y * transform.up);
-    //         transform.position += pan;
-    //     }
-    // }
-
-    /// <summary>
-    /// Handles camera rotation with the right mouse button.
+    /// Handles camera rotation with the right mouse button, orbiting around the point under the mouse.
     /// </summary>
     private void HandleRotationInput()
     {
@@ -154,32 +149,55 @@ public class CameraController : MonoBehaviour
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
 
-            Vector2 mousePos = lookAction.ReadValue<Vector2>();
-            // float mouseX = Input.GetAxis("Mouse X");
-            // float mouseY = Input.GetAxis("Mouse Y");
+            Vector2 mouseDelta = lookAction.ReadValue<Vector2>();
+            Vector3 pivot = GetMouseWorldPoint();
 
-            // Yaw (horizontal), Pitch (vertical)
-            float yaw = mousePos.x * rotationSensitivity * 50f * Time.unscaledDeltaTime;
-            float pitch = -mousePos.y * rotationSensitivity * 50f * Time.unscaledDeltaTime;
+            if (pivot == Vector3.positiveInfinity)
+            {
+                // fallback: orbit around camera's current position
+                pivot = transform.position + transform.forward * 10f;
+            }
 
-            // Apply rotation
-            transform.Rotate(Vector3.up, yaw, Space.World);
-            transform.Rotate(Vector3.right, pitch, Space.Self);
+            // Calculate angles
+            float yaw = mouseDelta.x * rotationSensitivity * Time.unscaledDeltaTime;
+            float pitch = -mouseDelta.y * rotationSensitivity * Time.unscaledDeltaTime;
+
+            // Orbit horizontally (yaw)
+            transform.RotateAround(pivot, Vector3.up, yaw);
+
+            // Orbit vertically (pitch)
+            Vector3 right = transform.right;
+            transform.RotateAround(pivot, right, pitch);
 
             // Zero out roll
             Vector3 euler = transform.eulerAngles;
             transform.rotation = Quaternion.Euler(euler.x, euler.y, 0f);
         }
-        // else if (!isPanning)
-        // {
-        //     Cursor.visible = true;
-        //     Cursor.lockState = CursorLockMode.None;
-        // }
+        else
+        {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
     }
 
     /// <summary>
-    /// Clamps the camera's position within the specified movement limits.
+    /// Raycasts from the mouse position to the ground plane (Y=0) and returns the hit point.
+    /// Returns Vector3.positiveInfinity if nothing is hit.
     /// </summary>
+    private Vector3 GetMouseWorldPoint()
+    {
+        Vector2 mousePos = Mouse.current.position.ReadValue();
+        Ray ray = cam.ScreenPointToRay(mousePos);
+
+        // Raycast to ground plane (Y=0)
+        Plane ground = new(Vector3.up, Vector3.zero);
+        if (ground.Raycast(ray, out float enter))
+        {
+            return ray.GetPoint(enter);
+        }
+        return Vector3.positiveInfinity;
+    }
+
     private void ClampPosition()
     {
         Vector3 pos = transform.position;
@@ -187,5 +205,9 @@ public class CameraController : MonoBehaviour
         pos.y = Mathf.Clamp(pos.y, minHeightLimit, movementLimits.y);
         pos.z = Mathf.Clamp(pos.z, -movementLimits.z, movementLimits.z);
         transform.position = pos;
+
+        // Remap heightFactor: 0.1 at minHeightLimit, 1 at movementLimits.y
+        interpolatedHeight = Mathf.InverseLerp(minHeightLimit, movementLimits.y, pos.y);
+        heightFactor = Mathf.Lerp(0.1f, 1f, interpolatedHeight);
     }
 }
