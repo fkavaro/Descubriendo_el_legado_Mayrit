@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 /// <summary>
 /// Camera controller supporting WASD movement, scroll zoom, right-click rotation, and middle-click panning.
@@ -8,14 +9,18 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     [Header("Movement Settings")]
+    [Tooltip("Wether to move camera at screen margins or not.")]
+    public bool edgeScrolling = true;
+    public int edgeSize = 30;
+
     [Tooltip("Speed of camera movement with WASD/arrow keys.")]
     public float movementSpeed = 5f;
 
     [Tooltip("Speed of camera zoom with scroll wheel.")]
     public float scrollSpeed = 10f;
 
-    [Tooltip("Speed of camera panning with middle mouse button.")]
-    public float panSpeed = 0.5f;
+    //[Tooltip("Speed of camera panning with middle mouse button.")]
+    //public float panSpeed = 0.5f;
 
     [Header("Rotation Settings")]
     [Tooltip("Mouse sensitivity for camera rotation.")]
@@ -28,8 +33,23 @@ public class CameraController : MonoBehaviour
     [Tooltip("Maximum allowed X, Y, Z positions (positive and negative) for the camera.")]
     public Vector3 movementLimits;
 
-    private Vector3 lastMousePosition;
-    private bool isPanning = false;
+    //private Vector3 lastMousePosition;
+    //private bool isPanning = false;
+    GameInputActions inputActions;
+    InputAction moveAction;
+    InputAction lookAction;
+    InputAction scrollAction;
+    InputAction rotateButtonAction;
+
+    void Awake()
+    {
+        inputActions = new();
+        inputActions.Camera.Enable();
+        moveAction = inputActions.Camera.Move;
+        lookAction = inputActions.Camera.Look;
+        scrollAction = inputActions.Camera.Zoom;
+        rotateButtonAction = inputActions.Camera.Rotate;
+    }
 
     void Update()
     {
@@ -44,7 +64,7 @@ public class CameraController : MonoBehaviour
     {
         HandleMovementInput();
         HandleScrollZoom();
-        HandlePanningInput();
+        //HandlePanningInput();
         HandleRotationInput();
     }
 
@@ -53,14 +73,30 @@ public class CameraController : MonoBehaviour
     /// </summary>
     private void HandleMovementInput()
     {
-        float moveX = Input.GetAxis("Horizontal");
-        float moveY = Input.GetAxis("Vertical");
+        Vector2 movementInput = moveAction.ReadValue<Vector2>();
+        //float moveX = Input.GetAxis("Horizontal");
+        //float moveY = Input.GetAxis("Vertical");
+
+        if (edgeScrolling)
+        {
+            Vector2 mousePos = lookAction.ReadValue<Vector2>();
+
+            if (mousePos.x < edgeSize)
+                movementInput.x += 1f;
+            else if (mousePos.x > Screen.width - edgeSize)
+                movementInput.x -= 1f;
+
+            if (mousePos.y < edgeSize)
+                movementInput.y += 1f;
+            else if (mousePos.y > Screen.height - edgeSize)
+                movementInput.y -= 1f;
+        }
 
         // Move in local X and Y (XZ plane)
-        Vector3 move = new(moveX, 0, moveY);
+        Vector3 move = new(movementInput.x, 0, movementInput.y);
         if (move.sqrMagnitude > 0.0001f)
         {
-            transform.Translate(move.normalized * movementSpeed * Time.unscaledDeltaTime, Space.Self);
+            transform.Translate(movementSpeed * Time.unscaledDeltaTime * move.normalized, Space.Self);
         }
     }
 
@@ -69,7 +105,10 @@ public class CameraController : MonoBehaviour
     /// </summary>
     private void HandleScrollZoom()
     {
-        float scrollInput = Input.GetAxis("Mouse ScrollWheel");
+        Vector2 scroll = scrollAction.ReadValue<Vector2>();
+        float scrollInput = scroll.y;
+        //float scrollInput = Input.GetAxis("Mouse ScrollWheel");
+
         if (Mathf.Abs(scrollInput) > 0.0001f)
         {
             // Move along camera's forward axis for intuitive zoom
@@ -81,44 +120,47 @@ public class CameraController : MonoBehaviour
     /// <summary>
     /// Handles panning with the middle mouse button.
     /// </summary>
-    private void HandlePanningInput()
-    {
-        if (Input.GetMouseButtonDown(2))
-        {
-            isPanning = true;
-            lastMousePosition = Input.mousePosition;
-        }
-        if (Input.GetMouseButtonUp(2))
-        {
-            isPanning = false;
-        }
-        if (isPanning)
-        {
-            Vector3 mouseDelta = Input.mousePosition - lastMousePosition;
-            lastMousePosition = Input.mousePosition;
+    // private void HandlePanningInput()
+    // {
+    //     if (Input.GetMouseButtonDown(2))
+    //     {
+    //         isPanning = true;
+    //         lastMousePosition = Input.mousePosition;
+    //     }
+    //     if (Input.GetMouseButtonUp(2))
+    //     {
+    //         isPanning = false;
+    //     }
+    //     if (isPanning)
+    //     {
+    //         Vector3 mouseDelta = Input.mousePosition - lastMousePosition;
+    //         lastMousePosition = Input.mousePosition;
 
-            // Pan in local X and Y axes (screen space to world space)
-            Vector3 pan = panSpeed * Time.unscaledDeltaTime * (-mouseDelta.x * transform.right + -mouseDelta.y * transform.up);
-            transform.position += pan;
-        }
-    }
+    //         // Pan in local X and Y axes (screen space to world space)
+    //         Vector3 pan = panSpeed * Time.unscaledDeltaTime * (-mouseDelta.x * transform.right + -mouseDelta.y * transform.up);
+    //         transform.position += pan;
+    //     }
+    // }
 
     /// <summary>
     /// Handles camera rotation with the right mouse button.
     /// </summary>
     private void HandleRotationInput()
     {
-        if (Input.GetMouseButton(1))
+        bool rotatePressed = rotateButtonAction.ReadValue<float>() > 0.5f;
+
+        if (rotatePressed)
         {
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
 
-            float mouseX = Input.GetAxis("Mouse X");
-            float mouseY = Input.GetAxis("Mouse Y");
+            Vector2 mousePos = lookAction.ReadValue<Vector2>();
+            // float mouseX = Input.GetAxis("Mouse X");
+            // float mouseY = Input.GetAxis("Mouse Y");
 
             // Yaw (horizontal), Pitch (vertical)
-            float yaw = mouseX * rotationSensitivity * 50f * Time.unscaledDeltaTime;
-            float pitch = -mouseY * rotationSensitivity * 50f * Time.unscaledDeltaTime;
+            float yaw = mousePos.x * rotationSensitivity * 50f * Time.unscaledDeltaTime;
+            float pitch = -mousePos.y * rotationSensitivity * 50f * Time.unscaledDeltaTime;
 
             // Apply rotation
             transform.Rotate(Vector3.up, yaw, Space.World);
@@ -128,11 +170,11 @@ public class CameraController : MonoBehaviour
             Vector3 euler = transform.eulerAngles;
             transform.rotation = Quaternion.Euler(euler.x, euler.y, 0f);
         }
-        else if (!isPanning)
-        {
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-        }
+        // else if (!isPanning)
+        // {
+        //     Cursor.visible = true;
+        //     Cursor.lockState = CursorLockMode.None;
+        // }
     }
 
     /// <summary>
