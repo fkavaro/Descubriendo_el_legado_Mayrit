@@ -75,7 +75,7 @@ public class CameraController : MonoBehaviour
         lookAction = inputActions.Camera.Look;
         scrollAction = inputActions.Camera.Zoom;
         rotateButtonAction = inputActions.Camera.Rotate;
-        sprintAction = inputActions.Player.Sprint;
+        sprintAction = inputActions.Camera.Sprint;
     }
 
     void LateUpdate()
@@ -119,11 +119,11 @@ public class CameraController : MonoBehaviour
         moveInput = moveAction.ReadValue<Vector2>();
         sprintInput = sprintAction.ReadValue<float>() > 0.5f;
 
-        Vector3 forward = Camera.main.transform.forward;
+        Vector3 forward = transform.forward;
         forward.y = 0f;
         forward.Normalize();
 
-        Vector3 right = Camera.main.transform.right;
+        Vector3 right = transform.right;
         right.y = 0f;
         right.Normalize();
 
