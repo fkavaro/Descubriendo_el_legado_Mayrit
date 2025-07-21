@@ -6,21 +6,16 @@ public class SelectorCamera : MonoBehaviour
 {
     #region PUBLIC PROPERTIES
     [Header("Object selection")]
-    //[Tooltip("UIDocument component that contains HUD.")]
-    //public UIDocument mainUIDocument;
+    [Tooltip("UIDocument component that contains HUD.")]
+    public HUDController hud;
     [Tooltip("Layer mask to define which objects are selectable.")]
     public LayerMask selectableLayer;
-    // [Tooltip("Material to apply to the hovered object for visual feedback.")]
-    // public Material hoverMaterial;
-    // [Tooltip("Material to apply to the selected object for visual feedback.")]
-    // public Material selectedMaterial;
     #endregion
 
     #region PRIVATE PROPERTIES
     GameInputActions inputActions;
     GameObject currentSelected = null, // Currently selected GameObject
         currentHover = null;
-    //Material originalMaterial = null; // Stores the original material of the selected object to restore it later
     Vector2 mousePosition;
     IPanel panel;
     #endregion
@@ -44,20 +39,18 @@ public class SelectorCamera : MonoBehaviour
         inputActions.Camera.Enable();
         inputActions.Camera.Select.performed += OnSelectObject;
 
-        //Debug.Log("selectableLayer value: " + selectableLayer.value);
-
-        // if (mainUIDocument != null)
-        // {
-        //     panel = mainUIDocument.rootVisualElement.panel;
-        //     if (panel == null)
-        //     {
-        //         Debug.LogError("UI Toolkit Panel not found on the provided UIDocument's rootVisualElement.");
-        //     }
-        // }
-        // else
-        // {
-        //     Debug.LogError("mainUIDocument is not assigned in the Inspector for ObjectHover script! UI blocking might not work.");
-        // }
+        if (hud != null)
+        {
+            panel = hud.UIDocument.rootVisualElement.panel;
+            if (panel == null)
+            {
+                Debug.LogError("UI Toolkit Panel not found on the provided UIDocument's rootVisualElement.");
+            }
+        }
+        else
+        {
+            Debug.LogError("mainUIDocument is not assigned in the Inspector for ObjectHover script! UI blocking might not work.");
+        }
     }
 
     void Update()
@@ -77,14 +70,14 @@ public class SelectorCamera : MonoBehaviour
         //     // Consider checking if pickedElement != panel.visualTree.
         //     // A common heuristic is to check if it's not the root element itself.
         //     // For simple cases, just checking if pickedElement is not null is often enough.
-        //     if (pickedElement != null && pickedElement != mainUIDocument.rootVisualElement)
+        //     if (pickedElement != null && pickedElement != hud.UIDocument.rootVisualElement)
         //     {
         //         // The mouse is over a UI Toolkit element (that is not the root of the document itself).
         //         // Do NOT perform game object raycast.
         //         if (currentHover != null)
         //             ResetHover();
 
-        //         return; // Exit Update early
+        //         return;
         //     }
         // }
 
@@ -143,11 +136,32 @@ public class SelectorCamera : MonoBehaviour
     {
         //Debug.Log("Selection executed");
 
-        // Cursor is currently over a UI element.
-        //
-
         // Get the current mouse position from the Input System
         mousePosition = Mouse.current.position.ReadValue();
+
+        // // Cursor is currently over a UI element.
+        // // There is a valid panel and the panel detects an element under the mouse
+        // if (panel != null)
+        // {
+        //     // The Pick method returns the VisualElement under the specified point.
+        //     // If it returns a non-null element, the mouse is over UI.
+        //     VisualElement pickedElement = panel.Pick(mousePosition);
+
+        //     // You might want to refine this: sometimes picking the root visual element
+        //     // doesn't mean you're "over" interactive UI.
+        //     // Consider checking if pickedElement != panel.visualTree.
+        //     // A common heuristic is to check if it's not the root element itself.
+        //     // For simple cases, just checking if pickedElement is not null is often enough.
+        //     if (pickedElement != null && pickedElement != hud.UIDocument.rootVisualElement)
+        //     {
+        //         // The mouse is over a UI Toolkit element (that is not the root of the document itself).
+        //         // Do NOT perform game object raycast.
+        //         if (currentSelected != null)
+        //             ResetSelection();
+
+        //         return;
+        //     }
+        // }
 
         // Create a ray from the camera through the mouse position
         Ray ray = Camera.main.ScreenPointToRay(mousePosition);
@@ -231,6 +245,7 @@ public class SelectorCamera : MonoBehaviour
         //     // Apply the hover highlight material
         //     objRenderer.material = hoverMaterial;
         // }
+        hud.PlaceTooltip(hoverObject);
 
         hoverObject.transform.localScale *= 1.2f;
     }
@@ -254,6 +269,8 @@ public class SelectorCamera : MonoBehaviour
 
             currentHover.transform.localScale /= 1.2f;
             currentHover = null;
+
+            hud.HideTooltip();
         }
     }
     #endregion

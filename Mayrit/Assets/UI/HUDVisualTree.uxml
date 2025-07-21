@@ -1,10 +1,26 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/MayritStyle.uss?fileID=7433441132597879392&amp;guid=7a6c8e791557401438e2762dac509247&amp;type=3#MayritStyle" />
-    <ui:VisualElement name="Container" style="flex-grow: 1; align-content: center; background-image: none; margin-left: 30px; margin-top: 30px; margin-right: 30px; margin-bottom: 30px; justify-content: center;">
-        <ui:Button text="| |" name="PauseButton" class="button smallButton" style="top: 0; left: 0; position: absolute;" />
-        <ui:VisualElement name="EventPanel" style="flex-grow: 1; justify-content: space-evenly; position: absolute; top: 0; left: auto; right: auto; bottom: auto; height: 131px; width: 636px; flex-direction: column; align-self: center; align-items: center; -unity-text-align: upper-left;">
-            <ui:Label text="Fundación" name="Event" class="header" style="height: 45px;" />
-            <ui:Label text="860 d.C.&#10;" name="Year" class="header subHeader" style="height: 44px; -unity-text-align: lower-left;" />
+    <ui:VisualElement name="HUD" style="flex-direction: row; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; height: 100%; width: 100%;">
+        <ui:VisualElement name="Game" style="margin-top: 30px; margin-right: 30px; margin-bottom: 30px; margin-left: 30px; width: 70%; flex-direction: row;">
+            <ui:Button text="| |" name="PauseButton" class="button smallButton" style="top: 0; left: 0; position: relative; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; align-self: flex-start;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="VisualElement" style="flex-grow: 1; flex-direction: row-reverse; margin-top: 30px; margin-right: 30px; margin-bottom: 30px; margin-left: 30px;">
+            <ui:Button text="?" name="HeritageButton" class="button smallButton" style="padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; font-size: 50px; white-space: normal; -unity-text-align: middle-center; justify-content: center; align-self: flex-start;" />
+            <ui:VisualElement name="EventPanel" style="-unity-text-align: upper-left; margin-right: 20px; margin-top: 0; margin-bottom: 0; margin-left: 0; align-items: center; justify-content: flex-start; align-self: flex-start;">
+                <ui:Label text="Fundación" name="Event" class="header" style="height: 45px; -unity-text-align: middle-left; white-space: normal; align-self: flex-end;" />
+                <ui:Label text="860 d.C.&#10;" name="Year" class="header subHeader" style="height: 44px; -unity-text-align: lower-left; align-self: flex-end;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="Heritage" style="margin-top: 20px; margin-right: 20px; margin-bottom: 20px; margin-left: 20px; background-color: rgb(30, 30, 30); border-top-left-radius: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px; border-bottom-left-radius: 20px; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; flex-direction: column; align-items: stretch; justify-content: flex-start; align-self: auto; align-content: auto; width: 30%; display: none; visibility: hidden;">
+                <ui:VisualElement name="Upper" style="height: 9%; align-self: stretch; align-items: stretch; justify-content: flex-start; flex-direction: row-reverse;">
+                    <ui:Button text="X" name="CloseButton" class="button smallButton" style="top: 0; left: 0; position: relative; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; align-self: auto; align-content: auto; align-items: auto; font-size: 50px;" />
+                    <ui:VisualElement name="EventPanel" style="-unity-text-align: upper-left; margin-right: 15px; margin-top: 0; margin-bottom: 0; margin-left: 0; height: 100px; width: 75%;">
+                        <ui:Label text="Fundación" name="Event" class="header" style="height: 45px; -unity-text-align: middle-left; white-space: normal; align-self: flex-end;" />
+                        <ui:Label text="860 d.C.&#10;" name="Year" class="header subHeader" style="height: 44px; -unity-text-align: lower-left; align-self: flex-end;" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement name="Lower" style="flex-grow: 1; border-left-color: rgb(26, 26, 26); border-right-color: rgb(26, 26, 26); border-top-color: rgb(26, 26, 26); border-bottom-color: rgb(26, 26, 26); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; border-top-left-radius: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px; border-bottom-left-radius: 20px; background-color: rgb(39, 39, 39); margin-top: 10px; margin-right: 10px; margin-bottom: 10px; margin-left: 10px; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px;" />
+            </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
+    <ui:Label text="Tooltip" name="Tooltip" class="tooltip" style="top: 912px; left: 366px; visibility: visible;" />
 </ui:UXML>
