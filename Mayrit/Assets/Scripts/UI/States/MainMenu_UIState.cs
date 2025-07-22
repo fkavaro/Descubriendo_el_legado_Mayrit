@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UnityEngine;
+using UnityEngine.UIElements;
 
 public class MainMenu_UIState : AUIState
 {
@@ -10,12 +12,25 @@ public class MainMenu_UIState : AUIState
     #endregion
 
     #region PRIVATE PROPERTIES
-
+    Button _playButton, _mainMenuButton, _quitButton;
     #endregion
 
     #region INHERITED PROPERTIES
     public MainMenu_UIState(FiniteStateMachine<UIManager> stateMachine)
     : base("MainMenu", stateMachine) { }
+
+    public override void AwakeState()
+    {
+        _UIDocument = UIManager.Instance.UIDocument;
+        _screen = _UIDocument.rootVisualElement;//.Q<VisualElement>("MainMenu");
+        _playButton = _screen.Q<Button>("PlayButton");
+        _mainMenuButton = _screen.Q<Button>("SettingsButton");
+        _quitButton = _screen.Q<Button>("QuitButton");
+
+        _playButton.RegisterCallback<ClickEvent>(SwitchToGamePlayState);
+        _mainMenuButton.RegisterCallback<ClickEvent>(SwitchToSettingsState);
+        _quitButton.RegisterCallback<ClickEvent>(QuitGame);
+    }
 
     public override void StartState()
     {
@@ -33,6 +48,22 @@ public class MainMenu_UIState : AUIState
     #endregion
 
     #region PRIVATE METHODS
+    void SwitchToGamePlayState(ClickEvent evt)
+    {
+        GameManager.Instance.fsm.SwitchState(GameManager.Instance.gamePlayState);
+    }
 
+    void SwitchToSettingsState(ClickEvent evt)
+    {
+        // TODO: settings menu
+    }
+
+    void QuitGame(ClickEvent evt)
+    {
+        Application.Quit();
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false; // For convenience in the editor
+#endif
+    }
     #endregion
 }

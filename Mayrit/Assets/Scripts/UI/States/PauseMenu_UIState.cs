@@ -13,7 +13,7 @@ public class PauseMenu_UIState : AUIState
     #endregion
 
     #region PRIVATE PROPERTIES
-    Button _playButton;
+    Button _playButton, _mainMenuButton, _quitButton;
     #endregion
 
     #region INHERITED
@@ -25,8 +25,12 @@ public class PauseMenu_UIState : AUIState
         _UIDocument = UIManager.Instance.UIDocument;
         _screen = _UIDocument.rootVisualElement.Q<VisualElement>("PauseMenu");
         _playButton = _screen.Q<Button>("PlayButton");
+        _mainMenuButton = _screen.Q<Button>("MainMenuButton");
+        _quitButton = _screen.Q<Button>("QuitButton");
 
         _playButton.RegisterCallback<ClickEvent>(SwitchToHUDState);
+        _mainMenuButton.RegisterCallback<ClickEvent>(SwitchToMainMenuState);
+        _quitButton.RegisterCallback<ClickEvent>(QuitGame);
     }
 
     public override void StartState()
@@ -57,6 +61,20 @@ public class PauseMenu_UIState : AUIState
     {
         _stateMachine.SwitchState(UIManager.Instance.hudState); // Switch to HUD state
         GameManager.Instance.fsm.SwitchState(GameManager.Instance.gamePlayState);
+    }
+
+    void SwitchToMainMenuState(ClickEvent evt)
+    {
+        //_stateMachine.SwitchState(UIManager.Instance.mainMenuState); // Switch to Main Menu state
+        GameManager.Instance.fsm.SwitchState(GameManager.Instance.mainMenuState);
+    }
+
+    void QuitGame(ClickEvent evt)
+    {
+        Application.Quit();
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false; // For convenience in the editor
+#endif
     }
     #endregion
 }
