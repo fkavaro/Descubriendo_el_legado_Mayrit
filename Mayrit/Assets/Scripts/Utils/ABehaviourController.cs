@@ -10,9 +10,9 @@ where TController : ABehaviourController<TController>
 {
     [Header("Behaviour Controller Properties")]
     [Tooltip("Whether to show debug messages in the console or not")]
-    public bool debugMode = false;
+    public bool _debugMode = false;
     [Tooltip("Whether to update next frame or not")]
-    public bool isExecutionPaused = false;
+    public bool _isExecutionPaused = false;
 
     ADecisionSystem<TController> _decisionSystem;
 

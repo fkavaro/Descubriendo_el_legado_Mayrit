@@ -5,11 +5,11 @@ public class GameManager : Singleton<GameManager>
 {
 
     #region PUBLIC PROPERTIES
-    // State Machine
-    public FiniteStateMachine<GameManager> fsm;
-    public MainMenu_GameState mainMenuState;
-    public GamePlay_GameState gamePlayState;
-    public Pause_GameState pauseState;
+    // Finite State Machine
+    public FiniteStateMachine<GameManager> _fsm;
+    public MainMenu_GameState _mainMenuState;
+    public GamePlay_GameState _gamePlayState;
+    public Pause_GameState _pauseState;
 
     public GameInputActions _inputActions;
     #endregion
@@ -36,24 +36,24 @@ public class GameManager : Singleton<GameManager>
     }
     protected override ADecisionSystem<GameManager> CreateDecisionSystem()
     {
-        fsm = new(this);
+        _fsm = new(this);
 
-        mainMenuState = new(fsm);
-        gamePlayState = new(fsm);
-        pauseState = new(fsm);
+        _mainMenuState = new(_fsm);
+        _gamePlayState = new(_fsm);
+        _pauseState = new(_fsm);
 
         // Set initial state based on scene name
         string sceneName = SceneManager.GetActiveScene().name;
         if (sceneName == "GameScene")
         {
-            fsm.SetInitialState(gamePlayState);
+            _fsm.SetInitialState(_gamePlayState);
         }
         else
         {
-            fsm.SetInitialState(mainMenuState);
+            _fsm.SetInitialState(_mainMenuState);
         }
 
-        return fsm;
+        return _fsm;
     }
 
     private void OnDestroy()

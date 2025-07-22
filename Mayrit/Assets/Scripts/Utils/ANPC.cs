@@ -7,7 +7,7 @@ using UnityEngine.AI;
 /// Requires a NavMeshAgent component to be attached to the GameObject.
 /// </summary>
 [RequireComponent(typeof(NavMeshAgent))]
-public abstract class ANPC<TController> : AAnimationController<TController>
+public abstract class ANPC<TController> : AHumanoid<TController>
 where TController : ABehaviourController<TController>
 {
     protected NavMeshAgent _agent;
@@ -54,7 +54,7 @@ where TController : ABehaviourController<TController>
     protected override void OnUpdate()
     {
         // Stop moving if execution is paused
-        if (isExecutionPaused)
+        if (_isExecutionPaused)
             _agent.isStopped = true;
         else
         {

@@ -50,7 +50,7 @@ public class MainMenu_UIState : AUIState
     #region PRIVATE METHODS
     void SwitchToGamePlayState(ClickEvent evt)
     {
-        GameManager.Instance.fsm.SwitchState(GameManager.Instance.gamePlayState);
+        GameManager.Instance._fsm.SwitchState(GameManager.Instance._gamePlayState);
     }
 
     void SwitchToSettingsState(ClickEvent evt)

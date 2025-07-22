@@ -35,7 +35,7 @@ where TController : ANPC<TController>
         // Is close to destination
         if (_controller.IsCloseToDestination(1f))
         {
-            if (_controller.debugMode) Debug.Log(_controller.name + " arrived at random destination");
+            if (_controller._debugMode) Debug.Log(_controller.name + " arrived at random destination");
             return Node<TController>.Status.Success;
         }
         else // Hasn't arrived

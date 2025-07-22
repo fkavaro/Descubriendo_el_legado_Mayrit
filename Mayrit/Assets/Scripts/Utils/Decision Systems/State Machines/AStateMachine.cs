@@ -40,7 +40,7 @@ where TStateMachineType : AStateMachine<TController, TStateMachineType>
     /// </summary>
     protected override void DebugDecision()
     {
-        if (controller.debugMode)
+        if (controller._debugMode)
             Debug.LogWarning(controller.transform.name + " is " + currentState.StateName);
     }
 
@@ -70,7 +70,7 @@ where TStateMachineType : AStateMachine<TController, TStateMachineType>
 
     public override void Update()
     {
-        if (!controller.isExecutionPaused)
+        if (!controller._isExecutionPaused)
             currentState?.OnUpdateState();
     }
     #endregion

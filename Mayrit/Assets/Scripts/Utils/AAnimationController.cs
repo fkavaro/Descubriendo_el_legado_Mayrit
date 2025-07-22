@@ -10,8 +10,8 @@ using System;
 public abstract class AAnimationController<TController> : ABehaviourController<TController>
 where TController : ABehaviourController<TController>
 {
-    protected Animator animator;
-    protected int currentAnimation, lastAnimation;
+    protected Animator _animator;
+    protected int _currentAnimation, _lastAnimation;
 
     #region COMMON ANIMATIONS
     readonly public int idleAnim = Animator.StringToHash("Idle"),
@@ -22,7 +22,7 @@ where TController : ABehaviourController<TController>
     #region INHERITED METHODS
     protected override void OnAwake()
     {
-        animator = GetComponent<Animator>();
+        _animator = GetComponent<Animator>();
     }
     #endregion
 
@@ -33,13 +33,13 @@ where TController : ABehaviourController<TController>
     public virtual void ChangeAnimationTo(int newAnimation, float duration = 0.2f)
     {
         // Not same as current
-        if (currentAnimation != newAnimation)
+        if (_currentAnimation != newAnimation)
         {
-            lastAnimation = currentAnimation;
-            currentAnimation = newAnimation;
+            _lastAnimation = _currentAnimation;
+            _currentAnimation = newAnimation;
 
             // Interpolate transition to new animation
-            animator.CrossFade(newAnimation, duration);
+            _animator.CrossFade(newAnimation, duration);
         }
     }
 
@@ -48,14 +48,14 @@ where TController : ABehaviourController<TController>
     /// </summary>
     public virtual void ChangeToPreviousAnimation(float duration = 0.2f)
     {
-        ChangeAnimationTo(lastAnimation, duration);
+        ChangeAnimationTo(_lastAnimation, duration);
     }
 
     /// <returns> True if the current animation is finished, false otherwise.</returns>
     public virtual bool IsAnimationFinished()
     {
         // Check if the current animation is finished
-        AnimatorStateInfo currentStateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        AnimatorStateInfo currentStateInfo = _animator.GetCurrentAnimatorStateInfo(0);
 
         // If the animation is looping, it's never 'finished'
         if (currentStateInfo.loop)
@@ -81,9 +81,9 @@ where TController : ABehaviourController<TController>
 
     public IEnumerator PlayAnimationCertainTimeCoroutine(float waitTime, int animation, string animationName, Action onComplete = null, bool showtext = true)
     {
-        if (isExecutionPaused) yield break;
+        if (_isExecutionPaused) yield break;
 
-        isExecutionPaused = true;
+        _isExecutionPaused = true;
 
         if (showtext && waitTime >= 2f)
             //animationText.text = animationName + " for " + waitTime + " seconds...";
@@ -93,7 +93,7 @@ where TController : ABehaviourController<TController>
         yield return new WaitForSeconds(waitTime);
 
         //animationText.text = "";
-        isExecutionPaused = false;
+        _isExecutionPaused = false;
         onComplete?.Invoke();
     }
     #endregion

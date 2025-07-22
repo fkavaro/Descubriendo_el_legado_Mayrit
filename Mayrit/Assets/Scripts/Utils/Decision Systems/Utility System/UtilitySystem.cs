@@ -35,7 +35,7 @@ where TController : ABehaviourController<TController>
 
     public override void Update()
     {
-        if (!controller.isExecutionPaused)
+        if (!controller._isExecutionPaused)
             _currentAction.UpdateAction();
 
         // Check if it has finished
@@ -81,13 +81,13 @@ where TController : ABehaviourController<TController>
     /// </summary>
     void CalculateActionsUtilities()
     {
-        if (controller.debugMode)
+        if (controller._debugMode)
             Debug.Log(controller.name + " making decision...");
 
         // Calculate the utility of each available action
         foreach (var action in _actions)
         {
-            if (controller.debugMode)
+            if (controller._debugMode)
                 Debug.Log($"    {controller.name}: {action.Name} has utility of {action.Utility}");
 
             _actionUtilities.Add(action, action.Utility);
@@ -100,7 +100,7 @@ where TController : ABehaviourController<TController>
         // If the best action has negative utility, continue with current action
         if (_actionUtilities[bestAction] < 0f || bestAction == null)
         {
-            if (controller.debugMode)
+            if (controller._debugMode)
                 Debug.LogError($"   {controller.name}: best action is null or has negative utility, continuing with current action: {_currentAction.Name}");
 
             bestAction = _currentAction;
@@ -118,7 +118,7 @@ where TController : ABehaviourController<TController>
         _currentAction.StartAction();
 
         // Debug the decision made
-        if (controller.debugMode)
+        if (controller._debugMode)
             Debug.Log($"{controller.name} is {_currentAction.Name}");
 
         DebugDecision();
