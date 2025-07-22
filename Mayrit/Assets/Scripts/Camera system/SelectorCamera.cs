@@ -11,7 +11,7 @@ public class SelectorCamera : MonoBehaviour
     #endregion
 
     #region PRIVATE PROPERTIES
-    GameInputActions _inputActions;
+
     GameObject _currentSelected = null,
         _currentHover = null;
     Vector2 _mousePosition;
@@ -19,28 +19,9 @@ public class SelectorCamera : MonoBehaviour
     #endregion
 
     #region MONOBEHAVIOUR
-    // When script is enabled
-    void OnEnable()
-    {
-        _inputActions.Camera.Enable();
-    }
-
-    // When script is disabled or destroyed
-    void OnDisable()
-    {
-        _inputActions.Camera.Disable();
-    }
-
-    void Awake()
-    {
-        _inputActions = new();
-        _inputActions.Camera.Enable();
-        _inputActions.Camera.Select.performed += OnSelectObject;
-    }
-
     void Start()
     {
-
+        GameManager.Instance._inputActions.Camera.Select.performed += OnSelectObject;
     }
 
     void Update()

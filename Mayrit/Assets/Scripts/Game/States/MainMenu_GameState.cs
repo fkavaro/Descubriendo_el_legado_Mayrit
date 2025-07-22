@@ -13,9 +13,7 @@ public class MainMenu_GameState : AState<GameManager, FiniteStateMachine<GameMan
     public override void AwakeState()
     {
         if (SceneManager.GetActiveScene().name != "MainMenuScene")
-        {
             SceneManager.LoadScene("MainMenuScene");
-        }
     }
 
     public override void StartState()

@@ -10,6 +10,8 @@ public class GameManager : Singleton<GameManager>
     public MainMenu_GameState mainMenuState;
     public GamePlay_GameState gamePlayState;
     public Pause_GameState pauseState;
+
+    public GameInputActions _inputActions;
     #endregion
 
     #region PRIVATE PROPERTIES
@@ -19,7 +21,7 @@ public class GameManager : Singleton<GameManager>
     #region INHERITED
     protected override void OnAwake()
     {
-
+        _inputActions = new();
     }
 
     protected override void OnStart()
@@ -51,6 +53,11 @@ public class GameManager : Singleton<GameManager>
         }
 
         return fsm;
+    }
+
+    private void OnDestroy()
+    {
+        _inputActions?.Disable(); // Disables all action maps. To avoi errors
     }
     #endregion
 
