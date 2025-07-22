@@ -1,14 +1,11 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
 
 public class SelectorCamera : MonoBehaviour
 {
     #region PUBLIC PROPERTIES
     [Header("Object selection")]
-    [HideInInspector]
-    public UIManager _UIDocument;
     [Tooltip("Layer mask to define which objects are selectable.")]
     public LayerMask _selectableLayer;
     #endregion
@@ -18,6 +15,7 @@ public class SelectorCamera : MonoBehaviour
     GameObject _currentSelected = null,
         _currentHover = null;
     Vector2 _mousePosition;
+    Ray _cameraRay;
     #endregion
 
     #region MONOBEHAVIOUR
@@ -42,7 +40,7 @@ public class SelectorCamera : MonoBehaviour
 
     void Start()
     {
-        _UIDocument = UIManager.Instance;
+
     }
 
     void Update()
@@ -50,6 +48,10 @@ public class SelectorCamera : MonoBehaviour
         // Get the current mouse position
         _mousePosition = Mouse.current.position.ReadValue();
 
+        // Create a ray from the camera through the mouse position
+        _cameraRay = Camera.main.ScreenPointToRay(_mousePosition);
+
+        // Move tooltip with the cursor if it's not over an UI element
         UpdateTooltip();
     }
     #endregion
@@ -78,39 +80,25 @@ public class SelectorCamera : MonoBehaviour
         // Cursor over UI element
         if (UIManager.Instance.hudState.IsCursorOverUI(_mousePosition))
         {
-            if (_currentSelected != null)
-                ResetSelection();
-
+            ResetSelection();
             return;
         }
 
-        // Create a ray from the camera through the mouse position
-        Ray ray = Camera.main.ScreenPointToRay(_mousePosition);
-        Debug.DrawRay(ray.origin, ray.direction * 100, Color.green, 120f);
+        Debug.DrawRay(_cameraRay.origin, _cameraRay.direction * 100, Color.green, 120f);
 
-        // Perform the raycast. It checks for colliders on objects within the specified 'selectableLayer'.
-        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, _selectableLayer))
+        // Ray has collided with a selectable object
+        if (Physics.Raycast(_cameraRay, out RaycastHit hit, Mathf.Infinity, _selectableLayer))
         {
-            //Debug.Log("Raycast hit: " + hit.collider.gameObject.name);
-
             // If the ray hits a new object (different from the current selection)
             if (hit.collider.gameObject != _currentSelected)
             {
-                // Deselect the previously selected object (if any)
                 ResetSelection();
-
-                // Set the newly hit object as the current selection
                 _currentSelected = hit.collider.gameObject;
-                //Debug.Log("Object selected: " + currentSelection.name);
-
-                // Display the information panel of the selected object
-                ApplySelection(_currentSelected);
+                ApplySelection(_currentSelected); // Display the information panel of the selected object
             }
         }
         else
         {
-            //Debug.LogWarning("Raycast did not hit any selectable object.");
-            // If the ray hits nothing, deselect any previously selected object
             ResetSelection();
         }
     }
@@ -134,43 +122,33 @@ public class SelectorCamera : MonoBehaviour
         _currentSelected = null;
     }
 
+    /// <summary>
+    /// Move tooltip with the cursor if it's not over an UI element.
+    /// </summary>
     private void UpdateTooltip()
     {
         // Cursor over UI element
         if (UIManager.Instance.hudState.IsCursorOverUI(_mousePosition))
         {
-            if (_currentHover != null)
-                ResetHover();
-
+            ResetHover();
             return;
         }
 
-        // Create a ray from the camera through the mouse position
-        Ray ray = Camera.main.ScreenPointToRay(_mousePosition);
-
-        // Perform the raycast. It checks for colliders on objects within the specified 'hoverableLayer'.
-        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, _selectableLayer))
+        // Ray has collided with a selectable object
+        if (Physics.Raycast(_cameraRay, out RaycastHit hit, Mathf.Infinity, _selectableLayer))
         {
-            //Debug.Log("Raycast hit: " + hit.collider.gameObject.name);
-
             // If the ray hits an object and it's different from the currently hovered one
             if (hit.collider.gameObject != _currentHover && hit.collider.gameObject != _currentSelected)
             {
-                // If there was a previous hover object, reset its state (un-highlight it)
                 ResetHover();
-
-                // Set the newly hit object as the current hover object
                 _currentHover = hit.collider.gameObject;
-
-                // Show a small tooltip with the object's name
-                ApplyHover(_currentHover);
+                ApplyHover(_currentHover); // Show a small tooltip with the object's name
             }
         }
         else
         {
             // If the ray hits nothing, and there was a previously hovered object, reset its state
-            if (_currentHover != null)
-                ResetHover();
+            ResetHover();
         }
     }
 
@@ -179,7 +157,7 @@ public class SelectorCamera : MonoBehaviour
     /// </summary>
     void ApplyHover(GameObject hoverObject)
     {
-        _UIDocument.hudState.PlaceTooltip(hoverObject);
+        UIManager.Instance.hudState.PlaceTooltip(hoverObject);
     }
 
     /// <summary>
@@ -190,7 +168,7 @@ public class SelectorCamera : MonoBehaviour
         if (_currentHover == null) return;
 
         _currentHover = null;
-        _UIDocument.hudState.HideTooltip();
+        UIManager.Instance.hudState.HideTooltip();
     }
     #endregion
 }
