@@ -12,7 +12,8 @@ public class UIManager : Singleton<UIManager>
     // State Machine
     public FiniteStateMachine<UIManager> fsm;
     public MainMenu_UIState mainMenuState;
-    public GamePlay_UIState gamePlayState;
+    public HUD_UIState hudState;
+    public PauseMenu_UIState pauseState;
     #endregion
 
     #region PRIVATE PROPERTIES
@@ -39,13 +40,14 @@ public class UIManager : Singleton<UIManager>
         fsm = new(this);
 
         mainMenuState = new(fsm);
-        gamePlayState = new(fsm);
+        hudState = new(fsm);
+        pauseState = new(fsm);
 
         // Set initial state based on scene name
         string sceneName = SceneManager.GetActiveScene().name;
         if (sceneName == "GameScene")
         {
-            fsm.SetInitialState(gamePlayState);
+            fsm.SetInitialState(hudState);
         }
         else
         {

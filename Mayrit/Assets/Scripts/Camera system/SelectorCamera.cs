@@ -220,7 +220,7 @@ public class SelectorCamera : MonoBehaviour
     /// </summary>
     void ApplyHover(GameObject hoverObject)
     {
-        UI.gamePlayState.PlaceTooltip(hoverObject);
+        UI.hudState.PlaceTooltip(hoverObject);
     }
 
     /// <summary>
@@ -231,7 +231,7 @@ public class SelectorCamera : MonoBehaviour
         if (currentHover == null) return;
 
         currentHover = null;
-        UI.gamePlayState.HideTooltip();
+        UI.hudState.HideTooltip();
 
     }
     #endregion

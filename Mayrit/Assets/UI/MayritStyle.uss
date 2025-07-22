@@ -45,6 +45,25 @@
     -unity-font-style: normal;
 }
 
+.tooltip {
+    background-color: rgb(47, 47, 47);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    padding-top: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    position: absolute;
+    color: rgb(255, 255, 255);
+    font-size: 25px;
+}
+
 .button {
     width: 400px;
     height: 100px;
@@ -65,9 +84,16 @@
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
     border-bottom-left-radius: 20px;
-    margin-top: 30px;
+    margin-top: 15px;
     -unity-text-align: middle-center;
     transition-duration: 0.3s;
+    margin-right: 15px;
+    margin-bottom: 15px;
+    margin-left: 15px;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
 }
 
 .button:hover {
@@ -76,10 +102,6 @@
 }
 
 .button.smallButton {
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 0;
     width: 80px;
     border-top-width: 5px;
     border-right-width: 5px;
@@ -87,23 +109,16 @@
     border-left-width: 5px;
     height: 80px;
     font-size: 30px;
+    position: absolute;
 }
 
-.tooltip {
-    background-color: rgb(47, 47, 47);
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    border-bottom-left-radius: 5px;
-    margin-top: 10px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-    margin-left: 10px;
-    padding-top: 10px;
-    padding-right: 10px;
-    padding-bottom: 10px;
-    padding-left: 10px;
+.button.mediumButton {
+    width: 220px;
+    border-top-width: 5px;
+    border-right-width: 5px;
+    border-bottom-width: 5px;
+    border-left-width: 5px;
+    height: 80px;
+    font-size: 30px;
     position: absolute;
-    color: rgb(255, 255, 255);
-    font-size: 25px;
 }

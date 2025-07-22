@@ -7,20 +7,20 @@ using UnityEngine;
 public class Pause_GameState : AState<GameManager, FiniteStateMachine<GameManager>>
 {
     public Pause_GameState(FiniteStateMachine<GameManager> stateMachine)
-    : base("Pause", stateMachine)
-    {
-
-    }
+    : base("Pause", stateMachine) { }
 
     public override void StartState()
     {
-        throw new NotImplementedException();
+        Time.timeScale = 0f;
     }
 
     public override void UpdateState()
     {
-        throw new NotImplementedException();
+
     }
 
-
+    public override void ExitState()
+    {
+        Time.timeScale = 1f;
+    }
 }
