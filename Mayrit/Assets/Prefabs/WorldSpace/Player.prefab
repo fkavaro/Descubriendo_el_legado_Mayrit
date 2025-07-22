@@ -190,15 +190,12 @@ MonoBehaviour:
   _debugMode: 0
   _isExecutionPaused: 0
   _characterController: {fileID: 0}
-  sprintKey: 0
-  jumpKey: 0
-  interactKey: 0
-  orientation: {fileID: 3518169998641744890}
-  walkSpeed: 6
-  sprintSpeed: 12
-  rotationSpeed: 2
-  jumpForce: 2
-  gravityForce: 9
+  _orientation: {fileID: 3518169998641744890}
+  _walkSpeed: 4
+  _sprintSpeed: 10
+  _rotationSpeed: 2
+  _jumpForce: 5
+  _gravityForce: 9
 --- !u!143 &5391638514220604821
 CharacterController:
   m_ObjectHideFlags: 0
