@@ -22,6 +22,7 @@ public class GameManager : Singleton<GameManager>
     protected override void OnAwake()
     {
         _inputActions = new();
+        _inputActions?.Enable();
     }
 
     protected override void OnStart()

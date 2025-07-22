@@ -78,7 +78,7 @@
     border-bottom-color: rgb(47, 68, 89);
     border-top-width: 3px;
     border-right-width: 3px;
-    border-bottom-width: 10px;
+    border-bottom-width: 3px;
     border-left-width: 3px;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
@@ -97,16 +97,15 @@
 }
 
 .button:hover {
-    scale: 1.1 1.1;
     background-color: rgb(117, 191, 190);
+}
+
+.button:active {
+    scale: 0.9 0.9;
 }
 
 .button.smallButton {
     width: 80px;
-    border-top-width: 5px;
-    border-right-width: 5px;
-    border-bottom-width: 5px;
-    border-left-width: 5px;
     height: 80px;
     font-size: 30px;
     position: absolute;

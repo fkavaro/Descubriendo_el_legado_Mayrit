@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c269688ec944254cbba9ef0aa14cef3, type: 3}
+  m_Name: AljamaMosque
+  m_EditorClassIdentifier: 
+  objectName: Mezquita aljama
+  description: "Era la principal, la de la oraci\xF3n del viernes, y por la que la
+    poblaci\xF3n ten\xEDa car\xE1cter de medina/ciudad. Sobre esta se levant\xF3
+    la Iglesia de Santa Mar\xEDa de la Almudena, derribada para ensanchar la calle
+    Mayor, en el entorno de las actuales calles Mayor y Bail\xE9n, en la zona que
+    hoy conocemos como Las Vistillas.\nTen\xEDa cinco naves perpendiculares al muro
+    de la alquibla (el que da a la Meca), con su caracter\xEDstico mihrab u hornacina
+    decorada, donde despu\xE9s se abri\xF3 la entrada principal de la iglesia. En
+    su parte opuesta, es decir, noroeste, hab\xEDa un patio con su alminar, que dio
+    lugar despu\xE9s al campanario cristiano. Ser\xEDa una torre cuadrada con el
+    cuerpo superior retranqueado que suelen tener las mezquitas del occidente isl\xE1mico.
+    Estar\xEDa rematada por un \u0177amur."
+  image: {fileID: 0}
+  imageCaption: 

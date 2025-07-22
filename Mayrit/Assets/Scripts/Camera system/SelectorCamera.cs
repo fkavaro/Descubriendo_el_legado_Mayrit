@@ -12,9 +12,9 @@ public class SelectorCamera : MonoBehaviour
 
     #region PRIVATE PROPERTIES
 
-    GameObject _currentSelected = null,
+    SelectableObject _currentSelected = null,
         _currentHover = null;
-    Vector2 _mousePosition;
+    Vector2 _cursorScreenPos;
     Ray _cameraRay;
     #endregion
 
@@ -27,10 +27,10 @@ public class SelectorCamera : MonoBehaviour
     void Update()
     {
         // Get the current mouse position
-        _mousePosition = Mouse.current.position.ReadValue();
+        _cursorScreenPos = Mouse.current.position.ReadValue();
 
         // Create a ray from the camera through the mouse position
-        _cameraRay = Camera.main.ScreenPointToRay(_mousePosition);
+        _cameraRay = Camera.main.ScreenPointToRay(_cursorScreenPos);
 
         // Move tooltip with the cursor if it's not over an UI element
         UpdateTooltip();
@@ -39,12 +39,12 @@ public class SelectorCamera : MonoBehaviour
 
     #region PUBLIC METHODS
     /// <returns>The currently selected GameObject, or null if none is selected.</returns>
-    public GameObject GetCurrentSelection()
+    public SelectableObject GetCurrentSelection()
     {
         return _currentSelected;
     }
     /// <returns>The currently hovered GameObject, or null if none is hovered.</returns>
-    public GameObject GetCurrentHover()
+    public SelectableObject GetCurrentHover()
     {
         return _currentHover;
     }
@@ -59,7 +59,7 @@ public class SelectorCamera : MonoBehaviour
     void OnSelectObject(InputAction.CallbackContext context)
     {
         // Cursor over UI element
-        if (UIManager.Instance.hudState.IsCursorOverUI(_mousePosition))
+        if (UIManager.Instance.hudState.IsCursorOverUI(_cursorScreenPos))
         {
             ResetSelection();
             return;
@@ -74,8 +74,15 @@ public class SelectorCamera : MonoBehaviour
             if (hit.collider.gameObject != _currentSelected)
             {
                 ResetSelection();
-                _currentSelected = hit.collider.gameObject;
-                ApplySelection(_currentSelected); // Display the information panel of the selected object
+
+                if (!hit.collider.gameObject.TryGetComponent<SelectableObject>(out var selectableObject))
+                {
+                    Debug.LogWarning("Selectable component not found.");
+                    return;
+                }
+
+                _currentSelected = selectableObject;
+                ApplySelection(); // Display the information panel of the selected object
             }
         }
         else
@@ -87,9 +94,10 @@ public class SelectorCamera : MonoBehaviour
     /// <summary>
     /// Display the information panel of the selected object.
     /// </summary>
-    void ApplySelection(GameObject selectedHover)
+    void ApplySelection()
     {
-        selectedHover.transform.localScale *= 2;
+        //_currentSelected.transform.localScale *= 2;
+        UIManager.Instance.hudState.ShowHeritagePanel(_currentSelected);
     }
 
     /// <summary>
@@ -99,7 +107,8 @@ public class SelectorCamera : MonoBehaviour
     {
         if (_currentSelected == null) return;
 
-        _currentSelected.transform.localScale /= 2;
+        //_currentSelected.transform.localScale /= 2;
+        UIManager.Instance.hudState.HideHeritagePanel();
         _currentSelected = null;
     }
 
@@ -109,7 +118,7 @@ public class SelectorCamera : MonoBehaviour
     private void UpdateTooltip()
     {
         // Cursor over UI element
-        if (UIManager.Instance.hudState.IsCursorOverUI(_mousePosition))
+        if (UIManager.Instance.hudState.IsCursorOverUI(_cursorScreenPos))
         {
             ResetHover();
             return;
@@ -122,8 +131,11 @@ public class SelectorCamera : MonoBehaviour
             if (hit.collider.gameObject != _currentHover && hit.collider.gameObject != _currentSelected)
             {
                 ResetHover();
-                _currentHover = hit.collider.gameObject;
-                ApplyHover(_currentHover); // Show a small tooltip with the object's name
+                if (hit.collider.gameObject.TryGetComponent<SelectableObject>(out var selectableObject))
+                {
+                    _currentHover = selectableObject;
+                    ApplyHover(); // Show a small tooltip with the object's name
+                }
             }
         }
         else
@@ -136,9 +148,9 @@ public class SelectorCamera : MonoBehaviour
     /// <summary>
     /// Show a small tooltip with the object's name.
     /// </summary>
-    void ApplyHover(GameObject hoverObject)
+    void ApplyHover()
     {
-        UIManager.Instance.hudState.PlaceTooltip(hoverObject);
+        UIManager.Instance.hudState.ShowTooltip(_currentHover);
     }
 
     /// <summary>
