@@ -99,7 +99,7 @@ public class SelectorCamera
     void ApplySelection()
     {
         //_currentSelected.transform.localScale *= 2;
-        UIManager.Instance._hudState.ShowHeritagePanel(_currentSelected);
+        UIManager.Instance._hudState.ShowContextualPanel(_currentSelected);
     }
 
     /// <summary>
@@ -108,9 +108,9 @@ public class SelectorCamera
     void ResetSelection()
     {
         if (_currentSelected == null) return;
+        if (UIManager.Instance._hudState.IsCursorOverUI(_cursorScreenPos)) return;
 
-        //_currentSelected.transform.localScale /= 2;
-        UIManager.Instance._hudState.HideHeritagePanel();
+        UIManager.Instance._hudState.HideContextualPanel();
         _currentSelected = null;
     }
 

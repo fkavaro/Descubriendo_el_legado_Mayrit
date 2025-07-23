@@ -12,9 +12,9 @@ public class HUD_UIState : AUIState
     #endregion
 
     #region PRIVATE PROPERTIES
-    Label _tooltip, _heritagePanelName, _heritagePanelDescription;
-    Button _pauseButton, _closeHeritagePanelButton, _discoverHeritageButton, _playerButton;
-    VisualElement _heritagePanel, _eventPanel;
+    Label _tooltip, _contextualPanelName, _contextualPanelDescription;
+    Button _pauseButton, _closeContextualPanelButton, _eventInfoButton, _playerButton;
+    VisualElement _contextualPanel, _eventArea;
     Vector2 _cursorScreenPos;
     #endregion
 
@@ -29,36 +29,35 @@ public class HUD_UIState : AUIState
 
         _tooltip = _screen.Q<Label>("Tooltip");
         _pauseButton = _screen.Q<Button>("PauseButton");
-        _heritagePanel = _screen.Q<VisualElement>("HeritagePanel");
-        _heritagePanelName = _heritagePanel.Q<Label>("Name");
-        _heritagePanelDescription = _heritagePanel.Q<Label>("Description");
-        _closeHeritagePanelButton = _heritagePanel.Q<Button>("CloseButton");
-        _discoverHeritageButton = _screen.Q<Button>("HeritageButton");
-        _eventPanel = _screen.Q<VisualElement>("EventPanel");
+        _contextualPanel = _screen.Q<VisualElement>("ContextualPanel");
+        _contextualPanelName = _contextualPanel.Q<Label>("Name");
+        _contextualPanelDescription = _contextualPanel.Q<Label>("Description");
+        _closeContextualPanelButton = _contextualPanel.Q<Button>("CloseButton");
+        _eventArea = _screen.Q<VisualElement>("EventArea");
+        _eventInfoButton = _screen.Q<Button>("InfoButton");
         _playerButton = _screen.Q<Button>("PlayerButton");
 
         if (_tooltip == null)
             Debug.LogWarning("_tooltip not found");
         if (_pauseButton == null)
             Debug.LogWarning("_pauseButton not found");
-        if (_heritagePanel == null)
-            Debug.LogWarning("_heritagePanel not found");
-        if (_heritagePanelName == null)
-            Debug.LogWarning("_heritagePanelName not found");
-        if (_heritagePanelDescription == null)
-            Debug.LogWarning("_heritagePanelDescription not found");
-        if (_closeHeritagePanelButton == null)
-            Debug.LogWarning("_closeHeritagePanelButton button not found");
-        if (_discoverHeritageButton == null)
-            Debug.LogWarning("_discoverHeritageButton button not found");
-        if (_eventPanel == null)
-            Debug.LogWarning("_eventPanel button not found");
+        if (_contextualPanel == null)
+            Debug.LogWarning("_contextualPanel not found");
+        if (_contextualPanelName == null)
+            Debug.LogWarning("_contextualPanelName not found");
+        if (_contextualPanelDescription == null)
+            Debug.LogWarning("_contextualPanelDescription not found");
+        if (_closeContextualPanelButton == null)
+            Debug.LogWarning("_closeContextualPanelButton button not found");
+        if (_eventInfoButton == null)
+            Debug.LogWarning("_eventInfoButton button not found");
+        if (_eventArea == null)
+            Debug.LogWarning("_eventArea button not found");
         if (_playerButton == null)
             Debug.LogWarning("_playerButton button not found");
 
         _pauseButton.RegisterCallback<ClickEvent>(SwitchToPauseState);
-        _closeHeritagePanelButton.RegisterCallback<ClickEvent>(CloseHeritagePanel);
-        //_discoverHeritageButton.RegisterCallback<ClickEvent>(CloseHeritagePanel);
+        _closeContextualPanelButton.RegisterCallback<ClickEvent>(CloseContextualPanel);
         _playerButton.RegisterCallback<ClickEvent>(ChangeCamera);
     }
 
@@ -130,33 +129,25 @@ public class HUD_UIState : AUIState
         _tooltip.style.display = DisplayStyle.None;
     }
 
-    public void ShowHeritagePanel(SelectableObject objectSelected)
+    public void ShowContextualPanel(SelectableObject objectSelected)
     {
         if (IsCursorOverUI(_cursorScreenPos)) return;
-        if (_heritagePanel == null) return;
-        if (_discoverHeritageButton == null) return;
-        if (_eventPanel == null) return;
+        if (_contextualPanel == null) return;
 
         // Overwrite panel information
-        _heritagePanelName.text = objectSelected._information.Name;
-        _heritagePanelDescription.text = objectSelected._information.Description;
+        _contextualPanelName.text = objectSelected._information.Name;
+        _contextualPanelDescription.text = objectSelected._information.Description;
 
-        // Show heritage panel and hide overlapping UI elements
-        _heritagePanel.style.display = DisplayStyle.Flex;
-        _discoverHeritageButton.style.display = DisplayStyle.None;
-        _eventPanel.style.display = DisplayStyle.None;
+        // Show panel
+        _contextualPanel.style.display = DisplayStyle.Flex;
     }
 
-    public void HideHeritagePanel()
+    public void HideContextualPanel()
     {
-        if (IsCursorOverUI(_cursorScreenPos)) return;
-        if (_heritagePanel == null) return;
-        if (_discoverHeritageButton == null) return;
-        if (_eventPanel == null) return;
+        if (_contextualPanel == null) return;
 
-        _heritagePanel.style.display = DisplayStyle.None;
-        _discoverHeritageButton.style.display = DisplayStyle.Flex;
-        _eventPanel.style.display = DisplayStyle.Flex;
+        // Hide panel
+        _contextualPanel.style.display = DisplayStyle.None;
     }
     #endregion
 
@@ -166,12 +157,9 @@ public class HUD_UIState : AUIState
         _stateMachine.SwitchState(UIManager.Instance._pauseState); // Switch to pause state
     }
 
-    void CloseHeritagePanel(ClickEvent evt)
+    void CloseContextualPanel(ClickEvent evt)
     {
-        // - Cursor will be over UI
-        if (_heritagePanel == null) return;
-
-        _heritagePanel.style.display = DisplayStyle.None;
+        HideContextualPanel();
     }
 
     void ChangeCamera(ClickEvent evt)
