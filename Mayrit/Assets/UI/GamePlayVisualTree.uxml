@@ -8,7 +8,7 @@
                 <ui:Label text="1031 d.C.&#10;" name="Year" class="header subHeader" style="height: 44px; -unity-text-align: lower-left; align-self: flex-end;" />
             </ui:VisualElement>
             <ui:Button text="?" name="HeritageButton" class="button smallButton" style="justify-content: center; align-self: flex-end; top: 0; left: auto; right: 0; font-size: 40px;" />
-            <ui:Label text="Tooltip" name="Tooltip" class="tooltip" style="top: 1108px; left: 17px;" />
+            <ui:Label text="Tooltip" name="Tooltip" class="tooltip" style="top: 1108px; left: 17px; border-top-left-radius: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px; border-bottom-left-radius: 10px; background-color: rgb(41, 48, 57);" />
             <ui:VisualElement name="HeritagePanel" style="width: 35%; align-self: stretch; justify-content: space-between; align-items: stretch; background-color: rgba(0, 0, 0, 0.57); position: absolute; right: 0; top: 0; left: auto; bottom: 0; flex-grow: 1; border-top-left-radius: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px; border-bottom-left-radius: 20px; display: none;">
                 <ui:VisualElement style="flex-grow: 0; height: 11%; flex-direction: row-reverse; align-items: stretch; justify-content: space-between; align-self: stretch;">
                     <ui:Button text="X" name="CloseButton" class="button smallButton" style="position: relative; align-self: auto; align-content: auto;" />
@@ -24,6 +24,7 @@
                     <ui:Label text="&#10;" name="Description" style="-unity-text-align: upper-center; font-size: 30px; color: rgb(255, 255, 255); margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; text-overflow: clip; white-space: normal; -unity-paragraph-spacing: 30px;" />
                 </ui:VisualElement>
             </ui:VisualElement>
+            <ui:Button name="PlayerButton" class="button" style="top: 1096px; left: 183px; border-top-left-radius: 50px; border-top-right-radius: 50px; border-bottom-right-radius: 50px; border-bottom-left-radius: 50px; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; border-left-color: rgb(47, 89, 57); border-right-color: rgb(47, 89, 57); border-top-color: rgb(47, 89, 57); border-bottom-color: rgb(47, 89, 57); background-image: url(&quot;project://database/Assets/UI/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=-1304905567622442630&amp;guid=2196264947afaa74a8b087d37850e618&amp;type=3#arrow-down@2x&quot;); background-color: rgba(113, 153, 113, 0); position: absolute; width: 80px; height: 80px; -unity-background-image-tint-color: rgb(132, 163, 255);" />
         </ui:VisualElement>
         <ui:VisualElement name="PauseMenu" enabled="true" style="flex-grow: 1; flex-direction: row; position: absolute; width: 100%; height: 100%; display: none;">
             <ui:Button text="&gt;" name="PlayButton" class="button smallButton" style="align-self: flex-start; top: 0; left: 0; background-image: url(&quot;project://database/Assets/UI/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=-1087164816274819069&amp;guid=2196264947afaa74a8b087d37850e618&amp;type=3#arrow-right@2x&quot;); position: relative;" />

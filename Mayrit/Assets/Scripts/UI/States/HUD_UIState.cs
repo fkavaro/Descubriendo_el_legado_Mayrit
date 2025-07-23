@@ -13,7 +13,7 @@ public class HUD_UIState : AUIState
 
     #region PRIVATE PROPERTIES
     Label _tooltip, _heritagePanelName, _heritagePanelDescription;
-    Button _pauseButton, _closeHeritagePanelButton, _discoverHeritageButton;
+    Button _pauseButton, _closeHeritagePanelButton, _discoverHeritageButton, _playerButton;
     VisualElement _heritagePanel, _eventPanel;
     Vector2 _cursorScreenPos;
     #endregion
@@ -24,7 +24,7 @@ public class HUD_UIState : AUIState
 
     public override void AwakeState()
     {
-        _UIDocument = UIManager.Instance.UIDocument;
+        _UIDocument = UIManager.Instance._UIDocument;
         _screen = _UIDocument.rootVisualElement.Q<VisualElement>("HUD");
 
         _tooltip = _screen.Q<Label>("Tooltip");
@@ -35,6 +35,7 @@ public class HUD_UIState : AUIState
         _closeHeritagePanelButton = _heritagePanel.Q<Button>("CloseButton");
         _discoverHeritageButton = _screen.Q<Button>("HeritageButton");
         _eventPanel = _screen.Q<VisualElement>("EventPanel");
+        _playerButton = _screen.Q<Button>("PlayerButton");
 
         if (_tooltip == null)
             Debug.LogWarning("_tooltip not found");
@@ -52,10 +53,13 @@ public class HUD_UIState : AUIState
             Debug.LogWarning("_discoverHeritageButton button not found");
         if (_eventPanel == null)
             Debug.LogWarning("_eventPanel button not found");
+        if (_playerButton == null)
+            Debug.LogWarning("_playerButton button not found");
 
         _pauseButton.RegisterCallback<ClickEvent>(SwitchToPauseState);
         _closeHeritagePanelButton.RegisterCallback<ClickEvent>(CloseHeritagePanel);
         //_discoverHeritageButton.RegisterCallback<ClickEvent>(CloseHeritagePanel);
+        _playerButton.RegisterCallback<ClickEvent>(PlayPlayer);
     }
 
     public override void StartState()
@@ -72,12 +76,34 @@ public class HUD_UIState : AUIState
             _tooltip.style.display == DisplayStyle.Flex)
         {
             // UI Toolkit's Y axis is from top to bottom, while screen coordinates are from bottom to top
-            float tooltipX = _cursorScreenPos.x + UIManager.Instance.tooltipOffsetX;
-            float tooltipY = Screen.height - _cursorScreenPos.y - UIManager.Instance.tooltipOffsetY;
-
-            _tooltip.style.left = tooltipX;
-            _tooltip.style.top = tooltipY;
+            _tooltip.style.left = _cursorScreenPos.x + UIManager.Instance._tooltipOffset.x; ;
+            _tooltip.style.top = Screen.height - _cursorScreenPos.y + UIManager.Instance._tooltipOffset.y;
         }
+
+        UpdatePlayerButton();
+    }
+
+    private void UpdatePlayerButton()
+    {
+        if (_playerButton == null) return;
+
+        // Get the player's world position and an offset above the head
+        Vector3 playerWorldPos = GameObject.FindGameObjectWithTag("Player").transform.position + Vector3.up * 2.0f;
+
+        // Convert world position to screen position
+        Vector3 playerScreenPos = Camera.main.WorldToScreenPoint(playerWorldPos);
+
+        // Convert screen position to UI Toolkit coordinates
+        // UI Toolkit's y=0 is at the top, but ScreenPoint's y=0 is at the bottom, so invert y
+        _playerButton.style.left = playerScreenPos.x + UIManager.Instance._playerButtonOffset.x;
+        _playerButton.style.top = Screen.height - playerScreenPos.y + UIManager.Instance._playerButtonOffset.y;
+
+        // Hide the button if the player is off-screen
+        // _playerButton.style.display = (playerScreenPos.z > 0 &&
+        //                                 playerScreenPos.x >= 0 && playerScreenPos.x <= Screen.width &&
+        //                                 playerScreenPos.y >= 0 && playerScreenPos.y <= Screen.height)
+        //                                 ? DisplayStyle.Flex
+        //                                 : DisplayStyle.None;
     }
 
     public override void ExitState()
@@ -137,15 +163,23 @@ public class HUD_UIState : AUIState
     #region PRIVATE METHODS
     void SwitchToPauseState(ClickEvent evt)
     {
-        _stateMachine.SwitchState(UIManager.Instance.pauseState); // Switch to pause state
+        _stateMachine.SwitchState(UIManager.Instance._pauseState); // Switch to pause state
     }
 
     void CloseHeritagePanel(ClickEvent evt)
     {
-        // Cursor will be over UI
+        // - Cursor will be over UI
         if (_heritagePanel == null) return;
 
         _heritagePanel.style.display = DisplayStyle.None;
+    }
+
+    void PlayPlayer(ClickEvent evt)
+    {
+        if (_playerButton == null) return;
+
+        _playerButton.style.display = DisplayStyle.None;
+        CameraManager.Instance.PlayPlayer();
     }
     #endregion
 }

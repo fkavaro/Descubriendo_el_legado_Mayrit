@@ -64,7 +64,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dcb27f4c44252841aca24bb5b0023a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugMode: 0
-  isExecutionPaused: 0
+  _debugMode: 0
+  _isExecutionPaused: 0
   dontDestroyOnLoad: 0
-  UIDocument: {fileID: 0}
+  _UIDocument: {fileID: 0}
+  _tooltipOffset: {x: -30, y: -30}
+  _playerButtonOffset: {x: 0, y: -50}

@@ -5,15 +5,16 @@ using UnityEngine.SceneManagement;
 public class UIManager : Singleton<UIManager>
 {
     #region PUBLIC PROPERTIES
-    public UIDocument UIDocument;
+    public UIDocument _UIDocument;
     [Header("User Interface Properties")]
-    public int tooltipOffsetX = 3, tooltipOffsetY = 40;
+    public Vector2 _tooltipOffset = new(-30, -30);
+    public Vector2 _playerButtonOffset = new(-85, -185);
 
     // State Machine
-    public FiniteStateMachine<UIManager> fsm;
-    public MainMenu_UIState mainMenuState;
-    public HUD_UIState hudState;
-    public PauseMenu_UIState pauseState;
+    public FiniteStateMachine<UIManager> _fsm;
+    public MainMenu_UIState _mainMenuState;
+    public HUD_UIState _hudState;
+    public PauseMenu_UIState _pauseState;
     #endregion
 
     #region PRIVATE PROPERTIES
@@ -24,7 +25,7 @@ public class UIManager : Singleton<UIManager>
     {
         base.OnAwake();
 
-        UIDocument = GetComponent<UIDocument>();
+        _UIDocument = GetComponent<UIDocument>();
     }
 
     protected override void OnStart()
@@ -39,24 +40,24 @@ public class UIManager : Singleton<UIManager>
 
     protected override ADecisionSystem<UIManager> CreateDecisionSystem()
     {
-        fsm = new(this);
+        _fsm = new(this);
 
-        mainMenuState = new(fsm);
-        hudState = new(fsm);
-        pauseState = new(fsm);
+        _mainMenuState = new(_fsm);
+        _hudState = new(_fsm);
+        _pauseState = new(_fsm);
 
         // Set initial state based on scene name
         string sceneName = SceneManager.GetActiveScene().name;
         if (sceneName == "GameScene")
         {
-            fsm.SetInitialState(hudState);
+            _fsm.SetInitialState(_hudState);
         }
         else
         {
-            fsm.SetInitialState(mainMenuState);
+            _fsm.SetInitialState(_mainMenuState);
         }
 
-        return fsm;
+        return _fsm;
     }
     #endregion
 

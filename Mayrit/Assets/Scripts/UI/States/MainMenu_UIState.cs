@@ -21,7 +21,7 @@ public class MainMenu_UIState : AUIState
 
     public override void AwakeState()
     {
-        _UIDocument = UIManager.Instance.UIDocument;
+        _UIDocument = UIManager.Instance._UIDocument;
         _screen = _UIDocument.rootVisualElement;//.Q<VisualElement>("MainMenu");
         _playButton = _screen.Q<Button>("PlayButton");
         _mainMenuButton = _screen.Q<Button>("SettingsButton");

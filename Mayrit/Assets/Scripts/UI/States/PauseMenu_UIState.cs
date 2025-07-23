@@ -22,7 +22,7 @@ public class PauseMenu_UIState : AUIState
 
     public override void AwakeState()
     {
-        _UIDocument = UIManager.Instance.UIDocument;
+        _UIDocument = UIManager.Instance._UIDocument;
         _screen = _UIDocument.rootVisualElement.Q<VisualElement>("PauseMenu");
         _playButton = _screen.Q<Button>("PlayButton");
         _mainMenuButton = _screen.Q<Button>("MainMenuButton");
@@ -59,7 +59,7 @@ public class PauseMenu_UIState : AUIState
     #region PRIVATE METHODS
     void SwitchToHUDState(ClickEvent evt)
     {
-        _stateMachine.SwitchState(UIManager.Instance.hudState); // Switch to HUD state
+        _stateMachine.SwitchState(UIManager.Instance._hudState); // Switch to HUD state
         GameManager.Instance._fsm.SwitchState(GameManager.Instance._gamePlayState);
     }
 
