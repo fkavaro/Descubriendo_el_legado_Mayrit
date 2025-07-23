@@ -58,18 +58,16 @@ public class CameraController
 
     public CameraController(Transform camera,
         Transform cameraTarget,
-        CinemachineOrbitalFollow orbitalFollow,
         AnimationCurve moveSpeedZoomCurve)
     {
         _camera = camera;
         _cameraTarget = cameraTarget;
-        _orbitalFollow = orbitalFollow;
+        _orbitalFollow = camera.GetComponent<CinemachineOrbitalFollow>();
         _moveSpeedZoomCurve = moveSpeedZoomCurve;
     }
 
 
     #region MONOBEHAVIOUR
-
     public void Start()
     {
 

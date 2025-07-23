@@ -2,29 +2,31 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class SelectorCamera : MonoBehaviour
+public class SelectorCamera
 {
     #region PUBLIC PROPERTIES
-    [Header("Object selection")]
-    [Tooltip("Layer mask to define which objects are selectable.")]
     public LayerMask _selectableLayer;
     #endregion
 
     #region PRIVATE PROPERTIES
-
     SelectableObject _currentSelected = null,
         _currentHover = null;
     Vector2 _cursorScreenPos;
     Ray _cameraRay;
+
+    public SelectorCamera(LayerMask selectableLayer)
+    {
+        _selectableLayer = selectableLayer;
+    }
     #endregion
 
     #region MONOBEHAVIOUR
-    void Start()
+    public void Start()
     {
         GameManager.Instance._inputActions.Camera.Select.performed += OnSelectObject;
     }
 
-    void Update()
+    public void Update()
     {
         // Get the current mouse position
         _cursorScreenPos = Mouse.current.position.ReadValue();
@@ -115,7 +117,7 @@ public class SelectorCamera : MonoBehaviour
     /// <summary>
     /// Move tooltip with the cursor if it's not over an UI element.
     /// </summary>
-    private void UpdateTooltip()
+    void UpdateTooltip()
     {
         // Cursor over UI element
         if (UIManager.Instance._hudState.IsCursorOverUI(_cursorScreenPos))

@@ -11,15 +11,17 @@ public class Spectator_CameraState : ACameraState
     readonly CameraController _cameraController;
     readonly SelectorCamera _selectorCamera;
 
+
     public Spectator_CameraState(FiniteStateMachine<CameraManager> stateMachine,
         Transform camera,
         Transform cameraTarget,
-        CinemachineOrbitalFollow orbitalFollow,
-        AnimationCurve moveSpeedZoomCurve)
+        AnimationCurve moveSpeedZoomCurve,
+        LayerMask selectableLayer)
     : base("Spectator camera", stateMachine)
     {
         _camera = camera;
-        _cameraController = new(camera, cameraTarget, orbitalFollow, moveSpeedZoomCurve);
+        _cameraController = new(camera, cameraTarget, moveSpeedZoomCurve);
+        _selectorCamera = new(selectableLayer);
     }
 
     public override void StartState()
@@ -29,11 +31,13 @@ public class Spectator_CameraState : ACameraState
         _camera.gameObject.SetActive(true);
 
         _cameraController.Start();
+        _selectorCamera.Start();
     }
 
     public override void UpdateState()
     {
         _cameraController.Update();
+        _selectorCamera.Update();
     }
 
     public override void ExitState()
