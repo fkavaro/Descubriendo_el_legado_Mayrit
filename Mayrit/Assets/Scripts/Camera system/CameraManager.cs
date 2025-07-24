@@ -51,13 +51,15 @@ public class CameraManager : Singleton<CameraManager>
     public CinemachineCamera _thirdPersonCamera;
 
     [Header("Orbital camera")]
-    public float _orbitSpeed = 30f; // degrees per second
+    public float _orbitSpeed = 30f;
     public float _orbitalCameraZoomValue = 0.2f;
-    public float _orbitalTransitionSpeed = 0.1f;
+    public float _orbitalTransitionSpeed = 1f;
+    public float _horizontalOffset = -10f;
 
     [Header("Camera transition")]
-    public float _SpectatorTo3rdPersonTransitionDuration = 1f;
-    public float _3rdPersonToSpectatorTransitionDuration = 3f;
+    public float _3rdPersonTransitionDuration = 1f;
+    public float _spectatorTransitionDuration = 3f;
+    public float _offsetTransitionDuration = 1f;
     #endregion
 
     #region PRIVATE PROPERTIES  
@@ -134,7 +136,7 @@ public class CameraManager : Singleton<CameraManager>
         _fsm.SwitchState(_spectatorState);
 
         // Move spectator camera target smoothly to fixed position
-        SmoothMoveCoroutine(_spectatorCamera.LookAt, fixedTargetPos, _3rdPersonToSpectatorTransitionDuration,
+        SmoothMoveCoroutine(_spectatorCamera.LookAt, fixedTargetPos, _spectatorTransitionDuration,
             () =>
             {
                 OnCameraStateChange?.Invoke(_spectatorState);
@@ -150,7 +152,7 @@ public class CameraManager : Singleton<CameraManager>
         OnCameraStateChange?.Invoke(_thirdPersonState);
 
         // Move spectator camera target smoothly to third person camera target
-        SmoothMoveCoroutine(_spectatorCamera.LookAt, _thirdPersonCamera.LookAt.position, _SpectatorTo3rdPersonTransitionDuration,
+        SmoothMoveCoroutine(_spectatorCamera.LookAt, _thirdPersonCamera.LookAt.position, _3rdPersonTransitionDuration,
             () =>
             {
                 // Switch state when coroutine finished
@@ -162,7 +164,7 @@ public class CameraManager : Singleton<CameraManager>
     public void SwitchToOrbitalCamera(Transform objectToOrbitAround)
     {
         // Move spectator target to object position
-        SmoothMoveCoroutine(_spectatorCamera.LookAt, objectToOrbitAround.position, _SpectatorTo3rdPersonTransitionDuration,
+        SmoothMoveCoroutine(_spectatorCamera.LookAt, objectToOrbitAround.position, _3rdPersonTransitionDuration,
         () =>
         {
             // When reached, switch state
@@ -190,9 +192,17 @@ public class CameraManager : Singleton<CameraManager>
     {
         StartCoroutine(ZoomTo(orbitalFollow, targetZoom, onComplete));
     }
+
+    public void HorizontalOffsetCoroutine(CinemachineCameraOffset offsetComponent, float targetOffset, float duration = 1f, Action onComplete = null)
+    {
+        StartCoroutine(SmoothHorizontalOffset(offsetComponent, targetOffset, duration, onComplete));
+    }
     #endregion
 
     #region PRIVATE METHODS
+    /// <summary>
+    /// Smoothly moves the given transform to the new position in given duration.
+    /// </summary>
     IEnumerator SmoothMove(Transform transform, Vector3 newPosition, float duration, Action onComplete)
     {
         if (transform == null || newPosition == null)
@@ -215,6 +225,9 @@ public class CameraManager : Singleton<CameraManager>
         onComplete?.Invoke();
     }
 
+    /// <summary>
+    /// Smoothly zooms the given CinemachineOrbitalFollow component to the target zoom value.
+    /// </summary>
     IEnumerator ZoomTo(CinemachineOrbitalFollow orbitalFollow, float targetZoom, Action onComplete)
     {
         float zoomSpeed = _orbitalTransitionSpeed;
@@ -238,6 +251,27 @@ public class CameraManager : Singleton<CameraManager>
         }
 
         orbitalFollow.RadialAxis.Value = targetZoom;
+
+        onComplete?.Invoke();
+    }
+
+    /// <summary>
+    /// Smoothly interpolates the camera's horizontal offset to the target value.
+    /// </summary>
+    private IEnumerator SmoothHorizontalOffset(CinemachineCameraOffset offsetComponent, float targetOffset, float duration, Action onComplete)
+    {
+        float startOffset = offsetComponent.Offset.x;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime; // TODO add speed
+            float t = Mathf.Clamp01(elapsed / duration);
+            offsetComponent.Offset.x = Mathf.Lerp(startOffset, targetOffset, t);
+            yield return null;
+        }
+
+        offsetComponent.Offset.x = targetOffset;
 
         onComplete?.Invoke();
     }
