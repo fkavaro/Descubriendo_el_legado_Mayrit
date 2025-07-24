@@ -753,20 +753,20 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0.1
-      inSlope: 0
-      outSlope: 0.9
+      inSlope: 0.032112375
+      outSlope: 0.032112375
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
+      outWeight: 0.24
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 0.9
-      outSlope: 0
+      inSlope: 0.30277285
+      outSlope: 0.30277285
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.18666667
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -783,7 +783,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   _thirdPersonCamera: {fileID: 412980351691204597}
-  _transitionDuration: 1
+  _SpectatorTo3rdPersonTransitionDuration: 1
+  _3rdPersonToSpectatorTransitionDuration: 4
 --- !u!1 &4272530639498313931
 GameObject:
   m_ObjectHideFlags: 0
@@ -1264,7 +1265,7 @@ MonoBehaviour:
     DefaultMode: 2
   DefaultBlend:
     Style: 1
-    Time: 2
+    Time: 1
     CustomCurve:
       serializedVersion: 2
       m_Curve: []

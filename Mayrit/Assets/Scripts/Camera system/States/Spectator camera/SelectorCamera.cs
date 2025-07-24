@@ -67,7 +67,7 @@ public class SelectorCamera
             return;
         }
 
-        Debug.DrawRay(_cameraRay.origin, _cameraRay.direction * 100, Color.green, 120f);
+        //Debug.DrawRay(_cameraRay.origin, _cameraRay.direction * 100, Color.green, 120f);
 
         // Ray has collided with a selectable object
         if (Physics.Raycast(_cameraRay, out RaycastHit hit, Mathf.Infinity, _selectableLayer))

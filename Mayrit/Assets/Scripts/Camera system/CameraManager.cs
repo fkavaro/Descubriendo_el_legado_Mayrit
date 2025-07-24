@@ -50,7 +50,8 @@ public class CameraManager : Singleton<CameraManager>
     public CinemachineCamera _thirdPersonCamera;
 
     [Header("Camera transition")]
-    public float _transitionDuration = 1f;
+    public float _SpectatorTo3rdPersonTransitionDuration = 1f;
+    public float _3rdPersonToSpectatorTransitionDuration = 3f;
     #endregion
 
     #region PRIVATE PROPERTIES  
@@ -98,48 +99,53 @@ public class CameraManager : Singleton<CameraManager>
     #endregion
 
     #region PUBLIC METHODS
+    /// <summary>
+    /// Switches to the spectator camera and its target is moved smoothly above player position 
+    /// </summary>
     public void SwitchToSpectatorCamera()
     {
-        _fsm.SwitchState(_spectatorState);
+        // Update spectator camera target to player position
+        _spectatorCamera.LookAt.position = _thirdPersonCamera.LookAt.position;
 
-        // Fix player position for spectator camera
-        Vector3 spectatorPlayerPos = new(
-            _thirdPersonCamera.LookAt.position.x,
+        // Fix to position height
+        Vector3 fixedTargetPos = new(
+            _spectatorCamera.LookAt.position.x,
             _spectatorTargetHeight, // At spectator height
-            _thirdPersonCamera.LookAt.position.z
+            _spectatorCamera.LookAt.position.z
         );
 
-        // Move spectator camera target smoothly to fixed player position
-        StartCoroutine(SmoothMove(_spectatorCamera.LookAt, // Will be at player position, from last transition
-            spectatorPlayerPos,
-            2f,
+        // Update spectator camera target to player position
+        //_spectatorCamera.LookAt.position = fixedTargetPos;
+
+        // Long distance to the target to avoid weird behaviour
+        _spectatorCamera.GetComponent<CinemachineOrbitalFollow>().RadialAxis.Value = 0.5f;
+
+        _fsm.SwitchState(_spectatorState);
+
+        // Move spectator camera target smoothly to fixed position
+        SmoothMoveCoroutine(_spectatorCamera.LookAt, fixedTargetPos, _3rdPersonToSpectatorTransitionDuration,
             () =>
             {
                 OnCameraStateChange?.Invoke(_spectatorState);
             }
-            ));
-
-        // Change HUD
-        UIManager.Instance._fsm.SwitchState(UIManager.Instance._spectatorHUDState);
+        );
     }
 
+    /// <summary>
+    /// Switches to the third person camera after spectator camera target is moved smoothly to player position    
+    /// </summary>
     public void SwitchToThirdPersonCamera()
     {
         OnCameraStateChange?.Invoke(_thirdPersonState);
 
         // Move spectator camera target smoothly to third person camera target
-        StartCoroutine(SmoothMove(_spectatorCamera.LookAt,
-            _thirdPersonCamera.LookAt.position,
-            _transitionDuration,
+        SmoothMoveCoroutine(_spectatorCamera.LookAt, _thirdPersonCamera.LookAt.position, _SpectatorTo3rdPersonTransitionDuration,
             () =>
             {
                 // Switch state when coroutine finished
                 _fsm.SwitchState(_thirdPersonState);
             }
-        ));
-
-        // Change HUD
-        UIManager.Instance._fsm.SwitchState(UIManager.Instance._playerHUDState);
+        );
     }
 
     public void ToggleCameraState()
@@ -149,13 +155,18 @@ public class CameraManager : Singleton<CameraManager>
         else if (_fsm.IsCurrentState(_thirdPersonState))
             SwitchToSpectatorCamera();
     }
-    #endregion
 
-    #region PRIVATE METHODS
     /// <summary>
     /// Moves smoothly the given transform to the new position in given duration.
     /// </summary>
-    IEnumerator SmoothMove(Transform transform, Vector3 newPosition, float duration = 1f, Action onComplete = null)
+    public void SmoothMoveCoroutine(Transform lookAt, Vector3 newPosition, float duration = 1f, Action onComplete = null)
+    {
+        StartCoroutine(SmoothMove(lookAt, newPosition, duration, onComplete));
+    }
+    #endregion
+
+    #region PRIVATE METHODS
+    IEnumerator SmoothMove(Transform transform, Vector3 newPosition, float duration, Action onComplete)
     {
         if (transform == null || newPosition == null)
             yield break;
