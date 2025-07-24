@@ -14,39 +14,17 @@ public class Orbital_CameraState : ACameraState
     public override void StartState()
     {
         _camera.gameObject.SetActive(true);
-
-        GameManager.Instance._inputActions.Camera.Enable();
-        GameManager.Instance._inputActions.Camera.Move.Disable();
-        GameManager.Instance._inputActions.Camera.Rotate.Disable();
+        CameraManager.Instance.ZoomToCoroutine(_orbitalFollow, CameraManager.Instance._orbitalCameraZoomValue);
     }
 
     public override void UpdateState()
     {
         // Orbit around target
-        _orbitalFollow.HorizontalAxis.Value
-        += CameraManager.Instance._orbitSpeed;
-
-        // Change smoothly zoom to value set in CameraManager
-        if (_orbitalFollow.RadialAxis.Value
-            < CameraManager.Instance._orbitalCameraZoomValue
-                - CameraManager.Instance._orbitalTransitionSpeed)
-        {
-            _orbitalFollow.RadialAxis.Value
-            += CameraManager.Instance._orbitalTransitionSpeed;
-        }
-        else if (_orbitalFollow.RadialAxis.Value
-            > CameraManager.Instance._orbitalCameraZoomValue
-                + CameraManager.Instance._orbitalTransitionSpeed)
-        {
-            _orbitalFollow.RadialAxis.Value
-            -= CameraManager.Instance._orbitalTransitionSpeed;
-        }
+        _orbitalFollow.HorizontalAxis.Value += CameraManager.Instance._orbitSpeed * Time.deltaTime;
     }
 
     public override void ExitState()
     {
         _camera.gameObject.SetActive(false);
-
-        GameManager.Instance._inputActions.Camera.Disable();
     }
 }

@@ -123,11 +123,13 @@ public class CameraManager : Singleton<CameraManager>
             _spectatorCamera.LookAt.position.z
         );
 
-        // Update spectator camera target to player position
-        //_spectatorCamera.LookAt.position = fixedTargetPos;
-
         // Long distance to the target to avoid weird behaviour
-        _spectatorCamera.GetComponent<CinemachineOrbitalFollow>().RadialAxis.Value = 0.5f;
+        if (_fsm.IsCurrentState(_thirdPersonState))
+            // Directly
+            _spectatorCamera.GetComponent<CinemachineOrbitalFollow>().RadialAxis.Value = 0.5f;
+        else if (_fsm.IsCurrentState(_orbitalState))
+            // Transition
+            ZoomToCoroutine(_spectatorCamera.GetComponent<CinemachineOrbitalFollow>(), 0.5f);
 
         _fsm.SwitchState(_spectatorState);
 
@@ -157,7 +159,7 @@ public class CameraManager : Singleton<CameraManager>
         );
     }
 
-    public void OrbitAround(Transform objectToOrbitAround)
+    public void SwitchToOrbitalCamera(Transform objectToOrbitAround)
     {
         // Move spectator target to object position
         SmoothMoveCoroutine(_spectatorCamera.LookAt, objectToOrbitAround.position, _SpectatorTo3rdPersonTransitionDuration,
@@ -183,6 +185,11 @@ public class CameraManager : Singleton<CameraManager>
     {
         StartCoroutine(SmoothMove(lookAt, newPosition, duration, onComplete));
     }
+
+    public void ZoomToCoroutine(CinemachineOrbitalFollow orbitalFollow, float targetZoom, Action onComplete = null)
+    {
+        StartCoroutine(ZoomTo(orbitalFollow, targetZoom, onComplete));
+    }
     #endregion
 
     #region PRIVATE METHODS
@@ -202,7 +209,35 @@ public class CameraManager : Singleton<CameraManager>
             transform.position = Vector3.Lerp(startPosition, newPosition, t);
             yield return null;
         }
+
         transform.position = newPosition;
+
+        onComplete?.Invoke();
+    }
+
+    IEnumerator ZoomTo(CinemachineOrbitalFollow orbitalFollow, float targetZoom, Action onComplete)
+    {
+        float zoomSpeed = _orbitalTransitionSpeed;
+        float startZoom = orbitalFollow.RadialAxis.Value;
+        float elapsed = 0f;
+        float duration = Mathf.Abs(targetZoom - startZoom) / (zoomSpeed > 0 ? zoomSpeed : 1f);
+
+        // If duration is very small, snap to target
+        if (duration < 0.01f)
+        {
+            orbitalFollow.RadialAxis.Value = targetZoom;
+            yield break;
+        }
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+            orbitalFollow.RadialAxis.Value = Mathf.Lerp(startZoom, targetZoom, t);
+            yield return null;
+        }
+
+        orbitalFollow.RadialAxis.Value = targetZoom;
 
         onComplete?.Invoke();
     }

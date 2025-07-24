@@ -783,8 +783,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   _thirdPersonCamera: {fileID: 412980351691204597}
-  _orbitSpeed: 0.5
+  _orbitSpeed: 10
   _orbitalCameraZoomValue: 0.2
+  _orbitalTransitionSpeed: 1
   _SpectatorTo3rdPersonTransitionDuration: 1
   _3rdPersonToSpectatorTransitionDuration: 1
 --- !u!1 &4272530639498313931
