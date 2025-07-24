@@ -12,7 +12,7 @@ public class SpectatorHUD_UIState : AUIState
     #endregion
 
     #region PRIVATE PROPERTIES
-    Label _tooltip, _contextualPanelName, _contextualPanelDescription;
+    Label _tooltip, _contextualPanelName, _contextualPanelDescription, _eventName, _eventDate;
     Button _pauseButton, _closeContextualPanelButton, _eventInfoButton, _playerButton;
     VisualElement _contextualPanel, _eventArea;
     Vector2 _cursorScreenPos;
@@ -27,16 +27,14 @@ public class SpectatorHUD_UIState : AUIState
         _UIDocument = UIManager.Instance._UIDocument;
         _pauseButton = _UIDocument.rootVisualElement.Q<Button>("PauseButton");
         _playerButton = _UIDocument.rootVisualElement.Q<Button>("PlayerButton");
-        _eventArea = _UIDocument.rootVisualElement.Q<VisualElement>("EventArea");
-        // Event name
-        // Event date 
 
         _screen = _UIDocument.rootVisualElement.Q<VisualElement>("SpectatorHUD");
-
         _tooltip = _screen.Q<Label>("Tooltip");
-        _eventInfoButton = _screen.Q<Button>("InfoButton");
+        _eventArea = _screen.Q<VisualElement>("EventArea");
+        _eventInfoButton = _eventArea.Q<Button>("InfoButton");
+        _eventName = _eventArea.Q<Label>("Name");
+        _eventDate = _eventArea.Q<Label>("Date");
         _contextualPanel = _screen.Q<VisualElement>("ContextualPanel");
-
         _contextualPanelName = _contextualPanel.Q<Label>("Name");
         _contextualPanelDescription = _contextualPanel.Q<Label>("Description");
         _closeContextualPanelButton = _contextualPanel.Q<Button>("CloseButton");
@@ -59,15 +57,24 @@ public class SpectatorHUD_UIState : AUIState
             Debug.LogWarning("_eventArea button not found");
         if (_playerButton == null)
             Debug.LogWarning("_playerButton button not found");
+        if (_eventName == null)
+            Debug.LogWarning("_eventName button not found");
+        if (_eventDate == null)
+            Debug.LogWarning("_eventDate button not found");
 
         _pauseButton.RegisterCallback<ClickEvent>(SwitchToPauseState);
         _closeContextualPanelButton.RegisterCallback<ClickEvent>(CloseContextualPanel);
         _playerButton.RegisterCallback<ClickEvent>(SwitchToPlayerHUDState);
+        _eventInfoButton.RegisterCallback<ClickEvent>(ShowEventInfo);
     }
 
     public override void StartState()
     {
         _screen.style.display = DisplayStyle.Flex; // Show HUD
+
+        _eventName.text = ProgressManager.Instance._currentEvent.Name;
+        _eventDate.text = ProgressManager.Instance._currentEvent.Date;
+
         HideTooltip();
     }
 
@@ -150,6 +157,17 @@ public class SpectatorHUD_UIState : AUIState
         //_playerButton.style.display = DisplayStyle.None;
         _stateMachine.SwitchState(UIManager.Instance._playerHUDState);
         CameraManager.Instance.ToggleCameraState();
+    }
+
+
+    private void ShowEventInfo(ClickEvent evt)
+    {
+        // Overwrite panel information
+        _contextualPanelName.text = ProgressManager.Instance._currentEvent.Name;
+        _contextualPanelDescription.text = ProgressManager.Instance._currentEvent.Description;
+
+        // Show panel
+        _contextualPanel.style.display = DisplayStyle.Flex;
     }
 
     // TODO: DEPRECATED BECAUSE UGUI SOLUTION IS MORE FRAME RESPONSIVE
