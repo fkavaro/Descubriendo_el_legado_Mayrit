@@ -41,7 +41,7 @@ where TStateMachineType : AStateMachine<TController, TStateMachineType>
     protected override void DebugDecision()
     {
         if (controller._debugMode)
-            Debug.LogWarning(controller.transform.name + " is " + currentState.StateName);
+            Debug.LogWarning("[" + controller.name + "]" + " is " + currentState.StateName);
     }
 
     public virtual void ForceState(AState<TController, TStateMachineType> newState)

@@ -70,25 +70,25 @@ public abstract class AState<TController, TStateMachine>
     public virtual void OnCollisionStay(Collision collision) { } // Optionally implemented in subclasses
     public virtual void OnCollisionExit(Collision collision) { } // Optionally implemented in subclasses
 
-    // /// <summary>
-    // /// Coroutine to wait for a random amount of time before switching to the next state.
-    // /// </summary>
-    // protected IEnumerator SwitchStateAfterRandomTime(AState<TController, TStateMachine> nextState)
-    // {
-    //     int waitTime = Random.Range(5, 21);
-    //     return SwitchStateAfterCertainTime(waitTime, nextState);
-    // }
+    /// <summary>
+    /// Coroutine to wait for a random amount of time before switching to the next state.
+    /// </summary>
+    protected IEnumerator SwitchStateAfterRandomTime(AState<TController, TStateMachine> nextState, int min = 5, int max = 21)
+    {
+        int waitTime = Random.Range(min, max);
+        return SwitchStateAfterCertainTime(nextState, waitTime);
+    }
 
-    // /// <summary>
-    // /// Coroutine to wait for a specified amount of time before switching to the next state.
-    // /// </summary>
-    // protected virtual IEnumerator SwitchStateAfterCertainTime(float waitTime, AState<TController, TStateMachine> nextState)
-    // {
-    //     _controller.isExecutionPaused = true;
+    /// <summary>
+    /// Coroutine to wait for a specified amount of time before switching to the next state.
+    /// </summary>
+    public virtual IEnumerator SwitchStateAfterCertainTime(AState<TController, TStateMachine> nextState, float waitTime)
+    {
+        _controller._isExecutionPaused = true;
 
-    //     yield return new WaitForSeconds(waitTime);
+        yield return new WaitForSeconds(waitTime);
 
-    //     _stateMachine?.SwitchState(nextState);
-    //     _controller.isExecutionPaused = false;
-    // }
+        _stateMachine?.SwitchState(nextState);
+        _controller._isExecutionPaused = false;
+    }
 }

@@ -12,6 +12,7 @@ public class Pause_GameState : AState<GameManager, FiniteStateMachine<GameManage
     public override void StartState()
     {
         Time.timeScale = 0f;
+        GameManager.Instance._inputActions.Camera.Disable();
     }
 
     public override void UpdateState()
@@ -22,5 +23,6 @@ public class Pause_GameState : AState<GameManager, FiniteStateMachine<GameManage
     public override void ExitState()
     {
         Time.timeScale = 1f;
+        GameManager.Instance._inputActions.Camera.Enable();
     }
 }

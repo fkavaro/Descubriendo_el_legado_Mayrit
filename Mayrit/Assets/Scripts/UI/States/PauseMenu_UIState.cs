@@ -59,7 +59,7 @@ public class PauseMenu_UIState : AUIState
     #region PRIVATE METHODS
     void SwitchToHUDState(ClickEvent evt)
     {
-        _stateMachine.SwitchState(UIManager.Instance._hudState); // Switch to HUD state
+        _stateMachine.SwitchState(UIManager.Instance._spectatorHUDState); // Switch to HUD state
         GameManager.Instance._fsm.SwitchState(GameManager.Instance._gamePlayState);
     }
 

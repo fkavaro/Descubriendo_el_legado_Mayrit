@@ -23,7 +23,7 @@ public class SelectorCamera
     #region MONOBEHAVIOUR
     public void Start()
     {
-        GameManager.Instance._inputActions.Camera.Select.performed += OnSelectObject;
+
     }
 
     public void Update()
@@ -58,16 +58,16 @@ public class SelectorCamera
     /// It handles the raycast logic for object selection.
     /// </summary>
     /// <param name="context">The context of the input action callback.</param>
-    void OnSelectObject(InputAction.CallbackContext context)
+    public void OnSelectObject(InputAction.CallbackContext context)
     {
         // Cursor over UI element
-        if (UIManager.Instance._hudState.IsCursorOverUI(_cursorScreenPos))
+        if (UIManager.Instance._spectatorHUDState.IsCursorOverUI(_cursorScreenPos))
         {
             ResetSelection();
             return;
         }
 
-        Debug.DrawRay(_cameraRay.origin, _cameraRay.direction * 100, Color.green, 120f);
+        //Debug.DrawRay(_cameraRay.origin, _cameraRay.direction * 100, Color.green, 120f);
 
         // Ray has collided with a selectable object
         if (Physics.Raycast(_cameraRay, out RaycastHit hit, Mathf.Infinity, _selectableLayer))
@@ -98,8 +98,8 @@ public class SelectorCamera
     /// </summary>
     void ApplySelection()
     {
-        //_currentSelected.transform.localScale *= 2;
-        UIManager.Instance._hudState.ShowHeritagePanel(_currentSelected);
+        CameraManager.Instance.SwitchToOrbitalCamera(_currentSelected.transform);
+        UIManager.Instance._spectatorHUDState.ShowContextualPanel(_currentSelected);
     }
 
     /// <summary>
@@ -108,9 +108,10 @@ public class SelectorCamera
     void ResetSelection()
     {
         if (_currentSelected == null) return;
+        if (UIManager.Instance._spectatorHUDState.IsCursorOverUI(_cursorScreenPos)) return;
 
-        //_currentSelected.transform.localScale /= 2;
-        UIManager.Instance._hudState.HideHeritagePanel();
+        UIManager.Instance._spectatorHUDState.HideContextualPanel();
+        CameraManager.Instance.SwitchToSpectatorCamera();
         _currentSelected = null;
     }
 
@@ -120,7 +121,7 @@ public class SelectorCamera
     void UpdateTooltip()
     {
         // Cursor over UI element
-        if (UIManager.Instance._hudState.IsCursorOverUI(_cursorScreenPos))
+        if (UIManager.Instance._spectatorHUDState.IsCursorOverUI(_cursorScreenPos))
         {
             ResetHover();
             return;
@@ -152,7 +153,7 @@ public class SelectorCamera
     /// </summary>
     void ApplyHover()
     {
-        UIManager.Instance._hudState.ShowTooltip(_currentHover);
+        UIManager.Instance._spectatorHUDState.ShowTooltip(_currentHover);
     }
 
     /// <summary>
@@ -163,7 +164,7 @@ public class SelectorCamera
         if (_currentHover == null) return;
 
         _currentHover = null;
-        UIManager.Instance._hudState.HideTooltip();
+        UIManager.Instance._spectatorHUDState.HideTooltip();
     }
     #endregion
 }

@@ -13,7 +13,8 @@ public class UIManager : Singleton<UIManager>
     // State Machine
     public FiniteStateMachine<UIManager> _fsm;
     public MainMenu_UIState _mainMenuState;
-    public HUD_UIState _hudState;
+    public SpectatorHUD_UIState _spectatorHUDState;
+    public PlayerHUD_UIState _playerHUDState;
     public PauseMenu_UIState _pauseState;
     #endregion
 
@@ -43,19 +44,15 @@ public class UIManager : Singleton<UIManager>
         _fsm = new(this);
 
         _mainMenuState = new(_fsm);
-        _hudState = new(_fsm);
+        _spectatorHUDState = new(_fsm);
+        _playerHUDState = new(_fsm);
         _pauseState = new(_fsm);
 
         // Set initial state based on scene name
-        string sceneName = SceneManager.GetActiveScene().name;
-        if (sceneName == "GameScene")
-        {
-            _fsm.SetInitialState(_hudState);
-        }
-        else
-        {
+        if (SceneManager.GetActiveScene().name == "MainMenu")
             _fsm.SetInitialState(_mainMenuState);
-        }
+        else
+            _fsm.SetInitialState(_spectatorHUDState);
 
         return _fsm;
     }

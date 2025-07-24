@@ -137,7 +137,7 @@ public class CameraController
         right.y = 0f;
         right.Normalize();
 
-        Vector3 inputVector = new Vector3(_moveInput.x + _edgeScrollInput.x, 0,
+        Vector3 inputVector = new(_moveInput.x + _edgeScrollInput.x, 0,
             _moveInput.y + _edgeScrollInput.y);
         inputVector.Normalize();
 
@@ -180,16 +180,16 @@ public class CameraController
 
         orbitInput *= _orbitSensitivity;
 
-        InputAxis horizontalAxis = _orbitalFollow.HorizontalAxis;
-        InputAxis verticalAxis = _orbitalFollow.VerticalAxis;
+        InputAxis horizontalRotation = _orbitalFollow.HorizontalAxis;
+        InputAxis verticalRotation = _orbitalFollow.VerticalAxis;
 
-        horizontalAxis.Value = Mathf.Lerp(horizontalAxis.Value, horizontalAxis.Value + orbitInput.x, _orbitSmoothing * Time.unscaledDeltaTime);
-        verticalAxis.Value = Mathf.Lerp(verticalAxis.Value, verticalAxis.Value - orbitInput.y, _orbitSmoothing * Time.unscaledDeltaTime);
+        horizontalRotation.Value = Mathf.Lerp(horizontalRotation.Value, horizontalRotation.Value + orbitInput.x, _orbitSmoothing * Time.unscaledDeltaTime);
+        verticalRotation.Value = Mathf.Lerp(verticalRotation.Value, verticalRotation.Value - orbitInput.y, _orbitSmoothing * Time.unscaledDeltaTime);
 
-        verticalAxis.Value = Mathf.Clamp(verticalAxis.Value, verticalAxis.Range.x, verticalAxis.Range.y);
+        verticalRotation.Value = Mathf.Clamp(verticalRotation.Value, verticalRotation.Range.x, verticalRotation.Range.y);
 
-        _orbitalFollow.HorizontalAxis = horizontalAxis;
-        _orbitalFollow.VerticalAxis = verticalAxis;
+        _orbitalFollow.HorizontalAxis = horizontalRotation;
+        _orbitalFollow.VerticalAxis = verticalRotation;
     }
 
     /// <summary>
@@ -197,7 +197,7 @@ public class CameraController
     /// </summary>
     private void UpdateZoom()
     {
-        InputAxis axis = _orbitalFollow.RadialAxis;
+        InputAxis zoomValue = _orbitalFollow.RadialAxis;
 
         float targetZoomSpeed = 0f;
 
@@ -208,10 +208,10 @@ public class CameraController
 
         _currentZoomSpeed = Mathf.Lerp(_currentZoomSpeed, targetZoomSpeed, _zoomSmoothing * Time.unscaledDeltaTime);
 
-        axis.Value -= _currentZoomSpeed;
-        axis.Value = Mathf.Clamp(axis.Value, axis.Range.x, axis.Range.y);
+        zoomValue.Value -= _currentZoomSpeed;
+        zoomValue.Value = Mathf.Clamp(zoomValue.Value, zoomValue.Range.x, zoomValue.Range.y);
 
-        _orbitalFollow.RadialAxis = axis;
+        _orbitalFollow.RadialAxis = zoomValue;
     }
 
     void ClampPosition()

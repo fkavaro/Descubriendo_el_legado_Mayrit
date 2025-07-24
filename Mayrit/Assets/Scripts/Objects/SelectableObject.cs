@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class SelectableObject : MonoBehaviour
 {
-    public ObjectInformation _information;
+    public ObjectInformationSO _information;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
