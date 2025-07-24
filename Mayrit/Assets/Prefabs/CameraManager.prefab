@@ -802,10 +802,10 @@ MonoBehaviour:
   _orbitSpeed: 10
   _orbitalCameraZoomValue: 0.2
   _orbitalTransitionSpeed: 1
-  _offsetTransitionSpeed: 5
   _horizontalOffset: 10
-  _SpectatorTo3rdPersonTransitionDuration: 1
-  _3rdPersonToSpectatorTransitionDuration: 1
+  _3rdPersonTransitionDuration: 1
+  _spectatorTransitionDuration: 3
+  _offsetTransitionDuration: 1
 --- !u!1 &4272530639498313931
 GameObject:
   m_ObjectHideFlags: 0
