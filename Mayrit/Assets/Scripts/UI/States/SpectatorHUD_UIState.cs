@@ -140,6 +140,8 @@ public class SpectatorHUD_UIState : AUIState
         // Switch to spectator camera state if it's not current state
         if (!CameraManager.Instance._fsm.IsCurrentState(CameraManager.Instance._spectatorState))
             CameraManager.Instance.SwitchToSpectatorCamera();
+
+        CameraManager.Instance.ResetContextualPanelOffset();
     }
     #endregion
 
@@ -166,6 +168,8 @@ public class SpectatorHUD_UIState : AUIState
 
     private void ShowEventInfo(ClickEvent evt)
     {
+        CameraManager.Instance.ApplyContextualPanelOffset();
+
         // Overwrite panel information
         _contextualPanelName.text = ProgressManager.Instance._currentEvent.Name;
         _contextualPanelDescription.text = ProgressManager.Instance._currentEvent.Description;

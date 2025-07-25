@@ -63,7 +63,7 @@ public class SelectorCamera
         // Cursor over UI element
         if (UIManager.Instance._spectatorHUDState.IsCursorOverUI(_cursorScreenPos))
         {
-            ResetSelection();
+
             return;
         }
 
@@ -79,18 +79,19 @@ public class SelectorCamera
 
                 if (!hit.collider.gameObject.TryGetComponent<SelectableObject>(out var selectableObject))
                 {
-                    Debug.LogWarning("Selectable component not found.");
+                    Debug.LogWarning(hit.collider.gameObject.name + ": selectable component not found");
                     return;
                 }
 
                 _currentSelected = selectableObject;
                 ApplySelection(); // Display the information panel of the selected object
             }
+            // Hits the same
+            else
+                ResetSelection();
         }
         else
-        {
             ResetSelection();
-        }
     }
 
     /// <summary>
