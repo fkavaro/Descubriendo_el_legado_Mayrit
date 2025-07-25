@@ -706,6 +706,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5780545108056687457}
   - component: {fileID: 2411717637338906129}
+  - component: {fileID: 8056176956361623985}
   m_Layer: 0
   m_Name: Ash 7
   m_TagString: Untagged
@@ -771,6 +772,29 @@ LODGroup:
     - renderer: {fileID: 5269962444867143639}
     - renderer: {fileID: 6926707741726579015}
   m_Enabled: 1
+--- !u!136 &8056176956361623985
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8185793832496569501}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 3.9062285
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.4531139, z: 0}
 --- !u!1 &8348461952374650277
 GameObject:
   m_ObjectHideFlags: 0

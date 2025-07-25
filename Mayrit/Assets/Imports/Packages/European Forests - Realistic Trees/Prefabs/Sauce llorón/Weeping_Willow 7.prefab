@@ -442,6 +442,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2625952173410231607}
   - component: {fileID: 8883807892071858196}
+  - component: {fileID: 5445975991021728579}
   m_Layer: 0
   m_Name: Weeping_Willow 7
   m_TagString: Untagged
@@ -503,6 +504,29 @@ LODGroup:
     - renderer: {fileID: 6194597255984804627}
     - renderer: {fileID: 1227694931238652329}
   m_Enabled: 1
+--- !u!136 &5445975991021728579
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6313178463543892440}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 3.9062285
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.4531139, z: 0}
 --- !u!1 &7441686951348398315
 GameObject:
   m_ObjectHideFlags: 0

@@ -618,6 +618,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2642244604936993471}
   - component: {fileID: 1172700866731408560}
+  - component: {fileID: 2841055135511006974}
   m_Layer: 0
   m_Name: Chestnut 8
   m_TagString: Untagged
@@ -691,6 +692,29 @@ LODGroup:
     - renderer: {fileID: 838166545816435127}
     - renderer: {fileID: 12110697974223631}
   m_Enabled: 1
+--- !u!136 &2841055135511006974
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1991462268964490261}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 3.9062285
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.4531139, z: 0}
 --- !u!1 &2500776252911099966
 GameObject:
   m_ObjectHideFlags: 0

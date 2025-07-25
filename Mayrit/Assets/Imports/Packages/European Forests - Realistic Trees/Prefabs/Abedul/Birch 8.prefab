@@ -269,6 +269,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3241975800579615756}
   - component: {fileID: 6741633645463595858}
+  - component: {fileID: -27366212450018390}
   m_Layer: 0
   m_Name: Birch 8
   m_TagString: Untagged
@@ -334,6 +335,29 @@ LODGroup:
     - renderer: {fileID: 4731903115780754909}
     - renderer: {fileID: 6248979450156746761}
   m_Enabled: 1
+--- !u!136 &-27366212450018390
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3416579149820165379}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 3.9062285
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.4531139, z: 0}
 --- !u!1 &3496491636604265913
 GameObject:
   m_ObjectHideFlags: 0

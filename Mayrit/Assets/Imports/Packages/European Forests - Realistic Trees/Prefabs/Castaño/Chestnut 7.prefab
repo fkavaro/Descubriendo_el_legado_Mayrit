@@ -444,6 +444,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2642244604936993471}
   - component: {fileID: 5255892156598895515}
+  - component: {fileID: 8132396364035972695}
   m_Layer: 0
   m_Name: Chestnut 7
   m_TagString: Untagged
@@ -517,6 +518,29 @@ LODGroup:
     - renderer: {fileID: 2922911719384487325}
     - renderer: {fileID: 3180491201158531141}
   m_Enabled: 1
+--- !u!136 &8132396364035972695
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1991462268964490261}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 3.9062285
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.4531139, z: 0}
 --- !u!1 &2272908865140091091
 GameObject:
   m_ObjectHideFlags: 0
