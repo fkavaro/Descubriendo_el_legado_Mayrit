@@ -24,6 +24,7 @@ public class UIManager : Singleton<UIManager>
     #region INHERITED
     protected override void OnAwake()
     {
+        // Singleton
         base.OnAwake();
 
         _UIDocument = GetComponent<UIDocument>();

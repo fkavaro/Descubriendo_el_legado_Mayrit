@@ -23,7 +23,7 @@ public abstract class AState<TController, TStateMachine>
         _controller = stateMachine.controller;
     }
 
-    public void SwitchState(AState<TController, TStateMachine> nextState)
+    public virtual void SwitchState(AState<TController, TStateMachine> nextState)
     {
         _stateMachine?.SwitchState(nextState);
     }
@@ -37,7 +37,7 @@ public abstract class AState<TController, TStateMachine>
         }
         else
         {
-            Debug.LogError("State machine is not a stack state machine. Cannot return to previous state.");
+            Debug.LogError("State machine is not an stack state machine. Cannot return to previous state.");
             return;
         }
 

@@ -88,8 +88,8 @@ public class SpectatorHUD_UIState : AUIState
     {
         _screen.style.display = DisplayStyle.Flex; // Show HUD
 
-        _eventName.text = ProgressManager.Instance._currentEvent.Name;
-        _eventDate.text = ProgressManager.Instance._currentEvent.Date;
+        _eventName.text = ProgressManager.Instance._currentMilestone.informationSO.Name;
+        _eventDate.text = ProgressManager.Instance._currentMilestone.informationSO.Description;
 
         HideContextualPanel();
         HideTooltip();
@@ -206,14 +206,14 @@ public class SpectatorHUD_UIState : AUIState
         _eventArea.style.display = DisplayStyle.None;
 
         // Overwrite panel information
-        _contextualPanelName.text = ProgressManager.Instance._currentEvent.Name;
-        _contextualPanelDescription.text = ProgressManager.Instance._currentEvent.Description;
+        _contextualPanelName.text = ProgressManager.Instance._currentMilestone.informationSO.Name;
+        _contextualPanelDescription.text = ProgressManager.Instance._currentMilestone.informationSO.Description;
 
         // Show panel
         _contextualPanel.style.display = DisplayStyle.Flex;
     }
 
-    // TODO: DEPRECATED BECAUSE UGUI SOLUTION IS MORE FRAME RESPONSIVE
+    // TODO: DEPRECATED BECAUSE UGUI SOLUTION IS MORE FRAME-RESPONSIVE
     // void UpdatePlayerButton()
     // {
     //     if (_playerButton == null) return;

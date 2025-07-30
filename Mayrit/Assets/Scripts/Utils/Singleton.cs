@@ -16,7 +16,7 @@ where T : ABehaviourController<T>
     static T _instance;
 
     // Lock object to ensure thread safety when creating the instance.
-    static readonly object _lock = new object();
+    static readonly object _lock = new();
 
     /// <summary>
     /// Public property to access the singleton instance.

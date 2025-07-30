@@ -21,6 +21,9 @@ public class GameManager : Singleton<GameManager>
     #region INHERITED
     protected override void OnAwake()
     {
+        // Singleton
+        base.OnAwake();
+
         _inputActions = new();
         //_inputActions?.Enable();
     }

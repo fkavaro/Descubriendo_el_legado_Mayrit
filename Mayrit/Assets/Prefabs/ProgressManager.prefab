@@ -47,4 +47,11 @@ MonoBehaviour:
   _debugMode: 1
   _isExecutionPaused: 0
   dontDestroyOnLoad: 1
-  _currentEvent: {fileID: 0}
+  _currentMilestone:
+    milestone: 0
+    informationSO: {fileID: 11400000, guid: 42519b1fc6c99c34b872ecff7bd76d68, type: 2}
+  _milestones:
+  - milestone: 0
+    informationSO: {fileID: 11400000, guid: 42519b1fc6c99c34b872ecff7bd76d68, type: 2}
+  - milestone: 1
+    informationSO: {fileID: 11400000, guid: 529b4fbadef4cf24f943b912354f16b5, type: 2}

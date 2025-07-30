@@ -70,6 +70,9 @@ public class CameraManager : Singleton<CameraManager>
     #region INHERITED PROPERTIES
     protected override void OnAwake()
     {
+        // Singleton
+        base.OnAwake();
+
         _cameraController = new(_spectatorCamera, _moveSpeedZoomCurve);
         _selectorCamera = new(_selectableLayer);
     }
