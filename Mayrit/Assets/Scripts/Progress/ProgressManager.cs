@@ -11,8 +11,9 @@ public class ProgressManager : Singleton<ProgressManager>
     }
 
     [Serializable]
-    public class MilestoneEntry
+    public struct MilestoneEntry
     {
+        //public int id;
         public Milestone milestone;
         public MilestoneInformationSO informationSO;
     }
@@ -20,6 +21,8 @@ public class ProgressManager : Singleton<ProgressManager>
 
     #region PUBLIC PROPERTIES
     public event Action<Milestone> OnMilestoneChanged;
+
+    public int _currentMilestoneId;
     public MilestoneEntry _currentMilestone;
     public List<MilestoneEntry> _milestones = new();
 
@@ -42,7 +45,8 @@ public class ProgressManager : Singleton<ProgressManager>
 
     protected override void OnStart()
     {
-
+        _currentMilestoneId = 0;
+        _currentMilestone = _milestones[_currentMilestoneId];
     }
 
     protected override void OnUpdate()
@@ -54,15 +58,13 @@ public class ProgressManager : Singleton<ProgressManager>
     {
         _fsm = new(this);
 
-        _foundationState = new(_milestones[0], _fsm);
+        //_foundationState = new(_milestones[0], _fsm);
         _conquestState = new(_milestones[^1], _fsm); // Last milestone is the last one in the list
 
-        _fsm.SetInitialState(_foundationState);
+        _fsm.SetInitialState(_conquestState);
 
         return _fsm;
     }
-
-
     #endregion
 
     #region PUBLIC METHODS
@@ -70,9 +72,25 @@ public class ProgressManager : Singleton<ProgressManager>
     {
         OnMilestoneChanged?.Invoke(_currentMilestone.milestone);
     }
+
+    public void SwitchToNextMilestone()
+    {
+        _currentMilestoneId++;
+        ChangeMilestone();
+    }
+
+    public void SwitchToPreviousMilestone()
+    {
+        _currentMilestoneId--;
+        ChangeMilestone();
+    }
     #endregion
 
     #region PRIVATE METHODS
-
+    void ChangeMilestone()
+    {
+        _currentMilestone = _milestones[_currentMilestoneId];
+        OnMilestoneChanged?.Invoke(_currentMilestone.milestone);
+    }
     #endregion
 }

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.InputSystem;
+using System;
 
 public class SpectatorHUD_UIState : AUIState
 {
@@ -17,7 +18,9 @@ public class SpectatorHUD_UIState : AUIState
     Button _pauseButton,
         _closeContextualPanelButton,
         _eventInfoButton,
-        _playerButton;
+        _playerButton,
+        _nextMilestoneButton,
+        _previousMilestoneButton;
     VisualElement _contextualPanel,
         _milestoneArea,
         _contextualPanelImage;
@@ -38,8 +41,10 @@ public class SpectatorHUD_UIState : AUIState
         _tooltip = _screen.Q<Label>("Tooltip");
         _milestoneArea = _screen.Q<VisualElement>("MilestoneArea");
         _eventInfoButton = _milestoneArea.Q<Button>("InfoButton");
-        _milestoneName = _eventInfoButton.Q<Label>("Name");
-        _milestoneDate = _eventInfoButton.Q<Label>("Date");
+        _milestoneName = _milestoneArea.Q<Label>("Name");
+        _milestoneDate = _milestoneArea.Q<Label>("Date");
+        _nextMilestoneButton = _milestoneArea.Q<Button>("NextMilestoneButton");
+        _previousMilestoneButton = _milestoneArea.Q<Button>("PreviousMilestoneButton");
         _contextualPanel = _screen.Q<VisualElement>("ContextualPanel");
         _contextualPanelName = _contextualPanel.Q<Label>("Name");
         _contextualPanelDescription = _contextualPanel.Q<Label>("Description");
@@ -73,20 +78,24 @@ public class SpectatorHUD_UIState : AUIState
             Debug.LogWarning("_contextualPanelImage button not found");
         if (_contextualPanelCaption == null)
             Debug.LogWarning("_contextualPanelCaption button not found");
+        if (_nextMilestoneButton == null)
+            Debug.LogWarning("_nextMilestoneButton button not found");
+        if (_previousMilestoneButton == null)
+            Debug.LogWarning("_previousMilestoneButton button not found");
 
         _pauseButton.RegisterCallback<ClickEvent>(SwitchToPauseState);
         _closeContextualPanelButton.RegisterCallback<ClickEvent>(CloseContextualPanel);
         _playerButton.RegisterCallback<ClickEvent>(SwitchToPlayerHUDState);
-        _eventInfoButton.RegisterCallback<ClickEvent>(ShowEventInfo);
+        _eventInfoButton.RegisterCallback<ClickEvent>(ShowMilestoneInfo);
+        _nextMilestoneButton.RegisterCallback<ClickEvent>(SwitchToNextMilestone);
+        _previousMilestoneButton.RegisterCallback<ClickEvent>(SwitchToPreviousMilestone);
     }
 
     public override void StartState()
     {
         _screen.style.display = DisplayStyle.Flex; // Show HUD
 
-        _milestoneName.text = ProgressManager.Instance._currentMilestone.informationSO.Name;
-        _milestoneDate.text = ProgressManager.Instance._currentMilestone.informationSO.Date;
-
+        OverwriteMilestoneArea();
         HideContextualPanel();
         HideTooltip();
     }
@@ -195,7 +204,7 @@ public class SpectatorHUD_UIState : AUIState
     }
 
 
-    private void ShowEventInfo(ClickEvent evt)
+    private void ShowMilestoneInfo(ClickEvent evt)
     {
         CameraManager.Instance.ApplyContextualPanelOffset();
 
@@ -207,6 +216,24 @@ public class SpectatorHUD_UIState : AUIState
 
         // Show panel
         _contextualPanel.style.display = DisplayStyle.Flex;
+    }
+
+    void SwitchToPreviousMilestone(ClickEvent evt)
+    {
+        ProgressManager.Instance.SwitchToPreviousMilestone();
+        OverwriteMilestoneArea();
+    }
+
+    void SwitchToNextMilestone(ClickEvent evt)
+    {
+        ProgressManager.Instance.SwitchToNextMilestone();
+        OverwriteMilestoneArea();
+    }
+
+    void OverwriteMilestoneArea()
+    {
+        _milestoneName.text = ProgressManager.Instance._currentMilestone.informationSO.Name;
+        _milestoneDate.text = ProgressManager.Instance._currentMilestone.informationSO.Date;
     }
 
     // TODO: DEPRECATED BECAUSE UGUI SOLUTION IS MORE FRAME-RESPONSIVE

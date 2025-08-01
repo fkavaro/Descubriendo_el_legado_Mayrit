@@ -1,10 +1,10 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ProgressObject : MonoBehaviour
 {
-    public ProgressManager.Milestone enablingMilestone;
-    public ProgressManager.Milestone disablingMilestone;
+    public List<ProgressManager.Milestone> milestonesActivated;
 
     void Awake()
     {
@@ -18,9 +18,9 @@ public class ProgressObject : MonoBehaviour
 
     void OnMilestoneChanged(ProgressManager.Milestone entry)
     {
-        if (enablingMilestone == entry)
+        if (milestonesActivated.Contains(entry))
             SetChildrenActive(true);
-        else if (disablingMilestone == entry)
+        else
             SetChildrenActive(false);
     }
 

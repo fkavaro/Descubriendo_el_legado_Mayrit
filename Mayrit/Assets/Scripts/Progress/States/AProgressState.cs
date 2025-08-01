@@ -13,7 +13,7 @@ public abstract class AProgressState : AState<ProgressManager, FiniteStateMachin
 
     public override void StartState()
     {
-        ProgressManager.Instance._currentMilestone = _milestone;
-        ProgressManager.Instance.InvokeOnMilestoneChanged();
+        //ProgressManager.Instance._currentMilestone = _milestone;
+        //ProgressManager.Instance.InvokeOnMilestoneChanged();
     }
 }
