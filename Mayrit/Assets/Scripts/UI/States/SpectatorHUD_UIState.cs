@@ -11,15 +11,15 @@ public class SpectatorHUD_UIState : AUIState
     Label _tooltip,
         _contextualPanelName,
         _contextualPanelDescription,
-        _eventName,
-        _eventDate,
+        _milestoneName,
+        _milestoneDate,
         _contextualPanelCaption;
     Button _pauseButton,
         _closeContextualPanelButton,
         _eventInfoButton,
         _playerButton;
     VisualElement _contextualPanel,
-        _eventArea,
+        _milestoneArea,
         _contextualPanelImage;
     Vector2 _cursorScreenPos;
     #endregion
@@ -36,10 +36,10 @@ public class SpectatorHUD_UIState : AUIState
 
         _screen = _UIDocument.rootVisualElement.Q<VisualElement>("SpectatorHUD");
         _tooltip = _screen.Q<Label>("Tooltip");
-        _eventArea = _screen.Q<VisualElement>("EventArea");
-        _eventInfoButton = _eventArea.Q<Button>("InfoButton");
-        _eventName = _eventArea.Q<Label>("Name");
-        _eventDate = _eventArea.Q<Label>("Date");
+        _milestoneArea = _screen.Q<VisualElement>("MilestoneArea");
+        _eventInfoButton = _milestoneArea.Q<Button>("InfoButton");
+        _milestoneName = _eventInfoButton.Q<Label>("Name");
+        _milestoneDate = _eventInfoButton.Q<Label>("Date");
         _contextualPanel = _screen.Q<VisualElement>("ContextualPanel");
         _contextualPanelName = _contextualPanel.Q<Label>("Name");
         _contextualPanelDescription = _contextualPanel.Q<Label>("Description");
@@ -61,14 +61,14 @@ public class SpectatorHUD_UIState : AUIState
             Debug.LogWarning("_closeContextualPanelButton button not found");
         if (_eventInfoButton == null)
             Debug.LogWarning("_eventInfoButton button not found");
-        if (_eventArea == null)
-            Debug.LogWarning("_eventArea button not found");
+        if (_milestoneArea == null)
+            Debug.LogWarning("_milestoneArea button not found");
         if (_playerButton == null)
             Debug.LogWarning("_playerButton button not found");
-        if (_eventName == null)
-            Debug.LogWarning("_eventName button not found");
-        if (_eventDate == null)
-            Debug.LogWarning("_eventDate button not found");
+        if (_milestoneName == null)
+            Debug.LogWarning("_milestoneName button not found");
+        if (_milestoneDate == null)
+            Debug.LogWarning("_milestoneDate button not found");
         if (_contextualPanelImage == null)
             Debug.LogWarning("_contextualPanelImage button not found");
         if (_contextualPanelCaption == null)
@@ -84,8 +84,13 @@ public class SpectatorHUD_UIState : AUIState
     {
         _screen.style.display = DisplayStyle.Flex; // Show HUD
 
-        _eventName.text = ProgressManager.Instance._currentMilestone.informationSO.Name;
-        _eventDate.text = ProgressManager.Instance._currentMilestone.informationSO.Date;
+        Debug.Log($"ProgressManager.Instance: {ProgressManager.Instance}");
+        Debug.Log($"_currentMilestone: {ProgressManager.Instance?._currentMilestone}");
+        Debug.Log($"informationSO: {ProgressManager.Instance?._currentMilestone?.informationSO}");
+        Debug.Log($"_eventName: {_milestoneName}");
+
+        _milestoneName.text = ProgressManager.Instance._currentMilestone.informationSO.Name;
+        _milestoneDate.text = ProgressManager.Instance._currentMilestone.informationSO.Date;
 
         HideContextualPanel();
         HideTooltip();
@@ -135,7 +140,7 @@ public class SpectatorHUD_UIState : AUIState
         if (IsCursorOverUI(_cursorScreenPos)) return;
         if (_contextualPanel == null) return;
 
-        _eventArea.style.display = DisplayStyle.None;
+        _milestoneArea.style.display = DisplayStyle.None;
 
         // Overwrite panel information
         _contextualPanelName.text = objectSelected._information.Name;
@@ -158,7 +163,7 @@ public class SpectatorHUD_UIState : AUIState
     {
         if (_contextualPanel == null) return;
 
-        _eventArea.style.display = DisplayStyle.Flex;
+        _milestoneArea.style.display = DisplayStyle.Flex;
         _contextualPanelImage.style.backgroundImage = null;
         _contextualPanelImage.style.display = DisplayStyle.None;
         _contextualPanelCaption.style.display = DisplayStyle.None;
@@ -199,7 +204,7 @@ public class SpectatorHUD_UIState : AUIState
     {
         CameraManager.Instance.ApplyContextualPanelOffset();
 
-        _eventArea.style.display = DisplayStyle.None;
+        _milestoneArea.style.display = DisplayStyle.None;
 
         // Overwrite panel information
         _contextualPanelName.text = ProgressManager.Instance._currentMilestone.informationSO.Name;
