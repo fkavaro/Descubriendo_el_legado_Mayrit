@@ -23,6 +23,7 @@ public class ProgressManager : Singleton<ProgressManager>
     #region PUBLIC PROPERTIES
     public event Action<Milestone> OnMilestoneChanged;
 
+    [Header("Milestone properties")]
     public int _currentMilestoneId;
     public MilestoneEntry _currentMilestone;
     public List<MilestoneEntry> _milestones = new();

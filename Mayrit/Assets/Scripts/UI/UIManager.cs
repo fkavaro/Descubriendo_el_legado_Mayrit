@@ -8,7 +8,6 @@ public class UIManager : Singleton<UIManager>
     public UIDocument _UIDocument;
     [Header("User Interface Properties")]
     public Vector2 _tooltipOffset = new(-30, -30);
-    //public Vector2 _playerButtonOffset = new(-85, -185);
 
     // State Machine
     public StackFiniteStateMachine<UIManager> _fsm;
