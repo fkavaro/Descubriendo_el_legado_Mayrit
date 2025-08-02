@@ -7,9 +7,7 @@ public class PlayerButton : MonoBehaviour
     public RectTransform _playerButton;
 
     [Header("Offset (pixels)")]
-    public Vector2 screenOffset = new(0, 30);
-
-    PlayableCharacter player;
+    public Vector2 _screenOffset = new(0, 30);
 
     void LateUpdate()
     {
@@ -24,16 +22,11 @@ public class PlayerButton : MonoBehaviour
             return;
         }
 
-        // Find the player character
-        player = FindFirstObjectByType<PlayableCharacter>();
-        if (player == null)
-            return;
-
         if (!_playerButton.gameObject.activeSelf)
             _playerButton.gameObject.SetActive(true);
 
         // Get player position in world space and convert to screen space
-        Vector3 worldPos = player.transform.position + Vector3.up;
+        Vector3 worldPos = GameManager.Instance._currentPlayableCharacter.transform.position + Vector3.up;
         Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
 
         // Check if player is in-screen
@@ -46,7 +39,7 @@ public class PlayerButton : MonoBehaviour
 
         // And move button
         if (playerInScreen)
-            _playerButton.position = screenPos + (Vector3)screenOffset;
+            _playerButton.position = screenPos + (Vector3)_screenOffset;
     }
 
     public void OnPlayerButtonClick()
@@ -60,6 +53,6 @@ public class PlayerButton : MonoBehaviour
             CameraManager.Instance.ToggleCameraState();
         else if (UIManager.Instance._spectatorHUDState.IsCurrentState())
             // Show the player information in contextual panel
-            UIManager.Instance._spectatorHUDState.ShowContextualPanel(player._characterInformation);
+            UIManager.Instance._spectatorHUDState.ShowContextualPanel(GameManager.Instance._currentPlayableCharacter._characterInformation);
     }
 }

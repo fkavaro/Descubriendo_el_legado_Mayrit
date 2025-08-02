@@ -52,6 +52,9 @@ public class ProgressManager : Singleton<ProgressManager>
 
         // Notify listeners about the initial milestone
         OnMilestoneChanged?.Invoke(_currentMilestone.milestone);
+
+        // Set current playable character
+        GameManager.Instance.GetCurrentPlayableCharacter();
     }
 
     protected override void OnUpdate()
@@ -91,6 +94,9 @@ public class ProgressManager : Singleton<ProgressManager>
     {
         _currentMilestone = _milestones[_currentMilestoneId];
         OnMilestoneChanged?.Invoke(_currentMilestone.milestone);
+
+        // Update current playable character
+        GameManager.Instance.GetCurrentPlayableCharacter();
     }
 
     public bool AtLastMilestone()

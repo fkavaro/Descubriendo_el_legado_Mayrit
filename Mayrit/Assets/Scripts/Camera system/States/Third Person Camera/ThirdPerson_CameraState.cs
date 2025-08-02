@@ -14,6 +14,17 @@ public class ThirdPerson_CameraState : ACameraState
     public override void StartState()
     {
         GameManager.Instance._inputActions.Player.Enable();
+
+        var playerTransform = GameManager.Instance.GetCurrentPlayableCharacter().transform;
+
+        // TODO this should work
+        // Set camera follow and look at targets
+        _camera.Follow = playerTransform;
+        _camera.LookAt = playerTransform;
+
+        Debug.Log("Camera Follow set to: " + _camera.Follow?.name);
+        Debug.Log("Camera LookAt set to: " + _camera.LookAt?.name);
+
         _camera.gameObject.SetActive(true);
 
         // Change HUD

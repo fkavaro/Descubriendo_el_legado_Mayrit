@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -12,6 +13,7 @@ public class GameManager : Singleton<GameManager>
     public Pause_GameState _pauseState;
 
     public GameInputActions _inputActions;
+    public PlayableCharacter _currentPlayableCharacter;
     #endregion
 
     #region PRIVATE PROPERTIES
@@ -62,6 +64,14 @@ public class GameManager : Singleton<GameManager>
     private void OnDestroy()
     {
         _inputActions?.Disable(); // Disables all action maps. To avoi errors
+    }
+
+    public PlayableCharacter GetCurrentPlayableCharacter()
+    {
+        // Find the player character
+        _currentPlayableCharacter = FindFirstObjectByType<PlayableCharacter>();
+
+        return _currentPlayableCharacter;
     }
     #endregion
 
