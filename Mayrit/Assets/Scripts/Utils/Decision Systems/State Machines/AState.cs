@@ -23,6 +23,14 @@ public abstract class AState<TController, TStateMachine>
         _controller = stateMachine.controller;
     }
 
+    /// <summary>
+    /// Checks if this state is the current state in the state machine.
+    /// </summary>
+    public bool IsCurrentState()
+    {
+        return _stateMachine.IsCurrentState(this);
+    }
+
     public virtual void SwitchState(AState<TController, TStateMachine> nextState)
     {
         _stateMachine?.SwitchState(nextState);

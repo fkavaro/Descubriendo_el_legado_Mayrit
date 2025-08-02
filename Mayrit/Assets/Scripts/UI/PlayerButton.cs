@@ -1,12 +1,15 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerFollower : MonoBehaviour
+public class PlayerButton : MonoBehaviour
 {
+
     public RectTransform _playerButton;
 
     [Header("Offset (pixels)")]
     public Vector2 screenOffset = new(0, 30);
+
+    PlayableCharacter player;
 
     void LateUpdate()
     {
@@ -22,7 +25,7 @@ public class PlayerFollower : MonoBehaviour
         }
 
         // Find the player character
-        PlayableCharacter player = FindFirstObjectByType<PlayableCharacter>();
+        player = FindFirstObjectByType<PlayableCharacter>();
         if (player == null)
             return;
 
@@ -46,11 +49,17 @@ public class PlayerFollower : MonoBehaviour
             _playerButton.position = screenPos + (Vector3)screenOffset;
     }
 
-    public void ChangeCamera()
+    public void OnPlayerButtonClick()
     {
         if (_playerButton == null) return;
 
         //_image.enabled = false; // Hide button
-        CameraManager.Instance.ToggleCameraState();
+
+        // Check if the player HUD state is active
+        if (UIManager.Instance._playerHUDState.IsCurrentState())
+            CameraManager.Instance.ToggleCameraState();
+        else if (UIManager.Instance._spectatorHUDState.IsCurrentState())
+            // Show the player information in contextual panel
+            UIManager.Instance._spectatorHUDState.ShowContextualPanel(player._characterInformation);
     }
 }

@@ -20,7 +20,8 @@ public class SpectatorHUD_UIState : AUIState
         _milestoneInfoButton,
         _playerButton,
         _nextMilestoneButton,
-        _previousMilestoneButton;
+        _previousMilestoneButton,
+        _playCharacterButton;
     VisualElement _contextualPanel,
         _milestoneArea,
         _contextualPanelImage;
@@ -51,6 +52,7 @@ public class SpectatorHUD_UIState : AUIState
         _closeContextualPanelButton = _contextualPanel.Q<Button>("CloseButton");
         _contextualPanelImage = _contextualPanel.Q<VisualElement>("Image");
         _contextualPanelCaption = _contextualPanel.Q<Label>("Caption");
+        _playCharacterButton = _contextualPanel.Q<Button>("PlayCharacterButton");
 
         if (_tooltip == null)
             Debug.LogWarning("_tooltip not found");
@@ -82,6 +84,8 @@ public class SpectatorHUD_UIState : AUIState
             Debug.LogWarning("_nextMilestoneButton button not found");
         if (_previousMilestoneButton == null)
             Debug.LogWarning("_previousMilestoneButton button not found");
+        if (_playCharacterButton == null)
+            Debug.LogWarning("_playCharacterButton button not found");
 
         _pauseButton.RegisterCallback<ClickEvent>(SwitchToPauseState);
         _closeContextualPanelButton.RegisterCallback<ClickEvent>(CloseContextualPanel);
@@ -89,6 +93,7 @@ public class SpectatorHUD_UIState : AUIState
         _milestoneInfoButton.RegisterCallback<ClickEvent>(ShowMilestoneInfo);
         _nextMilestoneButton.RegisterCallback<ClickEvent>(SwitchToNextMilestone);
         _previousMilestoneButton.RegisterCallback<ClickEvent>(SwitchToPreviousMilestone);
+        _playCharacterButton.RegisterCallback<ClickEvent>(PlayCharacter);
     }
 
     public override void StartState()
@@ -145,7 +150,7 @@ public class SpectatorHUD_UIState : AUIState
         _tooltip.style.display = DisplayStyle.None;
     }
 
-    public void ShowContextualPanel(SelectableObject objectSelected)
+    public void ShowContextualPanel(SelectableObject objectInfo)
     {
         if (IsCursorOverUI(_cursorScreenPos)) return;
         if (_contextualPanel == null) return;
@@ -153,17 +158,41 @@ public class SpectatorHUD_UIState : AUIState
         _milestoneArea.style.display = DisplayStyle.None;
 
         // Overwrite panel information
-        _contextualPanelName.text = objectSelected._information.Name;
-        _contextualPanelDescription.text = objectSelected._information.Description;
+        _contextualPanelName.text = objectInfo._information.Name;
+        _contextualPanelDescription.text = objectInfo._information.Description;
 
-        if (objectSelected._information.Image != null)
+        // There is an image
+        if (objectInfo._information.Image != null)
         {
-            _contextualPanelImage.style.backgroundImage = new StyleBackground(objectSelected._information.Image.texture);
+            _contextualPanelImage.style.backgroundImage = new StyleBackground(objectInfo._information.Image.texture);
             _contextualPanelImage.style.display = DisplayStyle.Flex;
+            _contextualPanelCaption.text = objectInfo._information.ImageCaption;
+            _contextualPanelCaption.style.display = DisplayStyle.Flex;
         }
 
-        _contextualPanelCaption.text = objectSelected._information.ImageCaption;
-        _contextualPanelCaption.style.display = DisplayStyle.Flex;
+        // Show panel
+        _contextualPanel.style.display = DisplayStyle.Flex;
+    }
+
+    public void ShowContextualPanel(CharacterInformationSO characterInfo)
+    {
+        _milestoneArea.style.display = DisplayStyle.None;
+
+        // Overwrite panel information
+        _contextualPanelName.text = characterInfo.Name;
+        _contextualPanelDescription.text = characterInfo.Description;
+
+        // There is an image
+        if (characterInfo.Image != null)
+        {
+            _contextualPanelImage.style.backgroundImage = new StyleBackground(characterInfo.Image.texture);
+            _contextualPanelImage.style.display = DisplayStyle.Flex;
+            _contextualPanelCaption.text = characterInfo.ImageCaption;
+            _contextualPanelCaption.style.display = DisplayStyle.Flex;
+        }
+
+        // Show play character button
+        _playCharacterButton.style.display = DisplayStyle.Flex;
 
         // Show panel
         _contextualPanel.style.display = DisplayStyle.Flex;
@@ -177,6 +206,7 @@ public class SpectatorHUD_UIState : AUIState
         _contextualPanelImage.style.backgroundImage = null;
         _contextualPanelImage.style.display = DisplayStyle.None;
         _contextualPanelCaption.style.display = DisplayStyle.None;
+        _playCharacterButton.style.display = DisplayStyle.None;
 
         // Hide panel
         _contextualPanel.style.display = DisplayStyle.None;
@@ -221,21 +251,6 @@ public class SpectatorHUD_UIState : AUIState
         ShowMilestoneInfo();
     }
 
-    public void ShowMilestoneInfo()
-    {
-        // TODO: test experience this gives
-        //CameraManager.Instance.ApplyContextualPanelOffset();
-
-        _milestoneArea.style.display = DisplayStyle.None;
-
-        // Overwrite panel information
-        _contextualPanelName.text = ProgressManager.Instance._currentMilestone.informationSO.Name;
-        _contextualPanelDescription.text = ProgressManager.Instance._currentMilestone.informationSO.Description;
-
-        // Show panel
-        _contextualPanel.style.display = DisplayStyle.Flex;
-    }
-
     void SwitchToPreviousMilestone(ClickEvent evt)
     {
         ProgressManager.Instance.SwitchToPreviousMilestone();
@@ -271,6 +286,26 @@ public class SpectatorHUD_UIState : AUIState
         }
         else
             _previousMilestoneButton.SetEnabled(true);
+    }
+
+    void ShowMilestoneInfo()
+    {
+        // TODO: test experience this gives
+        //CameraManager.Instance.ApplyContextualPanelOffset();
+
+        _milestoneArea.style.display = DisplayStyle.None;
+
+        // Overwrite panel information
+        _contextualPanelName.text = ProgressManager.Instance._currentMilestone.informationSO.Name;
+        _contextualPanelDescription.text = ProgressManager.Instance._currentMilestone.informationSO.Description;
+
+        // Show panel
+        _contextualPanel.style.display = DisplayStyle.Flex;
+    }
+
+    void PlayCharacter(ClickEvent evt)
+    {
+        CameraManager.Instance.ToggleCameraState();
     }
 
     // TODO: DEPRECATED BECAUSE UGUI SOLUTION IS MORE FRAME-RESPONSIVE
