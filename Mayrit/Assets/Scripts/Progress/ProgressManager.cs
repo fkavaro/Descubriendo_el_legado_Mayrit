@@ -14,7 +14,6 @@ public class ProgressManager : Singleton<ProgressManager>
     [Serializable]
     public struct MilestoneEntry
     {
-        //public int id;
         public Milestone milestone;
         public MilestoneInformationSO informationSO;
     }
@@ -24,12 +23,12 @@ public class ProgressManager : Singleton<ProgressManager>
     public event Action<Milestone> OnMilestoneChanged;
 
     [Header("Milestone properties")]
-    public int _currentMilestoneId;
+    //public int _currentMilestoneId;
     public MilestoneEntry _currentMilestone;
     public List<MilestoneEntry> _milestones = new();
 
     // State Machine
-    public FiniteStateMachine<ProgressManager> _fsm;
+    public StackFiniteStateMachine<ProgressManager> _fsm;
     public Foundation_AProgressState _foundationState;
     public Conquest_AProgressState _conquestState;
     #endregion
@@ -47,8 +46,8 @@ public class ProgressManager : Singleton<ProgressManager>
 
     protected override void OnStart()
     {
-        _currentMilestoneId = 0;
-        _currentMilestone = _milestones[_currentMilestoneId];
+        //_currentMilestoneId = 0;
+        //_currentMilestone = _milestones[_currentMilestoneId];
 
         // Notify listeners about the initial milestone
         OnMilestoneChanged?.Invoke(_currentMilestone.milestone);
@@ -66,10 +65,17 @@ public class ProgressManager : Singleton<ProgressManager>
     {
         _fsm = new(this);
 
-        _foundationState = new(_milestones[0], _fsm);
-        _conquestState = new(_milestones[^1], _fsm); // Last in list
 
-        _fsm.SetInitialState(_conquestState);
+
+        // Hisn
+        // Albacar
+        // Almudayna
+        // Ramiro II attack
+
+        _conquestState = new(_milestones[^1], _fsm); // Last in list
+        _foundationState = new(_milestones[0], _fsm, _conquestState); // Nothing built
+
+        _fsm.SetInitialState(_foundationState);
 
         return _fsm;
     }
@@ -78,25 +84,20 @@ public class ProgressManager : Singleton<ProgressManager>
     #region PUBLIC METHODS
     public void SwitchToNextMilestone()
     {
-        _currentMilestoneId++;
-        ChangeMilestone();
+        if (_fsm.SwitchToNextState())
+        {
+            //_currentMilestoneId++;
+            //ChangeMilestone();
+        }
     }
 
     public void SwitchToPreviousMilestone()
     {
-        _currentMilestoneId--;
-        ChangeMilestone();
-    }
-    #endregion
-
-    #region PRIVATE METHODS
-    void ChangeMilestone()
-    {
-        _currentMilestone = _milestones[_currentMilestoneId];
-        OnMilestoneChanged?.Invoke(_currentMilestone.milestone);
-
-        // Update current playable character
-        GameManager.Instance.GetCurrentPlayableCharacter();
+        if (_fsm.SwitchToPreviousState())
+        {
+            //_currentMilestoneId--;
+            //ChangeMilestone();
+        }
     }
 
     public bool AtLastMilestone()
@@ -108,5 +109,22 @@ public class ProgressManager : Singleton<ProgressManager>
     {
         return _currentMilestone.Equals(_milestones[0]);
     }
+
+    public void InvokeOnMilestoneChanged()
+    {
+        OnMilestoneChanged?.Invoke(_currentMilestone.milestone);
+    }
+    #endregion
+
+    #region PRIVATE METHODS
+    // void ChangeMilestone()
+    // {
+    //     //_currentMilestone = _milestones[_currentMilestoneId];
+    //     //_currentMilestone = _fsm.CurrentState._milestone;
+    //     //OnMilestoneChanged?.Invoke(_currentMilestone.milestone);
+
+    //     // Update current playable character
+    //     GameManager.Instance.GetCurrentPlayableCharacter();
+    // }
     #endregion
 }

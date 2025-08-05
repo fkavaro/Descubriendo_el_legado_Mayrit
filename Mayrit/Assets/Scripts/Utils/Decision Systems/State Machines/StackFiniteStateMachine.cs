@@ -7,9 +7,10 @@ using UnityEngine;
 /// <summary>
 /// Stack-based Finite State Machine implementation for controlling a behaviour.
 /// </summary>
-public class StackFiniteStateMachine<TController> : AStateMachine<TController, StackFiniteStateMachine<TController>> where TController : ABehaviourController<TController>
+public class StackFiniteStateMachine<TController> : AStateMachine<TController, StackFiniteStateMachine<TController>>
+where TController : ABehaviourController<TController>
 {
-    Stack<AState<TController, StackFiniteStateMachine<TController>>> _stateStack = new();
+    readonly Stack<AState<TController, StackFiniteStateMachine<TController>>> _stateStack = new();
 
     public StackFiniteStateMachine(TController controller) : base(controller) { }
 
@@ -55,22 +56,6 @@ public class StackFiniteStateMachine<TController> : AStateMachine<TController, S
     }
 
     /// <summary>
-    /// Switches to the previous state in the stack,
-    /// removing it from the stack.
-    /// </summary>
-    public void SwitchToPreviousState()
-    {
-        // Empty stack
-        if (_stateStack.Count == 0)
-        {
-            if (controller._debugMode)
-                Debug.Log("[" + controller.name + "] state stack is empty");
-        }
-        else // Not empty
-            SwitchState(_stateStack.Pop());
-    }
-
-    /// <summary>
     /// Returns previous state (top of the stack).
     /// </summary>
     public AState<TController, StackFiniteStateMachine<TController>> GetPreviousState()
@@ -78,8 +63,8 @@ public class StackFiniteStateMachine<TController> : AStateMachine<TController, S
         // Empty stack
         if (_stateStack.Count == 0)
         {
-            if (controller._debugMode)
-                Debug.Log("[" + controller.name + "] state stack is empty");
+            if (_controller._debugMode)
+                Debug.Log("[" + _controller.name + "] state stack is empty");
 
             return null;
         }
@@ -88,13 +73,47 @@ public class StackFiniteStateMachine<TController> : AStateMachine<TController, S
             // Get the last state from the stack without removing it
             var previousState = _stateStack.Peek();
 
-            if (controller._debugMode)
-                Debug.Log("[" + controller.name + "] Previous state: " + previousState.Name);
+            if (_controller._debugMode)
+                Debug.Log("[" + _controller.name + "] Previous state: " + previousState.Name);
 
             return previousState;
         }
+    }
 
+    /// <summary>
+    /// Switches to the previous state in the stack,
+    /// removing it from the stack.
+    /// </summary>
+    public bool SwitchToPreviousState()
+    {
+        // Empty stack
+        if (_stateStack.Count == 0)
+        {
+            if (_controller._debugMode)
+                Debug.Log("[" + _controller.name + "] state stack is empty");
 
+            return false;
+        }
+
+        // Not empty stack
+        SwitchState(_stateStack.Pop());
+        return true;
+    }
+
+    /// <summary>
+    /// Switches to the next state if defined in the current state.
+    /// </summary>
+    public virtual bool SwitchToNextState()
+    {
+        if (_currentState.NextState == null)
+        {
+            if (_controller._debugMode)
+                Debug.Log("[" + _controller.name + "] No next state defined for " + _currentState.Name);
+            return false;
+        }
+
+        SwitchState(_currentState.NextState);
+        return true;
     }
     #endregion
 }

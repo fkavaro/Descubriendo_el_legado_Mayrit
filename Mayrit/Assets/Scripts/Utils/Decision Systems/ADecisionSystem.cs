@@ -3,11 +3,11 @@ using UnityEngine;
 public abstract class ADecisionSystem<TController>
 where TController : ABehaviourController<TController>
 {
-    public TController controller;
+    public TController _controller;
 
     public ADecisionSystem(TController controller)
     {
-        this.controller = controller;
+        _controller = controller;
     }
 
     protected abstract void DebugDecision();

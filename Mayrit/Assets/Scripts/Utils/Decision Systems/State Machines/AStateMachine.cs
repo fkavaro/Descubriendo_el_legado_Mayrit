@@ -7,18 +7,16 @@ public abstract class AStateMachine<TController, TStateMachineType> : ADecisionS
 where TController : ABehaviourController<TController>
 where TStateMachineType : AStateMachine<TController, TStateMachineType>
 {
+    public AState<TController, TStateMachineType> CurrentState => _currentState;
+
     protected AState<TController, TStateMachineType> _currentState, _initialState;
 
+    // Constructor
     protected AStateMachine(TController controller) : base(controller) { }
 
     #region TO BE IMPLEMENTED METHODS
     public abstract void SwitchState(AState<TController, TStateMachineType> state);
     #endregion
-
-    public AState<TController, TStateMachineType> GetCurrentState()
-    {
-        return _currentState;
-    }
 
     public virtual void SetInitialState(AState<TController, TStateMachineType> state)
     {
@@ -32,6 +30,15 @@ where TStateMachineType : AStateMachine<TController, TStateMachineType>
         return _currentState == state;
     }
 
+    public virtual void ForceState(AState<TController, TStateMachineType> newState)
+    {
+        if (newState == _currentState) return;
+
+        // Don't exit the current state, just set and start the new one
+        _currentState = newState;
+        DebugDecision();
+        _currentState.StartState();
+    }
     #region INHERITED METHODS
     /// <summary>
     /// Switchs back to initial state
@@ -46,19 +53,10 @@ where TStateMachineType : AStateMachine<TController, TStateMachineType>
     /// </summary>
     protected override void DebugDecision()
     {
-        if (controller._debugMode)
-            Debug.Log("[" + controller.name + "]" + " is " + _currentState.Name);
+        if (_controller._debugMode)
+            Debug.Log("[" + _controller.name + "]" + " is " + _currentState.Name);
     }
 
-    public virtual void ForceState(AState<TController, TStateMachineType> newState)
-    {
-        if (newState == _currentState) return;
-
-        // Don't exit the current state, just set and start the new one
-        _currentState = newState;
-        DebugDecision();
-        _currentState.StartState();
-    }
     #endregion
 
     #region UNITY EXECUTION EVENTS
@@ -76,7 +74,7 @@ where TStateMachineType : AStateMachine<TController, TStateMachineType>
 
     public override void Update()
     {
-        if (!controller._isExecutionPaused)
+        if (!_controller._isExecutionPaused)
             _currentState?.OnUpdateState();
     }
     #endregion

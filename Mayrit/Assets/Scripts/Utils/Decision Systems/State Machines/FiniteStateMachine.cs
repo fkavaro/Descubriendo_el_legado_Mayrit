@@ -2,7 +2,8 @@
 /// <summary>
 /// Finite State Machine implementation for controlling a behaviour.
 /// </summary>
-public class FiniteStateMachine<TController> : AStateMachine<TController, FiniteStateMachine<TController>> where TController : ABehaviourController<TController>
+public class FiniteStateMachine<TController> : AStateMachine<TController, FiniteStateMachine<TController>>
+where TController : ABehaviourController<TController>
 {
     public FiniteStateMachine(TController controller) : base(controller) { }
 

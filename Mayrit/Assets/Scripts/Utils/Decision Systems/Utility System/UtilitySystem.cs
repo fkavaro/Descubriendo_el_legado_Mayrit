@@ -35,7 +35,7 @@ where TController : ABehaviourController<TController>
 
     public override void Update()
     {
-        if (!controller._isExecutionPaused)
+        if (!_controller._isExecutionPaused)
             _currentAction.UpdateAction();
 
         // Check if it has finished
@@ -81,14 +81,14 @@ where TController : ABehaviourController<TController>
     /// </summary>
     void CalculateActionsUtilities()
     {
-        if (controller._debugMode)
-            Debug.Log(controller.name + " making decision...");
+        if (_controller._debugMode)
+            Debug.Log(_controller.name + " making decision...");
 
         // Calculate the utility of each available action
         foreach (var action in _actions)
         {
-            if (controller._debugMode)
-                Debug.Log($"    {controller.name}: {action.Name} has utility of {action.Utility}");
+            if (_controller._debugMode)
+                Debug.Log($"    {_controller.name}: {action.Name} has utility of {action.Utility}");
 
             _actionUtilities.Add(action, action.Utility);
         }
@@ -100,8 +100,8 @@ where TController : ABehaviourController<TController>
         // If the best action has negative utility, continue with current action
         if (_actionUtilities[bestAction] < 0f || bestAction == null)
         {
-            if (controller._debugMode)
-                Debug.LogError($"   {controller.name}: best action is null or has negative utility, continuing with current action: {_currentAction.Name}");
+            if (_controller._debugMode)
+                Debug.LogError($"   {_controller.name}: best action is null or has negative utility, continuing with current action: {_currentAction.Name}");
 
             bestAction = _currentAction;
         }
@@ -118,8 +118,8 @@ where TController : ABehaviourController<TController>
         _currentAction.StartAction();
 
         // Debug the decision made
-        if (controller._debugMode)
-            Debug.Log($"{controller.name} is {_currentAction.Name}");
+        if (_controller._debugMode)
+            Debug.Log($"{_controller.name} is {_currentAction.Name}");
 
         DebugDecision();
 

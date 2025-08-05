@@ -16,7 +16,7 @@ public abstract class AAction<TController, TFactor> : IAction where TController 
     public AAction(string name, UtilitySystem<TController> utilitySystem)
     {
         this.name = name;
-        _controller = utilitySystem.controller;
+        _controller = utilitySystem._controller;
         _utilitySystem = utilitySystem;
         utilitySystem.AddAction(this);
     }

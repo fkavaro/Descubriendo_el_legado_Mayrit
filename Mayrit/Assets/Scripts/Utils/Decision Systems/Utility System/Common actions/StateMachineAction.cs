@@ -46,7 +46,7 @@ where TStateMachine : AStateMachine<TController, TStateMachine>
     /// <returns>State name of FSM action</returns>
     public override string DebugDecision()
     {
-        return _stateMachine.GetCurrentState()?.Name;
+        return _stateMachine.CurrentState?.Name;
     }
 
     public override void Reset()

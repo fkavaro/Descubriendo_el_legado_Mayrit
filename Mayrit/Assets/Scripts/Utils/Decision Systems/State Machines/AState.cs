@@ -10,17 +10,26 @@ public abstract class AState<TController, TStateMachine>
 {
     public string Name => _stateName;
 
+    /// <summary>
+    /// Preferred state to switch to after this state.
+    /// </summary>
+    public AState<TController, TStateMachine> NextState => _nextState;
+
     protected string _stateName;
     protected TController _controller;
     protected TStateMachine _stateMachine;
     protected float _stateTime = 0f;
+    protected readonly AState<TController, TStateMachine> _nextState;
 
-    // Constructor given AStateMachine
-    public AState(string name, TStateMachine stateMachine)
+    // Constructor
+    public AState(string name,
+    TStateMachine stateMachine,
+    AState<TController, TStateMachine> nextState = null)
     {
         _stateName = name;
         _stateMachine = stateMachine;
-        _controller = stateMachine.controller;
+        _controller = stateMachine._controller;
+        _nextState = nextState;
     }
 
     /// <summary>

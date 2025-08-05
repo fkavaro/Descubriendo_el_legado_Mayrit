@@ -41,7 +41,7 @@ where TController : ABehaviourController<TController>
     public override void Update()
     {
         DebugDecision();
-        if (!controller._isExecutionPaused)
+        if (!_controller._isExecutionPaused)
             status = UpdateNode();
     }
 
