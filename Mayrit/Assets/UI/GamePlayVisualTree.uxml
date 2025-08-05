@@ -1,7 +1,7 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/MayritStyle.uss?fileID=7433441132597879392&amp;guid=7a6c8e791557401438e2762dac509247&amp;type=3#MayritStyle" />
     <ui:VisualElement name="GamePlayScreen" style="flex-grow: 1; margin-top: 30px; margin-right: 30px; margin-bottom: 30px; margin-left: 30px; flex-direction: row;">
-        <ui:VisualElement name="HUD" style="position: absolute; flex-grow: 1; flex-direction: row; height: 100%; width: 100%; display: flex; visibility: visible;">
+        <ui:VisualElement name="HUD" style="position: absolute; flex-grow: 1; flex-direction: row; display: flex; visibility: visible; left: 0; top: 0; right: 0; bottom: 0;">
             <ui:VisualElement name="SpectatorHUD" style="position: absolute; justify-content: space-between; align-self: stretch; height: auto; width: auto; right: 0; bottom: 0; left: 0; top: 0; display: flex; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;">
                 <ui:VisualElement name="MilestoneArea" style="height: 110px; width: 35%; flex-direction: row-reverse; top: 0; right: 0; position: absolute; display: flex;">
                     <ui:Button name="NextMilestoneButton" class="button smallButton" style="font-size: 40px; position: relative; align-self: flex-start; background-image: url(&quot;project://database/Assets/UI/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=-1087164816274819069&amp;guid=2196264947afaa74a8b087d37850e618&amp;type=3#arrow-right@2x&quot;);" />
@@ -41,11 +41,32 @@
             </ui:VisualElement>
             <ui:Button name="PlayerButton" class="button" style="top: 1096px; left: 183px; border-top-left-radius: 50px; border-top-right-radius: 50px; border-bottom-right-radius: 50px; border-bottom-left-radius: 50px; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; border-left-color: rgb(47, 89, 57); border-right-color: rgb(47, 89, 57); border-top-color: rgb(47, 89, 57); border-bottom-color: rgb(47, 89, 57); background-image: url(&quot;project://database/Assets/UI/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=-1304905567622442630&amp;guid=2196264947afaa74a8b087d37850e618&amp;type=3#arrow-down@2x&quot;); background-color: rgba(113, 153, 113, 0); position: absolute; width: 80px; height: 80px; -unity-background-image-tint-color: rgb(132, 163, 255);" />
             <ui:Button text="| |" name="PauseButton" class="button smallButton" style="align-self: flex-start; top: 0; left: 0;" />
+            <ui:Button text="?" name="HeritageButton" class="button smallButton" style="align-self: flex-start; top: auto; left: 0; bottom: 0;" />
+            <ui:Foldout text="Edificios" name="Foldout" style="right: auto; top: 134px; bottom: 0; flex-grow: 1; position: absolute; width: 224px; left: 0;">
+                <ui:Label text="Hisn" />
+                <ui:Label text="Mezquita aljama" />
+            </ui:Foldout>
         </ui:VisualElement>
-        <ui:VisualElement name="PauseMenu" enabled="true" style="flex-grow: 1; flex-direction: row; position: absolute; width: 100%; height: 100%; display: none;">
+        <ui:VisualElement name="PauseMenu" enabled="true" style="flex-grow: 1; flex-direction: row; position: absolute; display: none; top: 0; left: 0; bottom: auto; right: auto;">
             <ui:Button text="&gt;" name="PlayButton" class="button smallButton" style="align-self: flex-start; top: 0; left: 0; background-image: url(&quot;project://database/Assets/UI/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=-1087164816274819069&amp;guid=2196264947afaa74a8b087d37850e618&amp;type=3#arrow-right@2x&quot;); position: relative;" />
             <ui:Button text="Inicio" name="MainMenuButton" class="button mediumButton" style="align-self: flex-start; position: relative;" />
             <ui:Button text="Salir" name="QuitButton" class="button mediumButton" style="align-self: flex-start; position: relative;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="HeritageMenu" style="flex-grow: 1; position: absolute; left: 0; top: 0; right: 0; bottom: 0; display: none; background-color: rgba(0, 0, 0, 0.61); margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 30px; padding-right: 30px; padding-bottom: 30px; padding-left: 30px;">
+        <ui:VisualElement style="flex-grow: 0; flex-shrink: 0; flex-direction: row; justify-content: space-between;">
+            <ui:Label text="Menú de información" class="header" style="align-self: center;" />
+            <ui:Button text="X" name="CloseButton" class="button smallButton" style="background-color: rgb(193, 83, 81); border-left-color: rgb(89, 48, 47); border-right-color: rgb(89, 48, 47); border-top-color: rgb(89, 48, 47); border-bottom-color: rgb(89, 48, 47); position: relative; top: 0; right: 0; align-self: flex-start;" />
+        </ui:VisualElement>
+        <ui:VisualElement style="border-top-left-radius: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px; border-bottom-left-radius: 20px; flex-grow: 1; background-color: rgba(0, 0, 0, 0.27);">
+            <ui:TabView style="background-color: rgba(0, 0, 0, 0.27); flex-grow: 1; border-top-left-radius: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px; border-bottom-left-radius: 20px;">
+                <ui:Tab label="Marco histórico">
+                    <ui:ScrollView>
+                        <ui:Label text="Al-Andalus" class="subHeader" style="color: rgb(249, 249, 249);" />
+                    </ui:ScrollView>
+                </ui:Tab>
+                <ui:Tab label="Sociedad" />
+            </ui:TabView>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
