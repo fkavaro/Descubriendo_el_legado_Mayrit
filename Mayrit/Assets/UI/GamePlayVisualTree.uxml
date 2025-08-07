@@ -42,7 +42,7 @@
             <ui:Button name="PlayerButton" class="button" style="top: 1096px; left: 183px; border-top-left-radius: 50px; border-top-right-radius: 50px; border-bottom-right-radius: 50px; border-bottom-left-radius: 50px; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; border-left-color: rgb(47, 89, 57); border-right-color: rgb(47, 89, 57); border-top-color: rgb(47, 89, 57); border-bottom-color: rgb(47, 89, 57); background-image: url(&quot;project://database/Assets/UI/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=-1304905567622442630&amp;guid=2196264947afaa74a8b087d37850e618&amp;type=3#arrow-down@2x&quot;); background-color: rgba(113, 153, 113, 0); position: absolute; width: 80px; height: 80px; -unity-background-image-tint-color: rgb(132, 163, 255);" />
             <ui:Button text="| |" name="PauseButton" class="button smallButton" style="align-self: flex-start; top: 0; left: 0;" />
             <ui:Button text="?" name="HeritageButton" class="button smallButton" style="align-self: flex-start; top: auto; left: 0; bottom: 0;" />
-            <ui:Foldout text="Edificios" name="Foldout" style="right: auto; top: 134px; bottom: 0; flex-grow: 1; position: absolute; width: 224px; left: 0;">
+            <ui:Foldout text="Edificios" name="Foldout" style="right: auto; top: 134px; bottom: 0; flex-grow: 1; position: absolute; width: 224px; left: 0; display: none;">
                 <ui:Label text="Hisn" />
                 <ui:Label text="Mezquita aljama" />
             </ui:Foldout>

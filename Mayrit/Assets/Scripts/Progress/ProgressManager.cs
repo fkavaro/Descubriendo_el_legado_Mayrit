@@ -7,7 +7,13 @@ public class ProgressManager : Singleton<ProgressManager>
 {
     public enum Milestone
     {
+        Vision,
         Foundation,
+        Albacar,
+        Almudayna,
+        RamiroII,
+        Almanzor,
+        School,
         Conquest,
     }
 
