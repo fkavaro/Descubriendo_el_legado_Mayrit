@@ -19,7 +19,7 @@ public class PlayableCharacter : AAnimationController<PlayableCharacter>
     [Header("Movement Controller Properties")]
     public Transform _orientation;
     public float _walkSpeed = 6f;
-    public float _sprintSpeed = 12f;
+    public float _runSpeed = 12f;
     public float _rotationSpeed = 2f;
     public float _jumpForce = 2f;
     public float _gravityForce = 9f;

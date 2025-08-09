@@ -7,7 +7,8 @@ public class PlayerController
     readonly PlayableCharacter _player;
 
     float _verticalVelocity,
-        _movementSpeed;
+        _movementSpeed,
+        _rotationSpeed;
 
     bool _isRunPressed,
         _isJumpPressed,
@@ -44,31 +45,28 @@ public class PlayerController
 
         HandleAnimations();
         HandleMovement();
-        HandleRotation();
         HandleGravity();
+        HandleRotation();
         ApplyMovement();
     }
 
-    private void HandleAnimations()
+
+    #endregion
+
+    #region PRIVATE METHODS
+    void HandleAnimations()
     {
         if (_player._characterController.isGrounded)
         {
-            if (_isJumpPressed)
-            {
-                _player.ChangeAnimationTo(_player._preJumpAnim, 0f);
-                _isJumping = true;
-            }
             // Jumping
-            else if (_isJumping)
+            if (_isJumping)
             {
                 if (_player.IsAnimationFinished(_player._preJumpAnim))
                 {
-                    Debug.Log("Pre-jumped");
                     _player.ChangeAnimationTo(_player._jumpAnim, 0f);
                 }
                 else if (_player.IsAnimationFinished(_player._jumpAnim))
                 {
-                    Debug.Log("Jumped");
                     _player.ChangeAnimationTo(_player._afterJumpAnim, 0f);
                     _isJumping = false; // Reset jumping state after jump animation
                 }
@@ -76,33 +74,37 @@ public class PlayerController
             // Not jumping
             else
             {
-                if (_movementInput == Vector2.zero)
+                if (_isJumpPressed)
+                {
+                    _player.ChangeAnimationTo(_player._preJumpAnim, 0f);
+                    _isJumping = true;
+                }
+                else if (_movementInput == Vector2.zero)
                     _player.ChangeAnimationTo(_player._idleAnim);
                 else if (_isRunPressed)
                     _player.ChangeAnimationTo(_player._runAnim);
                 else
                     _player.ChangeAnimationTo(_player._walkAnim);
             }
-
         }
-
-        // TODO: add Falling animation
-        // else
-        //  if (_verticalVelocity < 0)
-        //     _player.ChangeAnimationTo(_player._fallAnim);
     }
-    #endregion
 
-    #region PRIVATE METHODS
     /// <summary>
     /// Handles player movement based on input and camera orientation.
     /// </summary>
     void HandleMovement()
     {
+        // Don't apply movement if jumping but still on ground (pre-jump animation)
+        if (_isJumping && _player._characterController.isGrounded)
+        {
+            _movementInput = Vector2.zero;
+            return;
+        }
+
         // Sprint key pressed
         if (_isRunPressed)
-            _movementSpeed = _player._sprintSpeed; // Move with sprint speed
-        // Not pressed
+            _movementSpeed = _player._runSpeed; // Move with sprint speed
+                                                // Not pressed
         else
             _movementSpeed = _player._walkSpeed; // Move with walk speed
 
@@ -112,6 +114,29 @@ public class PlayerController
 
         _forward.Normalize();
         _right.Normalize();
+    }
+
+    /// <summary>
+    /// Applies gravity to the player, handling jumping and falling
+    /// </summary>
+    void HandleGravity()
+    {
+        // Player on ground
+        if (_player._characterController.isGrounded)
+        {
+            // Pre-jump animation finished
+            if (_player.IsAnimationFinished(_player._preJumpAnim))
+                _verticalVelocity = _player._jumpForce; // Jump
+            // Not finished
+            else
+                _verticalVelocity = -1f; // Small gravity to keep grounded
+        }
+        // Not on ground
+        else
+        {
+            // Apply gravity to vertical velocity
+            _verticalVelocity -= _player._gravityForce * Time.deltaTime;
+        }
     }
 
     /// <summary>
@@ -129,30 +154,13 @@ public class PlayerController
 
             Vector3 inputDir = _orientation.forward * _movementInput.y + _orientation.right * _movementInput.x;
 
-            _player.transform.forward = Vector3.Slerp(_player.transform.forward, inputDir.normalized, Time.deltaTime * _player._rotationSpeed);
-        }
-    }
-
-    /// <summary>
-    /// Applies gravity to the player, handling jumping and falling
-    /// </summary>
-    void HandleGravity()
-    {
-        // Player on ground
-        if (_player._characterController.isGrounded)
-        {
-            // If jump key pressed
-            //if (_isJumpPressed)
-            if (_player.IsAnimationFinished(_player._preJumpAnim))
-                _verticalVelocity = _player._jumpForce; // Jump
-            // Not pressed
+            // Faster rotation if walking
+            if (!_isRunPressed)
+                _rotationSpeed = _player._rotationSpeed;
             else
-                _verticalVelocity = -1f; // Small gravity to keep grounded
-        } // Not on ground
-        else
-        {
-            // Apply gravity to vertical velocity
-            _verticalVelocity -= _player._gravityForce * Time.deltaTime;
+                _rotationSpeed = _player._rotationSpeed * 2f;
+
+            _player.transform.forward = Vector3.Slerp(_player.transform.forward, inputDir.normalized, Time.deltaTime * _rotationSpeed);
         }
     }
 

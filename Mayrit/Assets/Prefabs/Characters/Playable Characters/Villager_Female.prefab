@@ -85,7 +85,7 @@ MonoBehaviour:
   _characterInformation: {fileID: 11400000, guid: 02d8b6d6c658c17439b3b1fe3e23f6d5, type: 2}
   _orientation: {fileID: 3518169998641744890}
   _walkSpeed: 1
-  _sprintSpeed: 4
+  _runSpeed: 3
   _rotationSpeed: 4
   _jumpForce: 2
   _gravityForce: 9
