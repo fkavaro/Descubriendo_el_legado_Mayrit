@@ -1,79 +1,92 @@
+using System;
 using UnityEngine;
 
 public class PlayerController
 {
     #region PRIVATE PROPERTIES
-    readonly PlayableCharacter _playerManager;
+    readonly PlayableCharacter _player;
 
     float _verticalVelocity,
         _movementSpeed;
+
+    bool _isRunPressed,
+        _isJumpPressed;
 
     Vector3 _movement3D,
         _forward,
         _right;
 
-    Vector2 _movement2D;
+    Vector2 _movementInput;
 
     Transform _cameraTransform,
         _orientation;
     #endregion
 
     #region PUBLIC METHODS
-    public PlayerController(PlayableCharacter playerManager)
+    public PlayerController(PlayableCharacter player)
     {
-        _playerManager = playerManager;
+        _player = player;
     }
 
     public void Start()
     {
         _cameraTransform = Camera.main.transform;
-        _orientation = _playerManager._orientation;
+        _orientation = _player._orientation;
     }
 
     public void Update()
     {
         // Read input actions from GameManager
-        _movement2D = GameManager.Instance._inputActions.Player.Move.ReadValue<Vector2>();
+        _movementInput = GameManager.Instance._inputActions.Player.Move.ReadValue<Vector2>();
+        _isRunPressed = GameManager.Instance._inputActions.Player.Sprint.IsPressed();
+        _isJumpPressed = GameManager.Instance._inputActions.Player.Jump.IsPressed();
 
-        HandleGravity();
+        if (_player._characterController.isGrounded)
+        {
+            if (_isJumpPressed)
+                _player.ChangeAnimationTo(_player._preJumpAnim, 0f);
+            else if (_player.IsAnimationFinished(_player._preJumpAnim))
+            {
+                Debug.Log("Pre-jumped");
+                _player.ChangeAnimationTo(_player._jumpAnim, 0f);
+            }
+            else if (_player.IsAnimationFinished(_player._jumpAnim))
+            {
+                Debug.Log("Jumped");
+                _player.ChangeAnimationTo(_player._afterJumpAnim, 0f);
+            }
+            else if (_movementInput == Vector2.zero)
+                _player.ChangeAnimationTo(_player._idleAnim);
+            else if (_isRunPressed)
+                _player.ChangeAnimationTo(_player._runAnim);
+            else
+                _player.ChangeAnimationTo(_player._walkAnim);
+        }
+
         HandleMovement();
         HandleRotation();
+        HandleGravity();
+        ApplyMovement();
+
+        // // TODO: add Falling animation
+        // if (!_player._characterController.isGrounded &&
+        //      _verticalVelocity < 0)
+        //     _player.ChangeAnimationTo(_player._fallAnim);
     }
     #endregion
 
     #region PRIVATE METHODS
     /// <summary>
-    /// Calculates vertical velocity
-    /// </summary>
-    void HandleGravity()
-    {
-        // Player on ground
-        if (_playerManager._characterController.isGrounded)
-        {
-            // Jump key pressed
-            if (GameManager.Instance._inputActions.Player.Jump.IsPressed())
-                _verticalVelocity = _playerManager._jumpForce; // Jump
-            // Not pressed
-            else
-                _verticalVelocity = -1f; // Small gravity to keep grounded
-        } // Not on ground
-        else
-        {
-            // Apply gravity to vertical velocity
-            _verticalVelocity -= _playerManager._gravityForce * Time.deltaTime;
-        }
-    }
-
-    /// <summary>
-    /// Transforms 2D input into 3D movement, applying vertical velocity
+    /// Handles player movement based on input and camera orientation.
     /// </summary>
     void HandleMovement()
     {
         // Sprint key pressed
-        if (GameManager.Instance._inputActions.Player.Sprint.IsPressed())
-            _movementSpeed = _playerManager._sprintSpeed; // Move with sprint speed
+        if (_isRunPressed)
+            _movementSpeed = _player._sprintSpeed; // Move with sprint speed
+        // Not pressed
         else
-            _movementSpeed = _playerManager._walkSpeed; // Move with walk speed
+            _movementSpeed = _player._walkSpeed; // Move with walk speed
 
         // Get direction in 3D space based on camera orientation
         _forward = _cameraTransform.forward;
@@ -81,9 +94,57 @@ public class PlayerController
 
         _forward.Normalize();
         _right.Normalize();
+    }
 
+    /// <summary>
+    /// Rotates the player towards the movement direction based on camera orientation
+    /// </summary>
+    void HandleRotation()
+    {
+        // If there is any movement
+        // To maintain rotation when stopping
+        if (_movementInput != Vector2.zero)
+        {
+            // Rotate orientation
+            Vector3 viewDir = _player.transform.position - new Vector3(_cameraTransform.position.x, _player.transform.position.y, _cameraTransform.position.z);
+            _orientation.forward = viewDir.normalized;
+
+            Vector3 inputDir = _orientation.forward * _movementInput.y + _orientation.right * _movementInput.x;
+
+            _player.transform.forward = Vector3.Slerp(_player.transform.forward, inputDir.normalized, Time.deltaTime * _player._rotationSpeed);
+        }
+    }
+
+    /// <summary>
+    /// Applies gravity to the player, handling jumping and falling
+    /// </summary>
+    void HandleGravity()
+    {
+        // Player on ground
+        if (_player._characterController.isGrounded)
+        {
+            // If jump key pressed
+            //if (_isJumpPressed)
+            if (_player.IsAnimationFinished(_player._preJumpAnim))
+                _verticalVelocity = _player._jumpForce; // Jump
+            // Not pressed
+            else
+                _verticalVelocity = -1f; // Small gravity to keep grounded
+        } // Not on ground
+        else
+        {
+            // Apply gravity to vertical velocity
+            _verticalVelocity -= _player._gravityForce * Time.deltaTime;
+        }
+    }
+
+    /// <summary>
+    /// Applies movement to the player combining horizontal and vertical input.
+    /// </summary>
+    void ApplyMovement()
+    {
         // Movement vector from 2D to 3D from camera view
-        _movement3D = _right * _movement2D.x + _forward * _movement2D.y;
+        _movement3D = _right * _movementInput.x + _forward * _movementInput.y;
 
         // Apply forces to movement vector
         _movement3D = new(_movement3D.x * _movementSpeed, // Apply movement speed
@@ -91,26 +152,7 @@ public class PlayerController
                          _movement3D.z * _movementSpeed); // Apply movement speed
 
         // Moves controller in the movement vector
-        _playerManager._characterController.Move(Time.deltaTime * _movement3D);
-    }
-
-    /// <summary>
-    /// Rotates player to face movement
-    /// </summary>
-    void HandleRotation()
-    {
-        // If there is any movement
-        // To maintain rotation when stopping
-        if (_movement2D != Vector2.zero)
-        {
-            // Rotate orientation
-            Vector3 viewDir = _playerManager.transform.position - new Vector3(_cameraTransform.position.x, _playerManager.transform.position.y, _cameraTransform.position.z);
-            _orientation.forward = viewDir.normalized;
-
-            Vector3 inputDir = _orientation.forward * _movement2D.y + _orientation.right * _movement2D.x;
-
-            _playerManager.transform.forward = Vector3.Slerp(_playerManager.transform.forward, inputDir.normalized, Time.deltaTime * _playerManager._rotationSpeed);
-        }
+        _player._characterController.Move(Time.deltaTime * _movement3D);
     }
     #endregion
 }

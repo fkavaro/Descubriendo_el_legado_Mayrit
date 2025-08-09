@@ -84,10 +84,10 @@ MonoBehaviour:
   _characterController: {fileID: 0}
   _characterInformation: {fileID: 11400000, guid: 02d8b6d6c658c17439b3b1fe3e23f6d5, type: 2}
   _orientation: {fileID: 3518169998641744890}
-  _walkSpeed: 4
-  _sprintSpeed: 10
-  _rotationSpeed: 2
-  _jumpForce: 5
+  _walkSpeed: 1
+  _sprintSpeed: 4
+  _rotationSpeed: 4
+  _jumpForce: 2
   _gravityForce: 9
 --- !u!143 &5391638514220604821
 CharacterController:

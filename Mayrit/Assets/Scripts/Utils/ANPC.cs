@@ -101,7 +101,7 @@ where TController : ABehaviourController<TController>
         _agent.SetDestination(destinationPos);
 
         if (HasArrivedAtDestination()) return;
-        else ChangeAnimationTo(walkAnim);
+        else ChangeAnimationTo(_walkAnim);
     }
 
     public bool DestinationSpotIsOccupied()

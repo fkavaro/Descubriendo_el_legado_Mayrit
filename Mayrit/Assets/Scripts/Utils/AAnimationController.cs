@@ -14,18 +14,16 @@ where TController : ABehaviourController<TController>
     protected int _currentAnimation, _lastAnimation;
 
     #region COMMON ANIMATIONS
-    readonly public int idleAnim = Animator.StringToHash("Idle"),
-        walkAnim = Animator.StringToHash("Walk"),
-        runAnim = Animator.StringToHash("Run"),
-        jumpAnim = Animator.StringToHash("Jump");
+    readonly public int _idleAnim = Animator.StringToHash("Idle")
+        , _walkAnim = Animator.StringToHash("Walk")
+        , _runAnim = Animator.StringToHash("Run")
+        , _preJumpAnim = Animator.StringToHash("PreJump")
+        , _jumpAnim = Animator.StringToHash("Jump")
+        , _afterJumpAnim = Animator.StringToHash("AfterJump")
+        ;
     #endregion
-    // Specific animations must be defined in derived classes
 
     #region INHERITED METHODS
-    protected override void OnAwake()
-    {
-        _animator = GetComponent<Animator>();
-    }
     #endregion
 
     #region PUBLIC METHODS
@@ -54,9 +52,9 @@ where TController : ABehaviourController<TController>
     }
 
     /// <returns> True if the current animation is finished, false otherwise.</returns>
-    public virtual bool IsAnimationFinished()
+    public virtual bool IsCurrentAnimationFinished()
     {
-        // Check if the current animation is finished
+        // Get current animation state info
         AnimatorStateInfo currentStateInfo = _animator.GetCurrentAnimatorStateInfo(0);
 
         // If the animation is looping, it's never 'finished'
@@ -68,6 +66,18 @@ where TController : ABehaviourController<TController>
 
         // For non-looping animations, check if normalizedTime >= 1
         return currentStateInfo.normalizedTime >= 1f;
+    }
+
+    public bool IsAnimationFinished(int animation)
+    {
+        // Get current animation state info
+        AnimatorStateInfo currentStateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+
+        // Given animation is the current one
+        if (currentStateInfo.shortNameHash == animation)
+            return IsCurrentAnimationFinished();
+        else
+            return false;
     }
 
     public void PlayAnimationCertainTime(float waitTime, int animation, string animationName, Action onComplete = null, bool showtext = true)

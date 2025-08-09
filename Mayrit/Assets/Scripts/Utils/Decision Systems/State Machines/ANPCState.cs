@@ -42,7 +42,7 @@ public abstract class ANPCState<TController, TStateMachine> : AState<TController
         if (animation != -1)
             _controller.ChangeAnimationTo(animation);
 
-        if (_controller.IsAnimationFinished())
+        if (_controller.IsCurrentAnimationFinished())
             SwitchState(nextState);
     }
 }

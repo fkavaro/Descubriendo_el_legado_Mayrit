@@ -14,7 +14,7 @@ public class PlayerHUD_UIState : AUIState
     #region PRIVATE PROPERTIES
     //Label _tooltip, _contextualPanelName, _contextualPanelDescription;
     Button _pauseButton, _playerButton;
-    VisualElement _eventArea;
+    VisualElement _activityArea;
     #endregion
 
     #region INHERITED
@@ -26,16 +26,14 @@ public class PlayerHUD_UIState : AUIState
         _UIDocument = UIManager.Instance._UIDocument;
         _pauseButton = _UIDocument.rootVisualElement.Q<Button>("PauseButton");
         _playerButton = _UIDocument.rootVisualElement.Q<Button>("PlayerButton");
-        _eventArea = _UIDocument.rootVisualElement.Q<VisualElement>("EventArea");
-        // Event name
-        // Event date 
+        _activityArea = _UIDocument.rootVisualElement.Q<VisualElement>("ActivityArea");
 
         _screen = _UIDocument.rootVisualElement.Q<VisualElement>("PlayerHUD");
 
         if (_pauseButton == null)
             Debug.LogWarning("_pauseButton not found");
-        if (_eventArea == null)
-            Debug.LogWarning("_eventArea not found");
+        if (_activityArea == null)
+            Debug.LogWarning("_activityArea not found");
         if (_playerButton == null)
             Debug.LogWarning("_playerButton button not found");
 
