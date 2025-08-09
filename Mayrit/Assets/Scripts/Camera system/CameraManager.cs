@@ -19,7 +19,7 @@ public class CameraManager : Singleton<CameraManager>
 
     [Header("Spectator camera")]
     public CinemachineCamera _spectatorCamera;
-    public int _spectatorTargetHeight = 120;
+    //public int _spectatorTargetHeight = 120;
 
     [Space]
     [Tooltip("Wether to move camera at screen margins or not.")]
@@ -32,8 +32,14 @@ public class CameraManager : Singleton<CameraManager>
     public float _acceleration = 200f;
     public float _deceleration = 250f;
     public float _printSpeedMultiplier = 2f;
-    [Tooltip("Maximum allowed X, Y, Z positions (positive and negative) for the camera.")]
-    public Vector3 _movementLimits = new(800, 0, 800);
+
+    [Space]
+    [Tooltip("Camera limits in X axis (min, max)")]
+    public Vector2 _movementLimitsX = new(-1000, 700);
+    [Tooltip("Camera limits in Y axis (min: at which target will be positioned, max: max distance from target)")]
+    public Vector2 _movementLimitsY = new(120, 400);
+    [Tooltip("Camera limits in Z axis (min, max)")]
+    public Vector2 _movementLimitsZ = new(-800, 800);
 
     [Space]
     [Tooltip("Mouse sensitivity for camera rotation.")]
@@ -75,16 +81,20 @@ public class CameraManager : Singleton<CameraManager>
 
         _cameraController = new(_spectatorCamera, _moveSpeedZoomCurve);
         _selectorCamera = new(_selectableLayer);
+
+        // Set camera max height
+        CinemachineOrbitalFollow _orbitalFollow = _spectatorCamera.GetComponent<CinemachineOrbitalFollow>();
+        _orbitalFollow.Radius = _movementLimitsY.y;
     }
 
     protected override void OnStart()
     {
-        if (_spectatorCamera.LookAt.position.y != _spectatorTargetHeight)
+        if (_spectatorCamera.LookAt.position.y != _movementLimitsY.x)
         {
             // Fix spectator target height
             _spectatorCamera.LookAt.position = new(
                 _spectatorCamera.LookAt.position.x,
-                _spectatorTargetHeight,
+                _movementLimitsY.x,
                 _spectatorCamera.LookAt.position.z);
         }
     }
@@ -128,7 +138,7 @@ public class CameraManager : Singleton<CameraManager>
         // Fix to position height
         Vector3 fixedTargetPos = new(
             _spectatorCamera.LookAt.position.x,
-            _spectatorTargetHeight, // At spectator height
+            _movementLimitsY.x, // At spectator height
             _spectatorCamera.LookAt.position.z
         );
 

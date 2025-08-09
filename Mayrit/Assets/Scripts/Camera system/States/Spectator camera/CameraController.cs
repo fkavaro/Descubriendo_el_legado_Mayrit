@@ -25,7 +25,8 @@ public class CameraController
         _acceleration,
         _deceleration,
         _printSpeedMultiplier = 2f;
-    public Vector3 _movementLimits;
+    public Vector3 _movementLimitsX
+        , _movementLimitsZ;
 
     // Orbit
     public float _orbitSensitivity,
@@ -81,7 +82,8 @@ public class CameraController
         _acceleration = CameraManager.Instance._acceleration;
         _deceleration = CameraManager.Instance._deceleration;
         _printSpeedMultiplier = CameraManager.Instance._printSpeedMultiplier;
-        _movementLimits = CameraManager.Instance._movementLimits;
+        _movementLimitsX = CameraManager.Instance._movementLimitsX;
+        _movementLimitsZ = CameraManager.Instance._movementLimitsZ;
         _orbitSensitivity = CameraManager.Instance._orbitSensitivity;
         _orbitSmoothing = CameraManager.Instance._orbitSmoothing;
         _zoomSpeed = CameraManager.Instance._zoomSpeed;
@@ -217,9 +219,8 @@ public class CameraController
     void ClampPosition()
     {
         Vector3 targetPos = _cameraTarget.position;
-        targetPos.x = Mathf.Clamp(targetPos.x, -_movementLimits.x, _movementLimits.x);
-        //pos.y = Mathf.Clamp(pos.y, minHeightLimit, movementLimits.y);
-        targetPos.z = Mathf.Clamp(targetPos.z, -_movementLimits.z, _movementLimits.z);
+        targetPos.x = Mathf.Clamp(targetPos.x, _movementLimitsX.x, _movementLimitsX.y);
+        targetPos.z = Mathf.Clamp(targetPos.z, _movementLimitsZ.x, _movementLimitsZ.y);
         _cameraTarget.position = targetPos;
     }
     #endregion
