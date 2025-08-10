@@ -10,7 +10,8 @@ public class SpectatorHUD_UIState : AUIState
 
     #region PRIVATE PROPERTIES
     Label _tooltip,
-        _contextualPanelName,
+        _contextualPanelHeader,
+        _contextualPanelSubHeader,
         _contextualPanelDescription,
         _milestoneName,
         _milestoneDate,
@@ -24,7 +25,8 @@ public class SpectatorHUD_UIState : AUIState
         _playCharacterButton;
     VisualElement _contextualPanel,
         _milestoneArea,
-        _contextualPanelImage;
+        _contextualPanelImage,
+        _contextualPanelIcon;
     Vector2 _cursorScreenPos;
     #endregion
 
@@ -47,9 +49,11 @@ public class SpectatorHUD_UIState : AUIState
         _nextMilestoneButton = _milestoneArea.Q<Button>("NextMilestoneButton");
         _previousMilestoneButton = _milestoneArea.Q<Button>("PreviousMilestoneButton");
         _contextualPanel = _screen.Q<VisualElement>("ContextualPanel");
-        _contextualPanelName = _contextualPanel.Q<Label>("Name");
+        _contextualPanelHeader = _contextualPanel.Q<Label>("Header");
+        _contextualPanelSubHeader = _contextualPanel.Q<Label>("SubHeader");
         _contextualPanelDescription = _contextualPanel.Q<Label>("Description");
         _closeContextualPanelButton = _contextualPanel.Q<Button>("CloseButton");
+        _contextualPanelIcon = _contextualPanel.Q<VisualElement>("Icon");
         _contextualPanelImage = _contextualPanel.Q<VisualElement>("Image");
         _contextualPanelCaption = _contextualPanel.Q<Label>("Caption");
         _playCharacterButton = _contextualPanel.Q<Button>("PlayCharacterButton");
@@ -60,8 +64,10 @@ public class SpectatorHUD_UIState : AUIState
             Debug.LogWarning("_pauseButton not found");
         if (_contextualPanel == null)
             Debug.LogWarning("_contextualPanel not found");
-        if (_contextualPanelName == null)
-            Debug.LogWarning("_contextualPanelName not found");
+        if (_contextualPanelHeader == null)
+            Debug.LogWarning("_contextualPanelHeader not found");
+        if (_contextualPanelSubHeader == null)
+            Debug.LogWarning("_contextualPanelSubHeader not found");
         if (_contextualPanelDescription == null)
             Debug.LogWarning("_contextualPanelDescription not found");
         if (_closeContextualPanelButton == null)
@@ -69,17 +75,19 @@ public class SpectatorHUD_UIState : AUIState
         if (_milestoneInfoButton == null)
             Debug.LogWarning("_eventInfoButton button not found");
         if (_milestoneArea == null)
-            Debug.LogWarning("_milestoneArea button not found");
+            Debug.LogWarning("_milestoneArea not found");
         if (_playerButton == null)
             Debug.LogWarning("_playerButton button not found");
         if (_milestoneName == null)
-            Debug.LogWarning("_milestoneName button not found");
+            Debug.LogWarning("_milestoneName not found");
         if (_milestoneDate == null)
-            Debug.LogWarning("_milestoneDate button not found");
+            Debug.LogWarning("_milestoneDate not found");
         if (_contextualPanelImage == null)
-            Debug.LogWarning("_contextualPanelImage button not found");
+            Debug.LogWarning("_contextualPanelImage not found");
+        if (_contextualPanelIcon == null)
+            Debug.LogWarning("_contextualPanelIcon not found");
         if (_contextualPanelCaption == null)
-            Debug.LogWarning("_contextualPanelCaption button not found");
+            Debug.LogWarning("_contextualPanelCaption not found");
         if (_nextMilestoneButton == null)
             Debug.LogWarning("_nextMilestoneButton button not found");
         if (_previousMilestoneButton == null)
@@ -158,7 +166,7 @@ public class SpectatorHUD_UIState : AUIState
         _milestoneArea.style.display = DisplayStyle.None;
 
         // Overwrite panel information
-        _contextualPanelName.text = objectInfo._information.Name;
+        _contextualPanelHeader.text = objectInfo._information.Name;
         _contextualPanelDescription.text = objectInfo._information.Description;
 
         // There is an image
@@ -179,7 +187,7 @@ public class SpectatorHUD_UIState : AUIState
         _milestoneArea.style.display = DisplayStyle.None;
 
         // Overwrite panel information
-        _contextualPanelName.text = characterInfo.Name;
+        _contextualPanelHeader.text = characterInfo.Name;
         _contextualPanelDescription.text = characterInfo.Description;
 
         // There is an image
@@ -300,7 +308,7 @@ public class SpectatorHUD_UIState : AUIState
         AProgressState currentProgressState = (AProgressState)ProgressManager.Instance._fsm.CurrentState;
 
         // Overwrite panel information
-        _contextualPanelName.text = currentProgressState._informationSO.Name;
+        _contextualPanelHeader.text = currentProgressState._informationSO.Name;
         _contextualPanelDescription.text = currentProgressState._informationSO.Description;
         // Show panel
         _contextualPanel.style.display = DisplayStyle.Flex;

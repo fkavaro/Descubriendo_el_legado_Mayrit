@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4c9f5e06d2e4eb459595789b9780e81, type: 3}
   m_Name: 6_Almanzor_MilestoneInformationSO
   m_EditorClassIdentifier: 
-  _name: "Reuni\xF3n de Almanzor con Galib"
+  _name: "Reuni\xF3n de Almanzor"
   _date: 977
   _description: 

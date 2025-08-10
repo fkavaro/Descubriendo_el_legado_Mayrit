@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4c9f5e06d2e4eb459595789b9780e81, type: 3}
   m_Name: 7_School_MilestoneInformationSO
   m_EditorClassIdentifier: 
-  _name: Escuela de Maslama al-Mayriti
+  _name: Nueva escuela
   _date: 1004
   _description: 
