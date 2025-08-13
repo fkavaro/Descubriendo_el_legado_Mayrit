@@ -10,24 +10,35 @@ public class TimeManager : MonoBehaviour
     [Header("Time Settings")]
     [Tooltip("Current time in hours since the start of the game")]
     [Range(0f, 24f)]
-    public float _currentTime = 8f; // Default starting time at 8 AM
+    public float _currentTime = 8f;
 
     [Tooltip("Time speed multiplier for the game")]
-    public float _timeSpeed = 1f; // Speed at which time passes
+    public float _timeSpeed = 1f;
 
     [Tooltip("Whether current time is between 6 and 18 hours or not")]
     public bool _isDayTime = true;
 
     public float _normalisedTime;
 
-    [Header("Light Settings")]
-    [Tooltip("Sun light source")]
-    public Light _sunLight;
+    [Header("Sun Light Settings")]
+    public Light _sunSource;
     public float _sunAngle;
-    public float _sunPosition = 90f;
+    [Range(0f, 90f)]
+    public float _sunLatitude = 20f;
+    [Range(-180f, 180f)]
+    public float _sunLongitude = -90;
     public float _sunMaxIntensity;
     public AnimationCurve _sunIntensityCurve;
     public AnimationCurve _sunTemperatureCurve;
+
+    [Header("Moon Light Settings")]
+    public Light _moonSource;
+    [Range(0f, 90f)]
+    public float _moonLatitude = 40f;
+    [Range(-180f, 180f)]
+    public float _moonLongitude = 90;
+    public float _moonMaxIntensity;
+    public AnimationCurve _moonIntensityCurve;
     #endregion
 
     #region PRIVATE PROPERTIES
@@ -46,14 +57,14 @@ public class TimeManager : MonoBehaviour
     {
         UpdateTimeOfDay();
         UpdateLighting();
-        CheckShadows();
+        CheckActiveLightSource();
     }
 
     // Called when the script is loaded or a value is changed in the inspector
     void OnValidate()
     {
         UpdateLighting();
-        CheckShadows();
+        CheckActiveLightSource();
     }
     #endregion
 
@@ -77,36 +88,64 @@ public class TimeManager : MonoBehaviour
         _sunAngle = _currentTime / 24f * 360f; // Calculate sun angle based on current time
 
         // Rotate sun light source
-        _sunLight.transform.rotation = Quaternion.Euler(_sunAngle - 90f, _sunPosition, 0f); // -90 so that its down at midnight
+        //_sunSource.transform.rotation = Quaternion.Euler(_sunAngle - 90f, _sunPosition, 0f); // -90 so that its down at midnight
+        _sunSource.transform.localRotation = Quaternion.Euler(_sunLatitude - 90, _sunLongitude, 0) * Quaternion.Euler(0, _sunAngle, 0);
+
+        // Rotate moon light source (contrary to the sun)
+        //_moonSource.transform.rotation = Quaternion.Euler(_sunAngle + 90f, _sunPosition, 0f); // +90 so that its up at midnight
+        _moonSource.transform.localRotation = Quaternion.Euler(90 - _moonLatitude, _moonLongitude, 0) * Quaternion.Euler(0, _sunAngle, 0);
 
         // Normalise current time to a value between 0 and 1
         _normalisedTime = _currentTime / 24f;
 
         // Set the intensity of the sun light based on the evaluated curve
-        _sunLight.intensity = _sunMaxIntensity * _sunIntensityCurve.Evaluate(_normalisedTime);
+        _sunSource.intensity = _sunMaxIntensity * _sunIntensityCurve.Evaluate(_normalisedTime);
         // Set the color temperature of the sun light based on the evaluated curve
-        _sunLight.colorTemperature = 10000f * _sunTemperatureCurve.Evaluate(_normalisedTime); // In kelvin units
+        _sunSource.colorTemperature = 10000f * _sunTemperatureCurve.Evaluate(_normalisedTime); // In kelvin units
+
+        // Set the intensity of the moon light based on the evaluated curve
+        _moonSource.intensity = _moonMaxIntensity * _moonIntensityCurve.Evaluate(_normalisedTime);
     }
 
-    void CheckShadows()
+    void CheckActiveLightSource()
     {
         // During day time
         if (_currentTime >= 6f && _currentTime < 18f) // Between 6 AM and 6 PM
         {
             _isDayTime = true;
 
-            // Check if shadows are disabled and enable them
-            if (_sunLight.shadows == LightShadows.None)
-                _sunLight.shadows = LightShadows.Hard; // Enable shadows
+            // Enable sun shadows if not enabled
+            if (_sunSource.shadows == LightShadows.None)
+                _sunSource.shadows = LightShadows.Hard;
+
+            // Disable moon shadows if enabled
+            if (_moonSource.shadows != LightShadows.None)
+                _moonSource.shadows = LightShadows.None;
         }
         else // During night time
         {
             _isDayTime = false;
 
-            // Check if shadows are enabled and disable them
-            if (_sunLight.shadows != LightShadows.None)
-                _sunLight.shadows = LightShadows.None; // Disable shadows
+            // Disable sun shadows if enabled
+            if (_sunSource.shadows != LightShadows.None)
+                _sunSource.shadows = LightShadows.None;
+
+            // Enable moon shadows if not enabled
+            if (_moonSource.shadows == LightShadows.None)
+                _moonSource.shadows = LightShadows.Soft;
         }
+
+        // Roughly during day time
+        if (_currentTime >= 5f && _currentTime < 19f)
+            _sunSource.gameObject.SetActive(true); // Enable sun
+        else // Roughly during night time
+            _sunSource.gameObject.SetActive(false); // Disable sun
+
+        // Roughly during day time
+        if (_currentTime >= 6f && _currentTime < 17f)
+            _moonSource.gameObject.SetActive(false); // Disable moon
+        else // Roughly during night time
+            _moonSource.gameObject.SetActive(true); // Enable moon
     }
     #endregion
 }
