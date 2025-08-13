@@ -1,5 +1,4 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:Template name="TextBox" src="project://database/Assets/UI/Toolkit/TextBox.uxml?fileID=9197481963319205126&amp;guid=b65642759a594494bab66f03c51c4176&amp;type=3#TextBox" />
     <Style src="project://database/Assets/UI/Toolkit/MayritStyle.uss?fileID=7433441132597879392&amp;guid=7a6c8e791557401438e2762dac509247&amp;type=3#MayritStyle" />
     <ui:VisualElement name="GamePlayScreen" style="flex-grow: 1;">
         <ui:VisualElement name="HUD" style="margin-top: 30px; margin-right: 30px; margin-bottom: 30px; margin-left: 30px; position: absolute; top: 0; left: 0; bottom: 0; right: 0;">
@@ -56,109 +55,57 @@
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="PauseMenu" enabled="true" style="display: none; background-color: rgb(39, 39, 39); position: absolute; top: 0; left: 0; bottom: 0; right: 0;">
+        <ui:VisualElement name="PauseMenu" enabled="true" style="display: none; position: absolute; top: 0; left: 0; bottom: 0; right: 0; flex-direction: row; justify-content: space-between; margin-top: 30px; margin-right: 30px; margin-bottom: 30px; margin-left: 30px;">
+            <ui:Button text="&gt;" name="PlayButton" class="button smallButton" style="align-self: flex-start; top: 0; left: 0; background-image: url(&quot;project://database/Assets/UI/Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=-1087164816274819069&amp;guid=2196264947afaa74a8b087d37850e618&amp;type=3#arrow-right@2x&quot;); position: relative;" />
+            <ui:VisualElement style="flex-direction: row;">
+                <ui:Button text="Ajustes" name="SettingsButton" class="button mediumButton" style="align-self: flex-start; position: relative;" />
+                <ui:Button text="Inicio" name="MainMenuButton" class="button mediumButton" style="align-self: flex-start; position: relative;" />
+                <ui:Button text="Salir" name="QuitButton" class="button mediumButton" style="align-self: flex-start; position: relative;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="HeritageMenu" enabled="true" style="display: none; background-color: rgb(39, 39, 39); position: absolute; top: 0; left: 0; bottom: 0; right: 0;">
             <ui:VisualElement name="Margin" style="flex-grow: 1; margin-top: 30px; margin-right: 30px; margin-bottom: 30px; margin-left: 30px;">
                 <ui:VisualElement name="UpperArea" style="flex-direction: row; justify-content: space-between;">
                     <ui:Button text="&gt;" name="PlayButton" class="button smallButton" style="align-self: flex-start; top: 0; left: 0; background-image: url(&quot;project://database/Assets/UI/Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=-1087164816274819069&amp;guid=2196264947afaa74a8b087d37850e618&amp;type=3#arrow-right@2x&quot;); position: relative;" />
                     <ui:Label text="Menú de Información" class="header" style="flex-shrink: 1; flex-grow: 1; -unity-text-align: middle-center;" />
-                    <ui:VisualElement style="flex-direction: row;">
-                        <ui:Button text="Ajustes" name="SettingsButton" class="button mediumButton" style="align-self: flex-start; position: relative;" />
-                        <ui:Button text="Inicio" name="MainMenuButton" class="button mediumButton" style="align-self: flex-start; position: relative;" />
-                        <ui:Button text="Salir" name="QuitButton" class="button mediumButton" style="align-self: flex-start; position: relative;" />
-                    </ui:VisualElement>
+                    <ui:VisualElement style="position: relative; flex-shrink: 0; margin-top: 15px; margin-right: 15px; margin-bottom: 15px; margin-left: 15px; width: 80px; height: 80px;" />
                 </ui:VisualElement>
                 <ui:VisualElement name="InfoPanel" style="margin-top: 15px; margin-right: 15px; margin-bottom: 15px; margin-left: 15px; flex-grow: 1; background-color: rgb(16, 16, 16); border-top-left-radius: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px; border-bottom-left-radius: 20px; padding-top: 15px; padding-right: 15px; padding-bottom: 15px; padding-left: 15px;">
                     <ui:TabView style="flex-grow: 1;">
                         <ui:Tab label="Marco histórico" name="History">
                             <ui:ScrollView>
-                                <ui:Instance template="TextBox" name="TextBox" />
-                                <ui:Instance template="TextBox" name="TextBox">
-                                    <AttributeOverrides element-name="Subheader" text="Reinos cristianos" />
-                                </ui:Instance>
-                                <ui:Instance template="TextBox" name="TextBox">
-                                    <AttributeOverrides element-name="Subheader" text="Importancia Estratégica" />
-                                </ui:Instance>
-                                <ui:Instance template="TextBox" name="TextBox">
-                                    <AttributeOverrides element-name="Subheader" text="Características Geográficas" />
-                                </ui:Instance>
+                                <ui:VisualElement name="Al-Andalus" style="flex-grow: 1;">
+                                    <ui:Label text="Al-Andalus" class="subHeader" />
+                                    <ui:Label text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.&#10;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.&#10;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." class="text" style="flex-wrap: wrap; color: rgb(255, 255, 255); font-size: 20px;" />
+                                </ui:VisualElement>
+                                <ui:VisualElement name="ChristianKingdoms" style="flex-grow: 1;">
+                                    <ui:Label text="Reinos Cristianos" class="subHeader" />
+                                    <ui:Label text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.&#10;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.&#10;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." class="text" style="flex-wrap: wrap; color: rgb(255, 255, 255); font-size: 20px;" />
+                                </ui:VisualElement>
+                                <ui:VisualElement name="StrategicValue" style="flex-grow: 1;">
+                                    <ui:Label text="Importancia Estratégica" class="subHeader" />
+                                    <ui:Label text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.&#10;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.&#10;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." class="text" style="flex-wrap: wrap; color: rgb(255, 255, 255); font-size: 20px;" />
+                                </ui:VisualElement>
+                                <ui:VisualElement name="Geography" style="flex-grow: 1;">
+                                    <ui:Label text="Características Geográficas" name="Label" class="subHeader" />
+                                    <ui:Label text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.&#10;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.&#10;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." class="text" style="flex-wrap: wrap; color: rgb(255, 255, 255); font-size: 20px;" />
+                                </ui:VisualElement>
                             </ui:ScrollView>
                         </ui:Tab>
                         <ui:Tab label="Sociedad" name="Society">
-                            <ui:ScrollView>
-                                <ui:Instance template="TextBox" name="TextBox">
-                                    <AttributeOverrides element-name="Subheader" text="Vida Cotidiana" />
-                                </ui:Instance>
-                                <ui:Instance template="TextBox" name="TextBox">
-                                    <AttributeOverrides element-name="Subheader" text="Estructura social" />
-                                </ui:Instance>
-                                <ui:Instance template="TextBox" name="TextBox">
-                                    <AttributeOverrides element-name="Subheader" text="Economía y Comercio" />
-                                </ui:Instance>
-                                <ui:Instance template="TextBox" name="TextBox">
-                                    <AttributeOverrides element-name="Subheader" text="Religión" />
-                                </ui:Instance>
-                                <ui:Instance template="TextBox" name="TextBox">
-                                    <AttributeOverrides element-name="Subheader" text="Moda" />
-                                </ui:Instance>
-                                <ui:Instance template="TextBox" name="TextBox">
-                                    <AttributeOverrides element-name="Subheader" text="Concepto de Belleza" />
-                                </ui:Instance>
-                                <ui:Instance template="TextBox" name="TextBox">
-                                    <AttributeOverrides element-name="Subheader" text="Dieta" />
-                                </ui:Instance>
-                            </ui:ScrollView>
+                            <ui:ScrollView />
                         </ui:Tab>
                         <ui:Tab label="Patrimonio Material" name="MaterialHeritage">
-                            <ui:ScrollView>
-                                <ui:Instance template="TextBox" name="TextBox">
-                                    <AttributeOverrides element-name="Subheader" text="Arquitectura" />
-                                </ui:Instance>
-                                <ui:Instance template="TextBox" name="TextBox">
-                                    <AttributeOverrides element-name="Subheader" text="Urbanismo" />
-                                </ui:Instance>
-                                <ui:Instance template="TextBox" name="TextBox">
-                                    <AttributeOverrides element-name="Subheader" text="Arqueología" />
-                                </ui:Instance>
-                            </ui:ScrollView>
+                            <ui:ScrollView />
                         </ui:Tab>
                         <ui:Tab label="Patrimonio inmaterial" name="InmaterialHeritage">
-                            <ui:ScrollView>
-                                <ui:Instance template="TextBox" name="TextBox">
-                                    <AttributeOverrides element-name="Subheader" text="Etimología" />
-                                </ui:Instance>
-                                <ui:Instance template="TextBox" name="TextBox">
-                                    <AttributeOverrides element-name="Subheader" text="Insignia y Blasón" />
-                                </ui:Instance>
-                            </ui:ScrollView>
+                            <ui:ScrollView />
                         </ui:Tab>
                         <ui:Tab label="Leyendas y Mitos" name="Myths">
-                            <ui:ScrollView>
-                                <ui:Instance template="TextBox" name="TextBox">
-                                    <AttributeOverrides element-name="Subheader" text="Virgen de la Almudena" />
-                                </ui:Instance>
-                                <ui:Instance template="TextBox" name="TextBox">
-                                    <AttributeOverrides element-name="Subheader" text="San Isidro" />
-                                </ui:Instance>
-                                <ui:Instance template="TextBox" name="TextBox">
-                                    <AttributeOverrides element-name="Subheader" text="El Gato" />
-                                </ui:Instance>
-                            </ui:ScrollView>
+                            <ui:ScrollView />
                         </ui:Tab>
                         <ui:Tab label="Citaciones" name="Citations">
-                            <ui:ScrollView>
-                                <ui:Instance template="TextBox" name="TextBox">
-                                    <AttributeOverrides element-name="Subheader" text="Ahmed ibn Muhámmad al/Razi, en su Historia de los Emires de Al-Ándalus (Akhbar muluk al-Ándalus). Siglo X." />
-                                    <AttributeOverrides element-name="Text" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." />
-                                </ui:Instance>
-                                <ui:Instance template="TextBox" name="TextBox">
-                                    <AttributeOverrides element-name="Subheader" text="Ibn Hayyan, en su Libro de la Historia Real de Al-Andalus (Kitab al-Muqtabis fi Tarikh al-Andalus). Siglo XI." />
-                                    <AttributeOverrides element-name="Text" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." />
-                                </ui:Instance>
-                                <ui:Instance template="TextBox" name="TextBox">
-                                    <AttributeOverrides element-name="Subheader" text="Al Idrisi, en su Libro de Los Viajes Placenteros por Tierras Lejanas (Nuzhat al-Mustaq). Siglo XII.&#10;" />
-                                    <AttributeOverrides element-name="Text" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." />
-                                </ui:Instance>
-                            </ui:ScrollView>
+                            <ui:ScrollView />
                         </ui:Tab>
                     </ui:TabView>
                 </ui:VisualElement>

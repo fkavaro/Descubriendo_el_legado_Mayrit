@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.InputSystem;
 
 public class PauseMenu_UIState : AUIState
 {
@@ -14,10 +11,11 @@ public class PauseMenu_UIState : AUIState
     Button _playButton, _mainMenuButton, _quitButton;
     #endregion
 
-    #region INHERITED
+    // Constructor
     public PauseMenu_UIState(StackFiniteStateMachine<UIManager> stateMachine)
     : base("PauseMenu", stateMachine) { }
 
+    #region INHERITED
     public override void AwakeState()
     {
         _UIDocument = UIManager.Instance._UIDocument;

@@ -5,7 +5,7 @@
     color: rgb(255, 255, 255);
     -unity-font-style: bold;
     -unity-text-align: middle-center;
-    -unity-font-definition: url("project://database/Assets/UI/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=2230732570650464555&guid=2196264947afaa74a8b087d37850e618&type=3#NotInter-Regular");
+    -unity-font-definition: url("project://database/Assets/UI/Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=2230732570650464555&guid=2196264947afaa74a8b087d37850e618&type=3#NotInter-Regular");
     font-size: 100px;
     -unity-text-outline-width: 3px;
     text-shadow: 5px 10px 10px rgb(31, 44, 57);
@@ -43,6 +43,11 @@
     -unity-text-outline-color: rgb(32, 32, 32);
     text-shadow: -3px -3px 2px rgba(20, 20, 20, 0);
     -unity-font-style: normal;
+}
+
+.text {
+    -unity-paragraph-spacing: 50px;
+    white-space: normal;
 }
 
 .tooltip {

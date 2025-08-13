@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.InputSystem;
@@ -12,7 +8,6 @@ public class PlayerHUD_UIState : AUIState
     #endregion
 
     #region PRIVATE PROPERTIES
-    //Label _tooltip, _contextualPanelName, _contextualPanelDescription;
     Button _pauseButton;
     VisualElement _activityArea;
     #endregion

@@ -13,6 +13,7 @@ public class SpectatorHUD_UIState : AUIState
         _milestoneName,
         _milestoneDate;
     Button _pauseButton,
+        _heritageButton,
         _milestoneInfoButton,
         _nextMilestoneButton,
         _previousMilestoneButton;
@@ -31,6 +32,7 @@ public class SpectatorHUD_UIState : AUIState
         _screen = _UIDocument.rootVisualElement.Q<VisualElement>("SpectatorHUD");
 
         _pauseButton = _screen.Q<Button>("PauseButton");
+        _heritageButton = _screen.Q<Button>("HeritageButton");
         _tooltip = _screen.Q<Label>("Tooltip");
         _milestoneArea = _screen.Q<VisualElement>("MilestoneArea");
         _contextualPanelRoot = _screen.Q<VisualElement>("ContextualPanel");
@@ -63,6 +65,7 @@ public class SpectatorHUD_UIState : AUIState
 
         _contextualPanel.OnClosePanel += OnContextualPanelClosed;
         _pauseButton.RegisterCallback<ClickEvent>(SwitchToPauseState);
+        _heritageButton.RegisterCallback<ClickEvent>(SwitchToHeritageState);
         _milestoneInfoButton.RegisterCallback<ClickEvent>(ShowMilestoneInfo);
         _nextMilestoneButton.RegisterCallback<ClickEvent>(SwitchToNextMilestone);
         _previousMilestoneButton.RegisterCallback<ClickEvent>(SwitchToPreviousMilestone);
@@ -184,6 +187,11 @@ public class SpectatorHUD_UIState : AUIState
     void SwitchToPauseState(ClickEvent evt)
     {
         _stateMachine.SwitchState(UIManager.Instance._pauseState);
+    }
+
+    void SwitchToHeritageState(ClickEvent evt)
+    {
+        _stateMachine.SwitchState(UIManager.Instance._heritageState);
     }
 
     void ShowMilestoneInfo(ClickEvent evt)
