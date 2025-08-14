@@ -8,6 +8,11 @@ public class Conquest_AProgressState : AProgressState
     FiniteStateMachine<ProgressManager> stateMachine)
     : base("Conquest", milestone, milestoneInfoSO, stateMachine) { }
 
+    public override void StartState()
+    {
+        ProgressManager.Instance.InvokeOnTimeSet(15f);
+    }
+
     public override void UpdateState()
     {
 

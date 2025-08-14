@@ -6,6 +6,12 @@ public class MaslamaSchool_AProgressState : AProgressState
     InformationSO milestoneInfoSO,
     FiniteStateMachine<ProgressManager> stateMachine)
     : base("Mathematics and Astronomy school", milestone, milestoneInfoSO, stateMachine) { }
+
+    public override void StartState()
+    {
+        ProgressManager.Instance.InvokeOnTimeSet(10f);
+    }
+
     public override void UpdateState()
     {
 

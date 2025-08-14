@@ -7,6 +7,11 @@ public class AlmanzorMeeting_AProgressState : AProgressState
     FiniteStateMachine<ProgressManager> stateMachine)
     : base("Almanzor meeting", milestone, milestoneInfoSO, stateMachine) { }
 
+    public override void StartState()
+    {
+        ProgressManager.Instance.InvokeOnTimeSet(6f);
+    }
+
     public override void UpdateState()
     {
 

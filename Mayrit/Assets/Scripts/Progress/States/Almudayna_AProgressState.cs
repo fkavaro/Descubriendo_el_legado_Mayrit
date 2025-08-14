@@ -7,6 +7,11 @@ public class Almudayna_AProgressState : AProgressState
     FiniteStateMachine<ProgressManager> stateMachine)
     : base("Almudayna", milestone, milestoneInfoSO, stateMachine) { }
 
+    public override void StartState()
+    {
+        ProgressManager.Instance.InvokeOnTimeSet(14f);
+    }
+
     public override void UpdateState()
     {
 

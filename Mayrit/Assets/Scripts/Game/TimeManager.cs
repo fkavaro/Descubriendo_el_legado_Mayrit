@@ -1,23 +1,30 @@
 using System;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.Rendering.HighDefinition;
 
 public class TimeManager : MonoBehaviour
 {
     #region PUBLIC PROPERTIES
     [Header("Time Settings")]
+    [Tooltip("Whether the time will advance automatically or just to reach a wanted time")]
+    public bool _isDynamic = false;
+    public bool _isWantedTimeReached;
+
+    [Tooltip("Wanted time in hours to be reached. If dynamic time is enabled, this will be ignored")]
+    [Range(0f, 24f)]
+    public float _wantedTime = 10f;
+
     [Tooltip("Current time in hours since the start of the game")]
     [Range(0f, 24f)]
     public float _currentTime = 8f;
 
-    [Tooltip("Time speed multiplier for the game")]
+    [Tooltip("Time cycle speed multiplier")]
     public float _timeSpeed = 1f;
 
     [Tooltip("Whether current time is between 6 and 18 hours or not")]
     public bool _isDayTime = true;
 
+    [Tooltip("Normalised time value between 0 and 1, where 0 is midnight and 1 is the next midnight")]
+    [Range(0f, 1f)]
     public float _normalisedTime;
 
     [Header("Sun Light Settings")]
@@ -49,15 +56,23 @@ public class TimeManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        // Subscribe to ProgressManager event to set the wanted time when the game starts
+        ProgressManager.Instance.OnTimeSet += (time) => { _wantedTime = time; };
     }
 
     // Update is called once per frame
     void Update()
     {
-        UpdateTimeOfDay();
-        UpdateLighting();
-        CheckActiveLightSource();
+        // Difference between current time and wanted time is less than threshold of 0.1f
+        _isWantedTimeReached = Mathf.Abs(_currentTime - _wantedTime) < 0.1f;
+
+        // If dynamic time is enabled or if the wanted time has not been reached yet
+        if (_isDynamic || !_isWantedTimeReached)
+        {
+            UpdateTimeOfDay();
+            UpdateLighting();
+            CheckActiveLightSource();
+        }
     }
 
     // Called when the script is loaded or a value is changed in the inspector

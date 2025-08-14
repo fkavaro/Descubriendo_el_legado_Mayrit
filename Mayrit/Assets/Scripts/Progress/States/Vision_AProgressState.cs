@@ -8,6 +8,11 @@ public class Vision_AProgressState : AProgressState
     FiniteStateMachine<ProgressManager> stateMachine)
     : base("Vision", milestone, milestoneInfoSO, stateMachine) { }
 
+    public override void StartState()
+    {
+        ProgressManager.Instance.InvokeOnTimeSet(17f);
+    }
+
     public override void UpdateState()
     {
 

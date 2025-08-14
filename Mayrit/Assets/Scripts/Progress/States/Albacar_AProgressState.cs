@@ -8,6 +8,11 @@ public class Albacar_AProgressState : AProgressState
     FiniteStateMachine<ProgressManager> stateMachine)
     : base("Albacar", milestone, milestoneInfoSO, stateMachine) { }
 
+    public override void StartState()
+    {
+        ProgressManager.Instance.InvokeOnTimeSet(11f);
+    }
+
     public override void UpdateState()
     {
 

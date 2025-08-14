@@ -16,7 +16,7 @@ public abstract class AProgressState : AState<ProgressManager, FiniteStateMachin
         _informationSO = milestoneInfoSo;
     }
 
-    public override void StartState()
+    public override void AwakeState()
     {
         ProgressManager.Instance._currentMilestone = _milestone;
         ProgressManager.Instance.InvokeOnMilestoneChanged();

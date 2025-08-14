@@ -7,6 +7,11 @@ public class RamiroIIAttack_AProgressState : AProgressState
     FiniteStateMachine<ProgressManager> stateMachine)
     : base("Ramiro II attack", milestone, milestoneInfoSO, stateMachine) { }
 
+    public override void StartState()
+    {
+        ProgressManager.Instance.InvokeOnTimeSet(18f);
+    }
+
     public override void UpdateState()
     {
 

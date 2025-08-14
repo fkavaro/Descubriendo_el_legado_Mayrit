@@ -8,6 +8,11 @@ public class Foundation_AProgressState : AProgressState
     FiniteStateMachine<ProgressManager> stateMachine)
     : base("Foundation", milestone, milestoneInfoSO, stateMachine) { }
 
+    public override void StartState()
+    {
+        ProgressManager.Instance.InvokeOnTimeSet(8f);
+    }
+
     public override void UpdateState()
     {
 

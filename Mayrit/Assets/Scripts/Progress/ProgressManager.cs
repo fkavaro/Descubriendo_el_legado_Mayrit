@@ -17,6 +17,7 @@ public class ProgressManager : Singleton<ProgressManager>
 
     #region PUBLIC PROPERTIES
     public event Action<Milestone> OnMilestoneChanged;
+    public event Action<float> OnTimeSet;
 
     [Header("Milestone properties")]
     public Milestone _currentMilestone;
@@ -34,12 +35,12 @@ public class ProgressManager : Singleton<ProgressManager>
     // State Machine
     public FiniteStateMachine<ProgressManager> _fsm;
     public Vision_AProgressState _visionState;
+    public Foundation_AProgressState _foundationState;
     public Albacar_AProgressState _albacarState;
     public Almudayna_AProgressState _almudaynaState;
     public RamiroIIAttack_AProgressState _ramiroIIState;
     public AlmanzorMeeting_AProgressState _almanzorState;
     public MaslamaSchool_AProgressState _schoolState;
-    public Foundation_AProgressState _foundationState;
     public Conquest_AProgressState _conquestState;
     #endregion
 
@@ -112,6 +113,11 @@ public class ProgressManager : Singleton<ProgressManager>
     public void InvokeOnMilestoneChanged()
     {
         OnMilestoneChanged?.Invoke(_currentMilestone);
+    }
+
+    public void InvokeOnTimeSet(float time)
+    {
+        OnTimeSet?.Invoke(time);
     }
     #endregion
 
