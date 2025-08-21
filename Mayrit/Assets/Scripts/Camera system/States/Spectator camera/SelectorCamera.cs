@@ -61,7 +61,7 @@ public class SelectorCamera
     public void OnSelectObject(InputAction.CallbackContext context)
     {
         // Cursor over UI element
-        if (UIManager.Instance._spectatorHUDState.IsCursorOverUI(_cursorScreenPos))
+        if (UIManager.Instance._spectatorHUDState.IsCursorOverUI())
             return;
 
         //Debug.DrawRay(_cameraRay.origin, _cameraRay.direction * 100, Color.green, 120f);
@@ -106,7 +106,7 @@ public class SelectorCamera
     void ResetSelection()
     {
         if (_currentSelected == null) return;
-        if (UIManager.Instance._spectatorHUDState.IsCursorOverUI(_cursorScreenPos)) return;
+        if (UIManager.Instance._spectatorHUDState.IsCursorOverUI()) return;
 
         UIManager.Instance._spectatorHUDState._contextualPanel.Hide();
         CameraManager.Instance.SwitchToSpectatorCamera();
@@ -119,7 +119,7 @@ public class SelectorCamera
     void UpdateTooltip()
     {
         // Cursor over UI element
-        if (UIManager.Instance._spectatorHUDState.IsCursorOverUI(_cursorScreenPos))
+        if (UIManager.Instance._spectatorHUDState.IsCursorOverUI())
         {
             ResetHover();
             return;

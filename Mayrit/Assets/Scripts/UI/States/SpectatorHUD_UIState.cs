@@ -128,7 +128,7 @@ public class SpectatorHUD_UIState : AUIState
 
     public void ShowContextualPanel(InformationSO objectInfo)
     {
-        if (IsCursorOverUI(_cursorScreenPos)) return;
+        if (IsCursorOverUI()) return;
 
         _milestoneArea.style.display = DisplayStyle.None;
 

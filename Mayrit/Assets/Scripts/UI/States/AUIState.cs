@@ -14,10 +14,13 @@ public abstract class AUIState : AState<UIManager, StackFiniteStateMachine<UIMan
     /// Returns true if the cursor is over any UI element that is a descendant of _screen.
     /// </summary>
     /// <param name="cursorPos">Screen-space position of the cursor (Input.mousePosition).</param>
-    public virtual bool IsCursorOverUI(Vector2 cursorPos)
+    public virtual bool IsCursorOverUI()
     {
         if (_UIDocument == null || _screen == null)
             return false;
+
+        // Get the current mouse position
+        Vector2 cursorPos = Mouse.current.position.ReadValue();
 
         // Convert to UI Toolkit coordinates (Y is flipped)
         Vector2 panelPosition = new(cursorPos.x, Screen.height - cursorPos.y);

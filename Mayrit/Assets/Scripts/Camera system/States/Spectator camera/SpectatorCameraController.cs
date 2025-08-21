@@ -94,7 +94,10 @@ public class SpectatorCameraController
         _sprintPressed = GameManager.Instance._inputActions.Camera.Sprint.IsPressed();
         _lookInput = GameManager.Instance._inputActions.Camera.Look.ReadValue<Vector2>();
         _middleClickPressed = GameManager.Instance._inputActions.Camera.Rotate.IsPressed();
-        _scrollInput = GameManager.Instance._inputActions.Camera.Zoom.ReadValue<Vector2>();
+
+        // Cursor NOT over UI element
+        if (!UIManager.Instance._spectatorHUDState.IsCursorOverUI())
+            _scrollInput = GameManager.Instance._inputActions.Camera.Zoom.ReadValue<Vector2>();
 
         if (_edgeScrolling)
             UpdateEdgeScrolling();
@@ -197,6 +200,8 @@ public class SpectatorCameraController
     /// </summary>
     private void UpdateZoom()
     {
+
+
         InputAxis zoomValue = _orbitalFollow.RadialAxis;
 
         float targetZoomSpeed = 0f;
