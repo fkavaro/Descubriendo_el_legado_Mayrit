@@ -656,6 +656,7 @@ MonoBehaviour:
   _selectableLayer:
     serializedVersion: 2
     m_Bits: 8
+  _spectatorTargetFixingSpeed: 50
   _orbitalCamera: {fileID: 1263816906637668818}
   _orbitalBuildingOrbitSpeed: 30
   _orbitalBuildingZoom: 70
@@ -667,11 +668,6 @@ MonoBehaviour:
   _3rdPersonCameraOrbitSpeed: 3
   _bottomClamp: -30
   _topClamp: 40
-  _3rdPersonTransitionDuration: 1
-  _spectatorTransitionDuration: 1
-  _orbitalMoveTransitionDuration: 1
-  _orbitalOffsetTransitionDuration: 1
-  _orbitalZoomTransitionSpeed: 1
 --- !u!1 &4272530639498313931
 GameObject:
   m_ObjectHideFlags: 0
@@ -1328,7 +1324,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  CustomBlends: {fileID: 0}
+  CustomBlends: {fileID: 11400000, guid: f5233d2cbee32584585227dd24bab91a, type: 2}
 --- !u!1 &7492711116629171807
 GameObject:
   m_ObjectHideFlags: 0
