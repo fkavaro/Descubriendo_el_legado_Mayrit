@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class SelectorCamera
+public class SpectatorCameraSelector
 {
     #region PUBLIC PROPERTIES
     public LayerMask _selectableLayer;
@@ -13,8 +13,9 @@ public class SelectorCamera
         _currentHover = null;
     Vector2 _cursorScreenPos;
     Ray _cameraRay;
+    bool _isSelectPressed;
 
-    public SelectorCamera(LayerMask selectableLayer)
+    public SpectatorCameraSelector(LayerMask selectableLayer)
     {
         _selectableLayer = selectableLayer;
     }
@@ -28,6 +29,8 @@ public class SelectorCamera
 
     public void Update()
     {
+        _isSelectPressed = GameManager.Instance._inputActions.Camera.Select.IsPressed();
+
         // Get the current mouse position
         _cursorScreenPos = Mouse.current.position.ReadValue();
 
@@ -36,6 +39,9 @@ public class SelectorCamera
 
         // Move tooltip with the cursor if it's not over an UI element
         UpdateTooltip();
+
+        if (_isSelectPressed)
+            SelectObject();
     }
     #endregion
 
@@ -57,8 +63,7 @@ public class SelectorCamera
     /// This method is called when the 'SelectObject' input action is performed.
     /// It handles the raycast logic for object selection.
     /// </summary>
-    /// <param name="context">The context of the input action callback.</param>
-    public void OnSelectObject(InputAction.CallbackContext context)
+    public void SelectObject()
     {
         // Cursor over UI element
         if (UIManager.Instance._spectatorHUDState.IsCursorOverUI())

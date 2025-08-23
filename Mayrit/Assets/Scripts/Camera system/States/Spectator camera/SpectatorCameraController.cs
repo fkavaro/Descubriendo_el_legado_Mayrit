@@ -23,17 +23,17 @@ public class SpectatorCameraController
         _acceleration,
         _deceleration,
         _printSpeedMultiplier = 2f;
-    public Vector3 _movementLimitsX
+    Vector3 _movementLimitsX
         , _movementLimitsZ;
 
     // Orbit
-    public float _orbitSpeed,
+    float _orbitSpeed,
         _orbitSmoothing;
 
     // Zoom
-    public float _zoomSpeed,
+    float _zoomSpeed,
         _zoomSmoothing;
-    public float ZoomLevel // value between 0 (zoomed in) and 1 (zoomed out)
+    float ZoomLevel // value between 0 (zoomed in) and 1 (zoomed out)
     {
         get
         {
@@ -79,7 +79,7 @@ public class SpectatorCameraController
         _moveSpeed = CameraManager.Instance._moveSpeed;
         _acceleration = CameraManager.Instance._acceleration;
         _deceleration = CameraManager.Instance._deceleration;
-        _printSpeedMultiplier = CameraManager.Instance._printSpeedMultiplier;
+        _printSpeedMultiplier = CameraManager.Instance._sprintSpeedMultiplier;
         _movementLimitsX = CameraManager.Instance._movementLimitsX;
         _movementLimitsZ = CameraManager.Instance._movementLimitsZ;
         _orbitSpeed = CameraManager.Instance._spectatorCameraOrbitSpeed;

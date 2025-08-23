@@ -7,8 +7,6 @@ using Unity.Cinemachine;
 public class CameraManager : Singleton<CameraManager>
 {
     #region PUBLIC PROPERTIES
-    public event Action<ACameraState> OnCameraStateChange;
-
     // Finite State Machine
     public FiniteStateMachine<CameraManager> _fsm;
     public Spectator_CameraState _spectatorState;
@@ -26,7 +24,7 @@ public class CameraManager : Singleton<CameraManager>
     public AnimationCurve _moveSpeedZoomCurve = AnimationCurve.Linear(0f, 0.1f, 1f, 1f);
     public float _acceleration = 200f;
     public float _deceleration = 250f;
-    public float _printSpeedMultiplier = 2f;
+    public float _sprintSpeedMultiplier = 2f;
     [Space]
     [Tooltip("Camera limits in X axis (min, max)")]
     public Vector2 _movementLimitsX = new(-1000, 700);
@@ -47,12 +45,13 @@ public class CameraManager : Singleton<CameraManager>
     public LayerMask _selectableLayer;
 
     [Header("Orbital camera")]
+    public CinemachineCamera _orbitalCamera;
     public float _orbitalBuildingOrbitSpeed = 30f;
-    public float _orbitalBuildingZoom = 0.2f;
+    public float _orbitalBuildingZoom;
     public float _orbitalBuildingOffset = 20f;
     [Space]
     public float _orbitalCharacterOrbitSpeed = 15f;
-    public float _orbitalCharacterZoom = 0.02f;
+    public float _orbitalCharacterZoom;
     public float _orbitalCharacterOffset = 10f;
 
     [Header("Third Person Camera")]
@@ -107,11 +106,11 @@ public class CameraManager : Singleton<CameraManager>
         _spectatorState = new(_fsm,
             _spectatorCamera);
 
+        _orbitalState = new(_fsm,
+            _orbitalCamera);
+
         _thirdPersonState = new(_fsm,
             _thirdPersonCamera);
-
-        _orbitalState = new(_fsm,
-        _spectatorCamera);
 
         _fsm.SetInitialState(_spectatorState);
 
@@ -125,39 +124,53 @@ public class CameraManager : Singleton<CameraManager>
     /// </summary>
     public void SwitchToSpectatorCamera()
     {
-        // Update spectator camera target to player position
-        if (_fsm.IsCurrentState(_thirdPersonState))
+        Debug.Log("Switching to spectator camera");
+
+        if (_thirdPersonState.IsCurrentState())
+        {
             _spectatorCamera.LookAt.position = _thirdPersonCamera.LookAt.position;
+        }
+        else if (_orbitalState.IsCurrentState())
+        {
+            _spectatorCamera.LookAt.position = _orbitalCamera.LookAt.position;
+
+            // Same orbit values as orbital camera
+            _spectatorCamera.GetComponent<CinemachineOrbitalFollow>().HorizontalAxis.Value =
+                _orbitalCamera.GetComponent<CinemachineOrbitalFollow>().HorizontalAxis.Value;
+            _spectatorCamera.GetComponent<CinemachineOrbitalFollow>().VerticalAxis.Value =
+                _orbitalCamera.GetComponent<CinemachineOrbitalFollow>().VerticalAxis.Value;
+        }
 
         // Fix to position height
-        Vector3 fixedTargetPos = new(
+        Vector3 fixedSpectatorLookAt = new(
             _spectatorCamera.LookAt.position.x,
             _movementLimitsY.x, // At spectator height
             _spectatorCamera.LookAt.position.z
         );
 
-        if (_fsm.IsCurrentState(_thirdPersonState))
-        {
-            // Directly long distance to the target to avoid weird behaviour
-            //_spectatorCamera.GetComponent<CinemachineOrbitalFollow>().RadialAxis.Value = 0.5f;
-            ZoomToCoroutine(_spectatorCamera.GetComponent<CinemachineOrbitalFollow>(), 0.5f);
-        }
-        else if (_fsm.IsCurrentState(_orbitalState))
-        {
-            // Transitions
-            ZoomToCoroutine(_spectatorCamera.GetComponent<CinemachineOrbitalFollow>(), 0.5f);
-            ResetContextualPanelOffset();
-        }
+        _spectatorCamera.LookAt.position = fixedSpectatorLookAt;
 
         _fsm.SwitchState(_spectatorState);
+    }
 
-        // Move spectator camera target smoothly to fixed position
-        SmoothMoveCoroutine(_spectatorCamera.LookAt, fixedTargetPos, _spectatorTransitionDuration,
-            () =>
-            {
-                OnCameraStateChange?.Invoke(_spectatorState);
-            }
-        );
+    public void SwitchToOrbitalCamera(Transform objectToOrbitAround, AInformationSO information)
+    {
+        Debug.Log("Switching to orbital camera");
+
+        // Hide contextual panel
+        UIManager.Instance._spectatorHUDState._contextualPanel.Hide();
+
+        _orbitalState._information = information;
+        _orbitalCamera.Follow = objectToOrbitAround;
+        _orbitalCamera.LookAt = objectToOrbitAround;
+
+        // Same orbit values as spectator camera
+        _orbitalCamera.GetComponent<CinemachineOrbitalFollow>().HorizontalAxis.Value =
+            _spectatorCamera.GetComponent<CinemachineOrbitalFollow>().HorizontalAxis.Value;
+        _orbitalCamera.GetComponent<CinemachineOrbitalFollow>().VerticalAxis.Value =
+            _spectatorCamera.GetComponent<CinemachineOrbitalFollow>().VerticalAxis.Value;
+
+        _fsm.SwitchState(_orbitalState);
     }
 
     /// <summary>
@@ -165,6 +178,8 @@ public class CameraManager : Singleton<CameraManager>
     /// </summary>
     public void SwitchToThirdPersonCamera()
     {
+        Debug.Log("Switching to third person camera");
+
         // Update third person camera target to current playable character
         PlayableCharacter playerTransform = GameManager.Instance.GetCurrentPlayableCharacter();
 
@@ -172,40 +187,19 @@ public class CameraManager : Singleton<CameraManager>
         _thirdPersonCamera.Follow = playerTransform._orientation;
         _thirdPersonCamera.LookAt = playerTransform._orientation;
 
-        OnCameraStateChange?.Invoke(_thirdPersonState);
+        _fsm.SwitchState(_thirdPersonState);
 
-        // Move spectator camera target smoothly to third person camera target
-        SmoothMoveCoroutine(_spectatorCamera.LookAt, _thirdPersonCamera.LookAt.position, _3rdPersonTransitionDuration,
-            () =>
-            {
-                // Switch state when coroutine finished
-                _fsm.SwitchState(_thirdPersonState);
-            }
-        );
+        // // Move spectator camera target smoothly to third person camera target
+        // SmoothMoveCoroutine(_spectatorCamera.LookAt, _thirdPersonCamera.LookAt.position, _3rdPersonTransitionDuration,
+        //     () =>
+        //     {
+        //         // Switch state when coroutine finished
+        //         _fsm.SwitchState(_thirdPersonState);
+        //     }
+        // );
     }
 
-    public void SwitchToOrbitalCamera(Transform objectToOrbitAround, AInformationSO information)
-    {
-        // Hide contextual panel
-        UIManager.Instance._spectatorHUDState._contextualPanel.Hide();
 
-        // Is character information
-        if (information is Character_InformationSO)
-            ApplyContextualPanelOffset(_orbitalCharacterOffset);
-        // Other
-        else
-            ApplyContextualPanelOffset(_orbitalBuildingOffset);
-
-        // Move spectator target to object position
-        SmoothMoveCoroutine(_spectatorCamera.LookAt, objectToOrbitAround.position, _orbitalMoveTransitionDuration,
-        () =>
-        {
-            _orbitalState._information = information;
-
-            // When reached, switch state
-            _fsm.SwitchState(_orbitalState);
-        });
-    }
 
     /// <summary>
     /// Moves smoothly the given transform to the new position in given duration.
@@ -220,14 +214,14 @@ public class CameraManager : Singleton<CameraManager>
         StartCoroutine(ZoomTo(orbitalFollow, targetZoom, onComplete));
     }
 
-    public void ApplyContextualPanelOffset(float offset)
+    public void ApplyContextualPanelOffset(CinemachineCamera camera, float offset)
     {
-        StartCoroutine(SmoothHorizontalOffset(_spectatorCamera.GetComponent<CinemachineCameraOffset>(), offset));
+        StartCoroutine(SmoothHorizontalOffset(camera.GetComponent<CinemachineCameraOffset>(), offset));
     }
 
-    public void ResetContextualPanelOffset()
+    public void ResetContextualPanelOffset(CinemachineCamera camera)
     {
-        StartCoroutine(SmoothHorizontalOffset(_spectatorCamera.GetComponent<CinemachineCameraOffset>(), 0));
+        StartCoroutine(SmoothHorizontalOffset(camera.GetComponent<CinemachineCameraOffset>(), 0));
     }
     #endregion
 
