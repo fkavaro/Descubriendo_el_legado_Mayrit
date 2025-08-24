@@ -18,12 +18,13 @@ public class UtilitySystem : ADecisionSystem
     /// </summary>
     Dictionary<IAction, float> _actionUtilities = new();
 
-    public UtilitySystem(ABehaviourController controller) : base(controller) { }
+    public UtilitySystem(IBehaviourControllable controllable)
+    : base(controllable) { }
 
     #region INHERITED METHODS
     protected override void DebugDecision()
     {
-        //controller.actionText.text = _currentAction.DebugDecision();
+
     }
 
     public override void Start()

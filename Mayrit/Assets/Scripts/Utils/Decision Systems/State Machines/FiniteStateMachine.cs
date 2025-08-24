@@ -7,8 +7,8 @@ using UnityEngine;
 public class FiniteStateMachine : AStateMachine<FiniteStateMachine>
 {
     // Constructor
-    public FiniteStateMachine(ABehaviourController controller)
-    : base(controller) { }
+    public FiniteStateMachine(IBehaviourControllable controllable)
+    : base(controllable) { }
 
     #region INHERITED METHODS
     /// <summary>

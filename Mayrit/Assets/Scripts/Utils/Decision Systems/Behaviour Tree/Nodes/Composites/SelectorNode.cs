@@ -9,8 +9,8 @@ using UnityEngine;
 /// </summary>
 public class SelectorNode : Node
 {
-    public SelectorNode(ABehaviourController controller, int priority = 0)
-    : base(controller, "Selector", priority) { }
+    public SelectorNode(IBehaviourControllable controllable, int priority = 0)
+    : base(controllable, "Selector", priority) { }
 
     public override Status UpdateNode()
     {

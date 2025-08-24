@@ -20,8 +20,8 @@ public class AAnimationController : ABehaviourController
         ;
 
     // Constructor
-    public AAnimationController(IBehaviourControllable controllable, Animator animator)
-    : base(controllable)
+    public AAnimationController(ADecisionSystem decisionSystem, Animator animator)
+    : base(decisionSystem)
     {
         _animator = animator;
     }

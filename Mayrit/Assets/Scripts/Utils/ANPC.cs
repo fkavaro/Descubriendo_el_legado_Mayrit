@@ -36,8 +36,8 @@ public class ANPC : AAnimationController
     #endregion
 
     // Constructor
-    public ANPC(IBehaviourControllable controllable, Animator animator, NavMeshAgent navMeshAgent)
-    : base(controllable, animator)
+    public ANPC(ADecisionSystem decisionSystem, Animator animator, NavMeshAgent navMeshAgent)
+    : base(decisionSystem, animator)
     {
         _agent = navMeshAgent;
     }

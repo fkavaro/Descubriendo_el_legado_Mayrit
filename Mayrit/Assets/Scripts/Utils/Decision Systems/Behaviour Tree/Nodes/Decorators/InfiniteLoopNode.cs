@@ -8,11 +8,11 @@ public class InfiniteLoopNode : Node
 {
     private readonly Node _child;
 
-    public InfiniteLoopNode(ABehaviourController controller)
-    : base(controller, "InfiniteLoop") { }
+    public InfiniteLoopNode(IBehaviourControllable controllable)
+    : base(controllable, "InfiniteLoop") { }
 
-    public InfiniteLoopNode(ABehaviourController controller, Node child)
-    : base(controller, "InfiniteLoop")
+    public InfiniteLoopNode(IBehaviourControllable controllable, Node child)
+    : base(controllable, "InfiniteLoop")
     {
         AddChild(child); // Use the AddChild method to set the child
         _child = children[0]; // Store a direct reference for easier access

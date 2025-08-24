@@ -10,8 +10,8 @@ public class UntilSuccessNode : Node
 {
     private readonly Node _child; // Make sure we have a reference to the child
 
-    public UntilSuccessNode(ABehaviourController controller, Node child, int priority = 0)
-    : base(controller, "UntilSuccess", priority)
+    public UntilSuccessNode(IBehaviourControllable controllable, Node child, int priority = 0)
+    : base(controllable, "UntilSuccess", priority)
     {
         AddChild(child); // Use the AddChild method to set the child
         _child = children[0]; // Store a direct reference for easier access

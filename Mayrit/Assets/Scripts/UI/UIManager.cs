@@ -52,9 +52,7 @@ public class UIManager : Singleton<UIManager>, IBehaviourControllable
 
         _UIDocument = GetComponent<UIDocument>();
 
-        _behaviourController = new(this);
-
-        _fsm = new(_behaviourController);
+        _fsm = new(this);
 
         _mainMenuState = new(_fsm);
         _spectatorHUDState = new(_fsm);
@@ -69,6 +67,7 @@ public class UIManager : Singleton<UIManager>, IBehaviourControllable
         else
             _fsm.SetInitialState(_mainMenuState);
 
+        _behaviourController = new(_fsm);
         _behaviourController.Awake();
     }
 

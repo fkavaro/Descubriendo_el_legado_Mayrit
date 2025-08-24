@@ -9,8 +9,8 @@ using UnityEngine;
 /// </summary>
 public class RanndomSelectorNode : PrioritySelectorNode
 {
-    public RanndomSelectorNode(ABehaviourController controller, int priority = 0)
-    : base(controller, priority) { }
+    public RanndomSelectorNode(IBehaviourControllable controllable, int priority = 0)
+    : base(controllable, priority) { }
 
     protected override List<Node> SortChildren()
     {

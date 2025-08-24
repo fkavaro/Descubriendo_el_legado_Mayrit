@@ -90,9 +90,7 @@ public class CameraManager : Singleton<CameraManager>, IBehaviourControllable
         CinemachineOrbitalFollow _orbitalFollow = _spectatorCamera.GetComponent<CinemachineOrbitalFollow>();
         _orbitalFollow.Radius = _movementLimitsY.y;
 
-        _behaviourController = new(this);
-
-        _fsm = new(_behaviourController);
+        _fsm = new(this);
 
         _spectatorState = new(_fsm,
             _spectatorCamera);
@@ -105,6 +103,7 @@ public class CameraManager : Singleton<CameraManager>, IBehaviourControllable
 
         _fsm.SetInitialState(_spectatorState);
 
+        _behaviourController = new(_fsm);
         _behaviourController.Awake();
     }
 

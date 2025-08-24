@@ -10,8 +10,8 @@ public class LeafNode : Node
 {
     readonly AStrategy _strategy;
 
-    public LeafNode(ABehaviourController controller, string name, AStrategy strategy, int priority = 0)
-    : base(controller, name, priority)
+    public LeafNode(IBehaviourControllable controllable, string name, AStrategy strategy, int priority = 0)
+    : base(controllable, name, priority)
     {
         _strategy = strategy;
     }

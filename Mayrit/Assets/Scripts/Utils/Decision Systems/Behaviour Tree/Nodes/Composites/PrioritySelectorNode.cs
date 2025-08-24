@@ -12,8 +12,8 @@ public class PrioritySelectorNode : SelectorNode
     List<Node> sortedChildren;
     List<Node> SortedChildren => sortedChildren ??= SortChildren();
 
-    public PrioritySelectorNode(ABehaviourController controller, int priority = 0)
-    : base(controller, priority) { }
+    public PrioritySelectorNode(IBehaviourControllable controllable, int priority = 0)
+    : base(controllable, priority) { }
 
     public override Status UpdateNode()
     {

@@ -12,7 +12,7 @@ where TStateMachineType : AStateMachine<TStateMachineType>
     protected List<AState<TStateMachineType>> _statesSequence = new();
 
     // Constructor
-    public AStateMachine(ABehaviourController controller) : base(controller) { }
+    public AStateMachine(IBehaviourControllable controllable) : base(controllable) { }
 
     #region TO BE IMPLEMENTED METHODS
     public abstract void SwitchState(AState<TStateMachineType> state);

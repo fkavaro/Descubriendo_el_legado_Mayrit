@@ -53,9 +53,9 @@ public class PlayableCharacter : MonoBehaviour, IBehaviourControllable
         _characterController = GetComponent<CharacterController>();
         _playerController = new(this);
 
-        _animationController = new(this, GetComponentInChildren<Animator>());
-        _fsm = new(_animationController);
+        _fsm = new(this);
 
+        _animationController = new(_fsm, GetComponentInChildren<Animator>());
         _animationController.Awake();
     }
 

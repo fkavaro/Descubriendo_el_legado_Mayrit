@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class SuccederNode : Node
 {
-    public SuccederNode(ABehaviourController controller, int priority = 0)
-    : base(controller, "Successer", priority) { }
+    public SuccederNode(IBehaviourControllable controllable, int priority = 0)
+    : base(controllable, "Successer", priority) { }
 
     public override Status UpdateNode()
     {

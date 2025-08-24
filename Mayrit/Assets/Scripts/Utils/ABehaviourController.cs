@@ -6,12 +6,13 @@ using UnityEngine;
 public class ABehaviourController
 {
     public readonly IBehaviourControllable _controllable;
-    public ADecisionSystem _decisionSystem;
+    readonly ADecisionSystem _decisionSystem;
 
     // Construtor
-    public ABehaviourController(IBehaviourControllable controllable)
+    public ABehaviourController(ADecisionSystem decisionSystem)
     {
-        _controllable = controllable;
+        _controllable = decisionSystem._controllable;
+        _decisionSystem = decisionSystem;
     }
 
     /// <summary>

@@ -48,9 +48,7 @@ public class GameManager : Singleton<GameManager>, IBehaviourControllable
 
         _inputActions = new();
 
-        _behaviourController = new(this);
-
-        _fsm = new(_behaviourController);
+        _fsm = new(this);
 
         _mainMenuState = new(_fsm);
         _gamePlayState = new(_fsm);
@@ -63,6 +61,7 @@ public class GameManager : Singleton<GameManager>, IBehaviourControllable
         else
             _fsm.SetInitialState(_mainMenuState);
 
+        _behaviourController = new(_fsm);
         _behaviourController.Awake();
     }
 

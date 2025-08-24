@@ -73,9 +73,7 @@ public class ProgressManager : Singleton<ProgressManager>, IBehaviourControllabl
         // Singleton
         base.Awake();
 
-        _behaviourController = new(this);
-
-        _fsm = new(_behaviourController);
+        _fsm = new(this);
 
         // States initialization
         _visionState = new(Milestone._1_Vision, _visionInformation, _fsm);
@@ -89,6 +87,7 @@ public class ProgressManager : Singleton<ProgressManager>, IBehaviourControllabl
 
         //_fsm.SetInitialState(_visionState);
 
+        _behaviourController = new(_fsm);
         _behaviourController.Awake();
     }
 

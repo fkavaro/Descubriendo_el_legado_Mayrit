@@ -9,8 +9,8 @@ using UnityEngine;
 /// </summary>
 public class SequenceNode : Node
 {
-    public SequenceNode(ABehaviourController controller, int priority = 0)
-    : base(controller, "Sequence", priority) { }
+    public SequenceNode(IBehaviourControllable controllable, int priority = 0)
+    : base(controllable, "Sequence", priority) { }
 
     public override Status UpdateNode()
     {

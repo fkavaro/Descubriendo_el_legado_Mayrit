@@ -9,8 +9,8 @@ using UnityEngine;
 /// </summary>
 public class InverterNode : Node
 {
-    public InverterNode(ABehaviourController controller, int priority = 0)
-    : base(controller, "Inverter", priority) { }
+    public InverterNode(IBehaviourControllable controllable, int priority = 0)
+    : base(controllable, "Inverter", priority) { }
 
     public override Status UpdateNode()
     {

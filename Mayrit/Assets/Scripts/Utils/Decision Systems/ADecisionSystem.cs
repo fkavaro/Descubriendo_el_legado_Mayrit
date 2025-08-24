@@ -7,12 +7,12 @@ public abstract class ADecisionSystem
 {
     public readonly IBehaviourControllable _controllable;
     protected bool DebugMode => _controllable.DebugMode;
+    public bool IsExecutionPaused => _controllable.IsExecutionPaused;
 
     // Constructor
-    public ADecisionSystem(ABehaviourController controller)
+    public ADecisionSystem(IBehaviourControllable controllable)
     {
-        controller._decisionSystem = this;
-        _controllable = controller._controllable;
+        _controllable = controllable;
     }
 
     protected abstract void DebugDecision();
@@ -31,6 +31,4 @@ public abstract class ADecisionSystem
     public virtual void OnTriggerEnter(Collider other) { }
     public virtual void OnTriggerStay(Collider other) { }
     public virtual void OnTriggerExit(Collider other) { }
-
-
 }

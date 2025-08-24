@@ -5,22 +5,14 @@ using UnityEngine;
 
 public class BehaviourTree : Node
 {
-    public BehaviourTree(ABehaviourController controller, string name = "BehaviourTree")
-    : base(controller, name) { }
+    public BehaviourTree(IBehaviourControllable controllable, string name = "BehaviourTree")
+    : base(controllable, name) { }
 
-    public BehaviourTree(ABehaviourController controller, Node child, string name = "BehaviourTree")
-    : base(controller, name)
+    public BehaviourTree(IBehaviourControllable controllable, Node child, string name = "BehaviourTree")
+    : base(controllable, name)
     {
         AddChild(child);
     }
-
-    // protected override void DebugDecision()
-    // {
-    //     if (_currentChildId < children.Count)
-    //         controller.stateText.text = children[_currentChildId].name;
-    //     else
-    //         controller.stateText.text = "None";
-    // }
 
     public override Status UpdateNode()
     {

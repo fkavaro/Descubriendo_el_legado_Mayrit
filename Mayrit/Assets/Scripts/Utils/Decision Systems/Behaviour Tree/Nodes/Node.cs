@@ -22,8 +22,8 @@ public class Node : ADecisionSystem
     protected int _currentChildId;
     public Status status;
 
-    public Node(ABehaviourController controller, string name = "Node", int priority = 0)
-    : base(controller)
+    public Node(IBehaviourControllable controllable, string name = "Node", int priority = 0)
+    : base(controllable)
     {
         this.name = name;
         this.priority = priority;

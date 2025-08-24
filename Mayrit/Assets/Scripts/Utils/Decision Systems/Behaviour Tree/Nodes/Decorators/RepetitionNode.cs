@@ -12,8 +12,8 @@ public class RepetitionNode : Node
     private int _currentRepetition = 0;
     private Node _child; // Make sure we have a reference to the child
 
-    public RepetitionNode(ABehaviourController controller, int repetitions, Node child, int priority = 0)
-    : base(controller, repetitions.ToString() + " repetions", priority)
+    public RepetitionNode(IBehaviourControllable controllable, int repetitions, Node child, int priority = 0)
+    : base(controllable, repetitions.ToString() + " repetions", priority)
     {
         _repetitions = repetitions;
         AddChild(child); // Use the AddChild method to set the child
