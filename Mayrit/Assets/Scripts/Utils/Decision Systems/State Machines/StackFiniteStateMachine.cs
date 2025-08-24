@@ -62,8 +62,7 @@ public class StackFiniteStateMachine : AStateMachine<StackFiniteStateMachine>
         // Empty stack
         if (_stateStack.Count == 0)
         {
-            if (_controllable.DebugMode)
-                Debug.Log("[" + _controller._name + "] state stack is empty");
+            if (DebugMode) Debug.Log("[" + _controllable.Name + "] state stack is empty");
 
             return null;
         }
@@ -72,8 +71,7 @@ public class StackFiniteStateMachine : AStateMachine<StackFiniteStateMachine>
             // Get the last state from the stack without removing it
             var previousState = _stateStack.Peek();
 
-            if (_controllable.DebugMode)
-                Debug.Log("[" + _controller._name + "] Previous state: " + previousState.Name);
+            if (DebugMode) Debug.Log("[" + _controllable.Name + "] Previous state: " + previousState.Name);
 
             return previousState;
         }
@@ -88,8 +86,7 @@ public class StackFiniteStateMachine : AStateMachine<StackFiniteStateMachine>
         // Empty stack
         if (_stateStack.Count == 0)
         {
-            if (_controllable.DebugMode)
-                Debug.Log("[" + _controller._name + "] state stack is empty");
+            if (DebugMode) Debug.Log("[" + _controllable.Name + "] state stack is empty");
 
             return false;
         }

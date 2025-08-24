@@ -9,7 +9,6 @@ public abstract class AState<TStateMachine>
 {
     public string Name => _stateName;
     protected string _stateName;
-    protected ABehaviourController _controller;
     protected readonly IBehaviourControllable _controllable;
     protected TStateMachine _stateMachine;
     protected float _stateTime = 0f;
@@ -22,7 +21,6 @@ public abstract class AState<TStateMachine>
         _stateName = name;
         _stateMachine = stateMachine;
         _stateMachine.AddStateToSequence(this);
-        _controller = stateMachine._controller;
         _controllable = stateMachine._controllable;
     }
 

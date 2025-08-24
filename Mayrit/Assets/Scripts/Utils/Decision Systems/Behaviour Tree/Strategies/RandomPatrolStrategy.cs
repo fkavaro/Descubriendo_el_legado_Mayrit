@@ -22,11 +22,11 @@ public class RandomPatrolStrategy : AStrategy
 
     public override Node.Status Update()
     {
-        if (_controller.HasArrivedAtDestination())
+        if (_npc.HasArrivedAtDestination())
         {
             // Random destination is reachable
-            if (_controller.CalculateRandomDestination(_samplingIterations, _areaRadious, _centerPoint, out Vector3 randomDestination))
-                _controller.SetDestination(randomDestination);
+            if (_npc.CalculateRandomDestination(_samplingIterations, _areaRadious, _centerPoint, out Vector3 randomDestination))
+                _npc.SetDestination(randomDestination);
             // It's not
             else
                 return Node.Status.Failure;

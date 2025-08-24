@@ -25,16 +25,16 @@ public class WaypointPatrolStrategy : AStrategy
             return Node.Status.Success;
 
         var target = _patrolPoints[_currentPatrolPointIndex];
-        _controller.SetDestination(target.position);
-        _controller._agent.transform.LookAt(target);
+        _npc.SetDestination(target.position);
+        _npc._agent.transform.LookAt(target);
 
-        if (_isPathCalculated && _controller.HasArrivedAtDestination())
+        if (_isPathCalculated && _npc.HasArrivedAtDestination())
         {
             _currentPatrolPointIndex++;
             _isPathCalculated = false;
         }
 
-        if (_controller.IsPathPending())
+        if (_npc.IsPathPending())
         {
             _isPathCalculated = true;
         }

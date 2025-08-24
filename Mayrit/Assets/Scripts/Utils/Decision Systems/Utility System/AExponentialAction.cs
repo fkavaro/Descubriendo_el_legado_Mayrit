@@ -16,7 +16,7 @@ public abstract class AExponentialAction : AAction<float>
 
     protected override float CalculateUtility()
     {
-        utility = (float)Math.Pow(_decisionFactor, 2); // Exponential function
+        utility = (float)Math.Pow(DecisionFactor, 2); // Exponential function
 
         if (_inverted)
             utility = 1f - utility; // Inverted exponential function

@@ -5,12 +5,13 @@ using UnityEngine;
 /// </summary>
 public abstract class AStrategy
 {
-    protected readonly ANPC _controller;
+    protected readonly ANPC _npc;
     protected readonly IBehaviourControllable _controllable;
+    protected bool DebugMode => _controllable.DebugMode;
 
     public AStrategy(ANPC controller)
     {
-        _controller = controller;
+        _npc = controller;
         _controllable = controller._controllable;
     }
 

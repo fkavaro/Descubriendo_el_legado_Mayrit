@@ -5,15 +5,13 @@ using TMPro;
 public class ABehaviourController
 {
     public readonly IBehaviourControllable _controllable;
-    public readonly string _name;
 
     public ADecisionSystem _decisionSystem;
 
     // Construtor
-    public ABehaviourController(IBehaviourControllable controllable, string name)
+    public ABehaviourController(IBehaviourControllable controllable)
     {
         _controllable = controllable;
-        _name = name;
     }
 
     /// <summary>

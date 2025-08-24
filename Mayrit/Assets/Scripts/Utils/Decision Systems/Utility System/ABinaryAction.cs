@@ -26,14 +26,14 @@ public abstract class ABinaryAction : AAction<bool>
     {
         if (_inverted)
         {
-            if (_decisionFactor)
+            if (DecisionFactor)
                 utility = 0f;
             else
                 utility = _maxValue;
         }
         else
         {
-            if (_decisionFactor)
+            if (DecisionFactor)
                 utility = _maxValue;
             else
                 utility = 0f;

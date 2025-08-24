@@ -13,6 +13,7 @@ public class CameraManager : Singleton<CameraManager>, IBehaviourControllable
     [Tooltip("Whether to update next frame or not")]
     [SerializeField] bool _isExecutionPaused = false;
 
+    public string Name => gameObject.name;
     public bool DebugMode
     {
         get => _debugMode;
@@ -88,7 +89,7 @@ public class CameraManager : Singleton<CameraManager>, IBehaviourControllable
         CinemachineOrbitalFollow _orbitalFollow = _spectatorCamera.GetComponent<CinemachineOrbitalFollow>();
         _orbitalFollow.Radius = _movementLimitsY.y;
 
-        _behaviourController = new(this, name);
+        _behaviourController = new(this);
 
         _fsm = new(_behaviourController);
 
@@ -134,8 +135,6 @@ public class CameraManager : Singleton<CameraManager>, IBehaviourControllable
     #region PUBLIC METHODS
     public void SwitchToSpectatorCamera()
     {
-        if (_debugMode) Debug.Log("Switching to spectator camera");
-
         if (_thirdPersonState.IsCurrentState())
         {
             _spectatorCamera.LookAt.position = _thirdPersonCamera.LookAt.position;
@@ -176,8 +175,6 @@ public class CameraManager : Singleton<CameraManager>, IBehaviourControllable
 
     public void SwitchToOrbitalCamera(Transform objectToOrbitAround, AInformationSO information)
     {
-        if (_debugMode) Debug.Log("Switching to orbital camera");
-
         // Hide contextual panel
         UIManager.Instance._spectatorHUDState._contextualPanel.Hide();
 
@@ -196,8 +193,6 @@ public class CameraManager : Singleton<CameraManager>, IBehaviourControllable
 
     public void SwitchToThirdPersonCamera()
     {
-        if (_debugMode) Debug.Log("Switching to third person camera");
-
         // Update third person camera target to current playable character
         PlayableCharacter playerTransform = GameManager.Instance.GetCurrentPlayableCharacter();
 

@@ -11,6 +11,7 @@ public class UIManager : Singleton<UIManager>, IBehaviourControllable
     [Tooltip("Whether to update next frame or not")]
     [SerializeField] bool _isExecutionPaused = false;
 
+    public string Name => gameObject.name;
     public bool DebugMode
     {
         get => _debugMode;
@@ -49,7 +50,7 @@ public class UIManager : Singleton<UIManager>, IBehaviourControllable
 
         _UIDocument = GetComponent<UIDocument>();
 
-        _behaviourController = new(this, name);
+        _behaviourController = new(this);
 
         _fsm = new(_behaviourController);
 

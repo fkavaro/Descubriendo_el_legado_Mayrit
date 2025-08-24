@@ -21,8 +21,8 @@ public class AAnimationController : ABehaviourController
         ;
     #endregion
     // Constructor
-    public AAnimationController(IBehaviourControllable controllable, string name, Animator animator)
-    : base(controllable, name)
+    public AAnimationController(IBehaviourControllable controllable, Animator animator)
+    : base(controllable)
     {
         _animator = animator;
     }

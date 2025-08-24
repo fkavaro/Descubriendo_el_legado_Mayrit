@@ -11,14 +11,12 @@ public abstract class AAction<TFactor> : IAction
 
     protected string name;
     protected float utility;
-    protected ABehaviourController _controller;
     protected UtilitySystem _utilitySystem;
-    protected TFactor _decisionFactor => SetDecisionFactor();
+    protected TFactor DecisionFactor => SetDecisionFactor();
 
     public AAction(string name, UtilitySystem utilitySystem)
     {
         this.name = name;
-        _controller = utilitySystem._controller;
         _utilitySystem = utilitySystem;
         utilitySystem.AddAction(this);
     }
@@ -30,7 +28,6 @@ public abstract class AAction<TFactor> : IAction
     public abstract bool IsFinished();
     public virtual void Reset() { }
 
-    /// <returns>Action name</returns>
     public virtual string DebugDecision()
     {
         return Name;

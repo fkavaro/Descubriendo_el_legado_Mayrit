@@ -2,14 +2,13 @@ using UnityEngine;
 
 public abstract class ADecisionSystem
 {
-    public readonly ABehaviourController _controller;
     public readonly IBehaviourControllable _controllable;
 
+    protected bool DebugMode => _controllable.DebugMode;
 
     public ADecisionSystem(ABehaviourController controller)
     {
         controller._decisionSystem = this;
-        _controller = controller;
         _controllable = controller._controllable;
     }
 

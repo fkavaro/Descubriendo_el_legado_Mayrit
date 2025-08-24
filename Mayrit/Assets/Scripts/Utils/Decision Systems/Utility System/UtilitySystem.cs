@@ -5,7 +5,6 @@ using System.Linq;
 /// <summary>
 /// Utility System for decision making in agents.
 /// </summary>
-/// <typeparam name="TController"></typeparam>
 public class UtilitySystem : ADecisionSystem
 {
     /// <summary>
@@ -80,12 +79,12 @@ public class UtilitySystem : ADecisionSystem
     /// </summary>
     void CalculateActionsUtilities()
     {
-        if (_controllable.DebugMode) Debug.Log(_controller._name + " making decision...");
+        if (DebugMode) Debug.Log(_controllable.Name + " making decision...");
 
         // Calculate the utility of each available action
         foreach (var action in _actions)
         {
-            if (_controllable.DebugMode) Debug.Log($"    {_controller._name}: {action.Name} has utility of {action.Utility}");
+            if (DebugMode) Debug.Log($"    {_controllable.Name}: {action.Name} has utility of {action.Utility}");
 
             _actionUtilities.Add(action, action.Utility);
         }
@@ -97,7 +96,7 @@ public class UtilitySystem : ADecisionSystem
         // If the best action has negative utility, continue with current action
         if (_actionUtilities[bestAction] < 0f || bestAction == null)
         {
-            if (_controllable.DebugMode) Debug.LogError($"   {_controller._name}: best action is null or has negative utility, continuing with current action: {_currentAction.Name}");
+            if (DebugMode) Debug.LogError($"   {_controllable.Name}: best action is null or has negative utility, continuing with current action: {_currentAction.Name}");
 
             bestAction = _currentAction;
         }
@@ -114,7 +113,7 @@ public class UtilitySystem : ADecisionSystem
         _currentAction.StartAction();
 
         // Debug the decision made
-        if (_controllable.DebugMode) Debug.Log($"{_controller._name} is {_currentAction.Name}");
+        if (DebugMode) Debug.Log($"{_controllable.Name} is {_currentAction.Name}");
 
         DebugDecision();
 

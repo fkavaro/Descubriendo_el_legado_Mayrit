@@ -16,7 +16,7 @@ public abstract class ALogarithmicAction : AAction<float>
 
     protected override float CalculateUtility()
     {
-        utility = (float)Math.Log(_decisionFactor + 1); // Logarithmic function
+        utility = (float)Math.Log(DecisionFactor + 1); // Logarithmic function
 
         if (_inverted)
             utility = 1f - utility; // Inverted logarithmic function

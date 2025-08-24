@@ -16,7 +16,7 @@ public abstract class ALinearAction : AAction<float>
 
     protected override float CalculateUtility()
     {
-        utility = _decisionFactor; // Linear function
+        utility = DecisionFactor; // Linear function
 
         if (_inverted)
             utility = 1f - utility; // Inverted linear function

@@ -16,6 +16,7 @@ public class PlayableCharacter : MonoBehaviour, IBehaviourControllable
     [Tooltip("Whether to update next frame or not")]
     [SerializeField] bool _isExecutionPaused = false;
 
+    public string Name => gameObject.name;
     public bool DebugMode
     {
         get => _debugMode;
@@ -55,7 +56,7 @@ public class PlayableCharacter : MonoBehaviour, IBehaviourControllable
         _characterController = GetComponent<CharacterController>();
         _playerController = new(this);
 
-        _animationController = new(this, name, GetComponentInChildren<Animator>());
+        _animationController = new(this, GetComponentInChildren<Animator>());
         _fsm = new(_animationController);
 
         _animationController.Awake();
