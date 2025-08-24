@@ -8,9 +8,9 @@ using UnityEngine;
 /// Like a logical OR operation, it will return success when a child return success.
 /// </summary>
 public class SelectorNode<TController> : Node<TController>
-where TController : ABehaviourController<TController>
+where TController : MonoBehaviour
 {
-    public SelectorNode(TController controller, int priority = 0)
+    public SelectorNode(ABehaviourController<TController> controller, int priority = 0)
     : base(controller, "Selector", priority) { }
 
     public override Status UpdateNode()

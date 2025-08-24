@@ -1,8 +1,11 @@
 
+using UnityEngine;
+
 /// <summary>
 /// Base class for actions that have a linear decision factor (float).
 /// </summary>
-public abstract class ALinearAction<TController> : AAction<TController, float> where TController : ABehaviourController<TController>
+public abstract class ALinearAction<TController> : AAction<TController, float>
+where TController : MonoBehaviour
 {
     bool _inverted;
 

@@ -2,11 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UnityEngine;
 
 public class SuccederNode<TController> : Node<TController>
-where TController : ABehaviourController<TController>
+where TController : MonoBehaviour
 {
-    public SuccederNode(TController controller, int priority = 0)
+    public SuccederNode(ABehaviourController<TController> controller, int priority = 0)
     : base(controller, "Successer", priority) { }
 
     public override Status UpdateNode()

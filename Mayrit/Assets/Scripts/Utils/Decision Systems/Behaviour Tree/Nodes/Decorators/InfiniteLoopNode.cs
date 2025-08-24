@@ -2,16 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UnityEngine;
 
 public class InfiniteLoopNode<TController> : Node<TController>
-where TController : ABehaviourController<TController>
+where TController : MonoBehaviour
 {
     private readonly Node<TController> _child;
 
-    public InfiniteLoopNode(TController controller)
+    public InfiniteLoopNode(ABehaviourController<TController> controller)
     : base(controller, "InfiniteLoop") { }
 
-    public InfiniteLoopNode(TController controller, Node<TController> child)
+    public InfiniteLoopNode(ABehaviourController<TController> controller, Node<TController> child)
     : base(controller, "InfiniteLoop")
     {
         AddChild(child); // Use the AddChild method to set the child

@@ -8,9 +8,9 @@ using UnityEngine;
 /// Like a logical NOR operation, it will return success when the child returns failure.
 /// </summary>
 public class InverterNode<TController> : Node<TController>
-where TController : ABehaviourController<TController>
+where TController : MonoBehaviour
 {
-    public InverterNode(TController controller, int priority = 0)
+    public InverterNode(ABehaviourController<TController> controller, int priority = 0)
     : base(controller, "Inverter", priority) { }
 
     public override Status UpdateNode()

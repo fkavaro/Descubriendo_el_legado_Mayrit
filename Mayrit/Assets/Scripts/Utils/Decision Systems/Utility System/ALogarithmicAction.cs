@@ -1,9 +1,11 @@
 using System;
+using UnityEngine;
 
 /// <summary>
 /// Base class for actions that have a logarithmic decision factor (float).
 /// </summary>
-public abstract class ALogarithmicAction<TController> : AAction<TController, float> where TController : ABehaviourController<TController>
+public abstract class ALogarithmicAction<TController> : AAction<TController, float>
+where TController : MonoBehaviour
 {
     bool _inverted;
 

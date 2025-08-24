@@ -8,9 +8,9 @@ using UnityEngine;
 /// Like a logical AND operation, it will return success only if all its children return success.
 /// </summary>
 public class SequenceNode<TController> : Node<TController>
-where TController : ABehaviourController<TController>
+where TController : MonoBehaviour
 {
-    public SequenceNode(TController controller, int priority = 0)
+    public SequenceNode(ABehaviourController<TController> controller, int priority = 0)
     : base(controller, "Sequence", priority) { }
 
     public override Status UpdateNode()

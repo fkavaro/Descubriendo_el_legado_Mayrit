@@ -7,10 +7,10 @@ using UnityEngine.AI;
 /// Requires a NavMeshAgent component to be attached to the GameObject.
 /// </summary>
 [RequireComponent(typeof(NavMeshAgent))]
-public abstract class ANPC<TController> : AAnimationController<TController>
-where TController : ABehaviourController<TController>
+public class ANPC<TController> : AAnimationController<TController>
+where TController : MonoBehaviour
 {
-    protected NavMeshAgent _agent;
+    public NavMeshAgent _agent;
     Spot _destinationSpot = null;
 
     /// <summary>
@@ -36,15 +36,20 @@ where TController : ABehaviourController<TController>
     public float energy = 100;
     #endregion
 
+    // Constructor
+    public ANPC(string name, Animator animator, NavMeshAgent navMeshAgent) : base(name, animator)
+    {
+        _agent = navMeshAgent;
+    }
+
     #region INHERITED METHODS
     /// <summary>
     /// Sets the NavMeshAgent component and initializes its speed.
     /// </summary>
     protected override void OnAwake()
     {
-        base.OnAwake(); // Sets the animator component
+        base.OnAwake();
 
-        _agent = GetComponent<NavMeshAgent>();
         _agent.speed = speed;
         _agent.angularSpeed = rotationSpeed * 100f;
         _agent.stoppingDistance = stoppingDistance;
@@ -122,10 +127,10 @@ where TController : ABehaviourController<TController>
         if (checkingDistance <= nearDistance)
             checkingDistance = nearDistance;
 
-        if (Vector3.Distance(transform.position, destination) < checkingDistance)
+        if (Vector3.Distance(_agent.transform.position, destination) < checkingDistance)
         {
             if (fixRotation)
-                transform.LookAt(destination);
+                _agent.transform.LookAt(destination);
 
             return true;
         }
@@ -157,7 +162,7 @@ where TController : ABehaviourController<TController>
     /// </summary>
     public bool HasArrived(Vector3 destination, bool fixRotation = true, bool fixPosition = true)
     {
-        if (Vector3.Distance(transform.position, destination) < stoppingDistance)
+        if (Vector3.Distance(_agent.transform.position, destination) < stoppingDistance)
         {
             //Debug.Log($"{gameObject.name} has arrived at {destination}.");
 
@@ -168,7 +173,7 @@ where TController : ABehaviourController<TController>
                 if (fixRotation)
                     ForceRotation(_destinationSpot.DirectionToVector()); // Fix rotation to the target position
                 if (fixPosition)
-                    transform.position = _destinationSpot.transform.position;
+                    _agent.transform.position = _destinationSpot.transform.position;
             }
 
             return true;
@@ -181,14 +186,14 @@ where TController : ABehaviourController<TController>
         if (_agent.isOnNavMesh)
             _agent.updateRotation = false; // Disable automatic rotation
 
-        transform.rotation = Quaternion.Euler(lookDirection);
+        _agent.transform.rotation = Quaternion.Euler(lookDirection);
     }
     public void ForceRotation(Quaternion rotation)
     {
         if (_agent.isOnNavMesh)
             _agent.updateRotation = false; // Disable automatic rotation
 
-        transform.rotation = rotation;
+        _agent.transform.rotation = rotation;
     }
 
     /// <summary>

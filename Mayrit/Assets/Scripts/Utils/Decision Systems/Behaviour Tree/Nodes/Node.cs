@@ -7,7 +7,7 @@ using UnityEngine;
 /// Base class for all nodes in the behaviour tree.
 /// </summary>
 public class Node<TController> : ADecisionSystem<TController>
-where TController : ABehaviourController<TController>
+where TController : MonoBehaviour
 {
     public enum Status
     {
@@ -23,7 +23,8 @@ where TController : ABehaviourController<TController>
     protected int _currentChildId;
     public Status status;
 
-    public Node(TController controller, string name = "Node", int priority = 0) : base(controller)
+    public Node(ABehaviourController<TController> controller, string name = "Node", int priority = 0)
+    : base(controller)
     {
         this.name = name;
         this.priority = priority;

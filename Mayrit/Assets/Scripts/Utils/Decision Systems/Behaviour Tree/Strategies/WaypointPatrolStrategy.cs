@@ -8,13 +8,14 @@ using UnityEngine.AI;
 /// WaypointPatrolStrategy is a strategy for patrolling between a list of points using a NavMeshAgent.
 /// </summary>
 public class WaypointPatrolStrategy<TController> : AStrategy<TController>
-where TController : ANPC<TController>
+where TController : MonoBehaviour
 {
     readonly List<Transform> _patrolPoints;
     int _currentPatrolPointIndex;
     bool _isPathCalculated;
 
-    public WaypointPatrolStrategy(TController controller, List<Transform> patrolPoints) : base(controller)
+    public WaypointPatrolStrategy(ANPC<TController> controller, List<Transform> patrolPoints)
+    : base(controller)
     {
         _patrolPoints = patrolPoints;
     }
@@ -26,7 +27,7 @@ where TController : ANPC<TController>
 
         var target = _patrolPoints[_currentPatrolPointIndex];
         _controller.SetDestination(target.position);
-        _controller.transform.LookAt(target);
+        _controller._agent.transform.LookAt(target);
 
         if (_isPathCalculated && _controller.HasArrivedAtDestination())
         {

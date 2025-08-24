@@ -7,9 +7,10 @@ using UnityEngine.InputSystem;
 /// Manages the player states and data
 /// </summary>
 [RequireComponent(typeof(CharacterController))]
-public class PlayableCharacter : AAnimationController<PlayableCharacter>
+public class PlayableCharacter : MonoBehaviour
 {
     #region PUBLIC PROPERTIES
+    public AAnimationController<PlayableCharacter> _animationController;
     [HideInInspector] public CharacterController _characterController;
     public PlayerController _playerController;
 
@@ -31,29 +32,32 @@ public class PlayableCharacter : AAnimationController<PlayableCharacter>
     #endregion
 
     #region INHERITED PROPERTIES
-    protected override void OnAwake()
+    void Awake()
     {
-        base.OnAwake();
-
         _characterController = GetComponent<CharacterController>();
         _playerController = new(this);
+
+        _animationController = new(name, GetComponentInChildren<Animator>());
+        _fsm = new(_animationController);
+
+        _animationController.Awake();
     }
 
-    protected override void OnStart()
+    void Start()
     {
+        _animationController.Start();
         _playerController.Start();
     }
 
-    protected override void OnUpdate()
+    void Update()
     {
+        _animationController.Update();
         _playerController.Update();
     }
 
-    protected override ADecisionSystem<PlayableCharacter> CreateDecisionSystem()
+    void LateUpdate()
     {
-        _fsm = new(this);
-
-        return _fsm;
+        _animationController.LateUpdate();
     }
     #endregion
 

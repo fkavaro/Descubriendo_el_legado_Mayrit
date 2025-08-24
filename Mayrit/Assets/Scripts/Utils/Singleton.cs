@@ -5,8 +5,8 @@ using UnityEngine;
 /// Ensures only one instance exists and destroys duplicates.
 /// </summary>
 /// <typeparam name="T">The type that extends Singleton.</typeparam>
-public abstract class Singleton<T> : ABehaviourController<T>
-where T : ABehaviourController<T>
+public abstract class Singleton<T> : MonoBehaviour
+where T : MonoBehaviour
 {
     [Header("Singleton Properties")]
     [Tooltip("Wether to destroy the instance when loading a new scene")]
@@ -47,7 +47,7 @@ where T : ABehaviourController<T>
     /// Ensures only one instance exists in the scene.
     /// Destroys any duplicate instances.
     /// </summary>
-    protected override void OnAwake()
+    protected virtual void Awake()
     {
         lock (_lock) // Ensures thread safety when setting the instance.
         {

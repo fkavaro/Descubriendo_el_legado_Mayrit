@@ -7,13 +7,13 @@ using UnityEngine;
 /// RandomDestinationStrategy is a strategy for moving constantly between random points using a NavMeshAgent.
 /// </summary>
 public class RandomDestinationStrategy<TController> : RandomPatrolStrategy<TController>
-where TController : ANPC<TController>
+where TController : MonoBehaviour
 {
     bool _destinationIsSet = false; // Dirty flag
 
     // Center point is the controller transform
-    public RandomDestinationStrategy(TController controller, int samplingIterations = 30, float areaRadious = 10f)
-    : base(controller, controller.transform, samplingIterations, areaRadious) { }
+    public RandomDestinationStrategy(ANPC<TController> controller, int samplingIterations = 30, float areaRadious = 10f)
+    : base(controller, controller._agent.transform, samplingIterations, areaRadious) { }
 
 
     public override Node<TController>.Status Update()
@@ -35,7 +35,7 @@ where TController : ANPC<TController>
         // Is close to destination
         if (_controller.IsCloseToDestination(1f))
         {
-            if (_controller._debugMode) Debug.Log(_controller.name + " arrived at random destination");
+            if (_controller._debugMode) Debug.Log(_controller._name + " arrived at random destination");
             return Node<TController>.Status.Success;
         }
         else // Hasn't arrived

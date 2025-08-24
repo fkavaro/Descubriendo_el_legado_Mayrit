@@ -7,12 +7,12 @@ using UnityEngine;
 /// BehaviourTree 
 /// </summary>
 public class BehaviourTree<TController> : Node<TController>
-where TController : ABehaviourController<TController>
+where TController : MonoBehaviour
 {
-    public BehaviourTree(TController controller, string name = "BehaviourTree")
+    public BehaviourTree(ABehaviourController<TController> controller, string name = "BehaviourTree")
     : base(controller, name) { }
 
-    public BehaviourTree(TController controller, Node<TController> child, string name = "BehaviourTree")
+    public BehaviourTree(ABehaviourController<TController> controller, Node<TController> child, string name = "BehaviourTree")
     : base(controller, name)
     {
         AddChild(child);

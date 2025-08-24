@@ -6,10 +6,16 @@ using UnityEngine.Rendering.Universal;
 /// Base class for NPC states, allowing to handle animations.
 /// </summary>
 public abstract class ANPCState<TController, TStateMachine> : AState<TController, TStateMachine>
-    where TController : ANPC<TController>
+    where TController : MonoBehaviour
     where TStateMachine : AStateMachine<TController, TStateMachine>
 {
-    public ANPCState(string name, TStateMachine stateMachine) : base(name, stateMachine) { }
+    readonly ANPC<TController> _npc;
+
+    public ANPCState(string name, TStateMachine stateMachine, ANPC<TController> npc)
+    : base(name, stateMachine)
+    {
+        _npc = npc;
+    }
 
     /// <summary>
     /// Switchs to the next state afer random time playing an animation.
@@ -17,7 +23,8 @@ public abstract class ANPCState<TController, TStateMachine> : AState<TController
     protected void SwitchStateAfterRandomTime(AState<TController, TStateMachine> nextState, int animation, string animationName)
     {
         int waitTime = Random.Range(5, 21);
-        _controller.StartCoroutine(SwitchStateAfterCertainTimeCoroutine(waitTime, nextState, animation, animationName));
+        // TODO: MAKE THIS WORK
+        //_controller.StartCoroutine(SwitchStateAfterCertainTimeCoroutine(waitTime, nextState, animation, animationName));
     }
 
     /// <summary>
@@ -25,14 +32,16 @@ public abstract class ANPCState<TController, TStateMachine> : AState<TController
     /// </summary>
     protected void SwitchStateAfterCertainTime(float waitTime, AState<TController, TStateMachine> nextState, int animation, string animationName)
     {
-        _controller.StartCoroutine(SwitchStateAfterCertainTimeCoroutine(waitTime, nextState, animation, animationName));
+        // TODO: MAKE THIS WORK
+        //_controller.StartCoroutine(SwitchStateAfterCertainTimeCoroutine(waitTime, nextState, animation, animationName));
     }
 
-    IEnumerator SwitchStateAfterCertainTimeCoroutine(float waitTime, AState<TController, TStateMachine> nextState, int animation, string animationName)
-    {
-        yield return _controller.PlayAnimationCertainTimeCoroutine(waitTime, animation, animationName);
-        SwitchState(nextState);
-    }
+    // IEnumerator SwitchStateAfterCertainTimeCoroutine(float waitTime, AState<TController, TStateMachine> nextState, int animation, string animationName)
+    // {
+    //     TODO: MAKE THIS WORK
+    //     //yield return _controller.PlayAnimationCertainTimeCoroutine(waitTime, animation, animationName);
+    //     SwitchState(nextState);
+    // }
 
     /// <summary>
     /// Switches to the next state if the animation is finished.
@@ -40,9 +49,9 @@ public abstract class ANPCState<TController, TStateMachine> : AState<TController
     protected void SwitchStateAfterAnimation(AState<TController, TStateMachine> nextState, int animation = -1)
     {
         if (animation != -1)
-            _controller.ChangeAnimationTo(animation);
+            _npc.ChangeAnimationTo(animation);
 
-        if (_controller.IsCurrentAnimationFinished())
+        if (_npc.IsCurrentAnimationFinished())
             SwitchState(nextState);
     }
 }

@@ -6,12 +6,11 @@ using System;
 /// Defines a common class for all animation controllers.
 /// Handles animation transitions.
 /// </summary>
-public abstract class AAnimationController<TController> : ABehaviourController<TController>
-where TController : ABehaviourController<TController>
+public class AAnimationController<TController> : ABehaviourController<TController>
+where TController : MonoBehaviour
 {
-    [Header("Animation Controller Properties")]
-    public Animator _animator;
-    protected int _currentAnimation, _lastAnimation;
+    readonly Animator _animator;
+    public int _currentAnimation, _lastAnimation;
 
     #region COMMON ANIMATIONS
     readonly public int _idleAnim = Animator.StringToHash("Idle")
@@ -22,6 +21,12 @@ where TController : ABehaviourController<TController>
         , _afterJumpAnim = Animator.StringToHash("AfterJump")
         ;
     #endregion
+    // Constructor
+    public AAnimationController(string name, Animator animator)
+    : base(name)
+    {
+        _animator = animator;
+    }
 
     #region INHERITED METHODS
     #endregion
@@ -59,10 +64,7 @@ where TController : ABehaviourController<TController>
 
         // If the animation is looping, it's never 'finished'
         if (currentStateInfo.loop)
-        {
-            //Debug.LogWarning("Loop animation wont't finish");
             return false;
-        }
 
         // For non-looping animations, check if normalizedTime >= 1
         return currentStateInfo.normalizedTime >= 1f;
@@ -82,29 +84,26 @@ where TController : ABehaviourController<TController>
 
     public void PlayAnimationCertainTime(float waitTime, int animation, string animationName, Action onComplete = null, bool showtext = true)
     {
-        StartCoroutine(PlayAnimationCertainTimeCoroutine(waitTime, animation, animationName, onComplete, showtext));
+        // TODO: MAKE THIS WORK
+        //StartCoroutine(PlayAnimationCertainTimeCoroutine(waitTime, animation, animationName, onComplete, showtext));
     }
 
     public void PlayAnimationRandomTime(int animation, string animationName, Action onComplete = null, bool showtext = true)
     {
         int waitTime = UnityEngine.Random.Range(5, 21);
-        StartCoroutine(PlayAnimationCertainTimeCoroutine(waitTime, animation, animationName, onComplete, showtext));
+        // TODO: MAKE THIS WORK
+        //StartCoroutine(PlayAnimationCertainTimeCoroutine(waitTime, animation, animationName, onComplete, showtext));
     }
 
     public IEnumerator PlayAnimationCertainTimeCoroutine(float waitTime, int animation, string animationName, Action onComplete = null, bool showtext = true)
     {
         if (_isExecutionPaused) yield break;
-
         _isExecutionPaused = true;
 
         if (showtext && waitTime >= 2f)
-            //animationText.text = animationName + " for " + waitTime + " seconds...";
-
             ChangeAnimationTo(animation);
-
         yield return new WaitForSeconds(waitTime);
 
-        //animationText.text = "";
         _isExecutionPaused = false;
         onComplete?.Invoke();
     }

@@ -5,6 +5,9 @@ using UnityEngine.SceneManagement;
 public class UIManager : Singleton<UIManager>
 {
     #region PUBLIC PROPERTIES
+    ABehaviourController<UIManager> _behaviourController;
+
+    [Header("User Interface Document")]
     public UIDocument _UIDocument;
     [Header("User Interface Properties")]
     public Vector2 _tooltipOffset = new(-30, -30);
@@ -22,27 +25,16 @@ public class UIManager : Singleton<UIManager>
     #endregion
 
     #region INHERITED
-    protected override void OnAwake()
+    protected override void Awake()
     {
         // Singleton
-        base.OnAwake();
+        base.Awake();
 
         _UIDocument = GetComponent<UIDocument>();
-    }
 
-    protected override void OnStart()
-    {
+        _behaviourController = new(name);
 
-    }
-
-    protected override void OnUpdate()
-    {
-
-    }
-
-    protected override ADecisionSystem<UIManager> CreateDecisionSystem()
-    {
-        _fsm = new(this);
+        _fsm = new(_behaviourController);
 
         _mainMenuState = new(_fsm);
         _spectatorHUDState = new(_fsm);
@@ -57,11 +49,30 @@ public class UIManager : Singleton<UIManager>
         else
             _fsm.SetInitialState(_mainMenuState);
 
-        return _fsm;
+        _behaviourController.Awake();
+    }
+
+    void Start()
+    {
+        _behaviourController.Start();
+    }
+
+    void Update()
+    {
+        _behaviourController.Update();
+    }
+
+    void LateUpdate()
+    {
+        _behaviourController.LateUpdate();
     }
     #endregion
 
     #region PUBLIC METHODS
+
+    #endregion
+
+    #region PRIVATE METHODS
 
     #endregion
 }

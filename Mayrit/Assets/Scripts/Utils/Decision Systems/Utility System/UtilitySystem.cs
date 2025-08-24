@@ -7,7 +7,7 @@ using System.Linq;
 /// </summary>
 /// <typeparam name="TController"></typeparam>
 public class UtilitySystem<TController> : ADecisionSystem<TController>
-where TController : ABehaviourController<TController>
+where TController : MonoBehaviour
 {
     /// <summary>
     /// List of actions available for the agent.
@@ -20,7 +20,7 @@ where TController : ABehaviourController<TController>
     /// </summary>
     Dictionary<IAction, float> _actionUtilities = new();
 
-    public UtilitySystem(TController controller) : base(controller) { }
+    public UtilitySystem(ABehaviourController<TController> controller) : base(controller) { }
 
     #region INHERITED METHODS
     protected override void DebugDecision()
@@ -82,13 +82,13 @@ where TController : ABehaviourController<TController>
     void CalculateActionsUtilities()
     {
         if (_controller._debugMode)
-            Debug.Log(_controller.name + " making decision...");
+            Debug.Log(_controller._name + " making decision...");
 
         // Calculate the utility of each available action
         foreach (var action in _actions)
         {
             if (_controller._debugMode)
-                Debug.Log($"    {_controller.name}: {action.Name} has utility of {action.Utility}");
+                Debug.Log($"    {_controller._name}: {action.Name} has utility of {action.Utility}");
 
             _actionUtilities.Add(action, action.Utility);
         }
@@ -101,7 +101,7 @@ where TController : ABehaviourController<TController>
         if (_actionUtilities[bestAction] < 0f || bestAction == null)
         {
             if (_controller._debugMode)
-                Debug.LogError($"   {_controller.name}: best action is null or has negative utility, continuing with current action: {_currentAction.Name}");
+                Debug.LogError($"   {_controller._name}: best action is null or has negative utility, continuing with current action: {_currentAction.Name}");
 
             bestAction = _currentAction;
         }
@@ -119,7 +119,7 @@ where TController : ABehaviourController<TController>
 
         // Debug the decision made
         if (_controller._debugMode)
-            Debug.Log($"{_controller.name} is {_currentAction.Name}");
+            Debug.Log($"{_controller._name} is {_currentAction.Name}");
 
         DebugDecision();
 

@@ -5,7 +5,7 @@ using UnityEngine;
 /// Abstract class for a state machine that handles the states of a controller.
 /// </summary>
 public abstract class AStateMachine<TController, TStateMachineType> : ADecisionSystem<TController>
-where TController : ABehaviourController<TController>
+where TController : MonoBehaviour
 where TStateMachineType : AStateMachine<TController, TStateMachineType>
 {
     public AState<TController, TStateMachineType> CurrentState => _currentState;
@@ -14,7 +14,7 @@ where TStateMachineType : AStateMachine<TController, TStateMachineType>
     protected List<AState<TController, TStateMachineType>> _statesSequence = new();
 
     // Constructor
-    public AStateMachine(TController controller) : base(controller) { }
+    public AStateMachine(ABehaviourController<TController> controller) : base(controller) { }
 
     #region TO BE IMPLEMENTED METHODS
     public abstract void SwitchState(AState<TController, TStateMachineType> state);
@@ -35,7 +35,7 @@ where TStateMachineType : AStateMachine<TController, TStateMachineType>
     protected override void DebugDecision()
     {
         if (_controller._debugMode)
-            Debug.Log("[" + _controller.name + "]" + " is " + _currentState.Name);
+            Debug.Log("[" + _controller._name + "]" + " is " + _currentState.Name);
     }
     #endregion
 

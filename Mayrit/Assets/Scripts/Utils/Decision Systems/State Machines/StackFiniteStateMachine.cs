@@ -7,11 +7,12 @@ using UnityEngine;
 /// Stack-based Finite State Machine implementation for controlling a behaviour.
 /// </summary>
 public class StackFiniteStateMachine<TController> : AStateMachine<TController, StackFiniteStateMachine<TController>>
-where TController : ABehaviourController<TController>
+where TController : MonoBehaviour
 {
     readonly Stack<AState<TController, StackFiniteStateMachine<TController>>> _stateStack = new();
 
-    public StackFiniteStateMachine(TController controller) : base(controller) { }
+    public StackFiniteStateMachine(ABehaviourController<TController> controller)
+    : base(controller) { }
 
     #region INHERITED METHODS
     /// <summary>
@@ -63,7 +64,7 @@ where TController : ABehaviourController<TController>
         if (_stateStack.Count == 0)
         {
             if (_controller._debugMode)
-                Debug.Log("[" + _controller.name + "] state stack is empty");
+                Debug.Log("[" + _controller._name + "] state stack is empty");
 
             return null;
         }
@@ -73,7 +74,7 @@ where TController : ABehaviourController<TController>
             var previousState = _stateStack.Peek();
 
             if (_controller._debugMode)
-                Debug.Log("[" + _controller.name + "] Previous state: " + previousState.Name);
+                Debug.Log("[" + _controller._name + "] Previous state: " + previousState.Name);
 
             return previousState;
         }
@@ -89,7 +90,7 @@ where TController : ABehaviourController<TController>
         if (_stateStack.Count == 0)
         {
             if (_controller._debugMode)
-                Debug.Log("[" + _controller.name + "] state stack is empty");
+                Debug.Log("[" + _controller._name + "] state stack is empty");
 
             return false;
         }

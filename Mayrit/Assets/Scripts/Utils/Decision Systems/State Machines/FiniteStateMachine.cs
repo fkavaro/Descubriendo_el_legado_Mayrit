@@ -1,11 +1,14 @@
 
+using UnityEngine;
+
 /// <summary>
 /// Finite State Machine implementation for controlling a behaviour.
 /// </summary>
 public class FiniteStateMachine<TController> : AStateMachine<TController, FiniteStateMachine<TController>>
-where TController : ABehaviourController<TController>
+where TController : MonoBehaviour
 {
-    public FiniteStateMachine(TController controller) : base(controller) { }
+    public FiniteStateMachine(ABehaviourController<TController> controller)
+    : base(controller) { }
 
     #region INHERITED METHODS
     /// <summary>

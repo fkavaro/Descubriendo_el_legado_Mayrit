@@ -4,11 +4,12 @@ using System.Linq;
 using UnityEngine;
 
 public class ConditionStrategy<TController> : AStrategy<TController>
-where TController : ABehaviourController<TController>
+where TController : MonoBehaviour
 {
     readonly Func<bool> _predicate;
 
-    public ConditionStrategy(TController controller, Func<bool> predicate) : base(controller)
+    public ConditionStrategy(ANPC<TController> controller, Func<bool> predicate)
+    : base(controller)
     {
         _predicate = predicate;
     }

@@ -5,12 +5,12 @@ using UnityEngine;
 /// Base class with common functionalities for all states.
 /// </summary>
 public abstract class AState<TController, TStateMachine>
-    where TController : ABehaviourController<TController>
+    where TController : MonoBehaviour
     where TStateMachine : AStateMachine<TController, TStateMachine>
 {
     public string Name => _stateName;
     protected string _stateName;
-    protected TController _controller;
+    protected ABehaviourController<TController> _controller;
     protected TStateMachine _stateMachine;
     protected float _stateTime = 0f;
     protected readonly AState<TController, TStateMachine> _nextState;

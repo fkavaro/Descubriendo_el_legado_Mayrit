@@ -7,13 +7,13 @@ using UnityEngine;
 /// RandomPatrolStrategy is a strategy for moving constantly between random points using a NavMeshAgent.
 /// </summary>
 public class RandomPatrolStrategy<TController> : AStrategy<TController>
-where TController : ANPC<TController>
+where TController : MonoBehaviour
 {
     protected readonly Transform _centerPoint;
     protected readonly int _samplingIterations;
     protected readonly float _areaRadious;
 
-    public RandomPatrolStrategy(TController controller, Transform centerPoint, int samplingIterations = 30, float areaRadious = 10f)
+    public RandomPatrolStrategy(ANPC<TController> controller, Transform centerPoint, int samplingIterations = 30, float areaRadious = 10f)
     : base(controller)
     {
         _centerPoint = centerPoint;

@@ -5,8 +5,8 @@ using TMPro;
 /// <summary>
 /// Defines context methods. Implements MonoBehaviour.
 /// </summary>
-public abstract class ABehaviourController<TController> : MonoBehaviour
-where TController : ABehaviourController<TController>
+public class ABehaviourController<TController>
+where TController : MonoBehaviour
 {
     [Header("Behaviour Controller Properties")]
     [Tooltip("Whether to show debug messages in the console or not")]
@@ -14,12 +14,19 @@ where TController : ABehaviourController<TController>
     [Tooltip("Whether to update next frame or not")]
     public bool _isExecutionPaused = false;
 
-    ADecisionSystem<TController> _decisionSystem;
+    public ADecisionSystem<TController> _decisionSystem;
+    public readonly string _name;
+
+    // Construtor
+    public ABehaviourController(string name)
+    {
+        _name = name;
+    }
 
     /// <summary>
     /// Create the main decision system. Executed after OnAwake().
     /// </summary>
-    protected abstract ADecisionSystem<TController> CreateDecisionSystem();
+    //protected abstract ADecisionSystem<TController> CreateDecisionSystem();
 
     /// <summary>
     /// Resets the decision system.
@@ -30,29 +37,28 @@ where TController : ABehaviourController<TController>
     }
 
     #region UNITY EXECUTION EVENTS
-    private void Awake()
+    public void Awake()
     {
         OnAwake();
-        _decisionSystem = CreateDecisionSystem();
         _decisionSystem?.Awake();
     }
     protected virtual void OnAwake() { } // Optionally implemented in subclasses
 
-    private void Start()
+    public void Start()
     {
         OnStart();
         _decisionSystem?.Start();
     }
     protected virtual void OnStart() { } // Optionally implemented in subclasses
 
-    private void Update()
+    public void Update()
     {
         OnUpdate();
         _decisionSystem?.Update();
     }
     protected virtual void OnUpdate() { } // Optionally implemented in subclasses
 
-    private void LateUpdate()
+    public void LateUpdate()
     {
         OnLateUpdate();
         _decisionSystem?.LateUpdate();

@@ -8,12 +8,12 @@ using UnityEngine;
 /// Like a logical OR operation, it will return success when a child return success.
 /// </summary>
 public class PrioritySelectorNode<TController> : SelectorNode<TController>
-where TController : ABehaviourController<TController>
+where TController : MonoBehaviour
 {
     List<Node<TController>> sortedChildren;
     List<Node<TController>> SortedChildren => sortedChildren ??= SortChildren();
 
-    public PrioritySelectorNode(TController controller, int priority = 0)
+    public PrioritySelectorNode(ABehaviourController<TController> controller, int priority = 0)
     : base(controller, priority) { }
 
     public override Status UpdateNode()

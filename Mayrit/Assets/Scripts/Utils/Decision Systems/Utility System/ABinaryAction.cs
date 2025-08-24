@@ -1,8 +1,11 @@
 
+using UnityEngine;
+
 /// <summary>
 /// Base class for actions that have a binary decision factor (true/false).
 /// </summary>
-public abstract class ABinaryAction<TController> : AAction<TController, bool> where TController : ABehaviourController<TController>
+public abstract class ABinaryAction<TController> : AAction<TController, bool>
+where TController : MonoBehaviour
 {
     bool _inverted;
     float _maxValue = 1f;

@@ -6,7 +6,7 @@ using UnityEngine;
 /// Action that runs a finite state machine (FSM) by an Utility System.
 /// </summary>
 public class StateMachineAction<TController, TStateMachine> : ABinaryAction<TController>
-where TController : ABehaviourController<TController>
+where TController : MonoBehaviour
 where TStateMachine : AStateMachine<TController, TStateMachine>
 {
     readonly TStateMachine _stateMachine;

@@ -16,6 +16,7 @@ public class ProgressManager : Singleton<ProgressManager>
     }
 
     #region PUBLIC PROPERTIES
+    ABehaviourController<ProgressManager> _behaviourController;
     public event Action<Milestone> OnMilestoneChanged;
     public event Action<float> OnTimeSet;
 
@@ -49,25 +50,14 @@ public class ProgressManager : Singleton<ProgressManager>
     #endregion
 
     #region INHERITED
-    protected override void OnAwake()
+    protected override void Awake()
     {
         // Singleton
-        base.OnAwake();
-    }
+        base.Awake();
 
-    protected override void OnStart()
-    {
+        _behaviourController = new(name);
 
-    }
-
-    protected override void OnUpdate()
-    {
-
-    }
-
-    protected override ADecisionSystem<ProgressManager> CreateDecisionSystem()
-    {
-        _fsm = new(this);
+        _fsm = new(_behaviourController);
 
         // States initialization
         _visionState = new(Milestone._1_Vision, _visionInformation, _fsm);
@@ -81,7 +71,22 @@ public class ProgressManager : Singleton<ProgressManager>
 
         //_fsm.SetInitialState(_visionState);
 
-        return _fsm;
+        _behaviourController.Awake();
+    }
+
+    void Start()
+    {
+        _behaviourController.Start();
+    }
+
+    void Update()
+    {
+        _behaviourController.Update();
+    }
+
+    void LateUpdate()
+    {
+        _behaviourController.LateUpdate();
     }
     #endregion
 

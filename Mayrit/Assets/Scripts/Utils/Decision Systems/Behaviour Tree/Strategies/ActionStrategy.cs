@@ -4,11 +4,12 @@ using System.Linq;
 using UnityEngine;
 
 public class ActionStrategy<TController> : AStrategy<TController>
-where TController : ABehaviourController<TController>
+where TController : MonoBehaviour
 {
     readonly Action _action;
 
-    public ActionStrategy(TController controller, Action action) : base(controller)
+    public ActionStrategy(ANPC<TController> controller, Action action)
+    : base(controller)
     {
         _action = action;
     }

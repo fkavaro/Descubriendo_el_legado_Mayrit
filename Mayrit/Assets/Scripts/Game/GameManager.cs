@@ -4,8 +4,9 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
-
     #region PUBLIC PROPERTIES
+    ABehaviourController<GameManager> _behaviourController;
+
     // Finite State Machine
     public FiniteStateMachine<GameManager> _fsm;
     public MainMenu_GameState _mainMenuState;
@@ -21,26 +22,16 @@ public class GameManager : Singleton<GameManager>
     #endregion
 
     #region INHERITED
-    protected override void OnAwake()
+    protected override void Awake()
     {
         // Singleton
-        base.OnAwake();
+        base.Awake();
 
         _inputActions = new();
-    }
 
-    protected override void OnStart()
-    {
+        _behaviourController = new(name);
 
-    }
-
-    protected override void OnUpdate()
-    {
-
-    }
-    protected override ADecisionSystem<GameManager> CreateDecisionSystem()
-    {
-        _fsm = new(this);
+        _fsm = new(_behaviourController);
 
         _mainMenuState = new(_fsm);
         _gamePlayState = new(_fsm);
@@ -53,7 +44,22 @@ public class GameManager : Singleton<GameManager>
         else
             _fsm.SetInitialState(_mainMenuState);
 
-        return _fsm;
+        _behaviourController.Awake();
+    }
+
+    void Start()
+    {
+        _behaviourController.Start();
+    }
+
+    void Update()
+    {
+        _behaviourController.Update();
+    }
+
+    void LateUpdate()
+    {
+        _behaviourController.LateUpdate();
     }
 
     private void OnDestroy()

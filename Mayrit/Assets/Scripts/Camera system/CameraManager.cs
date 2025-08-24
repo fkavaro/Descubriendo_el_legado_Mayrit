@@ -7,6 +7,8 @@ using Unity.Cinemachine;
 public class CameraManager : Singleton<CameraManager>
 {
     #region PUBLIC PROPERTIES
+    ABehaviourController<CameraManager> _behaviourController;
+
     // Finite State Machine
     public FiniteStateMachine<CameraManager> _fsm;
     public Spectator_CameraState _spectatorState;
@@ -66,36 +68,18 @@ public class CameraManager : Singleton<CameraManager>
     #endregion
 
     #region INHERITED PROPERTIES
-    protected override void OnAwake()
+    protected override void Awake()
     {
         // Singleton
-        base.OnAwake();
+        base.Awake();
 
         // Set camera target at min height
         CinemachineOrbitalFollow _orbitalFollow = _spectatorCamera.GetComponent<CinemachineOrbitalFollow>();
         _orbitalFollow.Radius = _movementLimitsY.y;
-    }
 
-    protected override void OnStart()
-    {
-        if (_spectatorCamera.LookAt.position.y != _movementLimitsY.x)
-        {
-            // Fix spectator target height
-            _spectatorCamera.LookAt.position = new(
-                _spectatorCamera.LookAt.position.x,
-                _movementLimitsY.x,
-                _spectatorCamera.LookAt.position.z);
-        }
-    }
+        _behaviourController = new(name);
 
-    protected override void OnUpdate()
-    {
-
-    }
-
-    protected override ADecisionSystem<CameraManager> CreateDecisionSystem()
-    {
-        _fsm = new(this);
+        _fsm = new(_behaviourController);
 
         _spectatorState = new(_fsm,
             _spectatorCamera);
@@ -108,7 +92,31 @@ public class CameraManager : Singleton<CameraManager>
 
         _fsm.SetInitialState(_spectatorState);
 
-        return _fsm;
+        _behaviourController.Awake();
+    }
+
+    void Start()
+    {
+        if (_spectatorCamera.LookAt.position.y != _movementLimitsY.x)
+        {
+            // Fix spectator target height
+            _spectatorCamera.LookAt.position = new(
+                _spectatorCamera.LookAt.position.x,
+                _movementLimitsY.x,
+                _spectatorCamera.LookAt.position.z);
+        }
+
+        _behaviourController.Start();
+    }
+
+    void Update()
+    {
+        _behaviourController.Update();
+    }
+
+    void LateUpdate()
+    {
+        _behaviourController.LateUpdate();
     }
     #endregion
 
@@ -118,7 +126,7 @@ public class CameraManager : Singleton<CameraManager>
     /// </summary>
     public void SwitchToSpectatorCamera()
     {
-        if (_debugMode) Debug.Log("Switching to spectator camera");
+        if (_behaviourController._debugMode) Debug.Log("Switching to spectator camera");
 
         if (_thirdPersonState.IsCurrentState())
         {
@@ -160,7 +168,7 @@ public class CameraManager : Singleton<CameraManager>
 
     public void SwitchToOrbitalCamera(Transform objectToOrbitAround, AInformationSO information)
     {
-        if (_debugMode) Debug.Log("Switching to orbital camera");
+        if (_behaviourController._debugMode) Debug.Log("Switching to orbital camera");
 
         // Hide contextual panel
         UIManager.Instance._spectatorHUDState._contextualPanel.Hide();
@@ -183,7 +191,7 @@ public class CameraManager : Singleton<CameraManager>
     /// </summary>
     public void SwitchToThirdPersonCamera()
     {
-        if (_debugMode) Debug.Log("Switching to third person camera");
+        if (_behaviourController._debugMode) Debug.Log("Switching to third person camera");
 
         // Update third person camera target to current playable character
         PlayableCharacter playerTransform = GameManager.Instance.GetCurrentPlayableCharacter();
