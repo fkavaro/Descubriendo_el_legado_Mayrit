@@ -1,6 +1,9 @@
 using System;
 using UnityEngine;
 
+/// <summary>
+/// Manages the progress states and data. Singleton.
+/// </summary>
 public class ProgressManager : Singleton<ProgressManager>, IBehaviourControllable
 {
     public enum Milestone
@@ -15,12 +18,30 @@ public class ProgressManager : Singleton<ProgressManager>, IBehaviourControllabl
         _8_Conquest,
     }
 
-    #region PUBLIC PROPERTIES
+    #region EDITOR PROPERTIES
     [Header("Behaviour Controller Properties")]
     [Tooltip("Whether to show debug messages in the console or not")]
     [SerializeField] bool _debugMode = false;
     [Tooltip("Whether to update next frame or not")]
     [SerializeField] bool _isExecutionPaused = false;
+
+    [Header("Milestone properties")]
+    public Milestone _currentMilestone;
+
+    [Space]
+    public Milestone_InformationSO _visionInformation;
+    public Milestone_InformationSO _foundationInformation;
+    public Milestone_InformationSO _albacarInformation;
+    public Milestone_InformationSO _almudaynaInformation;
+    public Milestone_InformationSO _ramiroAttackInformation;
+    public Milestone_InformationSO _almanzorInformation;
+    public Milestone_InformationSO _schoolInformation;
+    public Milestone_InformationSO _conquestInformation;
+    #endregion
+
+    #region PROPERTIES
+    public event Action<Milestone> OnMilestoneChanged;
+    public event Action<float> OnTimeSet;
 
     public string Name => gameObject.name;
     public bool DebugMode
@@ -34,24 +55,7 @@ public class ProgressManager : Singleton<ProgressManager>, IBehaviourControllabl
         set => _isExecutionPaused = value;
     }
 
-    [Header("Milestone properties")]
-    public Milestone _currentMilestone;
-
-    [Space()]
-    public Milestone_InformationSO _visionInformation;
-    public Milestone_InformationSO _foundationInformation;
-    public Milestone_InformationSO _albacarInformation;
-    public Milestone_InformationSO _almudaynaInformation;
-    public Milestone_InformationSO _ramiroAttackInformation;
-    public Milestone_InformationSO _almanzorInformation;
-    public Milestone_InformationSO _schoolInformation;
-    public Milestone_InformationSO _conquestInformation;
-
-    public event Action<Milestone> OnMilestoneChanged;
-    public event Action<float> OnTimeSet;
     public ABehaviourController _behaviourController;
-
-    // State Machine
     public FiniteStateMachine _fsm;
     public Vision_AProgressState _visionState;
     public Foundation_AProgressState _foundationState;
@@ -63,11 +67,7 @@ public class ProgressManager : Singleton<ProgressManager>, IBehaviourControllabl
     public Conquest_AProgressState _conquestState;
     #endregion
 
-    #region PRIVATE PROPERTIES
-
-    #endregion
-
-    #region INHERITED
+    #region MONOBEHAVIOUR
     protected override void Awake()
     {
         // Singleton

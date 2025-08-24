@@ -1,9 +1,12 @@
 using System;
 using UnityEngine;
 
+/// <summary>
+/// Manages the time in game and data. Singleton.
+/// </summary>
 public class TimeManager : Singleton<TimeManager>
 {
-    #region PUBLIC PROPERTIES
+    #region EDITOR PROPERTIES
     [Header("Time Settings")]
     [Tooltip("Whether the time will advance automatically or just to reach a wanted time")]
     public bool _isDynamic = false;
@@ -40,14 +43,14 @@ public class TimeManager : Singleton<TimeManager>
     public AnimationCurve _moonIntensityCurve;
     #endregion
 
-    #region PRIVATE PROPERTIES
+    #region PROPERTIES
     [HideInInspector] public bool _isDayTime = true; // Whether current time is between 6 and 18 hours or not
     bool _isWantedTimeReached, // Whether the current time is close enough to the wanted time
         _increaseTime; // Whether the time should be increased or decreased
     float _normalisedTime; // Normalised time value between 0 and 1, where 0 is midnight and 1 is the next midnight
     #endregion
 
-    #region INHERITED METHODS
+    #region MONOBEHAVIOUR
     // Awake is called when the script instance is being loaded
     protected override void Awake()
     {

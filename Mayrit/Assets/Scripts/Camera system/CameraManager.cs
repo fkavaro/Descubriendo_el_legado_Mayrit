@@ -4,26 +4,18 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Unity.Cinemachine;
 
+
+/// <summary>
+/// Manages the camera states and data. Singleton.
+/// </summary>
 public class CameraManager : Singleton<CameraManager>, IBehaviourControllable
 {
-    #region PUBLIC PROPERTIES
+    #region EDITOR PROPERTIES
     [Header("Behaviour Controller Properties")]
     [Tooltip("Whether to show debug messages in the console or not")]
     [SerializeField] bool _debugMode = false;
     [Tooltip("Whether to update next frame or not")]
     [SerializeField] bool _isExecutionPaused = false;
-
-    public string Name => gameObject.name;
-    public bool DebugMode
-    {
-        get => _debugMode;
-        set => _debugMode = value;
-    }
-    public bool IsExecutionPaused
-    {
-        get => _isExecutionPaused;
-        set => _isExecutionPaused = value;
-    }
 
     [Header("Spectator camera")]
     public CinemachineCamera _spectatorCamera;
@@ -66,20 +58,29 @@ public class CameraManager : Singleton<CameraManager>, IBehaviourControllable
     public float _3rdPersonCameraOrbitSpeed = 3f,
         _bottomClamp = -30f,
         _topClamp = 40f;
+    #endregion
+
+    #region PROPERTIES
+    public string Name => gameObject.name;
+    public bool DebugMode
+    {
+        get => _debugMode;
+        set => _debugMode = value;
+    }
+    public bool IsExecutionPaused
+    {
+        get => _isExecutionPaused;
+        set => _isExecutionPaused = value;
+    }
 
     public ABehaviourController _behaviourController;
-
-    // Finite State Machine
     public FiniteStateMachine _fsm;
     public Spectator_CameraState _spectatorState;
     public ThirdPerson_CameraState _thirdPersonState;
     public Orbital_CameraState _orbitalState;
     #endregion
 
-    #region PRIVATE PROPERTIES  
-    #endregion
-
-    #region INHERITED PROPERTIES
+    #region MONOBEHAVIOUR
     protected override void Awake()
     {
         // Singleton

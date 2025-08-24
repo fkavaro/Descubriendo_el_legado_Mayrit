@@ -1,16 +1,28 @@
+using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Manages the user interface states and data. Singleton.
+/// </summary>
 public class UIManager : Singleton<UIManager>, IBehaviourControllable
 {
-    #region PUBLIC PROPERTIES
+    #region EDITOR PROPERTIES
     [Header("Behaviour Controller Properties")]
     [Tooltip("Whether to show debug messages in the console or not")]
     [SerializeField] bool _debugMode = false;
     [Tooltip("Whether to update next frame or not")]
     [SerializeField] bool _isExecutionPaused = false;
 
+    [Header("User Interface Document")]
+    public UIDocument _UIDocument;
+
+    [Header("User Interface Properties")]
+    public Vector2 _tooltipOffset = new(-30, -30);
+    #endregion
+
+    #region PROPERTIES
     public string Name => gameObject.name;
     public bool DebugMode
     {
@@ -23,14 +35,7 @@ public class UIManager : Singleton<UIManager>, IBehaviourControllable
         set => _isExecutionPaused = value;
     }
 
-    [Header("User Interface Document")]
-    public UIDocument _UIDocument;
-    [Header("User Interface Properties")]
-    public Vector2 _tooltipOffset = new(-30, -30);
-
     ABehaviourController _behaviourController;
-
-    // State Machine
     public StackFiniteStateMachine _fsm;
     public MainMenu_UIState _mainMenuState;
     public SpectatorHUD_UIState _spectatorHUDState;
@@ -39,10 +44,7 @@ public class UIManager : Singleton<UIManager>, IBehaviourControllable
     public HeritageMenu_UIState _heritageState;
     #endregion
 
-    #region PRIVATE PROPERTIES
-    #endregion
-
-    #region INHERITED
+    #region MONOBEHAVIOUR
     protected override void Awake()
     {
         // Singleton

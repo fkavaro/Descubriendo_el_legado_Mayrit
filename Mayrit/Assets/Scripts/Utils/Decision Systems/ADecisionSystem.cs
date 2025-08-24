@@ -1,11 +1,14 @@
 using UnityEngine;
 
+/// <summary>
+/// Abstract class that defines a decision system for a controllable object.
+/// </summary>
 public abstract class ADecisionSystem
 {
     public readonly IBehaviourControllable _controllable;
-
     protected bool DebugMode => _controllable.DebugMode;
 
+    // Constructor
     public ADecisionSystem(ABehaviourController controller)
     {
         controller._decisionSystem = this;

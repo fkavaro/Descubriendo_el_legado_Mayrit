@@ -2,15 +2,23 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Manages the game states and data. Singleton.
+/// </summary>
 public class GameManager : Singleton<GameManager>, IBehaviourControllable
 {
-    #region PUBLIC PROPERTIES
+    #region EDITOR PROPERTIES
     [Header("Behaviour Controller Properties")]
     [Tooltip("Whether to show debug messages in the console or not")]
     [SerializeField] bool _debugMode = false;
     [Tooltip("Whether to update next frame or not")]
     [SerializeField] bool _isExecutionPaused = false;
 
+    [Header("Player")]
+    public PlayableCharacter _currentPlayableCharacter;
+    #endregion
+
+    #region PROPERTIES
     public string Name => gameObject.name;
     public bool DebugMode
     {
@@ -23,12 +31,7 @@ public class GameManager : Singleton<GameManager>, IBehaviourControllable
         set => _isExecutionPaused = value;
     }
 
-    [Header("Player")]
-    public PlayableCharacter _currentPlayableCharacter;
-
     public ABehaviourController _behaviourController;
-
-    // Finite State Machine
     public FiniteStateMachine _fsm;
     public MainMenu_GameState _mainMenuState;
     public GamePlay_GameState _gamePlayState;
@@ -37,11 +40,7 @@ public class GameManager : Singleton<GameManager>, IBehaviourControllable
     public GameInputActions _inputActions;
     #endregion
 
-    #region PRIVATE PROPERTIES
-
-    #endregion
-
-    #region INHERITED
+    #region MONOBEHAVIOUR
     protected override void Awake()
     {
         // Singleton

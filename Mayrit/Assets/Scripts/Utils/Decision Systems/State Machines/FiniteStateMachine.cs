@@ -6,6 +6,7 @@ using UnityEngine;
 /// </summary>
 public class FiniteStateMachine : AStateMachine<FiniteStateMachine>
 {
+    // Constructor
     public FiniteStateMachine(ABehaviourController controller)
     : base(controller) { }
 

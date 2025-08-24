@@ -1,20 +1,36 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 /// <summary>
-/// Manages the player states and data
+/// Manages the player states and data. Singleton.
 /// </summary>
 [RequireComponent(typeof(CharacterController))]
 public class PlayableCharacter : MonoBehaviour, IBehaviourControllable
 {
-    #region PUBLIC PROPERTIES
+    #region EDITOR PROPERTIES
     [Header("Behaviour Controller Properties")]
     [Tooltip("Whether to show debug messages in the console or not")]
     [SerializeField] bool _debugMode = false;
     [Tooltip("Whether to update next frame or not")]
     [SerializeField] bool _isExecutionPaused = false;
+
+    [Header("Character Information")]
+    public AInformationSO _information;
+
+    [Header("Movement Controller Properties")]
+    public Transform _orientation;
+    public float _walkSpeed = 6f;
+    public float _runSpeed = 12f;
+    public float _rotationSpeed = 2f;
+    public float _jumpForce = 2f;
+    public float _gravityForce = 9f;
+    #endregion
+
+    #region PROPERTIES
+    [HideInInspector] public CharacterController _characterController;
+    public AAnimationController _animationController;
+    public PlayerController _playerController;
 
     public string Name => gameObject.name;
     public bool DebugMode
@@ -28,29 +44,10 @@ public class PlayableCharacter : MonoBehaviour, IBehaviourControllable
         set => _isExecutionPaused = value;
     }
 
-    [Header("Character Information")]
-    public AInformationSO _information;
-
-    [Header("Movement Controller Properties")]
-    public Transform _orientation;
-    public float _walkSpeed = 6f;
-    public float _runSpeed = 12f;
-    public float _rotationSpeed = 2f;
-    public float _jumpForce = 2f;
-    public float _gravityForce = 9f;
-
-    public AAnimationController _animationController;
-    [HideInInspector] public CharacterController _characterController;
-    public PlayerController _playerController;
-
-    // Finite State Machine
     public FiniteStateMachine _fsm;
     #endregion
 
-    #region PRIVATE PROPERTIES
-    #endregion
-
-    #region INHERITED PROPERTIES
+    #region MONOBEHAVIOUR
     void Awake()
     {
         _characterController = GetComponent<CharacterController>();

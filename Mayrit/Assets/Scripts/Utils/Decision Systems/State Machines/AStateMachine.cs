@@ -8,7 +8,6 @@ public abstract class AStateMachine<TStateMachineType> : ADecisionSystem
 where TStateMachineType : AStateMachine<TStateMachineType>
 {
     public AState<TStateMachineType> CurrentState => _currentState;
-
     protected AState<TStateMachineType> _currentState, _initialState;
     protected List<AState<TStateMachineType>> _statesSequence = new();
 

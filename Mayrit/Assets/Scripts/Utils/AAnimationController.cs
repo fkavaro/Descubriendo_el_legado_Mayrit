@@ -11,7 +11,6 @@ public class AAnimationController : ABehaviourController
     readonly Animator _animator;
     public int _currentAnimation, _lastAnimation;
 
-    #region COMMON ANIMATIONS
     readonly public int _idleAnim = Animator.StringToHash("Idle")
         , _walkAnim = Animator.StringToHash("Walk")
         , _runAnim = Animator.StringToHash("Run")
@@ -19,16 +18,13 @@ public class AAnimationController : ABehaviourController
         , _jumpAnim = Animator.StringToHash("Jump")
         , _afterJumpAnim = Animator.StringToHash("AfterJump")
         ;
-    #endregion
+
     // Constructor
     public AAnimationController(IBehaviourControllable controllable, Animator animator)
     : base(controllable)
     {
         _animator = animator;
     }
-
-    #region INHERITED METHODS
-    #endregion
 
     #region PUBLIC METHODS
     /// <summary>

@@ -10,6 +10,7 @@ public class StackFiniteStateMachine : AStateMachine<StackFiniteStateMachine>
 {
     readonly Stack<AState<StackFiniteStateMachine>> _stateStack = new();
 
+    // Constructor
     public StackFiniteStateMachine(ABehaviourController controller)
     : base(controller) { }
 
