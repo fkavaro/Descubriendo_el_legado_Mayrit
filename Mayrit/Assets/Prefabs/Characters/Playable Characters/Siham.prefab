@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3518169998641744890}
   m_Layer: 0
-  m_Name: Orientation
+  m_Name: CameraOrientationFollower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -94,14 +94,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _information: {fileID: 11400000, guid: 4146047eade613e41aeaf3f8813dbe44, type: 2}
-  _orientation: {fileID: 3518169998641744890}
+  _cameraOrientationFollower: {fileID: 3518169998641744890}
   _walkSpeed: 1
   _runSpeed: 3
   _rotationSpeed: 4
   _jumpForce: 2
   _gravityForce: 9
   _animator: {fileID: 1639577397424246107}
-  _characterController: {fileID: 0}
 --- !u!143 &5391638514220604821
 CharacterController:
   m_ObjectHideFlags: 0

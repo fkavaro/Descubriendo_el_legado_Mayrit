@@ -13,7 +13,7 @@ public class PlayableCharacter : ABehaviourControllable
     public AInformationSO _information;
 
     [Header("Movement settings")]
-    public Transform _orientation;
+    public Transform _cameraOrientationFollower;
     public float _walkSpeed = 6f;
     public float _runSpeed = 12f;
     public float _rotationSpeed = 2f;

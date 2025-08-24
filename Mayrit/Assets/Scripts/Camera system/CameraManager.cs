@@ -165,11 +165,11 @@ public class CameraManager : ASingletonBehaviourControllable<CameraManager>
     public void SwitchToThirdPersonCamera()
     {
         // Update third person camera target to current playable character
-        PlayableCharacter playerTransform = GameManager.Instance.GetCurrentPlayableCharacter();
+        PlayableCharacter player = GameManager.Instance.GetCurrentPlayableCharacter();
 
         // Set camera follow and look at targets
-        _thirdPersonCamera.Follow = playerTransform._orientation;
-        _thirdPersonCamera.LookAt = playerTransform._orientation;
+        _thirdPersonCamera.Follow = player._cameraOrientationFollower;
+        _thirdPersonCamera.LookAt = player._cameraOrientationFollower;
 
         _fsm.SwitchState(_thirdPersonState);
     }

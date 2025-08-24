@@ -13,7 +13,7 @@ public class FreeRoam_PlayableCharacterState : APlayableCharacterState
 
     public override void StartState()
     {
-        _playerController.Start();
+
     }
 
     public override void UpdateState()

@@ -38,7 +38,7 @@ public abstract class AState<TStateMachine>
     }
 
     public virtual void AwakeState() { } // Optionally implemented in subclasses
-    public abstract void StartState(); // Implemented in subclasses
+    public virtual void StartState() { } // Optionally implemented in subclasses
 
     public void OnUpdateState()
     {

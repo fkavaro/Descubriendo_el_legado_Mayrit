@@ -6,6 +6,8 @@ public class PlayerController
     #region PRIVATE PROPERTIES
     readonly PlayableCharacter _player;
     readonly CharacterController _playerCharacterController;
+    readonly Transform _cameraTransform,
+        _cameraOrientationFollower;
 
     float _verticalVelocity,
         _movementSpeed,
@@ -20,9 +22,6 @@ public class PlayerController
         _right;
 
     Vector2 _movementInput;
-
-    Transform _cameraTransform,
-        _orientation;
     #endregion
 
 
@@ -31,15 +30,11 @@ public class PlayerController
     {
         _player = player;
         _playerCharacterController = playerCharacterController;
+        _cameraTransform = CameraManager.Instance._thirdPersonCamera.transform;
+        _cameraOrientationFollower = _player._cameraOrientationFollower;
     }
 
     #region PUBLIC METHODS
-    public void Start()
-    {
-        _cameraTransform = Camera.main.transform;
-        _orientation = _player._orientation;
-    }
-
     public void Update()
     {
         // Prevent movement if jumping and grounded (pre-jump animation)
@@ -60,45 +55,6 @@ public class PlayerController
     #endregion
 
     #region PRIVATE METHODS
-    void HandleAnimations()
-    {
-        if (_playerCharacterController.isGrounded)
-        {
-            // Handle jump sequence
-            if (_isJumping)
-            {
-                if (_player._animationController.IsAnimationFinished(_player._animationController._preJumpAnim))
-                {
-                    _player._animationController.ChangeAnimationTo(_player._animationController._jumpAnim, 0f);
-                }
-                else if (_player._animationController.IsAnimationFinished(_player._animationController._jumpAnim))
-                {
-                    _player._animationController.ChangeAnimationTo(_player._animationController._afterJumpAnim, 0f);
-                    _isJumping = false; // Reset jumping state after jump animation
-                }
-            }
-            else if (_isJumpPressed)
-            {
-                _player._animationController.ChangeAnimationTo(_player._animationController._preJumpAnim, 0f);
-                _isJumping = true;
-            }
-            else if (_movementInput == Vector2.zero)
-                _player._animationController.ChangeAnimationTo(_player._animationController._idleAnim);
-            else if (_isRunPressed)
-                _player._animationController.ChangeAnimationTo(_player._animationController._runAnim);
-            else
-                _player._animationController.ChangeAnimationTo(_player._animationController._walkAnim);
-        }
-        else // In air
-        {
-            // Play falling animation if not jumping
-            // if (!_isJumping && _verticalVelocity < 0)
-            // {
-            //     _player.ChangeAnimationTo(_player._fallAnim);
-            // }
-        }
-    }
-
     /// <summary>
     /// Handles player movement based on input and camera orientation.
     /// </summary>
@@ -140,17 +96,81 @@ public class PlayerController
         if (_movementInput != Vector2.zero)
         {
             // Rotate orientation
-            Vector3 viewDir = _player.transform.position - new Vector3(_cameraTransform.position.x, _player.transform.position.y, _cameraTransform.position.z);
-            _orientation.forward = viewDir.normalized;
+            Vector3 cameraPos = new(_cameraTransform.position.x, _player.transform.position.y, _cameraTransform.position.z);
+            Vector3 viewDir = _player.transform.position - cameraPos;
+            _cameraOrientationFollower.forward = viewDir.normalized;
 
-            Vector3 inputDir = _orientation.forward * _movementInput.y + _orientation.right * _movementInput.x;
+            Vector3 inputDir = _cameraOrientationFollower.forward * _movementInput.y + _cameraOrientationFollower.right * _movementInput.x;
+            inputDir.y = 0f; // Prevent vertical rotation
 
             // Faster rotation if walking
             _rotationSpeed = _isRunPressed ? _player._rotationSpeed : _player._rotationSpeed * 2f;
 
             _player.transform.forward = Vector3.Slerp(_player.transform.forward, inputDir.normalized, Time.deltaTime * _rotationSpeed);
         }
+
+        // // Only rotate if there is movement input
+        // if (_movementInput != Vector2.zero)
+        // {
+        //     // Calculate direction based on camera orientation and input
+        //     Vector3 inputDir = _cameraOrientationFollower.forward * _movementInput.y + _cameraOrientationFollower.right * _movementInput.x;
+        //     inputDir.y = 0f; // Prevent vertical rotation
+
+        //     if (inputDir.sqrMagnitude > 0.001f)
+        //     {
+        //         // Set rotation speed: running rotates faster
+        //         _rotationSpeed = _isRunPressed ? _player._rotationSpeed * 2f : _player._rotationSpeed;
+
+        //         // Smoothly rotate player towards movement direction
+        //         Quaternion targetRotation = Quaternion.LookRotation(inputDir.normalized);
+        //         _player.transform.rotation = Quaternion.Slerp(_player.transform.rotation, targetRotation, Time.deltaTime * _rotationSpeed);
+
+        //         // Update orientation to match player forward
+        //         _cameraOrientationFollower.forward = _player.transform.forward;
+        //     }
+        // }
     }
+
+    void HandleAnimations()
+    {
+        if (_playerCharacterController.isGrounded)
+        {
+            // Handle jump sequence
+            if (_isJumping)
+            {
+                if (_player._animationController.IsAnimationFinished(_player._animationController._preJumpAnim))
+                {
+                    _player._animationController.ChangeAnimationTo(_player._animationController._jumpAnim, 0f);
+                }
+                else if (_player._animationController.IsAnimationFinished(_player._animationController._jumpAnim))
+                {
+                    _player._animationController.ChangeAnimationTo(_player._animationController._afterJumpAnim, 0f);
+                    _isJumping = false; // Reset jumping state after jump animation
+                }
+            }
+            else if (_isJumpPressed)
+            {
+                _player._animationController.ChangeAnimationTo(_player._animationController._preJumpAnim, 0f);
+                _isJumping = true;
+            }
+            else if (_movementInput == Vector2.zero)
+                _player._animationController.ChangeAnimationTo(_player._animationController._idleAnim);
+            else if (_isRunPressed)
+                _player._animationController.ChangeAnimationTo(_player._animationController._runAnim);
+            else
+                _player._animationController.ChangeAnimationTo(_player._animationController._walkAnim);
+        }
+        else // In air
+        {
+            // Play falling animation if not jumping
+            // if (!_isJumping && _verticalVelocity < 0)
+            // {
+            //     _player.ChangeAnimationTo(_player._fallAnim);
+            // }
+        }
+    }
+
+
 
     /// <summary>
     /// Applies movement to the player combining horizontal and vertical input.
