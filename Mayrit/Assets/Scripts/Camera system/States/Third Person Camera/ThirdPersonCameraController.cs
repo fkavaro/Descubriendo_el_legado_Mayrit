@@ -21,19 +21,13 @@ public class ThirdPersonCameraController
         _cameraTarget = camera.Target.LookAtTarget;
         _targetPitch = 0f;
         _targetYaw = 0f;
-    }
-
-    public void Start()
-    {
-
+        _orbitSpeed = CameraManager.Instance._3rdPersonCameraOrbitSpeed;
+        _bottomClamp = CameraManager.Instance._bottomClamp;
+        _topClamp = CameraManager.Instance._topClamp;
     }
 
     public void LateUpdate()
     {
-        _orbitSpeed = CameraManager.Instance._3rdPersonCameraOrbitSpeed;
-        _bottomClamp = CameraManager.Instance._bottomClamp;
-        _topClamp = CameraManager.Instance._topClamp;
-
         // Read input
         _lookInput = GameManager.Instance._inputActions.Player.Look.ReadValue<Vector2>();
 
@@ -41,7 +35,7 @@ public class ThirdPersonCameraController
         _targetPitch = Mathf.Clamp(_targetPitch - _lookInput.y * _orbitSpeed * Time.deltaTime, _bottomClamp, _topClamp);
         _targetYaw += _lookInput.x * _orbitSpeed * Time.deltaTime;
 
-        // Optionally clamp yaw
+        // Clamp yaw
         if (_targetYaw > 360f) _targetYaw -= 360f;
         if (_targetYaw < 0f) _targetYaw += 360f;
 
