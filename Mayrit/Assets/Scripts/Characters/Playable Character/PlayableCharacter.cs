@@ -13,7 +13,6 @@ public class PlayableCharacter : ABehaviourControllable
     public AInformationSO _information;
 
     [Header("Movement settings")]
-    public Transform _cameraOrientationFollower;
     public float _walkSpeed = 6f;
     public float _runSpeed = 12f;
     public float _rotationSpeed = 2f;
@@ -39,6 +38,7 @@ public class PlayableCharacter : ABehaviourControllable
 
         _animationController = new(this, _animator);
         _playerController = new(this, GetComponent<CharacterController>());
+
         _fsm = new(this);
         _freeRoamState = new(_fsm, this);
         _fsm.SetInitialState(_freeRoamState);

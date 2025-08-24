@@ -7,10 +7,11 @@ using Unity.Cinemachine;
 public class ThirdPersonCameraController
 {
     readonly Transform _cameraTarget;
-    float _orbitSpeed,
+    readonly float _orbitSpeed,
         _bottomClamp,
-        _topClamp,
-        _targetPitch, // Horizontal rotation
+        _topClamp;
+
+    float _targetPitch, // Horizontal rotation
         _targetYaw; // Vertical rotation
 
     // Input
@@ -18,7 +19,7 @@ public class ThirdPersonCameraController
 
     public ThirdPersonCameraController(CinemachineCamera camera)
     {
-        _cameraTarget = camera.Target.LookAtTarget;
+        _cameraTarget = camera.LookAt;
         _targetPitch = 0f;
         _targetYaw = 0f;
         _orbitSpeed = CameraManager.Instance._3rdPersonCameraOrbitSpeed;
@@ -39,8 +40,11 @@ public class ThirdPersonCameraController
         if (_targetYaw > 360f) _targetYaw -= 360f;
         if (_targetYaw < 0f) _targetYaw += 360f;
 
-        // Apply rotation to the follow transform
+        // Target follow current playable character and rotation is applied
         if (_cameraTarget != null)
-            _cameraTarget.rotation = Quaternion.Euler(_targetPitch, _targetYaw, 0f);
+            _cameraTarget.SetPositionAndRotation(
+                GameManager.Instance.GetCurrentPlayableCharacter().transform.position,
+                Quaternion.Euler(_targetPitch, _targetYaw, 0f)
+            );
     }
 }

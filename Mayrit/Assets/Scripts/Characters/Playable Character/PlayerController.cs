@@ -6,7 +6,7 @@ public class PlayerController
     #region PRIVATE PROPERTIES
     readonly PlayableCharacter _player;
     readonly CharacterController _playerCharacterController;
-    readonly Transform _cameraOrientationFollower;
+    readonly Transform _cameraTarget;
 
     float _verticalVelocity,
         _movementSpeed;
@@ -28,7 +28,7 @@ public class PlayerController
     {
         _player = player;
         _playerCharacterController = playerCharacterController;
-        _cameraOrientationFollower = _player._cameraOrientationFollower;
+        _cameraTarget = CameraManager.Instance._thirdPersonCamera.LookAt;
     }
 
     #region PUBLIC METHODS
@@ -44,8 +44,8 @@ public class PlayerController
         _isJumpPressed = GameManager.Instance._inputActions.Player.Jump.IsPressed();
 
         // Get direction in 3D space based on camera orientation
-        _forward = _cameraOrientationFollower.forward.normalized;
-        _right = _cameraOrientationFollower.right.normalized;
+        _forward = _cameraTarget.forward.normalized;
+        _right = _cameraTarget.right.normalized;
 
         // Movement vector from 2D to 3D from camera orientation
         _movement3D = _right * _movementInput.x + _forward * _movementInput.y;
