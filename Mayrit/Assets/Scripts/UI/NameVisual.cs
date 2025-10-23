@@ -4,32 +4,32 @@ using UnityEngine.UIElements;
 [RequireComponent(typeof(UIDocument))]
 public class NameVisual : MonoBehaviour
 {
-    UIDocument uiDocument;
-    Label nameLabel;
-    [SerializeField] string cachedName;
+    UIDocument _uiDocument;
+    Label _nameLabel;
+    [SerializeField] string _cachedName;
 
     void OnEnable()
     {
         // Try to get the UIDocument component from the same GameObject
-        uiDocument = GetComponent<UIDocument>();
-        var root = uiDocument.rootVisualElement;
+        _uiDocument = GetComponent<UIDocument>();
+        var root = _uiDocument.rootVisualElement;
 
         // Try to find a Label with name 'Name' in the document
-        nameLabel = root.Q<Label>(name: "Name");
-        if (nameLabel == null)
+        _nameLabel = root.Q<Label>(name: "Name");
+        if (_nameLabel == null)
         {
             Debug.LogWarning("NameVisual: No Label with name 'Name' was found in the UIDocument.");
             return;
         }
 
         // No cached name: use the game object's parent name
-        if (string.IsNullOrEmpty(cachedName))
+        if (string.IsNullOrEmpty(_cachedName))
         {
-            cachedName = gameObject.transform.parent != null ?
+            _cachedName = gameObject.transform.parent != null ?
                                 gameObject.transform.parent.name :
                                 "Unnamed";
         }
 
-        nameLabel.text = cachedName;
+        _nameLabel.text = _cachedName;
     }
 }

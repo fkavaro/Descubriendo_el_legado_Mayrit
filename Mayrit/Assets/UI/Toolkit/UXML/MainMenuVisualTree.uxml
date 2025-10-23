@@ -1,0 +1,9 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Toolkit/MayritStyle.uss?fileID=7433441132597879392&amp;guid=7a6c8e791557401438e2762dac509247&amp;type=3#MayritStyle" />
+    <ui:VisualElement name="MainMenu" style="flex-grow: 1; -unity-text-align: middle-center; align-self: center; align-content: center; justify-content: center;">
+        <ui:Label text="MAYRIT" name="Title" class="title" style="text-shadow: 5px 10px 1px rgb(31, 44, 57);" />
+        <ui:Button text="Jugar" name="PlayButton" class="button" />
+        <ui:Button text="Ajustes" name="SettingsButton" enabled="false" class="button" />
+        <ui:Button text="Salir" name="QuitButton" class="button" />
+    </ui:VisualElement>
+</ui:UXML>
