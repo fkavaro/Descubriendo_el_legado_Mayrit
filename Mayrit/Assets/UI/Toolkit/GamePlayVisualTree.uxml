@@ -6,7 +6,7 @@
                 <ui:VisualElement style="flex-direction: row; position: absolute; left: 0; top: 0;">
                     <ui:Button text="| |" name="PauseButton" class="button smallButton" style="align-self: flex-start; top: 0; left: 0; position: relative;" />
                     <ui:Button text="?" name="HeritageButton" class="button smallButton" style="align-self: flex-start; display: flex; position: relative;" />
-                    <ui:Button text="Modern" name="ModernSuperpositionButton" class="button mediumButton" style="position: relative;" />
+                    <ui:Button text="Actualidad" name="ModernSuperpositionButton" class="button mediumButton" style="position: relative;" />
                 </ui:VisualElement>
                 <ui:VisualElement name="MilestoneArea" style="top: 0; right: 0; position: absolute; display: flex; flex-direction: row-reverse;">
                     <ui:Button name="NextMilestoneButton" class="button smallButton" style="font-size: 40px; position: relative; align-self: flex-start; background-image: url(&quot;project://database/Assets/UI/Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=-1087164816274819069&amp;guid=2196264947afaa74a8b087d37850e618&amp;type=3#arrow-right@2x&quot;);" />

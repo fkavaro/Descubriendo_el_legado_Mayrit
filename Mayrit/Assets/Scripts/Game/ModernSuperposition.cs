@@ -18,8 +18,6 @@ public class ModernSuperposition : MonoBehaviour
 
     void Start()
     {
-        IsActive = false;
-
         // To know when to deactivate the mode if the camera changes to 3rd person
         CameraManager.Instance.OnCameraStateChanged += CheckCameraState;
 
