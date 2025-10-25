@@ -69,6 +69,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fae0cc97166c56449806f0bd041285ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  _cachedName: 
 --- !u!114 &1136875290700478671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -84,5 +85,5 @@ MonoBehaviour:
   freezeXZAxis: 0
   dynamicScaling: 1
   disappearWhenFar: 0
-  scaleRange: {x: 1, y: 5}
-  distanceRange: {x: 50, y: 500}
+  scaleRange: {x: 1, y: 10}
+  distanceRange: {x: 50, y: 1000}

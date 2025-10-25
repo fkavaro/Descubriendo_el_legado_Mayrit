@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 39664790606224438}
   - component: {fileID: 1524226024950362450}
   m_Layer: 0
-  m_Name: ProgressManager
+  m_Name: "\u2197\uFE0FProgressManager"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

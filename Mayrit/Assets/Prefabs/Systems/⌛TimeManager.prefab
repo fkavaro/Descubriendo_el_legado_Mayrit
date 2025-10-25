@@ -251,7 +251,7 @@ GameObject:
   - component: {fileID: 2068799235105443334}
   - component: {fileID: 9097381160131699623}
   m_Layer: 0
-  m_Name: TimeManager
+  m_Name: "\u231BTimeManager"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
