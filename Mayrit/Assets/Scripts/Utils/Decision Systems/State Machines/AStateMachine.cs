@@ -119,13 +119,13 @@ where TStateMachineType : AStateMachine<TStateMachineType>
 
     public override void Update()
     {
-        if (!_controllable.BehaviourController._isExecutionPaused)
+        if (!IsExecutionPaused)
             _currentState?.OnUpdateState();
     }
 
     public override void LateUpdate()
     {
-        if (!_controllable.BehaviourController._isExecutionPaused)
+        if (!IsExecutionPaused)
             _currentState?.OnLateUpdateState();
     }
 

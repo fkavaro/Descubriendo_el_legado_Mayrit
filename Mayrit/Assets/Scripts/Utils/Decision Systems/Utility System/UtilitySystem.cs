@@ -34,7 +34,7 @@ public class UtilitySystem : ADecisionSystem
 
     public override void Update()
     {
-        if (!_controllable.BehaviourController._isExecutionPaused)
+        if (!IsExecutionPaused)
             _currentAction.UpdateAction();
 
         // Check if it has finished

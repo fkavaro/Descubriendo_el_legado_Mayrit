@@ -1,8 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
 
 [RequireComponent(typeof(BehaviourController))]
@@ -22,11 +17,6 @@ public abstract class ABehaviourControllable : MonoBehaviour, IBehaviourControll
     protected virtual void Awake()
     {
         _behaviourController = GetComponent<BehaviourController>();
-    }
-
-    void IBehaviourControllable.StartCoroutine(IEnumerator enumerator)
-    {
-        StartCoroutine(enumerator);
     }
     #endregion
 

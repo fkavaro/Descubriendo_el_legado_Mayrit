@@ -41,7 +41,7 @@ public class Node : ADecisionSystem
     public override void Update()
     {
         DebugDecision();
-        if (!_controllable.BehaviourController._isExecutionPaused)
+        if (!IsExecutionPaused)
             status = UpdateNode();
     }
 
