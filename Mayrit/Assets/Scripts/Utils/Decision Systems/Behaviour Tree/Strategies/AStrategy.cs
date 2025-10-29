@@ -6,13 +6,12 @@ using UnityEngine;
 public abstract class AStrategy
 {
     protected readonly ANPC _npc;
-    protected readonly IBehaviourControllable _controllable;
-    protected bool DebugMode => _controllable.BehaviourController._debugMode;
+    protected readonly LeafNode _leafNode;
 
-    public AStrategy(ANPC npc)
+    public AStrategy(ANPC npc, LeafNode leafNode)
     {
         _npc = npc;
-        _controllable = npc;
+        _leafNode = leafNode;
     }
 
     public abstract Node.Status Update();

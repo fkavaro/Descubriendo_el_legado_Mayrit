@@ -7,8 +7,8 @@ public class ActionStrategy : AStrategy
 {
     readonly Action _action;
 
-    public ActionStrategy(ANPC controller, Action action)
-    : base(controller)
+    public ActionStrategy(ANPC controller, LeafNode leafNode, Action action)
+    : base(controller, leafNode)
     {
         _action = action;
     }

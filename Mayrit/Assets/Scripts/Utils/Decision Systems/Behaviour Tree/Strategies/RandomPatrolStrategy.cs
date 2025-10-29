@@ -12,8 +12,8 @@ public class RandomPatrolStrategy : AStrategy
     protected readonly int _samplingIterations;
     protected readonly float _areaRadious;
 
-    public RandomPatrolStrategy(ANPC controller, Transform centerPoint, int samplingIterations = 30, float areaRadious = 10f)
-    : base(controller)
+    public RandomPatrolStrategy(ANPC controller, LeafNode leadNode, Transform centerPoint, int samplingIterations = 30, float areaRadious = 10f)
+    : base(controller, leadNode)
     {
         _centerPoint = centerPoint;
         _samplingIterations = samplingIterations;

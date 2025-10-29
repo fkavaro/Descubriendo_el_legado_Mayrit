@@ -23,9 +23,7 @@ public class AAnimationController
     // Constructor
     public AAnimationController(BehaviourController behaviourController, Animator animator)
     {
-        //_controllable = controllable;
         _behaviourController = behaviourController;
-
         _animator = animator;
     }
 

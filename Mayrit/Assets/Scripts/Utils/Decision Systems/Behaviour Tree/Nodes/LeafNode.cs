@@ -18,7 +18,7 @@ public class LeafNode : Node
 
     protected override void DebugDecision()
     {
-        //controller.nodeText.text = name;
+
     }
 
     public override Status UpdateNode()

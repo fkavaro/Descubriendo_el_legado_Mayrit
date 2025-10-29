@@ -13,8 +13,8 @@ public class WaypointPatrolStrategy : AStrategy
     int _currentPatrolPointIndex;
     bool _isPathCalculated;
 
-    public WaypointPatrolStrategy(ANPC controller, List<Transform> patrolPoints)
-    : base(controller)
+    public WaypointPatrolStrategy(ANPC controller, LeafNode leafNode, List<Transform> patrolPoints)
+    : base(controller, leafNode)
     {
         _patrolPoints = patrolPoints;
     }

@@ -11,8 +11,8 @@ public class RandomDestinationStrategy : RandomPatrolStrategy
     bool _destinationIsSet = false; // Dirty flag
 
     // Center point is the controller transform
-    public RandomDestinationStrategy(ANPC controller, int samplingIterations = 30, float areaRadious = 10f)
-    : base(controller, controller._agent.transform, samplingIterations, areaRadious) { }
+    public RandomDestinationStrategy(ANPC controller, LeafNode leafNode, int samplingIterations = 30, float areaRadious = 10f)
+    : base(controller, leafNode, controller._agent.transform, samplingIterations, areaRadious) { }
 
 
     public override Node.Status Update()
@@ -34,7 +34,7 @@ public class RandomDestinationStrategy : RandomPatrolStrategy
         // Is close to destination
         if (_npc.IsCloseToDestination(1f))
         {
-            if (DebugMode) Debug.Log(_controllable.Name + " arrived at random destination");
+            if (_leafNode.DebugMode) Debug.Log(_npc.Name + " arrived at random destination");
             return Node.Status.Success;
         }
         else // Hasn't arrived

@@ -7,8 +7,8 @@ public class ConditionStrategy : AStrategy
 {
     readonly Func<bool> _predicate;
 
-    public ConditionStrategy(ANPC controller, Func<bool> predicate)
-    : base(controller)
+    public ConditionStrategy(ANPC controller, LeafNode leafNode, Func<bool> predicate)
+    : base(controller, leafNode)
     {
         _predicate = predicate;
     }

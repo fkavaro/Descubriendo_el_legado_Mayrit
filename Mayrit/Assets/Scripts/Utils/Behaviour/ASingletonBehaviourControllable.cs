@@ -6,11 +6,8 @@ where T : MonoBehaviour
 {
     #region PROPERTIES
     public string Name => gameObject.name;
-    public BehaviourController BehaviourController
-    {
-        get => _behaviourController;
-        set => _behaviourController = value;
-    }
+    public BehaviourController BehaviourController => _behaviourController;
+
     BehaviourController _behaviourController;
     #endregion
 
