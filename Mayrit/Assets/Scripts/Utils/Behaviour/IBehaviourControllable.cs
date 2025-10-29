@@ -1,11 +1,16 @@
 
 /// <summary>
-/// Interface for objects controlled by a behaviour controller.
+/// Interface for objects with behaviour.
 /// </summary>
 public interface IBehaviourControllable
 {
     string Name { get; }
-    BehaviourController BehaviourController { get; }
+    //BehaviourController BehaviourController { get; }
+    ADecisionSystem DecisionSystem { get; }
 
-    ADecisionSystem CreateDecisionSystem();
+    /// <summary>
+    /// Sets the decision system for this controllable.
+    /// Will be executed in ADecisionSystem Awake.
+    /// </summary>
+    void SetDecisionSystem();
 }

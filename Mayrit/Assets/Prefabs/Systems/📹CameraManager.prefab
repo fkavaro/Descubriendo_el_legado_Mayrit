@@ -602,8 +602,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3768097708187529351}
-  - component: {fileID: 803419942873177935}
   - component: {fileID: 8486277609037237350}
+  - component: {fileID: 2908542068192279621}
   m_Layer: 0
   m_Name: "\U0001F4F9CameraManager"
   m_TagString: Untagged
@@ -633,20 +633,6 @@ Transform:
   - {fileID: 1464312340161193593}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &803419942873177935
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3850563862725291741}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca25dc2e123c61f499d1dc5f06e88f2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _debugMode: 0
-  _isExecutionPaused: 0
 --- !u!114 &8486277609037237350
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -714,6 +700,21 @@ MonoBehaviour:
   _3rdPersonCameraFollowSpeed: 3
   _bottomClamp: -30
   _topClamp: 40
+  _fsm: {fileID: 2908542068192279621}
+--- !u!114 &2908542068192279621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3850563862725291741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67b0dfafff00a8645ab646b826e9bccf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FiniteStateMachine
+  _debugMode: 0
+  _isExecutionPaused: 0
 --- !u!1 &4272530639498313931
 GameObject:
   m_ObjectHideFlags: 0

@@ -48,7 +48,7 @@ public class ThirdPersonCameraController
             _cameraTarget.rotation = Quaternion.Euler(_targetPitch, _targetYaw, 0f);
 
             // Move smoothly camera target to follow the player
-            PlayableCharacter player = GameManager.Instance.GetCurrentPlayableCharacter();
+            PlayableCharacter player = GameManager.Instance._currentPlayableCharacter;
             _cameraTarget.position = Vector3.Lerp(_cameraTarget.position, player.transform.position, Time.unscaledDeltaTime * _followSpeed);
         }
     }

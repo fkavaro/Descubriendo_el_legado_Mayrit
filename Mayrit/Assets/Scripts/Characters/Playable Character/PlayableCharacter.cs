@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 /// Manages the player states and data. Singleton.
 /// </summary>
 [RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(FiniteStateMachine))]
 public class PlayableCharacter : ABehaviourControllable
 {
     #region EDITOR PROPERTIES
@@ -24,30 +25,27 @@ public class PlayableCharacter : ABehaviourControllable
     #endregion
 
     #region PROPERTIES
-    public AAnimationController _animationController;
+    public AnimationController _animationController;
     public PlayerController _playerController;
-    public FiniteStateMachine _fsm;
+    [HideInInspector] public FiniteStateMachine _fsm;
     public FreeRoam_PlayableCharacterState _freeRoamState;
     #endregion
 
-    public override ADecisionSystem CreateDecisionSystem()
+    #region INHERITED
+    void Awake()
+    {
+        _animationController = new(_fsm, _animator);
+        _playerController = new(this, GetComponent<CharacterController>());
+    }
+
+    public override void SetDecisionSystem()
     {
         // FINITE STATE MACHINE
-        _fsm = new(this);
+        _fsm = GetComponent<FiniteStateMachine>();
         _freeRoamState = new(_fsm, this);
         _fsm.SetInitialState(_freeRoamState);
 
-        return _fsm;
-    }
-
-    #region MONOBEHAVIOUR
-    protected override void Awake()
-    {
-        // ABehaviourControllable
-        base.Awake();
-
-        _animationController = new(BehaviourController, _animator);
-        _playerController = new(this, GetComponent<CharacterController>());
+        _fsm.enabled = true; // Ensure FSM is enabled
     }
     #endregion
 }

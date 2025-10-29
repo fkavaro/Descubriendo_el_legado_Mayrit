@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7322661222714234494}
-  - component: {fileID: 965574766683643107}
   - component: {fileID: 1596673507731933656}
+  - component: {fileID: 2986305278641595594}
   - component: {fileID: 5391638514220604821}
   m_Layer: 0
   m_Name: Siham
@@ -35,20 +35,6 @@ Transform:
   - {fileID: 4620937447881479969}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &965574766683643107
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5927973518140181291}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca25dc2e123c61f499d1dc5f06e88f2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _debugMode: 0
-  _isExecutionPaused: 0
 --- !u!114 &1596673507731933656
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68,6 +54,21 @@ MonoBehaviour:
   _jumpForce: 2
   _gravityForce: 9
   _animator: {fileID: 1639577397424246107}
+  _fsm: {fileID: 2986305278641595594}
+--- !u!114 &2986305278641595594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5927973518140181291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67b0dfafff00a8645ab646b826e9bccf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FiniteStateMachine
+  _debugMode: 0
+  _isExecutionPaused: 0
 --- !u!143 &5391638514220604821
 CharacterController:
   m_ObjectHideFlags: 0

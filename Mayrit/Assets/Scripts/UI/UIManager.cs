@@ -4,6 +4,7 @@ using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(UIDocument))]
+[RequireComponent(typeof(StackFiniteStateMachine))]
 
 /// <summary>
 /// Manages the user interface states and data. Singleton.
@@ -19,7 +20,7 @@ public class UIManager : ASingletonBehaviourControllable<UIManager>
     #endregion
 
     #region PROPERTIES
-    public StackFiniteStateMachine _fsm;
+    [HideInInspector] public StackFiniteStateMachine _fsm;
     public MainMenu_UIState _mainMenuState;
     public SpectatorHUD_UIState _spectatorHUDState;
     public PlayerHUD_UIState _playerHUDState;
@@ -27,16 +28,18 @@ public class UIManager : ASingletonBehaviourControllable<UIManager>
     public HeritageMenu_UIState _heritageState;
     #endregion
 
-    public override ADecisionSystem CreateDecisionSystem()
+    #region INHERITED
+    public override void SetDecisionSystem()
     {
         // FINITE STATE MACHINE
-        _fsm = new(this);
+        _fsm = GetComponent<StackFiniteStateMachine>();
+        _fsm.enabled = true; // Ensure FSM is enabled
 
-        _mainMenuState = new(_fsm);
-        _spectatorHUDState = new(_fsm);
-        _playerHUDState = new(_fsm);
-        _pauseState = new(_fsm);
-        _heritageState = new(_fsm);
+        _mainMenuState = new(_fsm, GetComponent<UIDocument>());
+        _spectatorHUDState = new(_fsm, GetComponent<UIDocument>());
+        _playerHUDState = new(_fsm, GetComponent<UIDocument>());
+        _pauseState = new(_fsm, GetComponent<UIDocument>());
+        _heritageState = new(_fsm, GetComponent<UIDocument>());
 
         // Set initial state based on scene name
         string sceneName = SceneManager.GetActiveScene().name;
@@ -45,34 +48,7 @@ public class UIManager : ASingletonBehaviourControllable<UIManager>
         else
             _fsm.SetInitialState(_mainMenuState);
 
-        return _fsm;
+        _fsm.enabled = true; // Ensure FSM is enabled
     }
-
-    #region MONOBEHAVIOUR
-    protected override void Awake()
-    {
-        // Singleton
-        base.Awake();
-
-        _UIDocument = GetComponent<UIDocument>();
-    }
-
-    void Start()
-    {
-
-    }
-
-    void Update()
-    {
-
-    }
-    #endregion
-
-    #region PUBLIC METHODS
-
-    #endregion
-
-    #region PRIVATE METHODS
-
     #endregion
 }

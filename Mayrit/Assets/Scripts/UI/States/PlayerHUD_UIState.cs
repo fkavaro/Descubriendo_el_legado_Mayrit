@@ -13,12 +13,11 @@ public class PlayerHUD_UIState : AUIState
     #endregion
 
     #region INHERITED
-    public PlayerHUD_UIState(StackFiniteStateMachine stateMachine)
-    : base("PlayerHUD", stateMachine) { }
+    public PlayerHUD_UIState(StackFiniteStateMachine stateMachine, UIDocument uiDocument)
+    : base("PlayerHUD", stateMachine, uiDocument) { }
 
     public override void AwakeState()
     {
-        _UIDocument = UIManager.Instance._UIDocument;
         _screen = _UIDocument.rootVisualElement.Q<VisualElement>("PlayerHUD");
 
         _pauseButton = _screen.Q<Button>("PauseButton");

@@ -18,23 +18,20 @@ public class UtilitySystem : ADecisionSystem
     /// </summary>
     Dictionary<IAction, float> _actionUtilities = new();
 
-    public UtilitySystem(IBehaviourControllable controllable)
-    : base(controllable) { }
-
     #region INHERITED METHODS
     protected override void DebugDecision()
     {
 
     }
 
-    public override void Start()
+    public void Start()
     {
         CalculateActionsUtilities();
     }
 
-    public override void Update()
+    public void Update()
     {
-        if (!IsExecutionPaused)
+        if (!_isExecutionPaused)
             _currentAction.UpdateAction();
 
         // Check if it has finished
@@ -80,12 +77,12 @@ public class UtilitySystem : ADecisionSystem
     /// </summary>
     void CalculateActionsUtilities()
     {
-        if (DebugMode) Debug.Log(_controllable.Name + " making decision...");
+        if (_debugMode) Debug.Log(_controllable.Name + " making decision...");
 
         // Calculate the utility of each available action
         foreach (var action in _actions)
         {
-            if (DebugMode) Debug.Log($"    {_controllable.Name}: {action.Name} has utility of {action.Utility}");
+            if (_debugMode) Debug.Log($"    {_controllable.Name}: {action.Name} has utility of {action.Utility}");
 
             _actionUtilities.Add(action, action.Utility);
         }
@@ -97,7 +94,7 @@ public class UtilitySystem : ADecisionSystem
         // If the best action has negative utility, continue with current action
         if (_actionUtilities[bestAction] < 0f || bestAction == null)
         {
-            if (DebugMode) Debug.LogError($"   {_controllable.Name}: best action is null or has negative utility, continuing with current action: {_currentAction.Name}");
+            if (_debugMode) Debug.LogError($"   {_controllable.Name}: best action is null or has negative utility, continuing with current action: {_currentAction.Name}");
 
             bestAction = _currentAction;
         }
@@ -114,7 +111,7 @@ public class UtilitySystem : ADecisionSystem
         _currentAction.StartAction();
 
         // Debug the decision made
-        if (DebugMode) Debug.Log($"{_controllable.Name} is {_currentAction.Name}");
+        if (_debugMode) Debug.Log($"{_controllable.Name} is {_currentAction.Name}");
 
         DebugDecision();
 

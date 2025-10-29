@@ -12,13 +12,12 @@ public class PauseMenu_UIState : AUIState
     #endregion
 
     // Constructor
-    public PauseMenu_UIState(StackFiniteStateMachine stateMachine)
-    : base("PauseMenu", stateMachine) { }
+    public PauseMenu_UIState(StackFiniteStateMachine stateMachine, UIDocument uiDocument)
+    : base("PauseMenu", stateMachine, uiDocument) { }
 
     #region INHERITED
     public override void AwakeState()
     {
-        _UIDocument = UIManager.Instance._UIDocument;
         _screen = _UIDocument.rootVisualElement.Q<VisualElement>("PauseMenu");
         _playButton = _screen.Q<Button>("PlayButton");
         _mainMenuButton = _screen.Q<Button>("MainMenuButton");

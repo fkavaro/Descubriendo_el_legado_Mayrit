@@ -26,12 +26,11 @@ public class SpectatorHUD_UIState : AUIState
     #endregion
 
     #region INHERITED
-    public SpectatorHUD_UIState(StackFiniteStateMachine stateMachine)
-    : base("SpectatorHUD", stateMachine) { }
+    public SpectatorHUD_UIState(StackFiniteStateMachine stateMachine, UIDocument uiDocument)
+    : base("SpectatorHUD", stateMachine, uiDocument) { }
 
     public override void AwakeState()
     {
-        _UIDocument = UIManager.Instance._UIDocument;
         _screen = _UIDocument.rootVisualElement.Q<VisualElement>("SpectatorHUD");
 
         _pauseButton = _screen.Q<Button>("PauseButton");

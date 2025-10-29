@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5479522367331021950}
-  - component: {fileID: 39664790606224438}
   - component: {fileID: 1524226024950362450}
+  - component: {fileID: 4562581324833744901}
   m_Layer: 0
   m_Name: "\u2197\uFE0FProgressManager"
   m_TagString: Untagged
@@ -33,20 +33,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &39664790606224438
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2738208781067544222}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca25dc2e123c61f499d1dc5f06e88f2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _debugMode: 0
-  _isExecutionPaused: 0
 --- !u!114 &1524226024950362450
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69,3 +55,18 @@ MonoBehaviour:
   _almanzorInformation: {fileID: 11400000, guid: ba545476b83664246b41f5a21c2e31f6, type: 2}
   _schoolInformation: {fileID: 11400000, guid: 2835fd8344d0dd54aa0a4199aad67e1d, type: 2}
   _conquestInformation: {fileID: 11400000, guid: 7433d4c770832014cbfe261209c7ac25, type: 2}
+  _fsm: {fileID: 4562581324833744901}
+--- !u!114 &4562581324833744901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2738208781067544222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67b0dfafff00a8645ab646b826e9bccf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FiniteStateMachine
+  _debugMode: 0
+  _isExecutionPaused: 0

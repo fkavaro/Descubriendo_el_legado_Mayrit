@@ -3,8 +3,8 @@ using UnityEngine.AI;
 
 public class Villager : ANPC
 {
-    public override ADecisionSystem CreateDecisionSystem()
+    public override void SetDecisionSystem()
     {
-        throw new System.NotImplementedException();
+
     }
 }

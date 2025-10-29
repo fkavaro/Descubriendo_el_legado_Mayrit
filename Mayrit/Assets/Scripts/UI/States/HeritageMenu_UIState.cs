@@ -12,13 +12,12 @@ public class HeritageMenu_UIState : AUIState
     #endregion
 
     // Constructor
-    public HeritageMenu_UIState(StackFiniteStateMachine stateMachine)
-    : base("HeritageMenu", stateMachine) { }
+    public HeritageMenu_UIState(StackFiniteStateMachine stateMachine, UIDocument uiDocument)
+    : base("HeritageMenu", stateMachine, uiDocument) { }
 
     #region INHERITED
     public override void AwakeState()
     {
-        _UIDocument = UIManager.Instance._UIDocument;
         _screen = _UIDocument.rootVisualElement.Q<VisualElement>("HeritageMenu");
         _playButton = _screen.Q<Button>("PlayButton");
 

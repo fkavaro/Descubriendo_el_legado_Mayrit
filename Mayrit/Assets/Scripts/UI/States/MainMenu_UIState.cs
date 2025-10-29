@@ -13,12 +13,11 @@ public class MainMenu_UIState : AUIState
     #endregion
 
     #region INHERITED PROPERTIES
-    public MainMenu_UIState(StackFiniteStateMachine stateMachine)
-    : base("MainMenu", stateMachine) { }
+    public MainMenu_UIState(StackFiniteStateMachine stateMachine, UIDocument uiDocument)
+    : base("MainMenu", stateMachine, uiDocument) { }
 
     public override void AwakeState()
     {
-        _UIDocument = UIManager.Instance._UIDocument;
         _screen = _UIDocument.rootVisualElement;//.Q<VisualElement>("MainMenu");
         _playButton = _screen.Q<Button>("PlayButton");
         _mainMenuButton = _screen.Q<Button>("SettingsButton");

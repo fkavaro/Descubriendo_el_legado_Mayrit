@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 
+[RequireComponent(typeof(FiniteStateMachine))]
+
 /// <summary>
 /// Manages the progress states and data. Singleton.
 /// </summary>
@@ -36,7 +38,7 @@ public class ProgressManager : ASingletonBehaviourControllable<ProgressManager>
     public event Action<Milestone> OnMilestoneChanged;
     public event Action<float> OnTimeSet;
 
-    public FiniteStateMachine _fsm;
+    [HideInInspector] public FiniteStateMachine _fsm;
     public Vision_AProgressState _visionState;
     public Foundation_AProgressState _foundationState;
     public Albacar_AProgressState _albacarState;
@@ -47,10 +49,11 @@ public class ProgressManager : ASingletonBehaviourControllable<ProgressManager>
     public Conquest_AProgressState _conquestState;
     #endregion
 
-    public override ADecisionSystem CreateDecisionSystem()
+    #region INHERITED
+    public override void SetDecisionSystem()
     {
         // FINITE STATE MACHINE
-        _fsm = new(this);
+        _fsm = GetComponent<FiniteStateMachine>();
 
         // States initialization
         _visionState = new(Milestone._1_Vision, _visionInformation, _fsm);
@@ -62,26 +65,9 @@ public class ProgressManager : ASingletonBehaviourControllable<ProgressManager>
         _schoolState = new(Milestone._7_School, _schoolInformation, _fsm);
         _conquestState = new(Milestone._8_Conquest, _conquestInformation, _fsm);
 
-        //_fsm.SetInitialState(_visionState);
+        _fsm.SetInitialState(_visionState);
 
-        return _fsm;
-    }
-
-    #region MONOBEHAVIOUR
-    protected override void Awake()
-    {
-        // Singleton
-        base.Awake();
-    }
-
-    void Start()
-    {
-
-    }
-
-    void Update()
-    {
-
+        _fsm.enabled = true; // Ensure FSM is enabled
     }
     #endregion
 
@@ -115,9 +101,5 @@ public class ProgressManager : ASingletonBehaviourControllable<ProgressManager>
     {
         OnTimeSet?.Invoke(time);
     }
-    #endregion
-
-    #region PRIVATE METHODS
-
     #endregion
 }

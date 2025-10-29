@@ -21,8 +21,5 @@ public abstract class AProgressState : AState<FiniteStateMachine>
         ProgressManager.Instance._currentMilestone = _milestone;
         ProgressManager.Instance.InvokeOnMilestoneChanged();
         ProgressManager.Instance.InvokeOnTimeSet(_informationSO.WantedTime);
-
-        // Update current playable character
-        GameManager.Instance.GetCurrentPlayableCharacter();
     }
 }

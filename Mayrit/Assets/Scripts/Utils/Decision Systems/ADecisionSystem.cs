@@ -1,42 +1,34 @@
 using UnityEngine;
 
+[RequireComponent(typeof(IBehaviourControllable))]
 /// <summary>
 /// Abstract class that defines a decision system for a controllable object.
 /// </summary>
-public abstract class ADecisionSystem
+public abstract class ADecisionSystem : MonoBehaviour
 {
-    public readonly IBehaviourControllable _controllable;
-    public bool DebugMode
-    {
-        get => _controllable.BehaviourController._debugMode;
-        set => _controllable.BehaviourController._debugMode = value;
-    }
-    public bool IsExecutionPaused
-    {
-        get => _controllable.BehaviourController._isExecutionPaused;
-        set => _controllable.BehaviourController._isExecutionPaused = value;
-    }
+    public IBehaviourControllable _controllable;
 
-    // Constructor
-    public ADecisionSystem(IBehaviourControllable controllable)
-    {
-        _controllable = controllable;
-    }
+    [Tooltip("Whether to show debug messages in the console or not")]
+    public bool _debugMode = false;
+    [Tooltip("Whether to update next frame of the system or not")]
+    public bool _isExecutionPaused = false;
 
     protected abstract void DebugDecision();
-
-    public virtual void Awake() { }
-    public virtual void Start() { }
-    public abstract void Update();
-    public virtual void LateUpdate() { }
-
     public abstract void Reset();
+    /// <summary>
+    /// To be implemented as Awake in derived classes. 
+    /// Will be executed late in Awake.
+    /// </summary>
+    protected virtual void OnAwake() { }
 
-    public virtual void OnCollisionEnter(Collision collision) { }
-    public virtual void OnCollisionStay(Collision collision) { }
-    public virtual void OnCollisionExit(Collision collision) { }
+    void Awake()
+    {
+        if (_debugMode)
+            Debug.Log(gameObject.name + " ADecisionSystem: Setting Controllable");
 
-    public virtual void OnTriggerEnter(Collider other) { }
-    public virtual void OnTriggerStay(Collider other) { }
-    public virtual void OnTriggerExit(Collider other) { }
+        _controllable = GetComponent<IBehaviourControllable>();
+        _controllable.SetDecisionSystem();
+
+        OnAwake();
+    }
 }

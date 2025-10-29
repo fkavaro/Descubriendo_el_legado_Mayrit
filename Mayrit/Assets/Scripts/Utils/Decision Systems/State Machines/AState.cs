@@ -14,10 +14,10 @@ public abstract class AState<TStateMachine>
     protected readonly AState<TStateMachine> _nextState;
 
     // Constructor
-    public AState(string name,
+    public AState(string statename,
     TStateMachine stateMachine)
     {
-        _stateName = name;
+        _stateName = statename;
         _stateMachine = stateMachine;
         _stateMachine.AddStateToSequence(this);
     }
@@ -81,11 +81,11 @@ public abstract class AState<TStateMachine>
     /// </summary>
     public virtual IEnumerator SwitchStateAfterCertainTime(AState<TStateMachine> nextState, float waitTime)
     {
-        _stateMachine.IsExecutionPaused = true;
+        _stateMachine._isExecutionPaused = true;
 
         yield return new WaitForSeconds(waitTime);
 
         _stateMachine?.SwitchState(nextState);
-        _stateMachine.IsExecutionPaused = false;
+        _stateMachine._isExecutionPaused = false;
     }
 }

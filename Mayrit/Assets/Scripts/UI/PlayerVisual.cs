@@ -7,7 +7,7 @@ public class PlayerVisual : Billboard
 {
     UIDocument _uiDocument;
     Button _playerButton;
-    PlayableCharacter _playableCharacter;
+    public PlayableCharacter _playableCharacter;
 
     void Awake()
     {
@@ -30,6 +30,12 @@ public class PlayerVisual : Billboard
 
         // Register click event
         _playerButton.RegisterCallback<ClickEvent>(OnPlayerButtonClick);
+    }
+
+    void Start()
+    {
+        // Update current playable character
+        _playableCharacter = GameManager.Instance._currentPlayableCharacter;
     }
 
     void LateUpdate()
@@ -67,7 +73,7 @@ public class PlayerVisual : Billboard
     void UpdatePlayerButtonVisual(ProgressManager.Milestone milestone)
     {
         // Update current playable character
-        _playableCharacter = GameManager.Instance.GetCurrentPlayableCharacter();
+        _playableCharacter = GameManager.Instance._currentPlayableCharacter;
 
         // Set this transform as player child
         transform.SetParent(_playableCharacter.transform);

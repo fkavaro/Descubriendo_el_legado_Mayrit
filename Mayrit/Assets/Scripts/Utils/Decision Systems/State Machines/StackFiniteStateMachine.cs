@@ -10,10 +10,6 @@ public class StackFiniteStateMachine : AStateMachine<StackFiniteStateMachine>
 {
     readonly Stack<AState<StackFiniteStateMachine>> _stateStack = new();
 
-    // Constructor
-    public StackFiniteStateMachine(IBehaviourControllable controllable)
-    : base(controllable) { }
-
     #region INHERITED METHODS
     /// <summary>
     /// Switchs to another state after exiting the current,
@@ -27,6 +23,7 @@ public class StackFiniteStateMachine : AStateMachine<StackFiniteStateMachine>
         _currentState?.OnExitState();
         _currentState = newState;
         DebugDecision();
+        _currentStateName = _currentState.StateName;
         _currentState?.AwakeState();
         _currentState?.StartState();
     }
@@ -63,7 +60,7 @@ public class StackFiniteStateMachine : AStateMachine<StackFiniteStateMachine>
         // Empty stack
         if (_stateStack.Count == 0)
         {
-            if (DebugMode) Debug.Log("[" + _controllable.Name + "] state stack is empty");
+            if (_debugMode) Debug.Log("[" + _controllable.Name + "] state stack is empty");
 
             return null;
         }
@@ -72,7 +69,7 @@ public class StackFiniteStateMachine : AStateMachine<StackFiniteStateMachine>
             // Get the last state from the stack without removing it
             var previousState = _stateStack.Peek();
 
-            if (DebugMode) Debug.Log("[" + _controllable.Name + "] Previous state: " + previousState.StateName);
+            if (_debugMode) Debug.Log("[" + _controllable.Name + "] Previous state: " + previousState.StateName);
 
             return previousState;
         }
@@ -87,7 +84,7 @@ public class StackFiniteStateMachine : AStateMachine<StackFiniteStateMachine>
         // Empty stack
         if (_stateStack.Count == 0)
         {
-            if (DebugMode) Debug.Log("[" + _controllable.Name + "] state stack is empty");
+            if (_debugMode) Debug.Log("[" + _controllable.Name + "] state stack is empty");
 
             return false;
         }

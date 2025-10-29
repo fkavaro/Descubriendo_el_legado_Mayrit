@@ -6,9 +6,6 @@ using UnityEngine;
 /// </summary>
 public class FiniteStateMachine : AStateMachine<FiniteStateMachine>
 {
-    // Constructor
-    public FiniteStateMachine(IBehaviourControllable controllable)
-    : base(controllable) { }
 
     #region INHERITED METHODS
     /// <summary>

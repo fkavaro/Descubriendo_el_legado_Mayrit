@@ -10,8 +10,8 @@ public abstract class ANPCState<TStateMachine> : AState<TStateMachine>
 {
     readonly ANPC _npc;
 
-    public ANPCState(string name, TStateMachine stateMachine, ANPC npc)
-    : base(name, stateMachine)
+    public ANPCState(string stateName, TStateMachine stateMachine, ANPC npc)
+    : base(stateName, stateMachine)
     {
         _npc = npc;
     }

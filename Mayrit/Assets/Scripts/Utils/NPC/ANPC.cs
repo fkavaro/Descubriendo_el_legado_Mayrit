@@ -33,17 +33,14 @@ public abstract class ANPC : ABehaviourControllable
 
     #region PROPERTIES
     [HideInInspector] public NavMeshAgent _agent;
-    public AAnimationController _animationController;
+    public AnimationController _animationController;
     Spot _destinationSpot = null;
     #endregion
 
     #region INHERITED METHODS
-    protected override void Awake()
+    void Awake()
     {
-        // ABehaviourControllable
-        base.Awake();
-
-        _animationController = new(BehaviourController, _animator);
+        _animationController = new(_decisionSystem, _animator);
 
         _agent = GetComponent<NavMeshAgent>();
         _agent.speed = _walkSpeed;
@@ -55,7 +52,7 @@ public abstract class ANPC : ABehaviourControllable
     public void Update()
     {
         // Stop moving if execution is paused
-        if (BehaviourController._isExecutionPaused)
+        if (_decisionSystem._isExecutionPaused)
             _agent.isStopped = true;
         else
         {

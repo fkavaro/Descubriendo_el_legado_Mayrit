@@ -7,8 +7,11 @@ public abstract class AUIState : AState<StackFiniteStateMachine>
     public UIDocument _UIDocument;
     public VisualElement _screen;
 
-    protected AUIState(string name, StackFiniteStateMachine stateMachine)
-    : base(name, stateMachine) { }
+    protected AUIState(string name, StackFiniteStateMachine stateMachine, UIDocument uiDocument)
+    : base(name, stateMachine)
+    {
+        _UIDocument = uiDocument;
+    }
 
     /// <summary>
     /// Returns true if the cursor is over any UI element that is a descendant of _screen.

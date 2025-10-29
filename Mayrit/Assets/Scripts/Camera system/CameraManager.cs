@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Unity.Cinemachine;
 
-
+[RequireComponent(typeof(FiniteStateMachine))]
 /// <summary>
 /// Manages the camera states and data. Singleton.
 /// </summary>
@@ -57,16 +57,26 @@ public class CameraManager : ASingletonBehaviourControllable<CameraManager>
 
     #region PROPERTIES
     public event Action OnCameraStateChanged;
-    public FiniteStateMachine _fsm;
+    [HideInInspector] public FiniteStateMachine _fsm;
     public Spectator_CameraState _spectatorState;
     public ThirdPerson_CameraState _thirdPersonState;
     public Orbital_CameraState _orbitalState;
     #endregion
 
-    public override ADecisionSystem CreateDecisionSystem()
+    #region INHERITED
+    protected override void Awake()
+    {
+        base.Awake(); // Singleton
+
+        // Set camera target at min height
+        CinemachineOrbitalFollow _orbitalFollow = _spectatorCamera.GetComponent<CinemachineOrbitalFollow>();
+        _orbitalFollow.Radius = _movementLimitsY.y;
+    }
+
+    public override void SetDecisionSystem()
     {
         // FINITE STATE MACHINE
-        _fsm = new(this);
+        _fsm = GetComponent<FiniteStateMachine>();
 
         _spectatorState = new(_fsm,
             _spectatorCamera);
@@ -79,20 +89,11 @@ public class CameraManager : ASingletonBehaviourControllable<CameraManager>
 
         _fsm.SetInitialState(_spectatorState);
 
-        return _fsm;
+        _fsm.enabled = true; // Ensure FSM is enabled
     }
+    #endregion
 
     #region MONOBEHAVIOUR
-    protected override void Awake()
-    {
-        // ASingletonBehaviourControllable
-        base.Awake();
-
-        // Set camera target at min height
-        CinemachineOrbitalFollow _orbitalFollow = _spectatorCamera.GetComponent<CinemachineOrbitalFollow>();
-        _orbitalFollow.Radius = _movementLimitsY.y;
-    }
-
     void Start()
     {
         if (_spectatorCamera.LookAt.position.y != _movementLimitsY.x)
@@ -103,11 +104,6 @@ public class CameraManager : ASingletonBehaviourControllable<CameraManager>
                 _movementLimitsY.x,
                 _spectatorCamera.LookAt.position.z);
         }
-    }
-
-    void Update()
-    {
-
     }
     #endregion
 
@@ -177,7 +173,7 @@ public class CameraManager : ASingletonBehaviourControllable<CameraManager>
     public void SwitchToThirdPersonCamera()
     {
         // Update third person camera target to current playable character
-        Transform playerTranform = GameManager.Instance.GetCurrentPlayableCharacter().transform;
+        Transform playerTranform = GameManager.Instance._currentPlayableCharacter.transform;
 
         // Set camera follow and look at targets
         _thirdPersonCamera.LookAt.position = playerTranform.position;

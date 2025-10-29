@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2963802708733175785}
-  - component: {fileID: 6354518598366967083}
-  - component: {fileID: 6532722418788406652}
   - component: {fileID: 5795229730612990247}
+  - component: {fileID: 3011368031198910140}
+  - component: {fileID: 6354518598366967083}
   m_Layer: 5
   m_Name: "\U0001F39E\uFE0FUIManager"
   m_TagString: Untagged
@@ -34,6 +34,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5795229730612990247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8119952740670593480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dcb27f4c44252841aca24bb5b0023a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dontDestroyOnLoad: 0
+  _UIDocument: {fileID: 0}
+  _tooltipOffset: {x: -30, y: -30}
+  _fsm: {fileID: 3011368031198910140}
+--- !u!114 &3011368031198910140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8119952740670593480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2951634224284464bb2ff5a0eed3648b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StackFiniteStateMachine
+  _debugMode: 0
+  _isExecutionPaused: 0
+  _currentStateName: None
 --- !u!114 &6354518598366967083
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57,32 +88,3 @@ MonoBehaviour:
   m_PivotReferenceSize: 0
   m_Pivot: 0
   m_WorldSpaceCollider: {fileID: 0}
---- !u!114 &6532722418788406652
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8119952740670593480}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca25dc2e123c61f499d1dc5f06e88f2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _debugMode: 0
-  _isExecutionPaused: 0
---- !u!114 &5795229730612990247
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8119952740670593480}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2dcb27f4c44252841aca24bb5b0023a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 0
-  _UIDocument: {fileID: 0}
-  _tooltipOffset: {x: -30, y: -30}

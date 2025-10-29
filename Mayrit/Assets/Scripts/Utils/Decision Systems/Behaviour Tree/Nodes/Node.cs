@@ -15,17 +15,17 @@ public class Node : ADecisionSystem
         Failure
     }
 
-    public readonly string name;
+    public readonly string nodeName;
     public readonly int priority;
 
     public readonly List<Node> children = new();
     protected int _currentChildId;
     public Status status;
 
-    public Node(IBehaviourControllable controllable, string name = "Node", int priority = 0)
-    : base(controllable)
+    public Node(IBehaviourControllable controllable, string nodeName = "Node", int priority = 0)
+    //: base(controllable)
     {
-        this.name = name;
+        this.nodeName = nodeName;
         this.priority = priority;
     }
 
@@ -38,10 +38,10 @@ public class Node : ADecisionSystem
         //controller.nodeText.text = "";
     }
 
-    public override void Update()
+    public void Update()
     {
         DebugDecision();
-        if (!IsExecutionPaused)
+        if (!_isExecutionPaused)
             status = UpdateNode();
     }
 
