@@ -5,7 +5,6 @@
 public interface IBehaviourControllable
 {
     string Name { get; }
-    //BehaviourController BehaviourController { get; }
     ADecisionSystem DecisionSystem { get; }
 
     /// <summary>

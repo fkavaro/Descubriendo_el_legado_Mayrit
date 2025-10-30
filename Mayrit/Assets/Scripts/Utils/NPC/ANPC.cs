@@ -164,7 +164,7 @@ public abstract class ANPC : ABehaviourControllable
                 _destinationSpot.SetOccupied(true);
 
                 if (fixRotation)
-                    ForceRotation(_destinationSpot.DirectionToVector()); // Fix rotation to the target position
+                    ForceRotation(_destinationSpot.DirectionVector); // Fix rotation to the target position
                 if (fixPosition)
                     _agent.transform.position = _destinationSpot.transform.position;
             }
