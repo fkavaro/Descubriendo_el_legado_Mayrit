@@ -36,7 +36,7 @@ public class ProgressManager : ASingletonBehaviourEntity<ProgressManager, Finite
     public event Action<Milestone> OnMilestoneChanged;
     public event Action<float> OnTimeSet;
 
-    [HideInInspector] public FiniteStateMachine _fsm;
+    FiniteStateMachine _fsm;
     public Vision_AProgressState _visionState;
     public Foundation_AProgressState _foundationState;
     public Albacar_AProgressState _albacarState;

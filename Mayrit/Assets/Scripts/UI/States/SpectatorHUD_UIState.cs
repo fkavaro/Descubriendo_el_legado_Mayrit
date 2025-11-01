@@ -147,7 +147,7 @@ public class SpectatorHUD_UIState : AUIState
         _milestoneArea.style.display = DisplayStyle.Flex;
 
         // Switch to spectator camera state if it's not current state
-        if (CameraManager.Instance._fsm.IsCurrentState(CameraManager.Instance._orbitalState))
+        if (CameraManager.Instance.BehaviourSystem.IsCurrentState(CameraManager.Instance._orbitalState))
             CameraManager.Instance.SwitchToSpectatorCamera();
     }
     #endregion
@@ -157,14 +157,14 @@ public class SpectatorHUD_UIState : AUIState
     {
         _milestoneArea.style.display = DisplayStyle.None;
 
-        AProgressState currentProgressState = (AProgressState)ProgressManager.Instance._fsm.CurrentState;
+        AProgressState currentProgressState = (AProgressState)ProgressManager.Instance.BehaviourSystem.CurrentState;
 
         _contextualPanel.ShowInfo(currentProgressState._informationSO);
     }
 
     void OverwriteMilestoneArea()
     {
-        AProgressState currentProgressState = (AProgressState)ProgressManager.Instance._fsm.CurrentState;
+        AProgressState currentProgressState = (AProgressState)ProgressManager.Instance.BehaviourSystem.CurrentState;
 
         if (currentProgressState == null || currentProgressState._informationSO == null)
         {

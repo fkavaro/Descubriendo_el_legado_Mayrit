@@ -19,7 +19,7 @@ public class ThirdPerson_CameraState : ACameraState
         _camera.gameObject.SetActive(true);
 
         // Change HUD
-        UIManager.Instance._sfsm.SwitchState(UIManager.Instance._playerHUDState);
+        UIManager.Instance.BehaviourSystem.SwitchState(UIManager.Instance._playerHUDState);
 
         _cameraController = new(_camera);
     }

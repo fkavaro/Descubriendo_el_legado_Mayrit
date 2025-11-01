@@ -55,7 +55,8 @@ public class CameraManager : ASingletonBehaviourEntity<CameraManager, FiniteStat
 
     #region INTERNAL PROPERTIES
     public event Action OnCameraStateChanged;
-    [HideInInspector] public FiniteStateMachine _fsm;
+
+    FiniteStateMachine _fsm;
     public Spectator_CameraState _spectatorState;
     public ThirdPerson_CameraState _thirdPersonState;
     public Orbital_CameraState _orbitalState;

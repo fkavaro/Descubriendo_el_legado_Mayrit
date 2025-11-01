@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class PlayerController
+public class PlayerController // TODO: inherit from AnimationController?
 {
     #region PRIVATE PROPERTIES
     readonly PlayableCharacter _player;

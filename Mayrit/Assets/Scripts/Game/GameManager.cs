@@ -14,7 +14,7 @@ public class GameManager : ASingletonBehaviourEntity<GameManager, FiniteStateMac
     #endregion
 
     #region INTERNAL PROPERTIES
-    public FiniteStateMachine _fsm;
+    FiniteStateMachine _fsm;
     public MainMenu_GameState _mainMenuState;
     public GamePlay_GameState _gamePlayState;
     public Pause_GameState _pauseState;

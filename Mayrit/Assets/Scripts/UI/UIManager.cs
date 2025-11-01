@@ -18,7 +18,7 @@ public class UIManager : ASingletonBehaviourEntity<UIManager, StackFiniteStateMa
     #endregion
 
     #region INTERNAL PROPERTIES
-    public StackFiniteStateMachine _sfsm;
+    StackFiniteStateMachine _sfsm;
     public MainMenu_UIState _mainMenuState;
     public SpectatorHUD_UIState _spectatorHUDState;
     public PlayerHUD_UIState _playerHUDState;

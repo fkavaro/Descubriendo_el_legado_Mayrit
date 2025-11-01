@@ -21,7 +21,7 @@ public class Spectator_CameraState : ACameraState
         _camera.gameObject.SetActive(true);
 
         // Change HUD
-        UIManager.Instance._sfsm.SwitchState(UIManager.Instance._spectatorHUDState);
+        UIManager.Instance.BehaviourSystem.SwitchState(UIManager.Instance._spectatorHUDState);
 
         _cameraController.Start();
         _cameraSelector.Start();

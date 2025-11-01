@@ -42,7 +42,7 @@ public class HeritageMenu_UIState : AUIState
     void SwitchToHUDState(ClickEvent evt)
     {
         _stateMachine.SwitchToPreviousStateInStack(); // Switch to previous state: player or spectator HUD
-        GameManager.Instance._fsm.SwitchState(GameManager.Instance._gamePlayState);
+        GameManager.Instance.BehaviourSystem.SwitchState(GameManager.Instance._gamePlayState);
     }
     #endregion
 }
