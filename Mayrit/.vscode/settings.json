@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Mayrit.sln"
+    "dotnet.defaultSolution": "Mayrit.slnx"
 }
