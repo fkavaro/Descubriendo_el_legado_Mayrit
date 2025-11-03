@@ -47,9 +47,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bea95cad3cfb0f249a9d1610a767f734, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::House
-  entranceSpots:
+  _entranceSpots:
   - {fileID: 3091194941905945609}
   _householdSize: 1
+  _residents: []
 --- !u!1 &5225422498443419264
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,6 +13,11 @@ public abstract class ABuilding : MonoBehaviour
             villager.transform.position = entranceSpot.transform.position;
             villager.ForceRotation(entranceSpot.DirectionVector);
         }
+        else
+        {
+            villager.transform.position = transform.position;
+            Debug.LogWarning($"No entrance spots defined for building {gameObject.name}. Placing villager at building position.");
+        }
     }
 
     public Spot GetRandomEntranceSpot()

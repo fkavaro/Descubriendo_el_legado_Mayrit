@@ -162,6 +162,8 @@ public class NPCPoolManager : Singleton<NPCPoolManager>
             transform
             ).GetComponent<Villager>();
 
+        villager.gameObject.SetActive(false);
+
         return villager;
     }
 

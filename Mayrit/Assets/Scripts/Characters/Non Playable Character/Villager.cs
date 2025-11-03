@@ -4,8 +4,10 @@ using UnityEngine.AI;
 public class Villager : ANPC<FiniteStateMachine>
 {
     #region EDIROR PROPERTIES
-    // Reference to the home/building this villager belongs to
-    House _house;
+    /// <summary>
+    /// Assigned home.
+    /// </summary>
+    public House _house;
     #endregion
 
     #region INHERITED
