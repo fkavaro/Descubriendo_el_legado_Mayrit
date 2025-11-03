@@ -21,6 +21,8 @@ public class Spot : MonoBehaviour
     // Direction in local coordinates (unit vector in the object's local space)
     [HideInInspector] public Vector3 DirectionVector => Quaternion.Euler(0f, _directionAngle, 0f) * Vector3.forward;
 
+    [HideInInspector] public Quaternion DirectionQuaternion => Quaternion.Euler(0f, _directionAngle, 0f);
+
     // Optionally expose the world-space direction computed from the local direction
     //[HideInInspector] public Vector3 DirectionWorldVector => transform.rotation * DirectionVector;
 

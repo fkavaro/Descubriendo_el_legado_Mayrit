@@ -6,7 +6,7 @@ using UnityEngine.AI;
 /// Abstract base class for NPC (Non-Playable Character).
 /// </summary>
 [RequireComponent(typeof(NavMeshAgent))]
-public abstract class ANPC<T> : ABehaviourEntity<T>
+public abstract class ANPC<T> : ABehaviourEntity<T> // TODO: INPC
 where T : ABehaviourSystem
 {
     #region EDITOR PROPERTIES
@@ -58,6 +58,9 @@ where T : ABehaviourSystem
     protected override void Update()
     {
         base.Update();
+
+        if (!_agent.isOnNavMesh)
+            return;
 
         // Stop moving if execution is paused
         if (IsExecutionPaused)
