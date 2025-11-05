@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e76bbaede81e5d042be21e82d2ef9134, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _debugMode: 1
+  _debugMode: 0
   _isExecutionPaused: 0
   _information: {fileID: 11400000, guid: 4146047eade613e41aeaf3f8813dbe44, type: 2}
   _walkSpeed: 1

@@ -87,10 +87,6 @@ public class ContextualPanel
 
         // Show panel
         _root.style.display = DisplayStyle.Flex;
-
-
-        // TODO: test experience this gives
-        //CameraManager.Instance.ApplyContextualPanelOffset();
     }
 
     public void Hide()
