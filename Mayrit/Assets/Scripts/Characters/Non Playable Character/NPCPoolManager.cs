@@ -38,7 +38,8 @@ public class NPCPoolManager : Singleton<NPCPoolManager>
     #region MONOBEHAVIOUR
     void Update()
     {
-        if (TownManager.Instance._population <= 0)
+        var tm = TownManager.ExistingInstance;
+        if (tm == null || tm._population <= 0)
             return;
 
         // Active villagers not at max
@@ -169,8 +170,16 @@ public class NPCPoolManager : Singleton<NPCPoolManager>
 
     void GetVillager(Villager villager)
     {
-        // Find a random house with space for a new resident
-        House randomFreeHouse = TownManager.Instance.GetRandomHouseWithFreeSpace();
+        // Find a random house with space for a new resident (use ExistingInstance to avoid creating TownManager during teardown)
+        var tm = TownManager.ExistingInstance;
+        if (tm == null)
+        {
+            // No town manager available - return villager to pool to avoid creating objects during teardown
+            villager.gameObject.SetActive(false);
+            return;
+        }
+
+        House randomFreeHouse = tm.GetRandomHouseWithFreeSpace();
 
         // Assign and place the villager in that house
         randomFreeHouse.AssignAndPlaceNewResident(villager);

@@ -17,34 +17,36 @@ where M : MonoBehaviour
     /// Static instance and lock for thread-safe singleton access per closed generic type.
     /// </summary>
     static M _instance;
+
     /// <summary>
     /// Lock object to ensure thread safety when creating the instance.
     /// </summary>
     static readonly object _instanceLock = new();
 
     /// <summary>
-    /// Accessor for the singleton instance. Creates or finds an instance if none exists.
+    /// Accessor for the singleton instance. Finds an instance if none exists.
     /// </summary>
     public static M Instance
     {
         get
         {
-            lock (_instanceLock) // Ensures that only one thread at a time can execute this block.
+            lock (_instanceLock)
             {
-                if (_instance == null) // If no instance exists, try to find one.
-                {
-                    _instance = FindAnyObjectByType<M>(); // Searches for an existing instance in the scene.
+                // Attempt to find an existing instance in the scene but do NOT create one here.
+                if (_instance == null)
+                    _instance = FindAnyObjectByType<M>();
 
-                    if (_instance == null) // If still null, create a new instance.
-                    {
-                        GameObject singletonObj = new(typeof(M).Name); // Creates a new GameObject named after the type.
-                        _instance = singletonObj.AddComponent<M>(); // Adds the singleton component to the new GameObject.
-                    }
-                }
                 return _instance;
             }
         }
     }
+
+    /// <summary>
+    /// Returns the existing instance if one exists, without creating a new GameObject.
+    /// Use this when you want to safely query for a singleton during teardown or editor callbacks
+    /// and avoid creating a new GameObject.
+    /// </summary>
+    public static M ExistingInstance => _instance;
     #endregion
 
     #region MONOBEHAVIOUR
