@@ -9,8 +9,6 @@ public class House : Building
     [SerializeField] List<Villager> _residents = new();
     #endregion
 
-
-
     #region MONOBEHAVIOUR
 
     // When enabled, increase town population

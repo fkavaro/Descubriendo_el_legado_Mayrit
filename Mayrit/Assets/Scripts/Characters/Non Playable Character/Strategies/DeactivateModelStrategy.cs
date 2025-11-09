@@ -18,6 +18,7 @@ public class DeactivateModelStrategy : AStrategy
     {
         // Deactivated but not returned to pool
         _model.SetActive(false);
+        _npc.Agent.enabled = false;
 
         // Update elapsed time
         _elapsedTime += Time.deltaTime;
@@ -27,6 +28,8 @@ public class DeactivateModelStrategy : AStrategy
         {
             // Reactivate NPC GameObject
             _model.SetActive(true);
+            _npc.Agent.enabled = true;
+            _elapsedTime = 0f;
 
             return Node.Status.Success;
         }

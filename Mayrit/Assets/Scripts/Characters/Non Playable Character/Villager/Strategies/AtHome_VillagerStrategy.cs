@@ -2,11 +2,16 @@ using UnityEngine;
 
 public class AtHome_VillagerStrategy : AStrategy
 {
-    public AtHome_VillagerStrategy(INPC npc)
-    : base(npc) { }
+    readonly Villager _villager;
+    public AtHome_VillagerStrategy(INPC npc, Villager villager)
+    : base(npc)
+    {
+        _villager = villager;
+    }
 
     public override Node.Status Update()
     {
-        throw new System.NotImplementedException();
+        NPCPoolManager.Instance.ReturnVillagerToPool(_villager);
+        return Node.Status.Success;
     }
 }

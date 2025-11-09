@@ -36,10 +36,11 @@ where T : ABehaviourSystem
     #endregion
 
     #region INTERNAL PROPERTIES
-    [HideInInspector] public NavMeshAgent _agent;
+    NavMeshAgent _agent;
     public AnimationController _animationController;
     Spot _destinationSpot = null;
-
+    public NavMeshAgent Agent => _agent;
+    public AnimationController AnimationController => _animationController;
     #endregion
 
     #region MONOBEHAVIOUR

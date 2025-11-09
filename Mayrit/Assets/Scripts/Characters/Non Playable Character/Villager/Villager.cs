@@ -30,11 +30,6 @@ public class Villager : ANPC<BehaviourTree>
         GoToDestinationStrategy goToMosque = new(this, mosqueEntrance);
         //Praying_VillagerStrategy prayingStrategy = new(this);
 
-        if (_workplace == null)
-        {
-            Debug.LogWarning($"{gameObject.name} has no workplace assigned.");
-        }
-
         Spot workplaceEntrance = _workplace.GetRandomEntranceSpot();
         GoToDestinationStrategy goToWork = new(this, workplaceEntrance);
         //Working_VillagerStrategy workingStrategy = new(this);
@@ -45,7 +40,7 @@ public class Villager : ANPC<BehaviourTree>
 
         Spot homeEntrance = _home.GetRandomEntranceSpot();
         GoToDestinationStrategy goHome = new(this, homeEntrance);
-        //AtHome_VillagerStrategy restStrategy = new(this);
+        AtHome_VillagerStrategy atHomeStrategy = new(this, this);
 
         // Interact sequence
         SequenceNode interactSequence = new(this);
@@ -80,7 +75,7 @@ public class Villager : ANPC<BehaviourTree>
         shoppingSequence.AddChild(goToShopLeaf);
         shoppingSequence.AddChild(shopLeaf);
         LeafNode goHomeLeaf = new(this, "GoingHome", goHome);
-        LeafNode restLeaf = new(this, "Resting", deactivateModelStrategy);
+        LeafNode restLeaf = new(this, "Resting", atHomeStrategy);
         atHomeSequence.AddChild(goHomeLeaf);
         atHomeSequence.AddChild(restLeaf);
 
@@ -117,6 +112,9 @@ public class Villager : ANPC<BehaviourTree>
 
     public void OnReleasedFromPool()
     {
+        gameObject.SetActive(false);
+        Agent.enabled = false;
+
         _home.RemoveResident(this);
         _home = null;
     }
@@ -140,7 +138,5 @@ public class Villager : ANPC<BehaviourTree>
         // TODO
         return false;
     }
-
-
     #endregion
 }

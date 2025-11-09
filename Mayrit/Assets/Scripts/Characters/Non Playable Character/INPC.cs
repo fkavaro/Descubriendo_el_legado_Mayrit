@@ -1,8 +1,12 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public interface INPC : IBehaviourEntity
 {
     #region PUBLIC METHODS
+    public NavMeshAgent Agent { get; }
+    public AnimationController AnimationController { get; }
+
     /// <summary>
     /// Sets the destination position for the NavMeshAgent to navigate to
     /// </summary>
