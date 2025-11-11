@@ -12,6 +12,8 @@ public class TownManager : Singleton<TownManager>
     [Header("Places of Interest")]
     public Building aljamaMosque;
     public Building market;
+
+    public List<Building> sanctuaries;
     #endregion
 
     #region INTERNAL PROPERTIES    
@@ -162,5 +164,37 @@ public class TownManager : Singleton<TownManager>
                 catch { }
             }
         }
+    }
+
+    /// <summary>
+    /// Finds and returns the sanctuary Building nearest to the provided home.
+    /// </summary>
+    /// <param name="home">The house used as the reference point for distance calculations.</param>
+    /// <returns>The nearest sanctuary Building, or null if none available.</returns>
+    public Building GetNearestSanctuary(House home)
+    {
+        // Validate inputs: no sanctuaries configured or invalid home -> nothing to do
+        if (sanctuaries == null || sanctuaries.Count == 0 || home == null)
+            return null;
+
+        Building nearestSanctuary = null;
+        float nearestDistanceSqr = float.MaxValue;
+        Vector3 homePosition = home.transform.position;
+
+        foreach (var sanctuary in sanctuaries)
+        {
+            if (sanctuary == null)
+                continue; // skip null entries in the list
+
+            // Use squared magnitude to avoid the cost of sqrt when comparing distances
+            float distanceSqr = (sanctuary.transform.position - homePosition).sqrMagnitude;
+            if (distanceSqr < nearestDistanceSqr)
+            {
+                nearestDistanceSqr = distanceSqr;
+                nearestSanctuary = sanctuary;
+            }
+        }
+
+        return nearestSanctuary;
     }
 }

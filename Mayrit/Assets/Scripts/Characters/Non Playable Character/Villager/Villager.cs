@@ -1,4 +1,5 @@
 using System;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -8,7 +9,16 @@ public class Villager : ANPC<BehaviourTree>
     [Header("Villager Properties")]
     public House _home;
     public Building _workplace;
-    public Building _sanctuary;
+    [SerializeField] Building _sanctuary;
+    public Building Sanctuary
+    {
+        get
+        {
+            // Find nearest sanctuary to this villager's home and cache it
+            _sanctuary = TownManager.Instance.GetNearestSanctuary(_home);
+            return _sanctuary;
+        }
+    }
     #endregion
 
     #region PROPERTIES
@@ -27,8 +37,8 @@ public class Villager : ANPC<BehaviourTree>
         // Routine strategies
         DeactivateModelStrategy deactivateModelStrategy = new(this, GO.transform.GetChild(0).gameObject);
 
-        Spot mosqueEntrance = TownManager.Instance.GetMosqueEntranceSpot();
-        GoToDestinationStrategy goToMosque = new(this, mosqueEntrance);
+        Spot sanctuaryEntrance = Sanctuary.GetRandomEntranceSpot();
+        GoToDestinationStrategy goToSanctuary = new(this, sanctuaryEntrance);
         //Praying_VillagerStrategy prayingStrategy = new(this);
 
         Spot workplaceEntrance = _workplace.GetRandomEntranceSpot();
@@ -63,9 +73,9 @@ public class Villager : ANPC<BehaviourTree>
         SequenceNode shoppingSequence = new(this);
         SequenceNode atHomeSequence = new(this);
 
-        LeafNode goToMosqueLeaf = new(this, "GoingToMosque", goToMosque);
+        LeafNode goToSanctuaryLeaf = new(this, "GoingToSanctuary", goToSanctuary);
         LeafNode prayLeaf = new(this, "Praying", deactivateModelStrategy);
-        prayingSequence.AddChild(goToMosqueLeaf);
+        prayingSequence.AddChild(goToSanctuaryLeaf);
         prayingSequence.AddChild(prayLeaf);
         LeafNode goToWorkLeaf = new(this, "GoingToWork", goToWork);
         LeafNode workLeaf = new(this, "Working", deactivateModelStrategy);
@@ -111,9 +121,9 @@ public class Villager : ANPC<BehaviourTree>
         _workplace = workPlace;
     }
 
-    public void AssignSanctuary(Building sanctuary)
+    public void AssignSanctuary(House home)
     {
-        _sanctuary = sanctuary;
+        _sanctuary = TownManager.Instance.GetNearestSanctuary(home);
     }
 
     public void OnReleasedFromPool()
@@ -121,7 +131,9 @@ public class Villager : ANPC<BehaviourTree>
         gameObject.SetActive(false);
         Agent.enabled = false;
 
-        _home.RemoveResident(this);
+        if (_home != null)
+            _home.RemoveResident(this);
+
         _home = null;
     }
     #endregion

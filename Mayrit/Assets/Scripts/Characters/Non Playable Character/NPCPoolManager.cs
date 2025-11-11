@@ -123,10 +123,11 @@ public class NPCPoolManager : Singleton<NPCPoolManager>
         House randomFreeHouse = TownManager.Instance.GetRandomHouseWithFreeSpace();
         Building randomWorkplace = TownManager.Instance.GetRandomWorkplaceBuilding();
 
-        // Assign home and workplace
+        // Assign home, workplace and nearest sanctuary
         villager.AssignHome(randomFreeHouse);
         randomFreeHouse.AssignNewResident(villager);
         villager.AssignWorkplace(randomWorkplace);
+        villager.AssignSanctuary(randomFreeHouse);
 
         // Activate and reset components
         villager.gameObject.SetActive(true);
