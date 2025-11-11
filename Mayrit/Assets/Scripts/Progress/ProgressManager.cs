@@ -98,5 +98,42 @@ public class ProgressManager : ASingletonBehaviourEntity<ProgressManager, Finite
     {
         OnTimeSet?.Invoke(time);
     }
+
+    public Milestone_InformationSO GetCurrentMilestoneInfo()
+    {
+        Milestone_InformationSO info;
+
+        switch (_currentMilestone)
+        {
+            case Milestone._1_Vision:
+                info = _visionInformation;
+                break;
+            case Milestone._2_Foundation:
+                info = _foundationInformation;
+                break;
+            case Milestone._3_Albacar:
+                info = _albacarInformation;
+                break;
+            case Milestone._4_Almudayna:
+                info = _almudaynaInformation;
+                break;
+            case Milestone._5_RamiroII:
+                info = _ramiroAttackInformation;
+                break;
+            case Milestone._6_Almanzor:
+                info = _almanzorInformation;
+                break;
+            case Milestone._7_School:
+                info = _schoolInformation;
+                break;
+            case Milestone._8_Conquest:
+                info = _conquestInformation;
+                break;
+            default:
+                info = null;
+                break;
+        }
+        return info;
+    }
     #endregion
 }
