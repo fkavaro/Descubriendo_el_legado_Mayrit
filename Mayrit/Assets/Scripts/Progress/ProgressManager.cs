@@ -35,6 +35,7 @@ public class ProgressManager : ASingletonBehaviourEntity<ProgressManager, Finite
 
     #region INTERNAL PROPERTIES
     public event Action<Milestone> OnMilestoneChanged;
+    public event Action<bool> OnEditorUpdateChanged;
     public event Action<float> OnTimeSet;
 
     FiniteStateMachine _fsm;
@@ -46,6 +47,10 @@ public class ProgressManager : ASingletonBehaviourEntity<ProgressManager, Finite
     public AlmanzorMeeting_AProgressState _almanzorState;
     public MaslamaSchool_AProgressState _schoolState;
     public Conquest_AProgressState _conquestState;
+
+    // Cache used by OnValidate to detect inspector changes
+    [NonSerialized]
+    Milestone _lastValidatedMilestone;
     #endregion
 
     #region INHERITED
@@ -74,20 +79,26 @@ public class ProgressManager : ASingletonBehaviourEntity<ProgressManager, Finite
     {
         // Invoke milestone changed event to update any listeners when _currentMilestone is changed in inspector
         // Use a simple previous-value check to avoid spamming the event when Unity reserializes.
+        if (_lastValidatedMilestone == _currentMilestone) return;
+
+        _lastValidatedMilestone = _currentMilestone;
+
+        // In play mode, it's safe to invoke directly. In the editor (OnValidate) invoking
+        // runtime methods that call GameObject.SetActive / SendMessage is not allowed and
+        // will throw. Defer the invocation to the next editor loop iteration using
+        // EditorApplication.delayCall so handlers can safely call SetActive/other runtime APIs.
+#if UNITY_EDITOR
         if (!Application.isPlaying && _updateInInspector)
         {
-            // Keep a cached value to detect changes in the inspector
-            if (_lastValidatedMilestone != _currentMilestone)
-            {
-                _lastValidatedMilestone = _currentMilestone;
-                OnMilestoneChanged?.Invoke(_currentMilestone);
-            }
+            var milestone = _currentMilestone;
+            UnityEditor.EditorApplication.delayCall += () => OnMilestoneChanged?.Invoke(milestone);
+            return;
         }
-    }
 
-    // Cache used by OnValidate to detect inspector changes
-    [NonSerialized]
-    Milestone _lastValidatedMilestone;
+        if (!Application.isPlaying)
+            OnEditorUpdateChanged?.Invoke(_updateInInspector);
+#endif
+    }
 
     #region PUBLIC METHODS
     public void SwitchToNextMilestone()
