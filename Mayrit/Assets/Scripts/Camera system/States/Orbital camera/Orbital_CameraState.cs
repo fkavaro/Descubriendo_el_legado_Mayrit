@@ -10,9 +10,8 @@ public class Orbital_CameraState : ACameraState
         _zoomValue,
         _horizontalOffset;
 
-    public Orbital_CameraState(FiniteStateMachine stateMachine,
-        CinemachineCamera camera)
-        : base("Orbital camera", stateMachine, camera)
+    public Orbital_CameraState(FiniteStateMachine stateMachine, CinemachineCamera camera, float simulationSpeed)
+    : base("Orbital camera", stateMachine, camera, simulationSpeed)
     {
         _orbitalFollow = camera.GetComponent<CinemachineOrbitalFollow>();
     }
@@ -41,6 +40,9 @@ public class Orbital_CameraState : ACameraState
 
         _camera.gameObject.SetActive(true);
         UIManager.Instance._spectatorHUDState.ShowContextualPanel(_information);
+
+        // Adjust simulation speed
+        TimeManager.Instance.SetSimulationSpeed(_simulationSpeed);
     }
 
     public override void UpdateState()

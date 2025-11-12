@@ -8,6 +8,9 @@ public class TimeManager : Singleton<TimeManager>
 {
     #region EDITOR PROPERTIES
     [Header("Time Settings")]
+    [Tooltip("Game simulation speed multiplier. Set by Camera states.")]
+    [Range(0.1f, 5f)]
+    public float _gameSimulationSpeed = 1f;
     [Tooltip("Whether the time will advance automatically or just to reach a wanted time")]
     public bool _isDynamic = false;
 
@@ -71,6 +74,10 @@ public class TimeManager : Singleton<TimeManager>
     // Update is called once per frame
     void Update()
     {
+        // Ensure time scale matches the desired game simulation speed
+        if (Time.timeScale != _gameSimulationSpeed)
+            SetSimulationSpeed(_gameSimulationSpeed);
+
         // Difference between current time and wanted time is less than threshold of 0.1f
         _isWantedTimeReached = Mathf.Abs(_currentTime - _wantedTime) < 0.1f;
 
@@ -101,17 +108,40 @@ public class TimeManager : Singleton<TimeManager>
     #endregion
 
     #region PUBLIC METHODS
+    public void SetSimulationSpeed(float speed)
+    {
+        // Validate input
+        if (float.IsNaN(speed) || float.IsInfinity(speed))
+        {
+            Debug.LogWarning("TimeManager.SetSimulationSpeed: invalid speed (NaN or Infinity). Change ignored.");
+            return;
+        }
 
+        // Keep inside sensible bounds (aligns with inspector limits but slightly more permissive for safety)
+        const float minSpeed = 0.01f;
+        const float maxSpeed = 5f;
+        float clamped = Mathf.Clamp(speed, minSpeed, maxSpeed);
+        if (!Mathf.Approximately(clamped, speed))
+            Debug.LogWarning($"TimeManager: requested simulation speed {speed} was clamped to {clamped}.");
+
+        _gameSimulationSpeed = clamped;
+
+        // Apply time scale for gameplay
+        Time.timeScale = _gameSimulationSpeed;
+
+        // Keep physics timestep consistent with timeScale (default fixedDeltaTime is 0.02)
+        Time.fixedDeltaTime = 0.02f * Mathf.Max(Time.timeScale, minSpeed);
+    }
     #endregion
 
     #region PRIVATE METHODS
     void UpdateTimeOfDay()
     {
-        // Update the current time based on the time speed
+        // Update the current unscaled time based on the time speed
         if (_increaseTime)
-            _currentTime += Time.deltaTime * _timeSpeed;
+            _currentTime += Time.unscaledDeltaTime * _timeSpeed;
         else
-            _currentTime -= Time.deltaTime * _timeSpeed;
+            _currentTime -= Time.unscaledDeltaTime * _timeSpeed;
 
         // Ensure current time wraps around after 24 hours
         if (_currentTime >= 24f)
@@ -139,8 +169,13 @@ public class TimeManager : Singleton<TimeManager>
 
     void CheckActiveLightSource()
     {
-        // During day time
-        if (_currentTime >= 6f && _currentTime < 18f) // Between 6 AM and 6 PM
+        // During day time. Use a small hysteresis window to avoid toggling at the
+        // exact threshold when time steps are near the boundary.
+        const float dayStart = 6f;
+        const float dayEnd = 18f;
+        const float hysteresis = 0.05f; // hours (~3 minutes at 1x timeSpeed)
+
+        if (_currentTime >= dayStart + hysteresis && _currentTime < dayEnd - hysteresis)
         {
             _isDayTime = true;
 
@@ -165,17 +200,14 @@ public class TimeManager : Singleton<TimeManager>
                 _moonSource.shadows = LightShadows.Soft;
         }
 
-        // Roughly during day time
-        if (_currentTime >= 4f && _currentTime < 20f)
-            _sunSource.gameObject.SetActive(true); // Enable sun
-        else // Roughly during night time
-            _sunSource.gameObject.SetActive(false); // Disable sun
+        // Roughly enable/disable sun and moon with a small margin to avoid flicker
+        bool shouldSunBeActive = _currentTime >= 4f + hysteresis && _currentTime < 20f - hysteresis;
+        if (_sunSource.gameObject.activeSelf != shouldSunBeActive)
+            _sunSource.gameObject.SetActive(shouldSunBeActive);
 
-        // Roughly during day time
-        if (_currentTime >= 6f && _currentTime < 17f)
-            _moonSource.gameObject.SetActive(false); // Disable moon
-        else // Roughly during night time
-            _moonSource.gameObject.SetActive(true); // Enable moon
+        bool shouldMoonBeActive = !(_currentTime >= 6f - hysteresis && _currentTime < 17f + hysteresis);
+        if (_moonSource.gameObject.activeSelf != shouldMoonBeActive)
+            _moonSource.gameObject.SetActive(shouldMoonBeActive);
     }
     #endregion
 }

@@ -8,12 +8,15 @@ using UnityEngine;
 public abstract class ACameraState : AState<FiniteStateMachine>
 {
     protected readonly CinemachineCamera _camera;
+    protected readonly float _simulationSpeed;
 
     protected ACameraState(string name,
         FiniteStateMachine stateMachine,
-        CinemachineCamera camera)
+        CinemachineCamera camera,
+        float simulationSpeed)
     : base(name, stateMachine)
     {
         _camera = camera;
+        _simulationSpeed = simulationSpeed;
     }
 }

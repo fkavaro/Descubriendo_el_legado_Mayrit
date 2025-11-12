@@ -21,18 +21,47 @@ public class House : Building
     // When disabled, decrease town population
     public void OnDisable()
     {
-        // Unregister this house and decrease town population
-        TownManager.ExistingInstance.UnregisterHouse(this);
-
-        // There are residents assigned to this house
-        if (_residents.Count > 0)
+        // Safely unregister this house and decrease town population.
+        // Use ExistingInstance to avoid creating TownManager during teardown.
+        var tm = TownManager.ExistingInstance;
+        if (tm != null)
         {
-            // Ask TownManager to reassign them
-            List<Villager> residentsCopy = new(_residents);
-            TownManager.Instance.ReassignResidents(this, residentsCopy);
+            tm.UnregisterHouse(this);
 
-            // Clear this house's residents list
-            _residents.Clear();
+            // There are residents assigned to this house: ask TownManager to reassign them
+            if (_residents.Count > 0)
+            {
+                List<Villager> residentsCopy = new(_residents);
+
+                try
+                {
+                    tm.ReassignResidents(this, residentsCopy);
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"House.OnDisable: ReassignResidents failed: {ex}");
+                }
+
+                _residents.Clear();
+            }
+        }
+        else
+        {
+            // TownManager is not available (likely during teardown). Return residents to pool if possible, then clear.
+            var pool = NPCPoolManager.ExistingInstance;
+            if (_residents.Count > 0)
+            {
+                if (pool != null)
+                {
+                    // Iterate over a snapshot to avoid collection-modified exceptions:
+                    var snapshot = _residents.ToArray();
+                    foreach (var v in snapshot)
+                    {
+                        try { pool.ReturnVillagerToPool(v); } catch { }
+                    }
+                }
+                _residents.Clear();
+            }
         }
     }
     #endregion

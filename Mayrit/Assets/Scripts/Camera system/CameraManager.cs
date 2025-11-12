@@ -10,6 +10,8 @@ public class CameraManager : ASingletonBehaviourEntity<CameraManager, FiniteStat
 {
     #region EDITOR PROPERTIES
     [Header("Spectator camera")]
+    [Range(0.1f, 5f)]
+    public float _spectatorSimSpeed = 3f;
     public CinemachineCamera _spectatorCamera;
     [Tooltip("Wether to move camera at screen margins or not.")]
     public bool _edgeScrolling = false;
@@ -37,6 +39,8 @@ public class CameraManager : ASingletonBehaviourEntity<CameraManager, FiniteStat
     public float _spectatorTargetFixingSpeed = 40f;
 
     [Header("Orbital camera")]
+    [Range(0.1f, 5f)]
+    public float _orbitalSimSpeed = 3f;
     public CinemachineCamera _orbitalCamera;
     public float _orbitalBuildingOrbitSpeed = 30f;
     public float _orbitalBuildingZoom;
@@ -46,6 +50,8 @@ public class CameraManager : ASingletonBehaviourEntity<CameraManager, FiniteStat
     public float _orbitalCharacterOffset = 10f;
 
     [Header("Third Person Camera")]
+    [Range(0.1f, 5f)]
+    public float _thirdPersonSimSpeed = 1f;
     public CinemachineCamera _thirdPersonCamera;
     public float _3rdPersonCameraOrbitSpeed = 3f,
         _3rdPersonCameraFollowSpeed = 3f,
@@ -68,9 +74,9 @@ public class CameraManager : ASingletonBehaviourEntity<CameraManager, FiniteStat
         _fsm = new(this);
 
         // States initialization
-        _spectatorState = new(_fsm, _spectatorCamera);
-        _orbitalState = new(_fsm, _orbitalCamera);
-        _thirdPersonState = new(_fsm, _thirdPersonCamera);
+        _spectatorState = new(_fsm, _spectatorCamera, _spectatorSimSpeed);
+        _orbitalState = new(_fsm, _orbitalCamera, _orbitalSimSpeed);
+        _thirdPersonState = new(_fsm, _thirdPersonCamera, _thirdPersonSimSpeed);
 
         _fsm.SetInitialState(_spectatorState);
 
