@@ -34,6 +34,9 @@ public class ProgressManager : ASingletonBehaviourEntity<ProgressManager, Finite
     #endregion
 
     #region INTERNAL PROPERTIES
+    Milestone _lastValidatedMilestone;
+    bool _lastUpdateInInspector;
+
     public event Action<Milestone> OnMilestoneChanged;
     public event Action<bool> OnEditorUpdateChanged;
     public event Action<float> OnTimeSet;
@@ -47,10 +50,6 @@ public class ProgressManager : ASingletonBehaviourEntity<ProgressManager, Finite
     public AlmanzorMeeting_AProgressState _almanzorState;
     public MaslamaSchool_AProgressState _schoolState;
     public Conquest_AProgressState _conquestState;
-
-    // Cache used by OnValidate to detect inspector changes
-    [NonSerialized]
-    Milestone _lastValidatedMilestone;
     #endregion
 
     #region INHERITED
@@ -77,26 +76,32 @@ public class ProgressManager : ASingletonBehaviourEntity<ProgressManager, Finite
     // Called when the script is loaded or a value is changed in the inspector
     void OnValidate()
     {
-        // Invoke milestone changed event to update any listeners when _currentMilestone is changed in inspector
-        // Use a simple previous-value check to avoid spamming the event when Unity reserializes.
-        if (_lastValidatedMilestone == _currentMilestone) return;
-
-        _lastValidatedMilestone = _currentMilestone;
-
-        // In play mode, it's safe to invoke directly. In the editor (OnValidate) invoking
-        // runtime methods that call GameObject.SetActive / SendMessage is not allowed and
-        // will throw. Defer the invocation to the next editor loop iteration using
-        // EditorApplication.delayCall so handlers can safely call SetActive/other runtime APIs.
-#if UNITY_EDITOR
-        if (!Application.isPlaying && _updateInInspector)
-        {
-            var milestone = _currentMilestone;
-            UnityEditor.EditorApplication.delayCall += () => OnMilestoneChanged?.Invoke(milestone);
+        if (Application.isPlaying)
             return;
+
+#if UNITY_EDITOR
+        // Invoke milestone changed event when _currentMilestone is changed in inspector
+        // and _updateInInspector is true
+        if (_lastValidatedMilestone != _currentMilestone)
+        {
+            _lastValidatedMilestone = _currentMilestone;
+
+            if (_updateInInspector)
+            {
+                var milestone = _currentMilestone;
+
+                // To avoid issues with re-entrancy
+                UnityEditor.EditorApplication.delayCall += () => OnMilestoneChanged?.Invoke(milestone);
+            }
         }
 
-        if (!Application.isPlaying)
-            OnEditorUpdateChanged?.Invoke(_updateInInspector);
+        // Invoke editor update changed event when _updateInInspector is changed in inspector
+        if (_lastUpdateInInspector != _updateInInspector)
+        {
+            _lastUpdateInInspector = _updateInInspector;
+            var update = _updateInInspector;
+            UnityEditor.EditorApplication.delayCall += () => OnEditorUpdateChanged?.Invoke(update);
+        }
 #endif
     }
 

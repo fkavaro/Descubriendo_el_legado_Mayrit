@@ -49,9 +49,7 @@ public class ProgressObject : MonoBehaviour
 
         // Ensure subscription in editor so delayed invocations are received.
         pm.OnMilestoneChanged -= OnMilestoneChanged;
-
         pm.OnEditorUpdateChanged -= OnEditorUpdateChanged;
-
 
         var milestone = pm._currentMilestone;
 
@@ -71,6 +69,10 @@ public class ProgressObject : MonoBehaviour
 
     void OnMilestoneChanged(ProgressManager.Milestone entry)
     {
+        // Defensive: the object may have been destroyed between the delayed call being
+        // scheduled and now (editor callbacks). Unity will throw when accessing members
+        // of a destroyed object, so check for null here.
+        if (this == null) return;
         SetChildrenActive(milestonesActivated != null && milestonesActivated.Contains(entry));
     }
 
@@ -78,6 +80,8 @@ public class ProgressObject : MonoBehaviour
     {
 #if UNITY_EDITOR
         if (!Application.isPlaying)
+        {
+            if (this == null) return;
             if (!updateInEditor)
                 SetChildrenActive(true);
             else
@@ -87,11 +91,15 @@ public class ProgressObject : MonoBehaviour
                 var milestone = pm._currentMilestone;
                 SetChildrenActive(milestonesActivated != null && milestonesActivated.Contains(milestone));
             }
+        }
 #endif
     }
 
     void SetChildrenActive(bool isActive)
     {
+        // Defensive: guard against the Unity object being destroyed (editor delayed calls)
+        if (this == null) return;
+
         foreach (Transform child in transform)
         {
             if (child == null || child.gameObject == null) continue;
