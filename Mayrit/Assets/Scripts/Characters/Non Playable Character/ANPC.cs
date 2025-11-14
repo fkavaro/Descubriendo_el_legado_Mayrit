@@ -23,7 +23,9 @@ where T : ABehaviourSystem
     [Tooltip("Max distance from the random point to a point on the navmesh, for target position sampling")]
     public float _maxSamplingDistance = 1f;
     [Tooltip("Distance to which it's considered as arrived at destination")]
-    public float _stoppingDistance = 0.3f;
+    public float _horizontalStoppingDistance = 0.3f;
+    [Tooltip("Vertical margin (Y axis) to consider arrival")]
+    public float _verticalStoppingDistance = 1.5f;
     [Tooltip("Distance to which it's close to the destination")]
     public float _nearDistance = 2f;
     public bool _isStopped = false;
@@ -60,7 +62,7 @@ where T : ABehaviourSystem
         _agent = GetComponent<NavMeshAgent>();
         _agent.speed = _walkSpeed;
         _agent.angularSpeed = _rotationSpeed * 100f;
-        _agent.stoppingDistance = _stoppingDistance;
+        _agent.stoppingDistance = _horizontalStoppingDistance;
         _agent.radius = _avoidanceRadius;
 
         // Assign a randomized avoidance priority to reduce symmetric deadlocks between agents
@@ -167,10 +169,21 @@ where T : ABehaviourSystem
 
     public bool HasArrivedAt(Vector3 destination, bool fixRotation = true, bool fixPosition = true)
     {
-        if (Vector3.Distance(_agent.transform.position, destination) < _stoppingDistance)
-        {
-            //Debug.Log($"{gameObject.name} has arrived at {destination}.");
+        // Compare horizontal (XZ) distance and allow a bigger vertical margin.
+        Vector3 agentPos = _agent.transform.position;
+        Vector3 destPos = destination;
 
+        // Horizontal distance on XZ plane
+        Vector2 agentXZ = new(agentPos.x, agentPos.z);
+        Vector2 destXZ = new(destPos.x, destPos.z);
+        float horizontalDist = Vector2.Distance(agentXZ, destXZ);
+
+        // Vertical distance on Y axis
+        float verticalDist = Mathf.Abs(agentPos.y - destPos.y);
+
+        // Check if within stopping distances
+        if (horizontalDist < _horizontalStoppingDistance && verticalDist < _verticalStoppingDistance)
+        {
             if (_destinationSpot != null)
             {
                 _destinationSpot.SetOccupied(true);

@@ -76,7 +76,8 @@ MonoBehaviour:
   _rotationSpeed: 3
   _avoidanceRadius: 0.7
   _maxSamplingDistance: 1
-  _stoppingDistance: 0.3
+  _horizontalStoppingDistance: 0.5
+  _verticalStoppingDistance: 5
   _nearDistance: 2
   _isStopped: 0
   _baseAvoidancePriority: 50
