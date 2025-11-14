@@ -1,7 +1,5 @@
 using System;
-using UnityEditor.Rendering;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class Villager : ANPC<BehaviourTree>
 {
@@ -129,41 +127,34 @@ public class Villager : ANPC<BehaviourTree>
     #region PUBLIC METHODS
     public void AssignHome(House home)
     {
-        if (home == null)
+        if (home != null)
+        {
+            _home = home;
+
+            // Add to its residents
+            home.AddNewAssigned(this);
+        }
+        else
         {
             Debug.LogWarning("Trying to assign null Home to " + name);
-            return;
         }
-
-        _home = home;
-
-        // Add to its residents
-        home.AddNewAssigned(this);
     }
 
     public void AssignWorkplace(Workplace workPlace)
     {
-        if (workPlace == null)
+        if (workPlace != null)
         {
-            Debug.LogWarning("Not enough worplaces for " + name);
-            return;
+            _workplace = workPlace;
+
+            // Add to its employees
+            workPlace.AddNewAssigned(this);
         }
-
-        _workplace = workPlace;
-
-        // Add to its employees
-        workPlace.AddNewAssigned(this);
     }
 
     public void AssignSanctuary(Sanctuary sanctuary)
     {
-        if (sanctuary == null)
-        {
-            Debug.LogWarning("Trying to assign null Sanctuary to " + name);
-            return;
-        }
-
-        _sanctuary = sanctuary;
+        if (sanctuary != null)
+            _sanctuary = sanctuary;
     }
 
     public void OnReleasedFromPool()

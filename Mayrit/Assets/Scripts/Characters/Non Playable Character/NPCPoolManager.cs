@@ -120,13 +120,13 @@ public class NPCPoolManager : Singleton<NPCPoolManager>
         if (!_activeVillagers.Contains(villager))
             _activeVillagers.Add(villager);
 
-        House randomFreeHouse = TownManager.Instance.GetHouseWithFreeCapacity();
-        Workplace randomWorkplace = TownManager.Instance.GetWorkplaceWithFreeCapacity();
-        Sanctuary nearestSanctuary = TownManager.Instance.GetNearestSanctuary(randomFreeHouse);
-
-        // Assign home, workplace and nearest sanctuary
+        House randomFreeHouse = TownManager.Instance.GetHouse();
         villager.AssignHome(randomFreeHouse);
+
+        Workplace randomWorkplace = TownManager.Instance.GetWorkplaceWithFreeCapacity();
         villager.AssignWorkplace(randomWorkplace);
+
+        Sanctuary nearestSanctuary = TownManager.Instance.GetNearestSanctuary(randomFreeHouse);
         villager.AssignSanctuary(nearestSanctuary);
 
         // Activate and reset components

@@ -46,4 +46,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TownManager
   _dontDestroyOnLoad: 0
   _population: 0
-  _debugReassignment: 1
+  _houses: []
+  _workplaces: []
+  _sanctuaries:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  _markets:
+  - {fileID: 0}

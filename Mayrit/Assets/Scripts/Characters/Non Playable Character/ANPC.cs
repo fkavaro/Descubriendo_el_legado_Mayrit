@@ -67,7 +67,6 @@ where T : ABehaviourSystem
         int offset = UnityEngine.Random.Range(-_avoidancePriorityVariance, _avoidancePriorityVariance + 1);
         _agent.avoidancePriority = Mathf.Clamp(_baseAvoidancePriority + offset, 0, 99);
 
-
         // Deactivate agent initially
         _agent.enabled = false;
     }

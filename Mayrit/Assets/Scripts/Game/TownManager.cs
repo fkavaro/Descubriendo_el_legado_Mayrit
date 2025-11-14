@@ -38,7 +38,12 @@ public class TownManager : Singleton<TownManager>
     }
     #endregion
 
-    #region PUBLIC METHODS  
+    #region PUBLIC METHODS 
+    public void UpdatePopulation(int householdSize)
+    {
+        _population += householdSize;
+    }
+
     /// <summary>
     /// Registers a house in the town and updates population accordingly.
     /// </summary>
@@ -71,12 +76,26 @@ public class TownManager : Singleton<TownManager>
         UnregisterBuilding(_workplaces, workplace);
     }
 
-    /// <returns>Random registered house with capacity for a new resident. 
+
+    /// <summary>
+    /// Returns a random registered house with capacity for a new resident. 
     /// Optionally excluding given house.
-    /// </returns>
-    public House GetHouseWithFreeCapacity(House excludedHouse = null)
+    /// </summary>
+    /// <returns>Never null. If no house with free capacity found, returns a random house with increased capacity.</returns>
+    public House GetHouse(House excludedHouse = null)
     {
-        return GetBuildingWithFreeCapacity(_houses, excludedHouse);
+        House house = GetBuildingWithFreeCapacity(_houses, excludedHouse);
+
+        // If no house with free capacity found
+        if (house == null && _houses.Count > 0)
+        {
+            // Return random house with increased capacity
+            house = _houses[UnityEngine.Random.Range(0, _houses.Count)];
+            house.IncreaseCapacity(1);
+        }
+
+        // Never reeturn null assured
+        return house;
     }
 
     /// <returns>Random registered workplace with capacity for a new employee. 
@@ -152,17 +171,13 @@ public class TownManager : Singleton<TownManager>
 
         return nearestSanctuary;
     }
+
     #endregion
 
     #region PRIVATE METHODS
     void OnMilestoneChanged(ProgressManager.Milestone milestone)
     {
         OnPopulationChanged?.Invoke(_population);
-    }
-
-    void UpdatePopulation(int householdSize)
-    {
-        _population += householdSize;
     }
 
     void RegisterBuilding<T>(List<T> buildings, T building, int populationDelta = 0)

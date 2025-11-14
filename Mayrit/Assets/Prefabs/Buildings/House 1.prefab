@@ -49,8 +49,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::House
   _entranceSpots:
   - {fileID: 3168696735808779243}
-  _householdSize: 2
-  _residents: []
+  _capacity: 2
+  _assignedVillagers: []
 --- !u!1 &5952331492286343235
 GameObject:
   m_ObjectHideFlags: 0

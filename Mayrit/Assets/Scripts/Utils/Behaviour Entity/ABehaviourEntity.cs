@@ -10,11 +10,7 @@ where T : ABehaviourSystem
     #region INTERFACE IMPLEMENTATION
     public string Name => gameObject.name;
     public GameObject GO => gameObject;
-    public bool DebugMode
-    {
-        get => _debugMode;
-        set => _debugMode = value;
-    }
+
     public bool IsExecutionPaused
     {
         get => _isExecutionPaused;

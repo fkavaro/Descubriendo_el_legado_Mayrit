@@ -23,4 +23,12 @@ public class House : AAssignedBuilding
         if (tm != null) tm.Reassign(this, residents);
     }
     #endregion
+
+    public void IncreaseCapacity(int increase)
+    {
+        _capacity += increase;
+        var tm = TownManager.ExistingInstance;
+        if (tm != null)
+            tm.UpdatePopulation(increase);
+    }
 }
