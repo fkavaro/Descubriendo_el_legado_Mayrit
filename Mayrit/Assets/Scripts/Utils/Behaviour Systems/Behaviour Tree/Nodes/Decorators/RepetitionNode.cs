@@ -9,9 +9,9 @@ using UnityEngine;
 public class RepetitionNode : Node
 {
     #region PROPERTIES
-    private int _repetitions;
+    private readonly int _repetitions;
+    private readonly Node _child;
     private int _currentRepetition = 0;
-    private Node _child;
     #endregion
 
     #region CONSTRUCTOR
@@ -19,8 +19,9 @@ public class RepetitionNode : Node
     : base(entity, repetitions.ToString() + " repetions", priority)
     {
         _repetitions = repetitions;
-        AddChild(child); // Use the AddChild method to set the child
-        _child = _children[0]; // Store a direct reference for easier access
+        _child = child;
+        AddChild(child);
+        _currentRepetition = 0;
     }
     #endregion
 

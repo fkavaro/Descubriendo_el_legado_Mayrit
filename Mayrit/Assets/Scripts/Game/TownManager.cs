@@ -76,7 +76,6 @@ public class TownManager : Singleton<TownManager>
         UnregisterBuilding(_workplaces, workplace);
     }
 
-
     /// <summary>
     /// Returns a random registered house with capacity for a new resident. 
     /// Optionally excluding given house.
@@ -110,7 +109,7 @@ public class TownManager : Singleton<TownManager>
     /// Attempts to reassign residents from a destroyed house to other houses with free capacity.
     /// If a resident cannot be reassigned, it will be returned to the NPC pool and population decremented.
     /// </summary>
-    public void Reassign(House previousHouse, List<Villager> residents)
+    public void ReassignResidents(House previousHouse, List<Villager> residents)
     {
         if (residents == null || residents.Count == 0) return;
         Reassign(previousHouse, residents, _houses, (villager, house) =>
@@ -124,7 +123,7 @@ public class TownManager : Singleton<TownManager>
     /// Attempts to reassign employees from a closed workplace to other workplaces with free capacity.
     /// If an employee cannot be reassigned, it will be returned to the NPC pool.
     /// </summary>
-    public void Reassign(Workplace previousWorkplace, List<Villager> employees)
+    public void ReassignEmployees(Workplace previousWorkplace, List<Villager> employees)
     {
         if (employees == null || employees.Count == 0) return;
         Reassign(previousWorkplace, employees, _workplaces, (villager, workplace) =>
@@ -132,12 +131,6 @@ public class TownManager : Singleton<TownManager>
             villager.AssignWorkplace(workplace);
             workplace.AddNewAssigned(villager);
         });
-    }
-
-    public Spot GetMarketSpot()
-    {
-        // TODO
-        return _markets[UnityEngine.Random.Range(0, _markets.Count)].GetRandomAccessSpot();
     }
 
     /// <summary>
@@ -173,6 +166,20 @@ public class TownManager : Singleton<TownManager>
         return nearestSanctuary;
     }
 
+    public Market GetRandomMarket()
+    {
+        if (_markets == null || _markets.Count == 0) return null;
+        int randomIndex = UnityEngine.Random.Range(0, _markets.Count);
+        return _markets[randomIndex];
+    }
+
+    public Spot GetRandomMarketStallSpot()
+    {
+        // Take random market
+        Market market = _markets[UnityEngine.Random.Range(0, _markets.Count)];
+        // Take random stall from market
+        return market.GetRandomStall().GetRandomAccessSpot();
+    }
     #endregion
 
     #region PRIVATE METHODS
@@ -246,14 +253,6 @@ public class TownManager : Singleton<TownManager>
                 try { NPCPoolManager.Instance.ReturnVillagerToPool(villager); } catch { }
             }
         }
-    }
-
-    public Spot GetRandomMarketStallSpot()
-    {
-        // Take random market
-        Market market = _markets[UnityEngine.Random.Range(0, _markets.Count)];
-        // Take random stall from market
-        return market.GetRandomStall().GetRandomAccessSpot();
     }
     #endregion
 }

@@ -4,7 +4,7 @@ public class InInteriorStrategy : ATimerStrategy
 {
     readonly GameObject _model;
 
-    public InInteriorStrategy(INPC npc, GameObject model, float min = 20, float max = 40)
+    public InInteriorStrategy(INPC npc, GameObject model, float min = 30, float max = 120)
     : base(npc, min, max)
     {
         _model = model;

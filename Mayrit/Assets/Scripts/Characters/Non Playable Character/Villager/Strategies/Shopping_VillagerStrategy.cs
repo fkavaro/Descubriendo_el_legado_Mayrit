@@ -1,23 +1,34 @@
 using UnityEngine;
 
 // TODO: implement with a repetition node in the behavior tree?
-public class Shopping_VillagerStrategy : AStrategy
+public class Shopping_VillagerStrategy : ATimerStrategy
 {
-    /// <summary>
-    /// Number of purchases to make during shopping.
-    /// </summary>
-    readonly int _puchasesNum;
-    int _purchasesMade;
 
-    Spot _stall;
+    public Shopping_VillagerStrategy(INPC npc, float min = 30, float max = 120)
+    : base(npc, min, max)
+    { }
 
-    public Shopping_VillagerStrategy(INPC npc, int min = 2, int max = 10)
-    : base(npc)
-    {
-        _puchasesNum = Random.Range(min, max);
-        _purchasesMade = 0;
-        _stall = null;
-    }
+    // Start
+
+
+    // Update
+
+
+    // /// <summary>
+    // /// Number of purchases to make during shopping.
+    // /// </summary>
+    // readonly int _puchasesNum;
+    // int _purchasesMade;
+
+    // Spot _stall;
+
+    // public Shopping_VillagerStrategy(INPC npc, int minItems = 2, int maxItems = 10)
+    // : base(npc, minItems, maxItems)
+    // {
+    //     _puchasesNum = Random.Range(minItems, maxItems);
+    //     _purchasesMade = 0;
+    //     _stall = null;
+    // }
 
     // public override Node.Status Update()
     // {

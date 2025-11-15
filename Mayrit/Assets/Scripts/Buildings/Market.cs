@@ -29,5 +29,12 @@ public class Market : ABuilding
         int randomIndex = UnityEngine.Random.Range(0, _stalls.Count);
         return _stalls[randomIndex];
     }
+
+    public Spot GetRandomStallSpot()
+    {
+        Stall stall = GetRandomStall();
+        if (stall == null) return null;
+        return stall.GetRandomAccessSpot();
+    }
     #endregion
 }

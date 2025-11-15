@@ -20,7 +20,7 @@ public class House : AAssignedBuilding
     public override void Reassign(List<Villager> residents)
     {
         var tm = TownManager.ExistingInstance;
-        if (tm != null) tm.Reassign(this, residents);
+        if (tm != null) tm.ReassignResidents(this, residents);
     }
     #endregion
 
