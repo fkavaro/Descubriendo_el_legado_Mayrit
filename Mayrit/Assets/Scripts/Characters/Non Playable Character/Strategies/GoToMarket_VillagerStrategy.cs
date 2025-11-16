@@ -3,6 +3,7 @@ using UnityEngine;
 public class GoToMarket_VillagerStrategy : AStrategy
 {
     readonly Market _market;
+    Stall _marketStall;
     Spot _marketStallSpot;
 
     public GoToMarket_VillagerStrategy(INPC npc, Market market)
@@ -13,12 +14,13 @@ public class GoToMarket_VillagerStrategy : AStrategy
 
     public override Node.Status Start()
     {
-        _marketStallSpot = _market.GetOpenStallSpot();
+        GetStallAndSetDestination();
 
         if (_marketStallSpot == null)
+        {
+            Debug.LogWarning($"{_npc.Name} could not find an available stall spot in the market.");
             return Node.Status.Failure;
-
-        _npc.SetDestinationSpot(_marketStallSpot);
+        }
 
         if (_npc.IsDestination(_marketStallSpot))
             return Node.Status.Success;
@@ -28,31 +30,64 @@ public class GoToMarket_VillagerStrategy : AStrategy
 
     public override Node.Status Update()
     {
-        // Success if arrived at market
-        if (_npc.HasArrivedAt(_marketStallSpot, true, false))
+        if (_marketStallSpot == null)
         {
-            _npc.AnimationController.ChangeToIdle();
-            return Node.Status.Success;
+            Debug.LogWarning($"{_npc.Name} could not find an available stall spot in the market.");
+            return Node.Status.Failure;
         }
-        // Continue if not
-        else
+
+        // Is close to destination stall spot
+        if (_npc.IsCloseTo(_marketStallSpot, 5f))
         {
-            // TODO: check if this work
-            // Stop and idle if its near and destination spot is occupied
-            if (_npc.IsCloseTo(_marketStallSpot, 2f, true))
+            if (!_market.IsSomeoneWorking())
             {
+                Debug.LogWarning($"{_npc.Name} found that no stalls are open in the market.");
+                return Node.Status.Failure;
+            }
+
+            // Is open
+            if (_marketStall.IsOpen())
+            {
+                // Is occupied
                 if (_marketStallSpot.IsOccupied())
                 {
+                    // Stop and idle
                     Debug.Log($"{_npc.Name} is near market stall spot but it's occupied. Stopping.");
                     _npc.SetIfStopped(true);
+                    _npc.AnimationController.ChangeToIdle();
                 }
+                // Is not occupied
                 else
                 {
                     _npc.SetIfStopped(false);
+
+                    // Has arrived
+                    if (_npc.HasArrivedAt(_marketStallSpot, true, false))
+                    {
+                        _npc.AnimationController.ChangeToIdle(); // TODO: talk animation
+                        return Node.Status.Success;
+                    }
                 }
             }
-
-            return Node.Status.Running;
+            // Is closed
+            else
+            {
+                // Go to another stall
+                GetStallAndSetDestination();
+            }
         }
+        // else
+        // {
+        //     _npc.SetIfStopped(false);
+        // }
+
+        return Node.Status.Running;
+    }
+
+    void GetStallAndSetDestination()
+    {
+        _marketStall = _market.GetRandomStall();
+        _marketStallSpot = _marketStall.GetRandomAccessSpot();
+        _npc.SetDestinationSpot(_marketStallSpot);
     }
 }

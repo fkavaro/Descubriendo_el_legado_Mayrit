@@ -100,7 +100,11 @@ public class Villager : ANPC<BehaviourTree>
             int randomRepetitions = UnityEngine.Random.Range(2, 5);
             RepetitionNode shoppingRepetition = new(this, randomRepetitions, shoppingSequence);
 
-            routineSequence.AddChild(shoppingRepetition);
+            // So that in case of failure (e.g., market closed), routine continues
+            SuccederNode shoppingSucceeder = new(this);
+            shoppingSucceeder.AddChild(shoppingRepetition);
+
+            routineSequence.AddChild(shoppingSucceeder);
         }
         else
             Debug.LogWarning("Villager " + name + " doesn't shop.");

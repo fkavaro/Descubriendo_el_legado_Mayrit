@@ -53,7 +53,6 @@ public class Spot : MonoBehaviour
         // Use Handles to draw a thicker anti-aliased line in the Scene view
         Handles.color = _gizmoColor;
         Vector3 tip = pos + dir * _gizmoLength;
-        //Handles.DrawAAPolyLine(_gizmoThickness, pos, tip);
 
         // Draw a small arrow head using Handles (computed in the same local->world space)
         float headSize = _gizmoLength;

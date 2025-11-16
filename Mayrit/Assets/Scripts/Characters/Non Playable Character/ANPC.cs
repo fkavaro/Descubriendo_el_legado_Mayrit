@@ -139,7 +139,7 @@ where T : ABehaviourSystem
         if (Vector3.Distance(_agent.transform.position, destination) < checkingDistance)
         {
             if (fixRotation)
-                _agent.transform.LookAt(destination);
+                _agent.transform.LookAt(destination); // TODO: not rotating on Y axis only
 
             return true;
         }

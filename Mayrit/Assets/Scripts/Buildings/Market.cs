@@ -51,19 +51,25 @@ public class Market : ABuilding
     }
 
     /// <returns>The access spot of a random opened stall in the market
-    public Spot GetOpenStallSpot()
+    public Spot GetRandomStallSpot()
     {
         Spot spot = null;
+        Stall stall = GetRandomStall();
 
-        do
-        {
-            Stall stall = GetRandomOpenedStall();
-            if (stall != null)
-                spot = stall.GetRandomAccessSpot();
-        }
-        while (spot == null); // Not found
+        if (stall != null)
+            spot = stall.GetRandomAccessSpot();
 
         return spot;
+    }
+
+    public bool IsSomeoneWorking()
+    {
+        foreach (var stall in _stalls)
+        {
+            if (stall.IsOpen())
+                return true;
+        }
+        return false;
     }
     #endregion
 }

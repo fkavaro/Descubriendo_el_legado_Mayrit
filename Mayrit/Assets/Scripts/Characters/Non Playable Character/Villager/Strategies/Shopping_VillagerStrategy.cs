@@ -9,7 +9,11 @@ public class Shopping_VillagerStrategy : ATimerStrategy
     { }
 
     // Start
-
+    public override Node.Status Start()
+    {
+        _npc.AnimationController.ChangeToIdle();
+        return Node.Status.Success;
+    }
 
     // Update
 
