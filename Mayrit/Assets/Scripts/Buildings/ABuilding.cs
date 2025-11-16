@@ -21,7 +21,7 @@ public abstract class ABuilding : MonoBehaviour
         if (entranceSpot != null)
         {
             npc.Agent.transform.position = entranceSpot.transform.position;
-            npc.ForceRotation(entranceSpot.DirectionWorldQuaternion);
+            npc.ForceRotation(entranceSpot.WorldDirection);
         }
         else
         {

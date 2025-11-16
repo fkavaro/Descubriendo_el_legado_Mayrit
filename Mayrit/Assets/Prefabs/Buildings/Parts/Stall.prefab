@@ -13,7 +13,7 @@ GameObject:
   m_Layer: 0
   m_Name: ClientSpot
   m_TagString: Untagged
-  m_Icon: {fileID: 8418204508859773708, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -25,13 +25,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 426046809214885773}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -1, z: -0, w: -0.00000035762784}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: -0.00000035762784, y: 0, z: 1.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 2950871840923224400}
-  m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!114 &2531909360086829243
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46,9 +46,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Spot
   _isOccupied: 0
   _isRotationFixed: 1
-  _directionAngle: 0
-  _gizmoLength: 2
-  _gizmoThickness: 10
+  _gizmoLength: 0.5
+  _gizmoThickness: 20
+  _gizmoColor: {r: 0.015686274, g: 0.74706334, b: 1, a: 1}
 --- !u!1 &1183405818310008905
 GameObject:
   m_ObjectHideFlags: 0
@@ -1330,7 +1330,7 @@ GameObject:
   m_Layer: 0
   m_Name: WorkerSpot
   m_TagString: Untagged
-  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1363,9 +1363,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Spot
   _isOccupied: 0
   _isRotationFixed: 1
-  _directionAngle: 0
-  _gizmoLength: 2
-  _gizmoThickness: 10
+  _gizmoLength: 0.5
+  _gizmoThickness: 20
+  _gizmoColor: {r: 1, g: 0.13700199, b: 0.015686274, a: 1}
 --- !u!1 &3996182509194504942
 GameObject:
   m_ObjectHideFlags: 0
@@ -11670,6 +11670,7 @@ MonoBehaviour:
   _assignedVillagers: []
   _workSpots:
   - {fileID: 4291163784834394532}
+  _isOpen: 0
   _parentMarket: {fileID: 0}
 --- !u!1 &8205122105290053257
 GameObject:

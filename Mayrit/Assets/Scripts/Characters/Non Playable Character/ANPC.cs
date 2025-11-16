@@ -189,7 +189,7 @@ where T : ABehaviourSystem
                 _destinationSpot.SetOccupied(true);
 
                 if (fixRotation)
-                    ForceRotation(_destinationSpot.DirectionVector); // Fix rotation to the target position
+                    ForceRotation(_destinationSpot.WorldDirection);
                 if (fixPosition)
                     _agent.transform.position = _destinationSpot.transform.position;
             }

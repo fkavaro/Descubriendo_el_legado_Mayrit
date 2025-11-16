@@ -13,7 +13,7 @@ GameObject:
   m_Layer: 0
   m_Name: Spot
   m_TagString: Untagged
-  m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -46,9 +46,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Spot
   _isOccupied: 0
   _isRotationFixed: 1
-  _directionAngle: 0
-  _gizmoLength: 2
-  _gizmoThickness: 10
+  _gizmoLength: 0.5
+  _gizmoThickness: 20
+  _gizmoColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &5026753730120425781
 GameObject:
   m_ObjectHideFlags: 0

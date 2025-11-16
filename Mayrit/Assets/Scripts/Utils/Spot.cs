@@ -11,18 +11,14 @@ public class Spot : MonoBehaviour
 {
     [SerializeField] bool _isOccupied = false;
     [SerializeField] bool _isRotationFixed = false;
-    [Tooltip("Direction angle in degrees (Y axis rotation)")]
-    [SerializeField] int _directionAngle = 0;
 
     [Header("Debug direction gizmo")]
-    [SerializeField] float _gizmoLength = 2f;
-    [SerializeField] float _gizmoThickness = 10f;
+    [SerializeField] float _gizmoLength = 0.5f;
+    [SerializeField] float _gizmoThickness = 20f;
+    [SerializeField] Color _gizmoColor = Color.yellow;
 
-    [HideInInspector] public Vector3 DirectionVector => Quaternion.Euler(0f, _directionAngle, 0f) * Vector3.forward;
-    [HideInInspector] public Vector3 DirectionWorldVector => transform.rotation * DirectionVector;
-
-    [HideInInspector] public Quaternion DirectionQuaternion => Quaternion.Euler(0f, _directionAngle, 0f);
-    [HideInInspector] public Quaternion DirectionWorldQuaternion => transform.rotation * DirectionQuaternion;
+    [HideInInspector] public Quaternion LocalDirection => Quaternion.Euler(0f, transform.rotation.y, 0f);
+    [HideInInspector] public Quaternion WorldDirection => transform.rotation * LocalDirection;
 
     readonly object posLock = new();
 
@@ -51,16 +47,16 @@ public class Spot : MonoBehaviour
         Vector3 pos = transform.position;
 
         // Compute world-space rotation by applying the local Y rotation on top of the object's transform rotation.
-        Quaternion rot = transform.rotation * Quaternion.Euler(0f, _directionAngle, 0f);
+        Quaternion rot = transform.rotation * Quaternion.Euler(0f, transform.rotation.y, 0f);
         Vector3 dir = rot * Vector3.forward;
 
         // Use Handles to draw a thicker anti-aliased line in the Scene view
-        Handles.color = Color.yellow;
+        Handles.color = _gizmoColor;
         Vector3 tip = pos + dir * _gizmoLength;
-        Handles.DrawAAPolyLine(_gizmoThickness, pos, tip);
+        //Handles.DrawAAPolyLine(_gizmoThickness, pos, tip);
 
         // Draw a small arrow head using Handles (computed in the same local->world space)
-        float headSize = Mathf.Max(0.05f, _gizmoLength * 0.3f);
+        float headSize = _gizmoLength;
         Vector3 right = rot * Vector3.right;
         Handles.DrawAAPolyLine(_gizmoThickness, tip, tip - dir * headSize + right * headSize);
         Handles.DrawAAPolyLine(_gizmoThickness, tip, tip - dir * headSize - right * headSize);
@@ -74,18 +70,18 @@ public class Spot : MonoBehaviour
 class SpotEditor : UnityEditor.Editor
 {
     UnityEditor.SerializedProperty isRotationFixedProp;
-    UnityEditor.SerializedProperty directionAngleProp;
     UnityEditor.SerializedProperty isOccupiedProp;
     UnityEditor.SerializedProperty debugArrowLengthProp;
     UnityEditor.SerializedProperty debugArrowThicknessProp;
+    UnityEditor.SerializedProperty debugArrowColorProp;
 
     void OnEnable()
     {
         isRotationFixedProp = serializedObject.FindProperty("_isRotationFixed");
-        directionAngleProp = serializedObject.FindProperty("_directionAngle");
         isOccupiedProp = serializedObject.FindProperty("_isOccupied");
         debugArrowLengthProp = serializedObject.FindProperty("_gizmoLength");
         debugArrowThicknessProp = serializedObject.FindProperty("_gizmoThickness");
+        debugArrowColorProp = serializedObject.FindProperty("_gizmoColor");
     }
 
     public override void OnInspectorGUI()
@@ -97,9 +93,9 @@ class SpotEditor : UnityEditor.Editor
 
         if (isRotationFixedProp.boolValue)
         {
-            UnityEditor.EditorGUILayout.PropertyField(directionAngleProp);
             UnityEditor.EditorGUILayout.PropertyField(debugArrowLengthProp);
             UnityEditor.EditorGUILayout.PropertyField(debugArrowThicknessProp);
+            UnityEditor.EditorGUILayout.PropertyField(debugArrowColorProp);
         }
 
         serializedObject.ApplyModifiedProperties();
