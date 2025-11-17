@@ -149,6 +149,12 @@ public class AnimationController
         ChangeAnimationTo(_afterJumpAnim);
     }
 
+    internal void ChangeToTalk()
+    {
+        ChangeAnimationTo(_idleAnim); // TODO: talk animation
+    }
+
+
     public bool IsIdleAnimationFinished()
     {
         return IsAnimationFinished(_idleAnim);
@@ -177,6 +183,11 @@ public class AnimationController
     public bool IsAfterJumpAnimationFinished()
     {
         return IsAnimationFinished(_afterJumpAnim);
+    }
+
+    public bool IsTalkAnimationFinished()
+    {
+        return IsAnimationFinished(_idleAnim); // TODO: talk animation
     }
     #endregion
 }

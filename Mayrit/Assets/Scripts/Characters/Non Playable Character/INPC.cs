@@ -17,23 +17,23 @@ public interface INPC : IBehaviourEntity
     public void SetDestinationSpot(Spot destinationSpot);
 
     /// <returns>If the current destination spot is occupied</returns>
-    public bool DestinationSpotIsOccupied();
+    public bool IsDestinationSpotOccupied();
 
     /// <summary>
     /// Checks if the NavMeshAgent is close to a certain position
     /// and makes it look at it when arriving, if wanted.
     /// </summary>
-    public bool IsCloseTo(Vector3 destination, float checkingDistance = 2f, bool lookAtDestination = false);
+    public bool IsCloseTo(Vector3 destination, float horizontalDistance = 2f, float verticalDistance = 3.5f);
     /// <summary>
     /// Checks if the NavMeshAgent is close to a certain spot
     /// and makes it look at it when arriving, if wanted.
     /// </summary>
-    public bool IsCloseTo(Spot spot, float checkingDistance = 2f, bool lookAtDestination = false);
+    public bool IsCloseTo(Spot spot, float horizontalDistance = 2f, float verticalDistance = 3.5f);
     /// <summary>
     /// Checks if the NavMeshAgent is close to its destination
     /// and makes it look at it when arriving, if wanted.
     /// </summary>
-    public bool IsCloseToDestination(float checkingDistance = 2f, bool lookAtDestination = false);
+    public bool IsCloseToDestination(float horizontalDistance = 2f, float verticalDistance = 3.5f);
 
     /// <summary>
     /// Checks if the NavMeshAgent has arrived at its destination, 
@@ -80,12 +80,5 @@ public interface INPC : IBehaviourEntity
     void PlaceAt(Spot destinationSpot);
     void PlaceAt(Vector3 position);
     void PlaceAtDestination();
-    #endregion
-
-    #region ENERGY METHODS
-    public void ReduceEnergy(float amount);
-    public void IncreaseEnergy(float amount);
-    public bool IsEnergyLow();
-    public bool IsEnergyAtMax();
     #endregion
 }

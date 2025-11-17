@@ -22,12 +22,9 @@ where T : ABehaviourSystem
     public float _avoidanceRadius = 0.7f;
     [Tooltip("Max distance from the random point to a point on the navmesh, for target position sampling")]
     public float _maxSamplingDistance = 1f;
-    [Tooltip("Distance to which it's considered as arrived at destination")]
-    public float _horizontalStoppingDistance = 0.3f;
-    [Tooltip("Vertical margin (Y axis) to consider arrival")]
-    public float _verticalStoppingDistance = 1.5f;
-    [Tooltip("Distance to which it's close to the destination")]
-    public float _nearDistance = 2f;
+    [Tooltip("Distance to which it's considered as arrived at destination (horizontal, vertical)")]
+    public Vector2 _arrivedDistance = new(0.3f, 1.5f);
+    public Vector2 _nearDistance = new(5f, 7f);
     public bool _isStopped = false;
 
     [Header("Avoidance")]
@@ -35,10 +32,6 @@ where T : ABehaviourSystem
     public int _baseAvoidancePriority = 50;
     [Tooltip("Random +/- variance applied to base avoidance priority")]
     public int _avoidancePriorityVariance = 10;
-
-    [Header("Energy Properties")]
-    [Tooltip("Energy value"), Range(0, 100)]
-    public float _energy = 100;
 
     [Header("Animation")]
     public Animator _animator;
@@ -50,6 +43,8 @@ where T : ABehaviourSystem
     Spot _destinationSpot = null;
     public NavMeshAgent Agent => _agent;
     public AnimationController AnimationController => _animationController;
+    float _arrivedhorizontalDistance, _arrivedVerticalDistance,
+        _nearHorizontalDistance, _nearVerticalDistance;
     #endregion
 
     #region MONOBEHAVIOUR
@@ -59,10 +54,16 @@ where T : ABehaviourSystem
 
         _animationController = new(this, this, _animator);
 
+        _arrivedhorizontalDistance = _arrivedDistance.x;
+        _arrivedVerticalDistance = _arrivedDistance.y;
+        _nearHorizontalDistance = _nearDistance.x;
+        _nearVerticalDistance = _nearDistance.y;
+
+
         _agent = GetComponent<NavMeshAgent>();
         _agent.speed = _walkSpeed;
         _agent.angularSpeed = _rotationSpeed * 100f;
-        _agent.stoppingDistance = _horizontalStoppingDistance;
+        _agent.stoppingDistance = _arrivedhorizontalDistance;
         _agent.radius = _avoidanceRadius;
 
         // Assign a randomized avoidance priority to reduce symmetric deadlocks between agents
@@ -96,7 +97,38 @@ where T : ABehaviourSystem
     }
     #endregion
 
-    #region PUBLIC METHODS
+    #region DESTINATION METHODS
+    public Vector3 GetDestinationPos()
+    {
+        return _agent.destination;
+    }
+
+    public Spot GetDestinationSpot()
+    {
+        return _destinationSpot;
+    }
+
+    public bool IsDestination(Vector3 position)
+    {
+        return _agent.destination == position;
+    }
+
+    public bool IsDestination(Spot spot)
+    {
+        if (spot == null) return false;
+        return _destinationSpot == spot;
+    }
+
+    public bool IsDestinationSpotOccupied()
+    {
+        if (_destinationSpot == null)
+            return false;
+        else
+            return _destinationSpot.IsOccupied();
+    }
+    #endregion
+
+    #region SET DESTINATION METHODS
     public void SetDestination(Vector3 destinationPos)
     {
         if (_agent.destination == destinationPos) return;
@@ -122,41 +154,45 @@ where T : ABehaviourSystem
 
         _destinationSpot = destinationSpot;
     }
+    #endregion
 
-    public bool DestinationSpotIsOccupied()
+    #region IS CLOSE METHODS
+    public bool IsCloseTo(Vector3 destination, float horizontalDistance = 2f, float verticalDistance = 3.5f)
     {
-        if (_destinationSpot == null)
-            return false;
-        else
-            return _destinationSpot.IsOccupied();
-    }
+        Vector3 agentPos = _agent.transform.position;
+        Vector3 destPos = destination;
 
-    public bool IsCloseTo(Vector3 destination, float checkingDistance = 2f, bool fixRotation = false)
-    {
-        if (checkingDistance <= _nearDistance)
-            checkingDistance = _nearDistance;
+        // Horizontal distance on XZ plane
+        Vector2 agentXZ = new(agentPos.x, agentPos.z);
+        Vector2 destXZ = new(destPos.x, destPos.z);
+        float horizontalDist = Vector2.Distance(agentXZ, destXZ);
 
-        if (Vector3.Distance(_agent.transform.position, destination) < checkingDistance)
-        {
-            if (fixRotation)
-                _agent.transform.LookAt(destination); // TODO: not rotating on Y axis only
+        // Vertical distance on Y axis
+        float verticalDist = Mathf.Abs(agentPos.y - destPos.y);
 
+        // Take max values of provided distances and npc's near distances
+        horizontalDistance = Mathf.Max(horizontalDistance, _nearHorizontalDistance);
+        verticalDistance = Mathf.Max(verticalDistance, _nearVerticalDistance);
+
+        // Check if within stopping distances
+        if (horizontalDist < horizontalDistance && verticalDist < verticalDistance)
             return true;
-        }
         else
             return false;
     }
 
-    public bool IsCloseTo(Spot spot, float checkingDistance = 2f, bool lookAtDestination = false)
+    public bool IsCloseTo(Spot spot, float horizontalDistance = 2f, float verticalDistance = 3.5f)
     {
-        return IsCloseTo(spot.transform.position, checkingDistance, lookAtDestination);
+        return IsCloseTo(spot.transform.position, horizontalDistance, verticalDistance);
     }
 
-    public bool IsCloseToDestination(float checkingDistance = 2f, bool fixRotation = false)
+    public bool IsCloseToDestination(float horizontalDistance = 2f, float verticalDistance = 3.5f)
     {
-        return IsCloseTo(_agent.destination, checkingDistance, fixRotation);
+        return IsCloseTo(_agent.destination, horizontalDistance, verticalDistance);
     }
+    #endregion
 
+    #region HAS ARRIVED METHODS
     public bool HasArrivedAtDestination(bool fixRotation = false, bool fixPosition = false)
     {
         return HasArrivedAt(_agent.destination, fixRotation, fixPosition);
@@ -169,7 +205,6 @@ where T : ABehaviourSystem
 
     public bool HasArrivedAt(Vector3 destination, bool fixRotation = false, bool fixPosition = false)
     {
-        // Compare horizontal (XZ) distance and allow a bigger vertical margin.
         Vector3 agentPos = _agent.transform.position;
         Vector3 destPos = destination;
 
@@ -182,7 +217,7 @@ where T : ABehaviourSystem
         float verticalDist = Mathf.Abs(agentPos.y - destPos.y);
 
         // Check if within stopping distances
-        if (horizontalDist < _horizontalStoppingDistance && verticalDist < _verticalStoppingDistance)
+        if (horizontalDist < _arrivedhorizontalDistance && verticalDist < _arrivedVerticalDistance)
         {
             if (_destinationSpot != null)
             {
@@ -198,7 +233,9 @@ where T : ABehaviourSystem
         }
         else return false;
     }
+    #endregion
 
+    #region FORCE ROTATION METHODS
     public void ForceRotation(Vector3 lookDirection)
     {
         if (_agent.isOnNavMesh)
@@ -213,7 +250,9 @@ where T : ABehaviourSystem
 
         _agent.transform.rotation = rotation;
     }
+    #endregion
 
+    #region OTHER METHODS
     public bool CanReachPosition(Vector3 targetPos, out Vector3 reachablePos)
     {
         NavMeshHit hitLocation;
@@ -270,27 +309,6 @@ where T : ABehaviourSystem
         return _agent.pathPending;
     }
 
-    public Vector3 GetDestinationPos()
-    {
-        return _agent.destination;
-    }
-
-    public Spot GetDestinationSpot()
-    {
-        return _destinationSpot;
-    }
-
-    public bool IsDestination(Vector3 position)
-    {
-        return _agent.destination == position;
-    }
-
-    public bool IsDestination(Spot spot)
-    {
-        if (spot == null) return false;
-        return _destinationSpot == spot;
-    }
-
     public void PlaceAt(Spot spot)
     {
         if (spot == null)
@@ -322,41 +340,6 @@ where T : ABehaviourSystem
     public void PlaceAtDestination()
     {
         PlaceAt(_agent.destination);
-    }
-    #endregion
-
-    #region ENERGY METHODS
-    public void ReduceEnergy(float amount)
-    {
-        if (_energy > 0)
-            _energy -= amount;
-    }
-
-    public void IncreaseEnergy(float amount)
-    {
-        if (_energy < 100)
-            _energy += amount;
-
-        if (_energy > 100)
-            _energy = 100;
-    }
-
-    public bool IsEnergyLow()
-    {
-        if (_energy <= 0)
-        {
-            _energy = 0;
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    public bool IsEnergyAtMax()
-    {
-        return _energy >= 100;
     }
     #endregion
 }

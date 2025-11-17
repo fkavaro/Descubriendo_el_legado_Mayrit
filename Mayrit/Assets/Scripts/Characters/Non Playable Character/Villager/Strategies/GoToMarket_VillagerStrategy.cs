@@ -37,7 +37,7 @@ public class GoToMarket_VillagerStrategy : AStrategy
         }
 
         // Is close to destination stall spot
-        if (_npc.IsCloseTo(_marketStallSpot, 5f))
+        if (_npc.IsCloseTo(_marketStallSpot))
         {
             if (!_market.IsOpen())
             {
@@ -64,7 +64,7 @@ public class GoToMarket_VillagerStrategy : AStrategy
                     // Has arrived
                     if (_npc.HasArrivedAt(_marketStallSpot, true, false))
                     {
-                        _npc.AnimationController.ChangeToIdle(); // TODO: talk animation
+                        _npc.AnimationController.ChangeToTalk();
                         return Node.Status.Success;
                     }
                 }
