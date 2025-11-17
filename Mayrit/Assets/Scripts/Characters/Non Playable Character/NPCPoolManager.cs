@@ -16,8 +16,10 @@ public class NPCPoolManager : Singleton<NPCPoolManager>
     [Header("Villagers pool")]
     [Tooltip("All villager models to be spawned randomly")]
     public GameObject[] _villagerPrefabs;
+    [Tooltip("Ratio of active villagers to total population"), Range(0f, 1f)]
+    public float _activeVillagersRatio = 0.3f;
     [Tooltip("Maximum number of villager at once")]
-    public int _maxActiveVillagers = 10;
+    public int _maxActiveVillagers;
     public List<Villager> _activeVillagers = new();
     #endregion
 
@@ -42,8 +44,14 @@ public class NPCPoolManager : Singleton<NPCPoolManager>
 
     void OnDestroy()
     {
-        // Unsubscribe from town population changes
-        TownManager.ExistingInstance.OnPopulationChanged -= OnTownPopulationChanged;
+        // Unsubscribe from town population changes (guarded to avoid NullReferenceException during teardown)
+        try
+        {
+            var tm = TownManager.ExistingInstance;
+            if (tm != null)
+                tm.OnPopulationChanged -= OnTownPopulationChanged;
+        }
+        catch { }
     }
     #endregion
 
@@ -64,10 +72,8 @@ public class NPCPoolManager : Singleton<NPCPoolManager>
     /// </summary>
     void OnTownPopulationChanged(int newPopulation)
     {
-        // Max active villagers is a third of population
-        _maxActiveVillagers = newPopulation / 3; // TODO revisit ratio
+        _maxActiveVillagers = Mathf.RoundToInt(newPopulation * _activeVillagersRatio);
 
-        int desiredActive = Mathf.Clamp(newPopulation, 0, _maxActiveVillagers);
         int currentActive = _activeVillagers.Count;
         int activeDifference = _maxActiveVillagers - currentActive;
 
@@ -128,6 +134,9 @@ public class NPCPoolManager : Singleton<NPCPoolManager>
 
         Sanctuary nearestSanctuary = TownManager.Instance.GetNearestSanctuary(randomFreeHouse);
         villager.AssignSanctuary(nearestSanctuary);
+
+        Market randomMarket = TownManager.Instance.GetNearestMarket(randomFreeHouse);
+        villager.AssignMarket(randomMarket);
 
         // Activate and reset components
         villager.gameObject.SetActive(true);

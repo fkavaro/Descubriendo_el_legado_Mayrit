@@ -8,6 +8,23 @@ public abstract class ABuilding : MonoBehaviour
     [SerializeField] List<Spot> _accessSpots;
     #endregion
 
+    #region ABSTRACT METHODS
+    public abstract void RegisterBuilding();
+    public abstract void UnregisterBuilding();
+    #endregion
+
+    #region MONOBEHAVIOUR
+    public virtual void OnEnable()
+    {
+        RegisterBuilding();
+    }
+
+    public virtual void OnDisable()
+    {
+        UnregisterBuilding();
+    }
+    #endregion
+
     #region PUBLIC METHODS
     public void PlaceAtRandomEntrance(INPC npc)
     {

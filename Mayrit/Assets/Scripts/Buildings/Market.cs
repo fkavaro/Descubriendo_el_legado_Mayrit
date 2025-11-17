@@ -5,7 +5,22 @@ using UnityEngine;
 public class Market : ABuilding
 {
     #region EDITOR PROPERTIES
+    [Header("Market Properties")]
     [SerializeField] List<Stall> _stalls = new();
+    #endregion
+
+    #region INHERITED METHODS
+    public override void RegisterBuilding()
+    {
+        var tm = TownManager.ExistingInstance;
+        if (tm != null) tm.RegisterMarket(this);
+    }
+
+    public override void UnregisterBuilding()
+    {
+        var tm = TownManager.ExistingInstance;
+        if (tm != null) tm.UnregisterMarket(this);
+    }
     #endregion
 
     #region PUBLIC METHODS
@@ -62,7 +77,7 @@ public class Market : ABuilding
         return spot;
     }
 
-    public bool IsSomeoneWorking()
+    public bool IsOpen()
     {
         foreach (var stall in _stalls)
         {

@@ -48,10 +48,5 @@ MonoBehaviour:
   _population: 0
   _houses: []
   _workplaces: []
-  _sanctuaries:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  _markets:
-  - {fileID: 0}
+  _sanctuaries: []
+  _markets: []

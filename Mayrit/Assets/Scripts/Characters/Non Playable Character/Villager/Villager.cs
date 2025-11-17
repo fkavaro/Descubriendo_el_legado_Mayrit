@@ -9,6 +9,7 @@ public class Villager : ANPC<BehaviourTree>
     public House _home;
     public Workplace _workplace;
     public Sanctuary _sanctuary;
+    public Market _market;
     #endregion
 
     #region PROPERTIES
@@ -26,10 +27,6 @@ public class Villager : ANPC<BehaviourTree>
         Spot workplaceEntrance = null;
         if (_workplace != null)
             workplaceEntrance = _workplace.GetRandomWorkingSpot();
-
-        Market market = null;
-        if (TownManager.ExistingInstance != null)
-            market = TownManager.ExistingInstance.GetRandomMarket();
 
         Spot homeEntrance = null;
         if (_home != null)
@@ -67,8 +64,6 @@ public class Villager : ANPC<BehaviourTree>
 
             routineSequence.AddChild(prayingSequence);
         }
-        else
-            Debug.LogWarning("Villager " + name + " doesn't pray.");
 
         if (workplaceEntrance != null)
         {
@@ -83,12 +78,10 @@ public class Villager : ANPC<BehaviourTree>
 
             routineSequence.AddChild(workingSequence);
         }
-        else
-            Debug.LogWarning("Villager " + name + " doesn't have a job.");
 
-        if (market != null)
+        if (_market != null)
         {
-            GoToMarket_VillagerStrategy goToMarketStrategy = new(this, market);
+            GoToMarket_VillagerStrategy goToMarketStrategy = new(this, _market);
             Shopping_VillagerStrategy shoppingStrategy = new(this, 15, 45);
 
             SequenceNode shoppingSequence = new(this);
@@ -106,8 +99,6 @@ public class Villager : ANPC<BehaviourTree>
 
             routineSequence.AddChild(shoppingSucceeder);
         }
-        else
-            Debug.LogWarning("Villager " + name + " doesn't shop.");
 
         if (homeEntrance != null)
         {
@@ -122,8 +113,6 @@ public class Villager : ANPC<BehaviourTree>
 
             routineSequence.AddChild(atHomeSequence);
         }
-        else
-            Debug.LogWarning("Villager " + name + " doesn't rest.");
 
         // Behaviour sequence
         SelectorNode behaviourSelector = new(this);
@@ -170,6 +159,12 @@ public class Villager : ANPC<BehaviourTree>
             _sanctuary = sanctuary;
     }
 
+    public void AssignMarket(Market randomMarket)
+    {
+        if (randomMarket != null)
+            _market = randomMarket;
+    }
+
     public void OnReleasedFromPool()
     {
         gameObject.SetActive(false);
@@ -178,7 +173,13 @@ public class Villager : ANPC<BehaviourTree>
         if (_home != null)
             _home.RemoveAssigned(this);
 
+        if (_workplace != null)
+            _workplace.RemoveAssigned(this);
+
         _home = null;
+        _workplace = null;
+        _sanctuary = null;
+        _market = null;
     }
     #endregion
 

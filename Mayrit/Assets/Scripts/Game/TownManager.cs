@@ -60,20 +60,34 @@ public class TownManager : Singleton<TownManager>
         UnregisterBuilding(_houses, house, -house._capacity);
     }
 
-    /// <summary>
-    /// Registers a workplace in the town.
-    /// </summary>
     public void RegisterWorkplace(Workplace workplace)
     {
         RegisterBuilding(_workplaces, workplace);
     }
 
-    /// <summary>   
-    /// Unregisters a workplace from the town.
-    /// </summary>
     public void UnregisterWorkplace(Workplace workplace)
     {
         UnregisterBuilding(_workplaces, workplace);
+    }
+
+    public void RegisterMarket(Market market)
+    {
+        RegisterBuilding(_markets, market);
+    }
+
+    public void UnregisterMarket(Market market)
+    {
+        UnregisterBuilding(_markets, market);
+    }
+
+    public void RegisterSanctuary(Sanctuary sanctuary)
+    {
+        RegisterBuilding(_sanctuaries, sanctuary);
+    }
+
+    public void UnregisterSanctuary(Sanctuary sanctuary)
+    {
+        UnregisterBuilding(_sanctuaries, sanctuary);
     }
 
     /// <summary>
@@ -133,52 +147,14 @@ public class TownManager : Singleton<TownManager>
         });
     }
 
-    /// <summary>
-    /// Finds and returns the sanctuary Building nearest to the provided home.
-    /// </summary>
-    /// <param name="home">The house used as the reference point for distance calculations.</param>
-    /// <returns>The nearest sanctuary Building, or null if none available.</returns>
-    public Sanctuary GetNearestSanctuary(House home)
+    public Sanctuary GetNearestSanctuary(ABuilding other)
     {
-        // Validate inputs: no sanctuaries configured or invalid home -> nothing to do
-        if (_sanctuaries == null || _sanctuaries.Count == 0 || home == null)
-            return null;
-
-        Sanctuary nearestSanctuary = null;
-        float nearestDistanceSqr = float.MaxValue;
-        Vector3 homePosition = home.transform.position;
-
-        foreach (var sanctuary in _sanctuaries)
-        {
-            // Skip null or deactivated entries
-            if (sanctuary == null || !sanctuary.gameObject.activeSelf)
-                continue;
-
-            // Use squared magnitude to avoid the cost of sqrt when comparing distances
-            float distanceSqr = (sanctuary.transform.position - homePosition).sqrMagnitude;
-            if (distanceSqr < nearestDistanceSqr)
-            {
-                nearestDistanceSqr = distanceSqr;
-                nearestSanctuary = sanctuary;
-            }
-        }
-
-        return nearestSanctuary;
+        return GetNearestBuilding(other, _sanctuaries);
     }
 
-    public Market GetRandomMarket()
+    public Market GetNearestMarket(ABuilding other)
     {
-        if (_markets == null || _markets.Count == 0) return null;
-        int randomIndex = UnityEngine.Random.Range(0, _markets.Count);
-        return _markets[randomIndex];
-    }
-
-    public Spot GetRandomMarketStallSpot()
-    {
-        // Take random market
-        Market market = _markets[UnityEngine.Random.Range(0, _markets.Count)];
-        // Take random stall from market
-        return market.GetRandomStall().GetRandomAccessSpot();
+        return GetNearestBuilding(other, _markets);
     }
     #endregion
 
@@ -189,7 +165,7 @@ public class TownManager : Singleton<TownManager>
     }
 
     void RegisterBuilding<T>(List<T> buildings, T building, int populationDelta = 0)
-    where T : AAssignedBuilding
+    where T : ABuilding
     {
         if (building == null) return;
         if (buildings == null) return;
@@ -201,7 +177,7 @@ public class TownManager : Singleton<TownManager>
     }
 
     void UnregisterBuilding<T>(List<T> buildings, T building, int populationDelta = 0)
-    where T : AAssignedBuilding
+    where T : ABuilding
     {
         if (building == null) return;
         if (buildings == null) return;
@@ -253,6 +229,35 @@ public class TownManager : Singleton<TownManager>
                 try { NPCPoolManager.Instance.ReturnVillagerToPool(villager); } catch { }
             }
         }
+    }
+
+    T GetNearestBuilding<T>(ABuilding buildingCloseBy, List<T> buildings)
+    where T : ABuilding
+    {
+        // Validate inputs: no buildings configured or invalid home -> nothing to do
+        if (buildings == null || buildings.Count == 0 || buildingCloseBy == null)
+            return null;
+
+        T nearestBuilding = null;
+        float nearestDistanceSqr = float.MaxValue;
+        Vector3 buildingCloseByPos = buildingCloseBy.transform.position;
+
+        foreach (var building in buildings)
+        {
+            // Skip null or deactivated entries
+            if (building == null || !building.gameObject.activeSelf)
+                continue;
+
+            // Use squared magnitude to avoid the cost of sqrt when comparing distances
+            float distanceSqr = (building.transform.position - buildingCloseByPos).sqrMagnitude;
+            if (distanceSqr < nearestDistanceSqr)
+            {
+                nearestDistanceSqr = distanceSqr;
+                nearestBuilding = building;
+            }
+        }
+
+        return nearestBuilding;
     }
     #endregion
 }

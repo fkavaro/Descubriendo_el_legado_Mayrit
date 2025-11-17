@@ -13,18 +13,11 @@ public abstract class AAssignedBuilding : ABuilding
     #endregion
 
     #region ABSTRACT METHODS
-    public abstract void RegisterBuilding();
-    public abstract void UnregisterBuilding();
     public abstract void Reassign(List<Villager> residents);
     #endregion
 
     #region MONOBEHAVIOUR
-    public virtual void OnEnable()
-    {
-        RegisterBuilding();
-    }
-
-    public virtual void OnDisable()
+    public override void OnDisable()
     {
         var tm = TownManager.ExistingInstance;
         if (tm != null)
