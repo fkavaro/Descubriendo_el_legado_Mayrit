@@ -1,13 +1,41 @@
 using UnityEngine;
 
-public class InteractStrategy : AStrategy
+public class InteractStrategy : ATimedStrategy
 {
-    public InteractStrategy(INPC npc)
-    : base(npc) { }
+    INPC _otherNPC;
 
-    public override Node.Status Update()
+    public InteractStrategy(INPC npc, int min = 30, int max = 60)
+    : base(npc, min, max) { }
+
+    public override Node.Status Start()
     {
-        throw new System.NotImplementedException();
+        _otherNPC = _npc.CurrentInteractionTarget;
+
+        // Null or handshake is refused
+        if (_otherNPC == null || !_otherNPC.TryAcceptInteraction(_npc))
+            return Node.Status.Failure;
+
+        // Handshake accepted
+        Debug.Log($"{_npc.Name} is interacting with {_otherNPC.Name}");
+
+        _npc.StartInteraction();
+
+        return Node.Status.Success;
+    }
+
+    public override void OnTimerComplete()
+    {
+        // End interaction on both participants
+        try
+        {
+            _npc.EndInteraction();
+            _otherNPC.EndInteraction();
+        }
+        catch { }
+        finally
+        {
+            _otherNPC = null;
+        }
     }
 }
 

@@ -54,3 +54,7 @@ MonoBehaviour:
   _activeVillagersRatio: 0.3
   _maxActiveVillagers: 0
   _activeVillagers: []
+  _villagerLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  _maxOverlapResults: 32

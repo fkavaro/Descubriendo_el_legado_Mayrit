@@ -97,5 +97,31 @@ public interface INPC : IBehaviourEntity
     void PlaceAt(Spot destinationSpot);
     void PlaceAt(Vector3 position);
     void PlaceAtDestination();
+
+    /// <summary>
+    /// Returns true if the NPC is available to start an interaction
+    /// </summary>
+    public bool IsAvailableForInteraction();
+
+    /// <summary>
+    /// Called on the target villager when an initiator requests interaction.
+    /// Returns true if accepted and the target is now reserved for interaction.
+    /// </summary>
+    public bool TryAcceptInteraction(INPC initiator);
+
+    /// <summary>
+    /// Called on the initiator villager to start the interaction
+    /// </summary>
+    public void StartInteraction();
+
+    /// <summary>
+    /// Ends an ongoing interaction on this villager (called on both participants)
+    /// </summary>
+    public void EndInteraction();
+
+    /// <summary>
+    /// Expose current target for strategies to read
+    /// </summary>
+    public INPC CurrentInteractionTarget { get; }
     #endregion
 }

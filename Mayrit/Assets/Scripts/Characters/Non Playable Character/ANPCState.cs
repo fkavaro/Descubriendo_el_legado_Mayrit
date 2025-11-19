@@ -35,7 +35,7 @@ where TStateMachine : AStateMachine<TStateMachine>
 
     IEnumerator SwitchStateAfterCertainTimeCoroutine(float waitTime, AState<TStateMachine> nextState, int animation, string animationName)
     {
-        yield return _npc._animationController.PlayAnimationCertainTimeCoroutine(waitTime, animation, animationName);
+        yield return _npc.AnimationController.PlayAnimationCertainTimeCoroutine(waitTime, animation, animationName);
         SwitchState(nextState);
     }
 
@@ -45,9 +45,9 @@ where TStateMachine : AStateMachine<TStateMachine>
     protected void SwitchStateAfterAnimation(AState<TStateMachine> nextState, int animation = -1)
     {
         if (animation != -1)
-            _npc._animationController.ChangeAnimationTo(animation);
+            _npc.AnimationController.ChangeAnimationTo(animation);
 
-        if (_npc._animationController.IsCurrentAnimationFinished())
+        if (_npc.AnimationController.IsCurrentAnimationFinished())
             SwitchState(nextState);
     }
 }

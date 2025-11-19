@@ -10,8 +10,6 @@ using UnityEngine.AI;
 public abstract class ANPC<T> : ABehaviourEntity<T>, INPC
 where T : ABehaviourSystem
 {
-
-
     #region EDITOR PROPERTIES
     [Header("Movement settings")]
     [Tooltip("Walking speed of the agent")]
@@ -29,36 +27,48 @@ where T : ABehaviourSystem
     public Vector2 _nearDistance = new(5f, 7f);
     public bool _isStopped = false;
 
-    [Header("Avoidance")]
+    [Header("Avoidance settings")]
     [Tooltip("Base avoidance priority (0 = most important, 99 = least)")]
     public int _baseAvoidancePriority = 50;
     [Tooltip("Random +/- variance applied to base avoidance priority")]
     public int _avoidancePriorityVariance = 10;
 
-    [Header("Animation")]
+    [Header("Animation settings")]
     public Animator _animator;
 
-    [Header("Identity")]
+    [Header("Identity settings")]
     public GameObject _model;
     [SerializeField] string _givenName = "";
     [SerializeField] string _familyName = "";
     [SerializeField] INPC.NPCGender _gender = INPC.NPCGender.Male;
+
+    [Header("Interaction settings")]
+    [Tooltip("Cooldown time between interactions with other villlagers")]
+    public float _interactionCooldown = 120f;
+    [Tooltip("Maximum distance at which villagers consider others 'nearby' and can start an interaction")]
+    public float _interactionRange = 3f;
+    #endregion
+
+    #region INTERNAL PROPERTIES
+    NavMeshAgent _agent;
+    public NavMeshAgent Agent => _agent;
+    AnimationController _animationController;
+    public AnimationController AnimationController => _animationController;
+    Spot _destinationSpot = null;
+
+    float _arrivedhorizontalDistance, _arrivedVerticalDistance,
+        _nearHorizontalDistance, _nearVerticalDistance;
 
     public string GivenName => _givenName;
     public string FamilyName => _familyName;
     public string FullName => string.IsNullOrEmpty(_familyName) ? _givenName : $"{_givenName} {_familyName}";
     public INPC.NPCGender Gender => _gender;
     public bool IsFemale => _gender == INPC.NPCGender.Female;
-    #endregion
 
-    #region INTERNAL PROPERTIES
-    NavMeshAgent _agent;
-    public AnimationController _animationController;
-    Spot _destinationSpot = null;
-    public NavMeshAgent Agent => _agent;
-    public AnimationController AnimationController => _animationController;
-    float _arrivedhorizontalDistance, _arrivedVerticalDistance,
-        _nearHorizontalDistance, _nearVerticalDistance;
+    bool _isInteracting = false; // availability flag
+    bool _wasAgentStoppedBeforeInteraction = false; // Keep previous agent stopped state if needed
+    protected INPC _interactionTarget; // Cached target found by proximity queries to use for interactions
+    public INPC CurrentInteractionTarget => _interactionTarget;
     #endregion
 
     #region MONOBEHAVIOUR
@@ -360,10 +370,56 @@ where T : ABehaviourSystem
         }
     }
 
+    #region INTERACTION METHODS
     public void PlaceAtDestination()
     {
         PlaceAt(_agent.destination);
     }
     #endregion
-}
 
+    public bool IsAvailableForInteraction()
+    {
+        return !_isInteracting && gameObject.activeInHierarchy;
+    }
+
+    public bool TryAcceptInteraction(INPC initiator)
+    {
+        if (!IsAvailableForInteraction())
+            return false;
+
+        Debug.Log($"{Name} accepted interaction with {initiator.Name}");
+
+        _interactionTarget = initiator;
+        StartInteraction();
+
+        return true;
+    }
+
+    public void StartInteraction()
+    {
+        _isInteracting = true;
+
+        try
+        {
+            _wasAgentStoppedBeforeInteraction = Agent.isStopped;
+        }
+        catch
+        {
+            _wasAgentStoppedBeforeInteraction = false;
+        }
+
+        SetIfStopped(true);
+        AnimationController.ChangeToTalk();
+    }
+
+    public void EndInteraction()
+    {
+        _isInteracting = false;
+        _interactionTarget = null;
+
+        // restore agent state
+        SetIfStopped(_wasAgentStoppedBeforeInteraction);
+        AnimationController.ChangeToWalk();
+    }
+    #endregion
+}

@@ -37,8 +37,7 @@ public class NPCPoolManager : Singleton<NPCPoolManager>
 
     #region PRIVATE PROPERTIES
     Collider[] _overlapResults; // Cached buffer for OverlapSphereNonAlloc
-    // Cache to avoid GetComponent calls on colliders returned by physics queries
-    Dictionary<Collider, Villager> _colliderToVillager;
+    Dictionary<Collider, Villager> _colliderToVillager; // Cache to avoid GetComponent calls on colliders returned by physics queries
     #endregion
 
     #region MONOBEHAVIOUR
@@ -98,7 +97,7 @@ public class NPCPoolManager : Singleton<NPCPoolManager>
     /// </summary>
     public List<Villager> GetNearbyVillagers(Vector3 position, float range, Villager exclude = null)
     {
-        var result = new List<Villager>();
+        var nearbyVillagers = new List<Villager>();
 
         // Prefer physics-based broadphase if a layer mask and overlap buffer are available.
         try
@@ -109,52 +108,51 @@ public class NPCPoolManager : Singleton<NPCPoolManager>
                 int hits = Physics.OverlapSphereNonAlloc(position, range, _overlapResults, mask, QueryTriggerInteraction.Collide);
                 for (int i = 0; i < hits; i++)
                 {
-                    var col = _overlapResults[i];
-                    if (col == null) continue;
+                    var collider = _overlapResults[i];
+                    if (collider == null) continue;
 
-                    Villager v = null;
-                    if (_colliderToVillager != null && _colliderToVillager.TryGetValue(col, out v))
+                    if (_colliderToVillager != null && _colliderToVillager.TryGetValue(collider, out Villager villager))
                     {
                         // got cached villager
                     }
                     else
                     {
                         // fallback: try to resolve and cache
-                        v = col.GetComponentInParent<Villager>();
-                        if (v != null && _colliderToVillager != null)
+                        villager = collider.GetComponentInParent<Villager>();
+                        if (villager != null && _colliderToVillager != null)
                         {
-                            try { _colliderToVillager[col] = v; } catch { }
+                            try { _colliderToVillager[collider] = villager; } catch { }
                         }
                     }
 
-                    if (v == null) continue;
-                    if (v == exclude) continue;
-                    if (!v.gameObject.activeInHierarchy) continue;
+                    if (villager == null) continue;
+                    if (villager == exclude) continue;
+                    if (!villager.GO.activeInHierarchy) continue;
 
                     // check exact distance to be safe
-                    if ((v.transform.position - position).sqrMagnitude <= range * range)
-                        result.Add(v);
+                    if ((villager.GO.transform.position - position).sqrMagnitude <= range * range)
+                        nearbyVillagers.Add(villager);
                 }
 
-                return result;
+                return nearbyVillagers;
             }
         }
         catch { /* fall back to managed list below on error */ }
 
         // Fallback: iterate managed active villager list
-        if (_activeVillagers == null || _activeVillagers.Count == 0) return result;
+        if (_activeVillagers == null || _activeVillagers.Count == 0) return nearbyVillagers;
         float sqrRange = range * range;
-        foreach (var v in _activeVillagers)
+        foreach (var villager in _activeVillagers)
         {
-            if (v == null) continue;
-            if (v == exclude) continue;
-            if (!v.gameObject.activeInHierarchy) continue;
+            if (villager == null) continue;
+            if (villager == exclude) continue;
+            if (!villager.gameObject.activeInHierarchy) continue;
 
-            if ((v.transform.position - position).sqrMagnitude <= sqrRange)
-                result.Add(v);
+            if ((villager.transform.position - position).sqrMagnitude <= sqrRange)
+                nearbyVillagers.Add(villager);
         }
 
-        return result;
+        return nearbyVillagers;
     }
 
     /// <summary>
@@ -282,7 +280,7 @@ public class NPCPoolManager : Singleton<NPCPoolManager>
         // Activate and reset components
         villager.gameObject.SetActive(true);
         villager.InitializeBehaviourSystem(); // Again
-        villager._animationController.ChangeToWalk();
+        villager.AnimationController.ChangeToWalk();
         randomFreeHouse.PlaceAtRandomEntrance(villager);
         villager.Agent.enabled = true; // Activated once its placed
     }
