@@ -29,11 +29,14 @@ public class PrioritySelectorNode : SelectorNode
                 case Status.Running:
                     return Status.Running;
                 case Status.Success:
+                    Reset();
                     return Status.Success;
+                // Continue to next if failed
                 default:
                     continue;
             }
         }
+        Reset();
         return Status.Failure;
     }
 
@@ -44,7 +47,7 @@ public class PrioritySelectorNode : SelectorNode
     }
     #endregion
 
-    #region TO BE IMPLEMENTED METHODS
+    #region VIRTUAL METHODS
     protected virtual List<Node> SortChildren()
     {
         return _children.OrderByDescending(child => child._priority).ToList();

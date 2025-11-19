@@ -186,14 +186,11 @@ public class Villager : ANPC<BehaviourTree>
     #region PRIVATE METHODS
     bool IsInStreet()
     {
-        Debug.Log($"{name} is checking if it is in the street...");
         return true; //IsPathPending(); // TODO
     }
 
     bool IsOtherNearby()
     {
-        Debug.Log($"{name} is checking for other nearby villagers to interact with...");
-
         try
         {
             var pool = NPCPoolManager.Instance;

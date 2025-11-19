@@ -6,6 +6,7 @@ using UnityEngine;
 /// <summary>
 /// SelectorNode is a composite node that that executes its children in sequence.
 /// Like a logical OR operation, it will return success when a child return success.
+/// Continues to the next child if a child fails.
 /// </summary>
 public class SelectorNode : Node
 {
@@ -17,10 +18,9 @@ public class SelectorNode : Node
     #region INHERITED METHODS
     public override Status UpdateNode()
     {
-        // Execute every child
-        if (_currentChildId < _children.Count)
+        foreach (var child in _children)
         {
-            switch (_children[_currentChildId].UpdateNode())
+            switch (child.UpdateNode())
             {
                 case Status.Running:
                     return Status.Running;
@@ -28,11 +28,10 @@ public class SelectorNode : Node
                     Reset();
                     return Status.Success;
                 default: // Failure
-                    _currentChildId++; // Next one
-                    // Success if it was the last, if not continue
-                    return _currentChildId == _children.Count ? Status.Success : Status.Running;
+                    continue;
             }
         }
+
         Reset();
         return Status.Failure;
     }
