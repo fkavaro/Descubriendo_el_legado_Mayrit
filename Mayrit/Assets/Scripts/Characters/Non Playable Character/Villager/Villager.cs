@@ -32,16 +32,16 @@ public class Villager : ANPC<BehaviourTree>
             homeEntrance = _home.GetRandomAccessSpot();
 
         // Interaction sequence
-        ConditionStrategy isInStreet = new(this, () => IsInStreet);
-        ConditionStrategy IsNotAlreadyTalking = new(this, () => IsInteracting == false);
-        ConditionStrategy isOtherNearby = new(this, IsOtherNearby);
-        InteractionStrategy interactStrategy = new(this);
+        ConditionStrategy isInStreetStrategy = new(this, () => IsInStreet);
+        ConditionStrategy IsNotAlreadyTalkingStrategy = new(this, () => IsInteracting == false);
+        ConditionStrategy isOtherNearbyStrategy = new(this, IsOtherNearby);
+        InteractionStrategy interactionStrategy = new(this);
 
         SequenceNode interactionSequence = new(this);
-        LeafNode isInStreetLeaf = new(this, "IsInStreet?", isInStreet);
-        LeafNode noOneIsTalkingLeaf = new(this, "IsNotAlreadyTalking?", IsNotAlreadyTalking);
-        LeafNode isOtherNearbyLeaf = new(this, "IsOtherNearby?", isOtherNearby);
-        LeafNode interactLeaf = new(this, "Talking", interactStrategy);
+        LeafNode isInStreetLeaf = new(this, "IsInStreet?", isInStreetStrategy);
+        LeafNode noOneIsTalkingLeaf = new(this, "IsNotAlreadyTalking?", IsNotAlreadyTalkingStrategy);
+        LeafNode isOtherNearbyLeaf = new(this, "IsOtherNearby?", isOtherNearbyStrategy);
+        LeafNode interactLeaf = new(this, "Talking", interactionStrategy);
 
         CooldownDecorator talkCooldown = new(this, _interactionCooldown);
         talkCooldown.AddChild(interactLeaf);

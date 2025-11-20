@@ -23,12 +23,6 @@ where T : ABehaviourSystem
     }
     public string GivenName => _givenName;
     public string FamilyName => _familyName;
-
-    public bool IsInStreet
-    {
-        get => _isInStreet;
-        set => _isInStreet = value;
-    }
     #endregion
 
     #region EDITOR PROPERTIES
@@ -51,7 +45,6 @@ where T : ABehaviourSystem
     #region INTERNAL PROPERTIES
     NPCMovementController _movementController;
     NavMeshAgent _agent;
-    bool _isInStreet = true;
     bool _wasAgentStoppedBeforeInteraction = false; // Keep previous agent stopped state if needed
     #endregion
 
@@ -73,7 +66,7 @@ where T : ABehaviourSystem
     }
     #endregion
 
-    #region PUBLIC METHODS
+    #region INHERITED METHODS
     public void SetFullName(string given, string family)
     {
         _givenName = given;
@@ -87,42 +80,19 @@ where T : ABehaviourSystem
         catch { }
     }
 
-    public bool IsAvailableForInteraction()
+    public override void StartInteraction()
     {
-        return !IsInteracting && gameObject.activeInHierarchy;
-    }
+        base.StartInteraction();
 
-    public bool TryAcceptInteraction(INPC initiator)
-    {
-        if (!IsAvailableForInteraction())
-            return false;
-
-        Debug.Log($"{Name} accepted interaction with {initiator.Name}");
-
-        CurrentInteractionTarget = initiator;
-        StartInteraction();
-
-        return true;
-    }
-
-    public void StartInteraction()
-    {
-        IsInteracting = true;
-
-        // Keep previous logical stopped flag so we can restore it later
         _wasAgentStoppedBeforeInteraction = _isStopped;
-
         _movementController.SetIfStopped(true);
-        AnimationController.ChangeToTalk();
     }
 
-    public void EndInteraction()
+    public override void EndInteraction()
     {
-        IsInteracting = false;
-        CurrentInteractionTarget = null;
+        base.EndInteraction();
 
         _movementController.SetIfStopped(_wasAgentStoppedBeforeInteraction);
-        AnimationController.ChangeToWalk();
     }
     #endregion
 }

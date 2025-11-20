@@ -9,18 +9,14 @@ public class InteractionStrategy : ATimedStrategy
 
     public override Node.Status Start()
     {
-        _otherNPC = _npc.CurrentInteractionTarget;
+        _otherNPC = (INPC)_npc.CurrentInteractionTarget;
 
         // Null or handshake is refused
         if (_otherNPC == null || !_otherNPC.TryAcceptInteraction(_npc))
             return Node.Status.Failure;
-
         // Handshake accepted
-        Debug.Log($"{_npc.Name} is interacting with {_otherNPC.Name}");
-
-        _npc.StartInteraction();
-
-        return Node.Status.Success;
+        else
+            return Node.Status.Success;
     }
 
     public override void OnTimerComplete()
@@ -33,4 +29,3 @@ public class InteractionStrategy : ATimedStrategy
         Debug.Log($"{_npc.Name} has ended the interaction.");
     }
 }
-

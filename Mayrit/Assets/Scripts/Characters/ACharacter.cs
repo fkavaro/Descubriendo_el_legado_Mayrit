@@ -25,10 +25,20 @@ where T : ABehaviourSystem
         get => _isInteracting;
         set => _isInteracting = value;
     }
-    public INPC CurrentInteractionTarget
+    public bool IsInStreet
+    {
+        get => _isInStreet;
+        set => _isInStreet = value;
+    }
+    public ICharacter CurrentInteractionTarget
     {
         get => _currentInteractionTarget;
         set => _currentInteractionTarget = value;
+    }
+    public ICharacter LastInteractionTarget
+    {
+        get => _lastInteractionTarget;
+        set => _lastInteractionTarget = value;
     }
     #endregion
 
@@ -49,7 +59,7 @@ where T : ABehaviourSystem
 
     [Header("Interaction")]
     [Tooltip("Minimum range to start an interaction with another character")]
-    [SerializeField] protected float _interactionRange = 3f;
+    [SerializeField] protected float _interactionRange = 2f;
     [Tooltip("Cooldown time between interactions with other characters")]
     [SerializeField] protected float _interactionCooldown = 0f;
 
@@ -61,6 +71,48 @@ where T : ABehaviourSystem
     #region INTERNAL PROPERTIES   
     CharacterAnimationController _animationController;
     bool _isInteracting = false;
-    INPC _currentInteractionTarget;
+    bool _isInStreet = true;
+    ICharacter _currentInteractionTarget,
+        _lastInteractionTarget;
+    #endregion
+
+    #region INHERITED METHODS
+    public virtual bool IsAvailableForInteraction(ICharacter initiator)
+    {
+        // TRUE if not already interacting, both game object and model are active, and is not the last interaction target
+        return IsInStreet &&
+            !IsInteracting &&
+            gameObject.activeInHierarchy &&
+            CharacterModel.activeInHierarchy &&
+            _lastInteractionTarget != initiator;
+    }
+
+    public virtual bool TryAcceptInteraction(ICharacter initiator)
+    {
+        if (!IsAvailableForInteraction(initiator))
+            return false;
+
+        Debug.Log($"{Name} accepted interaction with {initiator.Name}");
+
+        _currentInteractionTarget = initiator;
+        StartInteraction();
+        initiator.StartInteraction();
+
+        return true;
+    }
+
+    public virtual void StartInteraction()
+    {
+        IsInteracting = true;
+        AnimationController.ChangeToTalk();
+    }
+
+    public virtual void EndInteraction()
+    {
+        IsInteracting = false;
+        _lastInteractionTarget = _currentInteractionTarget;
+        _currentInteractionTarget = null;
+        AnimationController.ChangeToWalk();
+    }
     #endregion
 }
