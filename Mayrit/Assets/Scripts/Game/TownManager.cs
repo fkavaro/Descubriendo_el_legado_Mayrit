@@ -143,15 +143,7 @@ public class TownManager : Singleton<TownManager>
         if (workplace == null)
             workplace = GetBuildingWithFreeCapacity(_workplaces, excludedWorkplace);
 
-        // If no workplace with free capacity found
-        if (workplace == null)
-        {
-            // Return random workplace and increase its capacity
-            workplace = _workplaces[UnityEngine.Random.Range(0, _workplaces.Count)];
-            workplace.IncreaseCapacity(1);
-        }
-
-        // Never return null assured
+        // Can be null if all workplaces are at max capacity
         return workplace;
     }
 
