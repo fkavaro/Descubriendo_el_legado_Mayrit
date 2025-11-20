@@ -1,37 +1,19 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public interface INPC : IBehaviourEntity
+public interface INPC : ICharacter
 {
-    public enum NPCGender
-    {
-        Male,
-        Female
-    }
-
-    #region HELPER METHODS
+    #region PROPERTIES HELPERS
     public NavMeshAgent Agent { get; }
-    public CharacterAnimationController AnimationController { get; }
-
     NPCMovementController MovementController { get; }
-    float WalkSpeed { get; }
-    float RotationSpeed { get; }
-    Vector2 ArrivedDistance { get; }
-    Vector2 NearDistance { get; }
     float AvoidanceRadius { get; }
     float MaxSamplingDistance { get; }
     int AvoidancePriorityVariance { get; }
     int BaseAvoidancePriority { get; }
     bool IsStopped { get; set; }
-
+    bool IsInStreet { get; set; }
     public string GivenName { get; }
     public string FamilyName { get; }
-    public NPCGender Gender { get; }
-    public bool IsFemale { get; }
-
-    bool IsInStreet { get; set; }
-    bool IsInteracting { get; }
-    public INPC CurrentInteractionTarget { get; }
     #endregion
 
     #region PUBLIC METHODS

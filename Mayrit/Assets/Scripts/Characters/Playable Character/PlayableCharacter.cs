@@ -2,29 +2,16 @@ using System;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayableCharacter : ABehaviourEntity<FiniteStateMachine>
+public class PlayableCharacter : ACharacter<FiniteStateMachine>
 {
     #region EDITOR PROPERTIES
-    [Header("Character Information")]
+    // Character information
     public AInformationSO _information;
-
-    [Header("Movement settings")]
-    public float _walkSpeed = 1f;
-    public float _sprintSpeed = 3f;
-    public float _rotationSpeed = 4f;
-    public float _jumpForce = 2f;
-    public float _gravityForce = 9f;
-
-    [Header("Animation")]
-    public Animator _animator;
     #endregion
 
     #region INTERNAL PROPERTIES
-    public CharacterAnimationController _animationController;
     public PlayableCharacterMovementController _playerController;
-
     FiniteStateMachine _fsm;
-    public FreeRoam_PlayableCharacterState _freeRoamState;
     #endregion
 
     #region INHERITED
@@ -32,7 +19,7 @@ public class PlayableCharacter : ABehaviourEntity<FiniteStateMachine>
     {
         _fsm = new(this);
 
-        _freeRoamState = new(_fsm, this);
+        FreeRoam_PlayableCharacterState _freeRoamState = new(_fsm, this);
 
         _fsm.SetInitialState(_freeRoamState);
 
@@ -45,7 +32,7 @@ public class PlayableCharacter : ABehaviourEntity<FiniteStateMachine>
     {
         base.Awake();
 
-        _animationController = new(this, this, _animator);
+        AnimationController = new(this, this, CharacterAnimator);
         _playerController = new(this, GetComponent<CharacterController>());
     }
     #endregion

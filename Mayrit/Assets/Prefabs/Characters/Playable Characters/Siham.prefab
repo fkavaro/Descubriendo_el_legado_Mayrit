@@ -48,13 +48,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _debugMode: 0
   _isExecutionPaused: 0
-  _information: {fileID: 11400000, guid: 4146047eade613e41aeaf3f8813dbe44, type: 2}
+  _currentActionInfo: 
   _walkSpeed: 1
   _sprintSpeed: 3
   _rotationSpeed: 4
   _jumpForce: 2
   _gravityForce: 9
+  _arrivedDistance: {x: 0.3, y: 1.5}
+  _nearDistance: {x: 5, y: 7}
   _animator: {fileID: 1639577397424246107}
+  _interactionRange: 3
+  _interactionCooldown: 0
+  _gender: 0
+  _characterModel: {fileID: 5434453373518007707}
+  _information: {fileID: 11400000, guid: 4146047eade613e41aeaf3f8813dbe44, type: 2}
 --- !u!143 &5391638514220604821
 CharacterController:
   m_ObjectHideFlags: 0
@@ -145,5 +152,10 @@ Animator:
 --- !u!4 &4620937447881479969 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 43220751547486212, guid: f7453fa73fb665b4ab3a6ff469bbd729, type: 3}
+  m_PrefabInstance: {fileID: 4663850333815916325}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5434453373518007707 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 851846255601093310, guid: f7453fa73fb665b4ab3a6ff469bbd729, type: 3}
   m_PrefabInstance: {fileID: 4663850333815916325}
   m_PrefabAsset: {fileID: 0}

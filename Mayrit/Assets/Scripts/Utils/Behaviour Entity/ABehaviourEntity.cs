@@ -7,7 +7,7 @@ using UnityEngine;
 public abstract class ABehaviourEntity<T> : MonoBehaviour, IBehaviourEntity
 where T : ABehaviourSystem
 {
-    #region INTERFACE IMPLEMENTATION
+    #region PROPERTIES HELPERS
     public string Name => gameObject.name;
     public GameObject GO => gameObject;
 
@@ -25,11 +25,11 @@ where T : ABehaviourSystem
     #endregion
 
     #region EDITOR PROPERTIES
-    [Header("Behaviour System settings")]
+    [Header("Behaviour System")]
     [Tooltip("Whether to show debug messages in the console or not")]
-    public bool _debugMode;
+    [SerializeField] protected bool _debugMode;
     [Tooltip("Whether to pause the execution of the behaviour system or not")]
-    public bool _isExecutionPaused;
+    [SerializeField] protected bool _isExecutionPaused;
     [SerializeField, ReadOnly]
     protected string _currentActionInfo = "";
     #endregion

@@ -98,24 +98,26 @@ MonoBehaviour:
   _walkSpeed: 2
   _sprintSpeed: 3
   _rotationSpeed: 3
-  _avoidanceRadius: 0.7
-  _maxSamplingDistance: 1
+  _jumpForce: 2
+  _gravityForce: 9
   _arrivedDistance: {x: 0.3, y: 1.5}
   _nearDistance: {x: 5, y: 7}
+  _animator: {fileID: 6016149073480954882}
+  _interactionRange: 5
+  _interactionCooldown: 120
+  _gender: 0
+  _characterModel: {fileID: 1069142897698092226}
+  _givenName: 
+  _familyName: 
+  _avoidanceRadius: 0.7
+  _maxSamplingDistance: 1
   _isStopped: 0
   _baseAvoidancePriority: 50
   _avoidancePriorityVariance: 10
-  _animator: {fileID: 6016149073480954882}
-  _model: {fileID: 1069142897698092226}
-  _givenName: 
-  _familyName: 
-  _gender: 0
   _home: {fileID: 0}
   _workplace: {fileID: 0}
   _sanctuary: {fileID: 0}
   _market: {fileID: 0}
-  _interactionCooldown: 120
-  _interactionRange: 5
 --- !u!1001 &361420926647320188
 PrefabInstance:
   m_ObjectHideFlags: 0

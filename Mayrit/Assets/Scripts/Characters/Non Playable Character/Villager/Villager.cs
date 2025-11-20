@@ -4,11 +4,11 @@ using UnityEngine;
 public class Villager : ANPC<BehaviourTree>
 {
     #region EDIROR PROPERTIES
-    [Header("Villager Properties")]
-    public House _home;
-    public Workplace _workplace;
-    public Sanctuary _sanctuary;
-    public Market _market;
+    [Header("Villager")]
+    [SerializeField] protected House _home;
+    [SerializeField] protected Workplace _workplace;
+    [SerializeField] protected Sanctuary _sanctuary;
+    [SerializeField] protected Market _market;
     #endregion
 
     #region INTERNAL PROPERTIES
@@ -57,7 +57,7 @@ public class Villager : ANPC<BehaviourTree>
         if (sanctuaryEntrance != null)
         {
             GoToDestinationStrategy goToSanctuaryStrategy = new(this, sanctuaryEntrance);
-            InInteriorStrategy prayingStrategy = new(this, _model);
+            InInteriorStrategy prayingStrategy = new(this);
 
             SequenceNode prayingSequence = new(this);
             LeafNode goToSanctuaryLeaf = new(this, "GoingToSanctuary", goToSanctuaryStrategy);
@@ -71,7 +71,7 @@ public class Villager : ANPC<BehaviourTree>
         if (workplaceEntrance != null)
         {
             GoToDestinationStrategy goToWorkStrategy = new(this, workplaceEntrance, true);
-            Working_VillagerStrategy workingStrategy = new(this, 60, 180);
+            Working_VillagerStrategy workingStrategy = new(this, _workplace, 60, 180);
 
             SequenceNode workingSequence = new(this);
             LeafNode goToWorkLeaf = new(this, "GoingToWork", goToWorkStrategy);
@@ -196,13 +196,13 @@ public class Villager : ANPC<BehaviourTree>
 
             // Get a villager in the interaction range from this position
             Villager other = pool.GetAnyNearbyVillager(transform.position, _interactionRange, this);
-            _interactionTarget = other; // May be null
+            CurrentInteractionTarget = other; // May be null
 
             return other != null;
         }
         catch
         {
-            _interactionTarget = null;
+            CurrentInteractionTarget = null;
             return false;
         }
     }

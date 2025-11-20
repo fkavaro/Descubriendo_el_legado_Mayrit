@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class PlayableCharacterMovementController // TODO: inherit from AnimationController?
+public class PlayableCharacterMovementController
 {
     #region PROPERTIES
     readonly PlayableCharacter _player;
@@ -69,14 +69,14 @@ public class PlayableCharacterMovementController // TODO: inherit from Animation
         if (_playerCharacterController.isGrounded)
         {
             // Only apply jump force after pre-jump animation is finished
-            if (_isJumping && _player._animationController.IsPreJumpAnimationFinished())
-                _verticalVelocity = _player._jumpForce; // Jump
+            if (_isJumping && _player.AnimationController.IsPreJumpAnimationFinished())
+                _verticalVelocity = _player.JumpForce; // Jump
             else
                 _verticalVelocity = -1f; // Small gravity to keep grounded
         }
         else
             // Apply gravity to vertical velocity
-            _verticalVelocity -= _player._gravityForce * Time.deltaTime;
+            _verticalVelocity -= _player.GravityForce * Time.deltaTime;
     }
 
     /// <summary>
@@ -86,7 +86,7 @@ public class PlayableCharacterMovementController // TODO: inherit from Animation
     {
         // If there is any movement
         if (_movementInput != Vector2.zero)
-            _player.transform.forward = Vector3.Slerp(_player.transform.forward, _movement3D.normalized, Time.deltaTime * _player._rotationSpeed);
+            _player.transform.forward = Vector3.Slerp(_player.transform.forward, _movement3D.normalized, Time.deltaTime * _player.RotationSpeed);
     }
 
     void HandleAnimations()
@@ -96,27 +96,27 @@ public class PlayableCharacterMovementController // TODO: inherit from Animation
             // Handle jump sequence
             if (_isJumping)
             {
-                if (_player._animationController.IsPreJumpAnimationFinished())
+                if (_player.AnimationController.IsPreJumpAnimationFinished())
                 {
-                    _player._animationController.ChangeToJump();
+                    _player.AnimationController.ChangeToJump();
                 }
-                else if (_player._animationController.IsJumpAnimationFinished())
+                else if (_player.AnimationController.IsJumpAnimationFinished())
                 {
-                    _player._animationController.ChangeToAfterJump();
+                    _player.AnimationController.ChangeToAfterJump();
                     _isJumping = false; // Reset jumping state after jump animation
                 }
             }
             else if (_isJumpPressed)
             {
-                _player._animationController.ChangeToPreJump();
+                _player.AnimationController.ChangeToPreJump();
                 _isJumping = true;
             }
             else if (_movementInput == Vector2.zero)
-                _player._animationController.ChangeToIdle();
+                _player.AnimationController.ChangeToIdle();
             else if (_isRunPressed)
-                _player._animationController.ChangeToRun();
+                _player.AnimationController.ChangeToRun();
             else
-                _player._animationController.ChangeToWalk();
+                _player.AnimationController.ChangeToWalk();
         }
         else // In air
         {
@@ -134,7 +134,7 @@ public class PlayableCharacterMovementController // TODO: inherit from Animation
     void ApplyMovement()
     {
         // Speed depending on sprint key
-        _movementSpeed = _isRunPressed ? _player._sprintSpeed : _player._walkSpeed;
+        _movementSpeed = _isRunPressed ? _player.SprintSpeed : _player.WalkSpeed;
 
         // Apply forces to movement vector
         Vector3 finalMovement = new(_movement3D.x * _movementSpeed, // Apply movement speed
