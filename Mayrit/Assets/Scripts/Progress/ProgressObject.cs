@@ -10,7 +10,8 @@ using UnityEngine;
 /// </summary>
 public class ProgressObject : MonoBehaviour
 {
-    public List<int> milestonesActivated;
+    [Tooltip("Range of milestones where this object is active")]
+    public Vector2 milestonesActivated;
 
     #region MONOBEHAVIOUR
     void OnEnable()
@@ -73,7 +74,9 @@ public class ProgressObject : MonoBehaviour
     {
         if (this == null) return;
 
-        SetChildrenActive(milestonesActivated.Contains(milestoneIndex));
+        int min = Mathf.Min((int)milestonesActivated.x, (int)milestonesActivated.y);
+        int max = Mathf.Max((int)milestonesActivated.x, (int)milestonesActivated.y);
+        SetChildrenActive(milestoneIndex >= min && milestoneIndex <= max);
     }
 
     void OnEditorUpdateChanged(bool updateInEditor)
@@ -85,15 +88,16 @@ public class ProgressObject : MonoBehaviour
         if (this == null) return;
         if (!updateInEditor)
             SetChildrenActive(true);
-        else
-        {
-            var progressManager = FindAnyObjectByType<ProgressManager>();
-            if (progressManager == null) return;
-            var milestone = progressManager.CurrentMilestoneIndex;
-            SetChildrenActive(milestonesActivated.Contains(milestone));
-        }
+        var progressManager = FindAnyObjectByType<ProgressManager>();
+        if (progressManager == null) return;
+        var milestone = progressManager.CurrentMilestoneIndex;
+
+        int min = Mathf.Min((int)milestonesActivated.x, (int)milestonesActivated.y);
+        int max = Mathf.Max((int)milestonesActivated.x, (int)milestonesActivated.y);
+        SetChildrenActive(milestone >= min && milestone <= max);
+    }
 
 #endif
-    }
-    #endregion
 }
+#endregion
+

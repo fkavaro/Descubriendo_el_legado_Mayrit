@@ -19,3 +19,4 @@ MonoBehaviour:
   _image: {fileID: 0}
   _imageCaption: 
   _wantedTime: 16.5
+  _milestoneIndex: 6

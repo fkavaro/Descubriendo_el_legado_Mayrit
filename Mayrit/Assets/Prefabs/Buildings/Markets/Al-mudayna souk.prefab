@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5108774053797931682}
   - component: {fileID: 2761251125124510189}
   m_Layer: 0
-  m_Name: 6th milestone
+  m_Name: Milestone 5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4a1371eeb0ad9b4d9e52b10d4cd9bf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProgressObject
-  milestonesActivated: 050000000600000007000000
+  milestonesActivated: {x: 5, y: 7}
 --- !u!1 &1534293663865831265
 GameObject:
   m_ObjectHideFlags: 0
@@ -60,7 +60,7 @@ GameObject:
   - component: {fileID: 4995446457223599184}
   - component: {fileID: 4286566765770911802}
   m_Layer: 0
-  m_Name: 4th milestone
+  m_Name: Milestone 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -103,7 +103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4a1371eeb0ad9b4d9e52b10d4cd9bf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProgressObject
-  milestonesActivated: 0300000004000000050000000600000007000000
+  milestonesActivated: {x: 3, y: 7}
 --- !u!1 &3559555353678355895
 GameObject:
   m_ObjectHideFlags: 0
@@ -115,7 +115,7 @@ GameObject:
   - component: {fileID: 1531309442457466836}
   - component: {fileID: 2243570247069294134}
   m_Layer: 0
-  m_Name: 7th milestone
+  m_Name: Milestone 6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4a1371eeb0ad9b4d9e52b10d4cd9bf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProgressObject
-  milestonesActivated: 0600000007000000
+  milestonesActivated: {x: 6, y: 7}
 --- !u!1 &3726787484858670863
 GameObject:
   m_ObjectHideFlags: 0
@@ -164,7 +164,7 @@ GameObject:
   - component: {fileID: 5304618122787674184}
   - component: {fileID: 3439102490849292449}
   m_Layer: 0
-  m_Name: 8th milestone
+  m_Name: Milestone 7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -200,7 +200,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4a1371eeb0ad9b4d9e52b10d4cd9bf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProgressObject
-  milestonesActivated: 07000000
+  milestonesActivated: {x: 7, y: 7}
 --- !u!1 &5681433116910426686
 GameObject:
   m_ObjectHideFlags: 0
@@ -268,7 +268,7 @@ GameObject:
   - component: {fileID: 3483332418439203453}
   - component: {fileID: 7169208435927972059}
   m_Layer: 0
-  m_Name: 3rd milestone
+  m_Name: Milestone 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -305,7 +305,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4a1371eeb0ad9b4d9e52b10d4cd9bf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProgressObject
-  milestonesActivated: 020000000300000004000000050000000600000007000000
+  milestonesActivated: {x: 2, y: 7}
 --- !u!1 &8689800622655824762
 GameObject:
   m_ObjectHideFlags: 0
@@ -317,7 +317,7 @@ GameObject:
   - component: {fileID: 297228680132959480}
   - component: {fileID: 5961986402609121173}
   m_Layer: 0
-  m_Name: 5th milestone
+  m_Name: Milestone 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -355,7 +355,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4a1371eeb0ad9b4d9e52b10d4cd9bf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProgressObject
-  milestonesActivated: 04000000050000000600000007000000
+  milestonesActivated: {x: 4, y: 7}
 --- !u!1001 &166801892330120105
 PrefabInstance:
   m_ObjectHideFlags: 0

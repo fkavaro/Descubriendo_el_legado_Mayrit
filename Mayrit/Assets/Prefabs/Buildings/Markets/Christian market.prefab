@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 710270228113841578}
   - component: {fileID: 8698942812717034837}
   m_Layer: 0
-  m_Name: Milestone 8
+  m_Name: Milestone 7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4a1371eeb0ad9b4d9e52b10d4cd9bf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProgressObject
-  milestonesActivated: 07000000
+  milestonesActivated: {x: 7, y: 7}
 --- !u!1 &3693995599017012647
 GameObject:
   m_ObjectHideFlags: 0
@@ -58,7 +58,7 @@ GameObject:
   - component: {fileID: 5950211535094381776}
   - component: {fileID: 4178587971084464083}
   m_Layer: 0
-  m_Name: Milestone 5
+  m_Name: Milestone 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -92,7 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4a1371eeb0ad9b4d9e52b10d4cd9bf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProgressObject
-  milestonesActivated: 04000000050000000600000007000000
+  milestonesActivated: {x: 4, y: 7}
 --- !u!1 &4812022109334672846
 GameObject:
   m_ObjectHideFlags: 0
@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 1801120277872483633}
   - component: {fileID: 7461323269503913633}
   m_Layer: 0
-  m_Name: Milestone 7
+  m_Name: Milestone 6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -138,7 +138,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4a1371eeb0ad9b4d9e52b10d4cd9bf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProgressObject
-  milestonesActivated: 0600000007000000
+  milestonesActivated: {x: 6, y: 7}
 --- !u!1 &5893992846119969819
 GameObject:
   m_ObjectHideFlags: 0
@@ -201,7 +201,7 @@ GameObject:
   - component: {fileID: 1022867416247110906}
   - component: {fileID: 661448378861550646}
   m_Layer: 0
-  m_Name: Milestone 6
+  m_Name: Milestone 5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -235,7 +235,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4a1371eeb0ad9b4d9e52b10d4cd9bf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProgressObject
-  milestonesActivated: 050000000600000007000000
+  milestonesActivated: {x: 5, y: 7}
 --- !u!1001 &3573180502269549889
 PrefabInstance:
   m_ObjectHideFlags: 0
