@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class FreeRoam_PlayableCharacterState : APlayableCharacterState
 {
-    public FreeRoam_PlayableCharacterState(FiniteStateMachine stateMachine, PlayableCharacter playableCharacter)
-    : base("Free roam", stateMachine, playableCharacter)
+    public FreeRoam_PlayableCharacterState(PlayableCharacter playableCharacter)
+    : base("Free roam", playableCharacter)
     {
     }
 

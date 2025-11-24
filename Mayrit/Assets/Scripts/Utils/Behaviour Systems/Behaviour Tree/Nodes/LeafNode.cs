@@ -56,7 +56,7 @@ public class LeafNode : Node
         _started = false;
     }
 
-    protected override void DebugDecision()
+    public override void DebugDecision()
     {
         _behaviourEntity.CurrentActionInfo = _nodeName;
     }

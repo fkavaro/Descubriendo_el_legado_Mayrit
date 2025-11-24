@@ -41,7 +41,7 @@ public class TourManager : Singleton<TourManager>
     #endregion
 
     #region MONOBEHAVIOUR
-    protected override void Awake()
+    void Start()
     {
         LineRenderer lineRenderer = GetComponent<LineRenderer>();
         _pathVisualizer = new(lineRenderer, _colorGradient, _lineWidth, _useNavMesh, _maxCorners);

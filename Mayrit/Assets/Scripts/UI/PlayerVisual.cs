@@ -46,8 +46,8 @@ public class PlayerVisual : Billboard
     void CheckButtonVisibility()
     {
         // Hide button if not in spectator HUD state or if orbital camera is active
-        if (!UIManager.Instance._spectatorHUDState.IsCurrentState() ||
-            CameraManager.Instance._orbitalState.IsCurrentState())
+        if (!UIManager.Instance.BehaviourSystem.IsCurrentState(UIManager.Instance._spectatorHUDState) ||
+            CameraManager.Instance.BehaviourSystem.IsCurrentState(CameraManager.Instance._orbitalState))
         {
             _playerButton.visible = false;
             return;
@@ -85,10 +85,10 @@ public class PlayerVisual : Billboard
     void OnPlayerButtonClick(ClickEvent evt)
     {
         // Spectator camera
-        if (CameraManager.Instance._spectatorState.IsCurrentState())
+        if (CameraManager.Instance.BehaviourSystem.IsCurrentState(CameraManager.Instance._spectatorState))
             CameraManager.Instance.SwitchToOrbitalCamera(_playableCharacter.transform, _playableCharacter._information);
         // Third person camera
-        else if (CameraManager.Instance._thirdPersonState.IsCurrentState())
+        else if (CameraManager.Instance.BehaviourSystem.IsCurrentState(CameraManager.Instance._thirdPersonState))
             CameraManager.Instance.SwitchToSpectatorCamera();
     }
 }

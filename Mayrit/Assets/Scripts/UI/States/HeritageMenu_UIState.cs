@@ -12,8 +12,8 @@ public class HeritageMenu_UIState : AUIState
     #endregion
 
     // Constructor
-    public HeritageMenu_UIState(StackFiniteStateMachine stateMachine, UIDocument uiDocument)
-    : base("HeritageMenu", stateMachine, uiDocument) { }
+    public HeritageMenu_UIState(UIDocument uiDocument)
+    : base("HeritageMenu", uiDocument) { }
 
     #region INHERITED
     public override void StartState()
@@ -41,7 +41,7 @@ public class HeritageMenu_UIState : AUIState
     #region PRIVATE METHODS
     void SwitchToHUDState(ClickEvent evt)
     {
-        _stateMachine.SwitchToPreviousStateInStack(); // Switch to previous state: player or spectator HUD
+        UIManager.Instance.BehaviourSystem.SwitchToPreviousStateInStack(); // Switch to previous state: player or spectator HUD
         GameManager.Instance.BehaviourSystem.SwitchState(GameManager.Instance._gamePlayState);
     }
     #endregion

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -6,8 +7,8 @@ using UnityEngine.AI;
 /// Abstract base class for NPC (Non-Playable Character).
 /// </summary>
 [RequireComponent(typeof(NavMeshAgent))]
-public abstract class ANPC<T> : ACharacter<T>, INPC
-where T : ABehaviourSystem
+public abstract class ANPC<BehaviourSystemType> : ACharacter<BehaviourSystemType>, INPC
+where BehaviourSystemType : ABehaviourSystem
 {
     #region PROPERTIES HELPERS
     public NavMeshAgent Agent => _agent;

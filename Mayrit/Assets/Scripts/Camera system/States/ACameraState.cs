@@ -5,16 +5,15 @@ using System.Threading.Tasks;
 using Unity.Cinemachine;
 using UnityEngine;
 
-public abstract class ACameraState : AState<FiniteStateMachine>
+public abstract class ACameraState : AState
 {
     protected readonly CinemachineCamera _camera;
     protected readonly float _simulationSpeed;
 
     protected ACameraState(string name,
-        FiniteStateMachine stateMachine,
         CinemachineCamera camera,
         float simulationSpeed)
-    : base(name, stateMachine)
+    : base(name)
     {
         _camera = camera;
         _simulationSpeed = simulationSpeed;

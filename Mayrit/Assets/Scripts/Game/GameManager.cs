@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 /// <summary>
 /// Manages the game states and data. Singleton.
 /// </summary>
-public class GameManager : ASingletonBehaviourEntity<GameManager, FiniteStateMachine>
+public class GameManager : ASingletonBehaviourEntity<GameManager, FiniteStateMachine<AGameState>>
 {
     #region EDITOR PROPERTIES
     [Header("Player")]
@@ -16,7 +16,7 @@ public class GameManager : ASingletonBehaviourEntity<GameManager, FiniteStateMac
     #region INTERNAL PROPERTIES
     public event Action<PlayableCharacter> OnPlayableCharacterChanged;
 
-    FiniteStateMachine _fsm;
+    FiniteStateMachine<AGameState> _fsm;
     public MainMenu_GameState _mainMenuState;
     public GamePlay_GameState _gamePlayState;
     public Pause_GameState _pauseState;
@@ -24,14 +24,14 @@ public class GameManager : ASingletonBehaviourEntity<GameManager, FiniteStateMac
     #endregion
 
     #region INHERITED
-    public override FiniteStateMachine InitializeBehaviourSystem()
+    public override FiniteStateMachine<AGameState> InitializeBehaviourSystem()
     {
         _fsm = new(this);
 
         // States initialization
-        _mainMenuState = new(_fsm);
-        _gamePlayState = new(_fsm);
-        _pauseState = new(_fsm);
+        _mainMenuState = new();
+        _gamePlayState = new();
+        _pauseState = new();
 
         // Set initial state based on scene name
         string sceneName = SceneManager.GetActiveScene().name;

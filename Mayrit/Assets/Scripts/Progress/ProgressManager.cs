@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// Manages the progress states and data. Singleton.
 /// </summary>
-public class ProgressManager : ASingletonBehaviourEntity<ProgressManager, FiniteStateMachine>
+public class ProgressManager : ASingletonBehaviourEntity<ProgressManager, FiniteStateMachine<AProgressState>>
 {
     public enum Milestone
     {
@@ -50,19 +50,11 @@ public class ProgressManager : ASingletonBehaviourEntity<ProgressManager, Finite
     Milestone _lastValidatedMilestone;
     bool _lastUpdateInInspector;
 
-    FiniteStateMachine _fsm;
-    public Vision_AProgressState _visionState;
-    public Foundation_AProgressState _foundationState;
-    public Albacar_AProgressState _albacarState;
-    public Almudayna_AProgressState _almudaynaState;
-    public RamiroIIAttack_AProgressState _ramiroIIState;
-    public AlmanzorMeeting_AProgressState _almanzorState;
-    public MaslamaSchool_AProgressState _schoolState;
-    public Conquest_AProgressState _conquestState;
+    FiniteStateMachine<AProgressState> _fsm;
     #endregion
 
     #region INHERITED
-    public override FiniteStateMachine InitializeBehaviourSystem()
+    public override FiniteStateMachine<AProgressState> InitializeBehaviourSystem()
     {
         _fsm = new(this);
 
@@ -70,14 +62,24 @@ public class ProgressManager : ASingletonBehaviourEntity<ProgressManager, Finite
         _fsm.OnStateSwitchEvent += OnStateSwitch;
 
         // States initialization
-        Vision_AProgressState _visionState = new(Milestone._1_Vision, _visionInformation, _fsm);
-        Foundation_AProgressState _foundationState = new(Milestone._2_Foundation, _foundationInformation, _fsm);
-        Albacar_AProgressState _albacarState = new(Milestone._3_Albacar, _albacarInformation, _fsm);
-        Almudayna_AProgressState _almudaynaState = new(Milestone._4_Almudayna, _almudaynaInformation, _fsm);
-        RamiroIIAttack_AProgressState _ramiroIIState = new(Milestone._5_RamiroII, _ramiroAttackInformation, _fsm);
-        AlmanzorMeeting_AProgressState _almanzorState = new(Milestone._6_Almanzor, _almanzorInformation, _fsm);
-        MaslamaSchool_AProgressState _schoolState = new(Milestone._7_School, _schoolInformation, _fsm);
-        Conquest_AProgressState _conquestState = new(Milestone._8_Conquest, _conquestInformation, _fsm);
+        Vision_AProgressState _visionState = new(Milestone._1_Vision, _visionInformation);
+        Foundation_AProgressState _foundationState = new(Milestone._2_Foundation, _foundationInformation);
+        Albacar_AProgressState _albacarState = new(Milestone._3_Albacar, _albacarInformation);
+        Almudayna_AProgressState _almudaynaState = new(Milestone._4_Almudayna, _almudaynaInformation);
+        RamiroIIAttack_AProgressState _ramiroIIState = new(Milestone._5_RamiroII, _ramiroAttackInformation);
+        AlmanzorMeeting_AProgressState _almanzorState = new(Milestone._6_Almanzor, _almanzorInformation);
+        MaslamaSchool_AProgressState _schoolState = new(Milestone._7_School, _schoolInformation);
+        Conquest_AProgressState _conquestState = new(Milestone._8_Conquest, _conquestInformation);
+
+        // Add states to the FSM sequence
+        _fsm.AddStateToSequence(_visionState);
+        _fsm.AddStateToSequence(_foundationState);
+        _fsm.AddStateToSequence(_albacarState);
+        _fsm.AddStateToSequence(_almudaynaState);
+        _fsm.AddStateToSequence(_ramiroIIState);
+        _fsm.AddStateToSequence(_almanzorState);
+        _fsm.AddStateToSequence(_schoolState);
+        _fsm.AddStateToSequence(_conquestState);
 
         _fsm.SetInitialState(_visionState);
 
@@ -160,11 +162,9 @@ public class ProgressManager : ASingletonBehaviourEntity<ProgressManager, Finite
     #region EVENT METHODS
     void OnStateSwitch()
     {
-        AProgressState currentState = _fsm.CurrentState as AProgressState;
-
-        _currentMilestone = currentState._milestone;
+        _currentMilestone = _fsm.CurrentState._milestone;
         OnMilestoneChangedEvent?.Invoke(_currentMilestone);
-        OnTimeSetEvent?.Invoke(currentState._informationSO.WantedTime);
+        OnTimeSetEvent?.Invoke(_fsm.CurrentState._informationSO.WantedTime);
     }
     #endregion
 }

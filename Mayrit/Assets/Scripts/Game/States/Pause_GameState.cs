@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class Pause_GameState : AState<FiniteStateMachine>
+public class Pause_GameState : AGameState
 {
-    public Pause_GameState(FiniteStateMachine stateMachine)
-    : base("Pause", stateMachine) { }
+    public Pause_GameState()
+    : base("Pause") { }
 
     public override void StartState()
     {

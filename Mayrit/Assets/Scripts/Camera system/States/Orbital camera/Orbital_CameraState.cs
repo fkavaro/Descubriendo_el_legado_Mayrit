@@ -10,8 +10,8 @@ public class Orbital_CameraState : ACameraState
         _zoomValue,
         _horizontalOffset;
 
-    public Orbital_CameraState(FiniteStateMachine stateMachine, CinemachineCamera camera, float simulationSpeed)
-    : base("Orbital camera", stateMachine, camera, simulationSpeed)
+    public Orbital_CameraState(CinemachineCamera camera, float simulationSpeed)
+    : base("Orbital camera", camera, simulationSpeed)
     {
         _orbitalFollow = camera.GetComponent<CinemachineOrbitalFollow>();
     }

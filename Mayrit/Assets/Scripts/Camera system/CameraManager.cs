@@ -6,7 +6,7 @@ using Unity.Cinemachine;
 /// <summary>
 /// Manages the camera states and data. Singleton.
 /// </summary>
-public class CameraManager : ASingletonBehaviourEntity<CameraManager, FiniteStateMachine>
+public class CameraManager : ASingletonBehaviourEntity<CameraManager, FiniteStateMachine<ACameraState>>
 {
     #region EDITOR PROPERTIES
     [Header("Spectator camera")]
@@ -62,21 +62,21 @@ public class CameraManager : ASingletonBehaviourEntity<CameraManager, FiniteStat
     #region INTERNAL PROPERTIES
     public event Action OnCameraStateChanged;
 
-    FiniteStateMachine _fsm;
+    FiniteStateMachine<ACameraState> _fsm;
     public Spectator_CameraState _spectatorState;
     public ThirdPerson_CameraState _thirdPersonState;
     public Orbital_CameraState _orbitalState;
     #endregion
 
     #region INHERITED
-    public override FiniteStateMachine InitializeBehaviourSystem()
+    public override FiniteStateMachine<ACameraState> InitializeBehaviourSystem()
     {
         _fsm = new(this);
 
         // States initialization
-        _spectatorState = new(_fsm, _spectatorCamera, _spectatorSimSpeed);
-        _orbitalState = new(_fsm, _orbitalCamera, _orbitalSimSpeed);
-        _thirdPersonState = new(_fsm, _thirdPersonCamera, _thirdPersonSimSpeed);
+        _spectatorState = new(_spectatorCamera, _spectatorSimSpeed);
+        _orbitalState = new(_orbitalCamera, _orbitalSimSpeed);
+        _thirdPersonState = new(_thirdPersonCamera, _thirdPersonSimSpeed);
 
         _fsm.SetInitialState(_spectatorState);
 
@@ -107,7 +107,7 @@ public class CameraManager : ASingletonBehaviourEntity<CameraManager, FiniteStat
     #region PUBLIC METHODS
     public void SwitchToSpectatorCamera()
     {
-        if (_thirdPersonState.IsCurrentState())
+        if (_fsm.IsCurrentState(_thirdPersonState))
         {
             _spectatorCamera.LookAt.position = _thirdPersonCamera.LookAt.position;
 
@@ -122,7 +122,7 @@ public class CameraManager : ASingletonBehaviourEntity<CameraManager, FiniteStat
 
             SmoothMoveCoroutine(_spectatorCamera.LookAt, fixedSpectatorLookAt, _spectatorTargetFixingSpeed);
         }
-        else if (_orbitalState.IsCurrentState())
+        else if (_fsm.IsCurrentState(_orbitalState))
         {
             _spectatorCamera.LookAt.position = _orbitalCamera.LookAt.position;
 

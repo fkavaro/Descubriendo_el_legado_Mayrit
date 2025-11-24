@@ -49,7 +49,7 @@ public class Node : ABehaviourSystem
     /// <summary>
     /// Debugs the current node of the behaviour tree.
     /// </summary>
-    protected override void DebugDecision()
+    public override void DebugDecision()
     {
         if (_currentChildId < _children.Count)
             _children[_currentChildId].DebugDecision();

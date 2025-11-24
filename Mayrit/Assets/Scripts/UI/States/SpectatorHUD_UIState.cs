@@ -25,8 +25,8 @@ public class SpectatorHUD_UIState : AUIState
     Vector2 _cursorScreenPos;
     #endregion
 
-    public SpectatorHUD_UIState(StackFiniteStateMachine stateMachine, UIDocument uiDocument)
-    : base("SpectatorHUD", stateMachine, uiDocument) { }
+    public SpectatorHUD_UIState(UIDocument uiDocument)
+    : base("SpectatorHUD", uiDocument) { }
 
     #region INHERITED
     public override void StartState()
@@ -82,7 +82,7 @@ public class SpectatorHUD_UIState : AUIState
         HideTooltip();
         OverwriteMilestoneArea();
 
-        var previousState = _stateMachine.GetPreviousState();
+        var previousState = UIManager.Instance.BehaviourSystem.GetPreviousState();
 
         // To avoid showing the milestone info when switching from other state 
         // (PlayerHUD for example)
@@ -105,7 +105,7 @@ public class SpectatorHUD_UIState : AUIState
         }
 
         // Hide tooltip if camera is not spectator
-        if (!CameraManager.Instance._spectatorState.IsCurrentState())
+        if (!CameraManager.Instance.BehaviourSystem.IsCurrentState(CameraManager.Instance._spectatorState))
             HideTooltip();
     }
 
@@ -199,12 +199,12 @@ public class SpectatorHUD_UIState : AUIState
 
     void SwitchToPauseState(ClickEvent evt)
     {
-        _stateMachine.SwitchState(UIManager.Instance._pauseState);
+        UIManager.Instance.BehaviourSystem.SwitchState(UIManager.Instance._pauseState);
     }
 
     void SwitchToHeritageState(ClickEvent evt)
     {
-        _stateMachine.SwitchState(UIManager.Instance._heritageState);
+        UIManager.Instance.BehaviourSystem.SwitchState(UIManager.Instance._heritageState);
     }
 
     void ShowMilestoneInfo(ClickEvent evt)

@@ -6,8 +6,8 @@ public class Spectator_CameraState : ACameraState
     readonly SpectatorCameraController _cameraController;
     readonly SpectatorCameraSelector _cameraSelector;
 
-    public Spectator_CameraState(FiniteStateMachine stateMachine, CinemachineCamera camera, float simulationSpeed)
-    : base("Spectator camera", stateMachine, camera, simulationSpeed)
+    public Spectator_CameraState(CinemachineCamera camera, float simulationSpeed)
+    : base("Spectator camera", camera, simulationSpeed)
     {
         _cameraController = new(camera, CameraManager.Instance._moveSpeedZoomCurve);
         _cameraSelector = new(CameraManager.Instance._selectableLayer);

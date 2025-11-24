@@ -6,8 +6,8 @@ public class ThirdPerson_CameraState : ACameraState
 {
     ThirdPersonCameraController _cameraController;
 
-    public ThirdPerson_CameraState(FiniteStateMachine stateMachine, CinemachineCamera camera, float simulationSpeed)
-    : base("Third person camera", stateMachine, camera, simulationSpeed) { }
+    public ThirdPerson_CameraState(CinemachineCamera camera, float simulationSpeed)
+    : base("Third person camera", camera, simulationSpeed) { }
 
     public override void StartState()
     {

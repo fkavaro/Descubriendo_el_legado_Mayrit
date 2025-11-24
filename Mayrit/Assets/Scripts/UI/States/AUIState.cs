@@ -2,13 +2,13 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.InputSystem;
 
-public abstract class AUIState : AState<StackFiniteStateMachine>
+public abstract class AUIState : AState
 {
     public UIDocument _UIDocument;
     public VisualElement _screen;
 
-    protected AUIState(string name, StackFiniteStateMachine stateMachine, UIDocument uiDocument)
-    : base(name, stateMachine)
+    protected AUIState(string name, UIDocument uiDocument)
+    : base(name)
     {
         _UIDocument = uiDocument;
     }

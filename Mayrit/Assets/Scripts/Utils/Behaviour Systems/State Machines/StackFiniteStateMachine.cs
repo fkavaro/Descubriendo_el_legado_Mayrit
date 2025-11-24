@@ -6,9 +6,10 @@ using UnityEngine;
 /// <summary>
 /// Stack-based Finite State Machine implementation for controlling a behaviour.
 /// </summary>
-public class StackFiniteStateMachine : AStateMachine<StackFiniteStateMachine>
+public class StackFiniteStateMachine<StateType> : AStateMachine<StateType>
+where StateType : AState
 {
-    readonly Stack<AState<StackFiniteStateMachine>> _stateStack = new();
+    readonly Stack<StateType> _stateStack = new();
 
     #region CONSTRUCTOR
     public StackFiniteStateMachine(IBehaviourEntity entity)
@@ -20,7 +21,7 @@ public class StackFiniteStateMachine : AStateMachine<StackFiniteStateMachine>
     /// Switchs to another state after exiting the current,
     /// storing it in the stack.
     /// </summary>
-    public override void SwitchState(AState<StackFiniteStateMachine> newState)
+    public override void SwitchState(StateType newState)
     {
         if (newState == _currentState) return;
 
@@ -34,7 +35,7 @@ public class StackFiniteStateMachine : AStateMachine<StackFiniteStateMachine>
         base.SwitchState(newState);
     }
 
-    public override void ForceState(AState<StackFiniteStateMachine> newState)
+    public override void ForceState(StateType newState)
     {
         if (newState == _currentState) return;
 
@@ -50,7 +51,7 @@ public class StackFiniteStateMachine : AStateMachine<StackFiniteStateMachine>
     /// <summary>
     /// Returns previous state (top of the stack).
     /// </summary>
-    public AState<StackFiniteStateMachine> GetPreviousState()
+    public AState GetPreviousState()
     {
         // Empty stack
         if (_stateStack.Count == 0)

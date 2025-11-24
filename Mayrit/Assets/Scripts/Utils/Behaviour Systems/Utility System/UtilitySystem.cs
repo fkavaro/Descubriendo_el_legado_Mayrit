@@ -35,7 +35,7 @@ public class UtilitySystem : ABehaviourSystem
     /// <summary>
     /// Debugs the current action of the utility system.
     /// </summary>
-    protected override void DebugDecision()
+    public override void DebugDecision()
     {
         _behaviourEntity.CurrentActionInfo = _currentAction.DebugAction();
     }

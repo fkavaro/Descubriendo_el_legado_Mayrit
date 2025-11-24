@@ -39,7 +39,7 @@ public class ModernSuperposition : MonoBehaviour
 
     void CheckCameraState()
     {
-        if (CameraManager.Instance._thirdPersonState.IsCurrentState())
+        if (CameraManager.Instance.BehaviourSystem.IsCurrentState(CameraManager.Instance._thirdPersonState))
             IsActive = false;
     }
 

@@ -13,8 +13,8 @@ public class PlayerHUD_UIState : AUIState
     #endregion
 
     #region INHERITED
-    public PlayerHUD_UIState(StackFiniteStateMachine stateMachine, UIDocument uiDocument)
-    : base("PlayerHUD", stateMachine, uiDocument) { }
+    public PlayerHUD_UIState(UIDocument uiDocument)
+    : base("PlayerHUD", uiDocument) { }
 
     public override void StartState()
     {
@@ -51,7 +51,7 @@ public class PlayerHUD_UIState : AUIState
     #region PRIVATE METHODS
     void SwitchToPauseState(ClickEvent evt)
     {
-        _stateMachine.SwitchState(UIManager.Instance._pauseState);
+        UIManager.Instance.BehaviourSystem.SwitchState(UIManager.Instance._pauseState);
     }
     #endregion
 }

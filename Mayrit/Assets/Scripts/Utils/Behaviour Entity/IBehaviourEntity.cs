@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public interface IBehaviourEntity
 {
@@ -8,4 +9,6 @@ public interface IBehaviourEntity
     bool IsExecutionPaused { get; set; }
     string CurrentActionInfo { get; set; }
     #endregion
+
+    public void StartCoroutine(IEnumerator enumerator);
 }

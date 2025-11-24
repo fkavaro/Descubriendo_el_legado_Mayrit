@@ -1,8 +1,8 @@
 using System;
 using UnityEngine;
 
-public abstract class ACharacter<T> : ABehaviourEntity<T>, ICharacter
-where T : ABehaviourSystem
+public abstract class ACharacter<BehaviourSystemType> : ABehaviourEntity<BehaviourSystemType>, ICharacter
+where BehaviourSystemType : ABehaviourSystem
 {
     #region PROPERTIES HELPERS
     public Animator CharacterAnimator => _animator;

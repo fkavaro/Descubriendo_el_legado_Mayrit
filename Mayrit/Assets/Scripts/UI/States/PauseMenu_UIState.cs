@@ -12,8 +12,8 @@ public class PauseMenu_UIState : AUIState
     #endregion
 
     // Constructor
-    public PauseMenu_UIState(StackFiniteStateMachine stateMachine, UIDocument uiDocument)
-    : base("PauseMenu", stateMachine, uiDocument) { }
+    public PauseMenu_UIState(UIDocument uiDocument)
+    : base("PauseMenu", uiDocument) { }
 
     #region INHERITED
     public override void StartState()
@@ -46,13 +46,12 @@ public class PauseMenu_UIState : AUIState
     #region PRIVATE METHODS
     void SwitchToHUDState(ClickEvent evt)
     {
-        _stateMachine.SwitchToPreviousStateInStack(); // Switch to previous state: player or spectator HUD
+        UIManager.Instance.BehaviourSystem.SwitchToPreviousStateInStack(); // Switch to previous state: player or spectator HUD
         GameManager.Instance.BehaviourSystem.SwitchState(GameManager.Instance._gamePlayState);
     }
 
     void SwitchToMainMenuState(ClickEvent evt)
     {
-        //_stateMachine.SwitchState(UIManager.Instance._mainMenuState); // Switch to Main Menu state
         GameManager.Instance.BehaviourSystem.SwitchState(GameManager.Instance._mainMenuState);
     }
 

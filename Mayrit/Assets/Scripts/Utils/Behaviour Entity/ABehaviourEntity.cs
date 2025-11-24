@@ -1,15 +1,16 @@
 using UnityEngine;
+using System.Collections;
 
 /// <summary>
 /// Abstract behaviour entity class with a generic behaviour system.
 /// </summary>
-/// <typeparam name="T"> The type of the behaviour system.</typeparam>
-public abstract class ABehaviourEntity<T> : MonoBehaviour, IBehaviourEntity
-where T : ABehaviourSystem
+public abstract class ABehaviourEntity<BehaviourSystemType> : MonoBehaviour, IBehaviourEntity
+where BehaviourSystemType : ABehaviourSystem
 {
     #region PROPERTIES HELPERS
     public string Name => gameObject.name;
     public GameObject GO => gameObject;
+    public BehaviourSystemType BehaviourSystem => _behaviourSystem;
 
     public bool IsExecutionPaused
     {
@@ -34,69 +35,73 @@ where T : ABehaviourSystem
     protected string _currentActionInfo = "";
     #endregion
 
+    #region INTERNAL PROPERTIES
+    BehaviourSystemType _behaviourSystem;
+    #endregion
+
     #region TO BE IMPLEMENTED METHODS
     /// <summary>
     /// Returned value will be assigned to the BehaviourSystem property.
     /// Is executed in Awake().
     /// </summary>
-    public abstract T InitializeBehaviourSystem();
-
-    /// <summary>
-    /// The behaviour system of the entity.
-    /// </summary>
-    public T BehaviourSystem;
+    public abstract BehaviourSystemType InitializeBehaviourSystem();
     #endregion
 
     #region MONOBEHAVIOUR: DERIVED TO BEHAVIOUR SYSTEM
     protected virtual void Awake()
     {
-        BehaviourSystem = InitializeBehaviourSystem();
-        BehaviourSystem?.Awake();
+        _behaviourSystem = InitializeBehaviourSystem();
+        _behaviourSystem?.Awake();
     }
 
     protected virtual void Start()
     {
-        BehaviourSystem?.Start();
+        _behaviourSystem?.Start();
     }
 
     protected virtual void Update()
     {
-        BehaviourSystem?.Update();
+        _behaviourSystem?.Update();
     }
 
     protected virtual void LateUpdate()
     {
-        BehaviourSystem?.LateUpdate();
+        _behaviourSystem?.LateUpdate();
     }
 
     protected virtual void OnCollisionEnter(Collision collision)
     {
-        BehaviourSystem?.OnCollisionEnter(collision);
+        _behaviourSystem?.OnCollisionEnter(collision);
     }
 
     protected virtual void OnCollisionStay(Collision collision)
     {
-        BehaviourSystem?.OnCollisionStay(collision);
+        _behaviourSystem?.OnCollisionStay(collision);
     }
 
     protected virtual void OnCollisionExit(Collision collision)
     {
-        BehaviourSystem?.OnCollisionExit(collision);
+        _behaviourSystem?.OnCollisionExit(collision);
     }
 
     protected virtual void OnTriggerEnter(Collider other)
     {
-        BehaviourSystem?.OnTriggerEnter(other);
+        _behaviourSystem?.OnTriggerEnter(other);
     }
 
     protected virtual void OnTriggerStay(Collider other)
     {
-        BehaviourSystem?.OnTriggerStay(other);
+        _behaviourSystem?.OnTriggerStay(other);
     }
 
     protected virtual void OnTriggerExit(Collider other)
     {
-        BehaviourSystem?.OnTriggerExit(other);
+        _behaviourSystem?.OnTriggerExit(other);
+    }
+
+    void IBehaviourEntity.StartCoroutine(IEnumerator enumerator)
+    {
+        StartCoroutine(enumerator);
     }
     #endregion
 }

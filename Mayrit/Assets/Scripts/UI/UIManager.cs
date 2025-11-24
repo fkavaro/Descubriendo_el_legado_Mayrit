@@ -10,7 +10,7 @@ using System.Reflection;
 /// Manages the user interface states and data. Singleton.
 /// </summary>
 [RequireComponent(typeof(UIDocument))]
-public class UIManager : ASingletonBehaviourEntity<UIManager, StackFiniteStateMachine>
+public class UIManager : ASingletonBehaviourEntity<UIManager, StackFiniteStateMachine<AUIState>>
 {
     #region EDITOR PROPERTIES
     [Header("User Interface Document")]
@@ -21,7 +21,7 @@ public class UIManager : ASingletonBehaviourEntity<UIManager, StackFiniteStateMa
     #endregion
 
     #region INTERNAL PROPERTIES
-    StackFiniteStateMachine _sfsm;
+    StackFiniteStateMachine<AUIState> _sfsm;
     public MainMenu_UIState _mainMenuState;
     public SpectatorHUD_UIState _spectatorHUDState;
     public PlayerHUD_UIState _playerHUDState;
@@ -30,18 +30,18 @@ public class UIManager : ASingletonBehaviourEntity<UIManager, StackFiniteStateMa
     #endregion
 
     #region INHERITED
-    public override StackFiniteStateMachine InitializeBehaviourSystem()
+    public override StackFiniteStateMachine<AUIState> InitializeBehaviourSystem()
     {
         _sfsm = new(this);
 
         UIDocument uiDocument = GetComponent<UIDocument>();
 
         // States initialization
-        _mainMenuState = new(_sfsm, uiDocument);
-        _spectatorHUDState = new(_sfsm, uiDocument);
-        _playerHUDState = new(_sfsm, uiDocument);
-        _pauseState = new(_sfsm, uiDocument);
-        _heritageState = new(_sfsm, uiDocument);
+        _mainMenuState = new(uiDocument);
+        _spectatorHUDState = new(uiDocument);
+        _playerHUDState = new(uiDocument);
+        _pauseState = new(uiDocument);
+        _heritageState = new(uiDocument);
 
         // Set initial state based on scene name
         string sceneName = SceneManager.GetActiveScene().name;

@@ -4,7 +4,6 @@ using UnityEngine;
 public class Vision_AProgressState : AProgressState
 {
     public Vision_AProgressState(ProgressManager.Milestone milestone,
-    Milestone_InformationSO milestoneInfoSO,
-    FiniteStateMachine stateMachine)
-    : base("Vision", milestone, milestoneInfoSO, stateMachine) { }
+    Milestone_InformationSO milestoneInfoSO)
+    : base("Vision", milestone, milestoneInfoSO) { }
 }

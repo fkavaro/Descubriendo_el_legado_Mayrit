@@ -12,8 +12,8 @@ public class MainMenu_UIState : AUIState
     Button _playButton, _mainMenuButton, _quitButton;
     #endregion
 
-    public MainMenu_UIState(StackFiniteStateMachine stateMachine, UIDocument uiDocument)
-    : base("MainMenu", stateMachine, uiDocument) { }
+    public MainMenu_UIState(UIDocument uiDocument)
+    : base("MainMenu", uiDocument) { }
 
     #region INHERITED PROPERTIES
     public override void StartState()

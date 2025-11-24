@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayableCharacter : ACharacter<FiniteStateMachine>
+public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacterState>>
 {
     #region EDITOR PROPERTIES
     // Character information
@@ -11,15 +11,15 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine>
 
     #region INTERNAL PROPERTIES
     public PlayableCharacterMovementController _playerController;
-    FiniteStateMachine _fsm;
+    FiniteStateMachine<APlayableCharacterState> _fsm;
     #endregion
 
     #region INHERITED
-    public override FiniteStateMachine InitializeBehaviourSystem()
+    public override FiniteStateMachine<APlayableCharacterState> InitializeBehaviourSystem()
     {
         _fsm = new(this);
 
-        FreeRoam_PlayableCharacterState _freeRoamState = new(_fsm, this);
+        FreeRoam_PlayableCharacterState _freeRoamState = new(this);
 
         _fsm.SetInitialState(_freeRoamState);
 
