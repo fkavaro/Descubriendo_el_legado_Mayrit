@@ -32,36 +32,15 @@ public class PathVisualizer
     #region PUBLIC METHODS
     public void Initialize()
     {
-        // Subscribe directly to ProgressManager to get the active tour/POI updates
-        if (ProgressManager.Instance != null)
-        {
-            ProgressManager.Instance.OnMilestoneChangedEvent += OnMilestoneChanged;
-            AttachToTour(ProgressManager.Instance.CurrentMilestoneMapping?.Tour);
-        }
-        GameManager.Instance.OnPlayableCharacterChanged += OnPlayableCharacterChanged;
+        ProgressManager.Instance.OnMilestoneChangedEvent += OnMilestoneChanged;
+        AttachToTour(ProgressManager.Instance.CurrentMilestoneMapping?.Tour);
 
         ConfigureLineRenderer();
     }
 
-    /// <summary>
-    /// Cleanly unsubscribe from external events. Call when the owning manager is disabled/destroyed.
-    /// </summary>
-    public void Deinitialize()
-    {
-        if (ProgressManager.Instance != null)
-            ProgressManager.Instance.OnMilestoneChangedEvent -= OnMilestoneChanged;
-
-        if (GameManager.Instance != null)
-            GameManager.Instance.OnPlayableCharacterChanged -= OnPlayableCharacterChanged;
-
-        DetachFromTour(_currentTour);
-        _currentTour = null;
-        _nextPOI = null;
-    }
-
     public void UpdatePath()
     {
-        // If no target or player, clear the line
+        // If no target POI or player, clear the line
         if (_nextPOI == null || _playableCharacter == null)
         {
             Clear();
@@ -72,6 +51,14 @@ public class PathVisualizer
         _nextPOIPos = _nextPOI.transform.position;
 
         DrawPath(_playerPos, _nextPOIPos);
+    }
+
+    public void Deinitialize()
+    {
+        if (ProgressManager.Instance != null)
+            ProgressManager.Instance.OnMilestoneChangedEvent -= OnMilestoneChanged;
+
+        DetachFromTour(_currentTour);
     }
     #endregion
 
@@ -124,18 +111,6 @@ public class PathVisualizer
         _lineRenderer.positionCount = 0;
         _lineRenderer.enabled = false;
     }
-    #endregion
-
-    #region EVENT METHODS
-    void OnNextPOIChanged(PointOfInterest poi)
-    {
-        _nextPOI = poi;
-    }
-
-    void OnMilestoneChanged(MilestoneMapping milestoneMapping)
-    {
-        AttachToTour(milestoneMapping?.Tour);
-    }
 
     void AttachToTour(Tour tour)
     {
@@ -145,22 +120,29 @@ public class PathVisualizer
 
         _currentTour = tour;
         if (_currentTour != null)
-        {
-            _currentTour.OnNextPOIChangedEvent += OnNextPOIChanged;
-        }
+            _currentTour.OnNextPOIChangeEvent += OnNextPOIChange;
     }
 
     void DetachFromTour(Tour tour)
     {
         if (tour == null) return;
-        tour.OnNextPOIChangedEvent -= OnNextPOIChanged;
-        if (_nextPOI == tour.CurrentPOI)
-            _nextPOI = null;
+
+        tour.OnNextPOIChangeEvent -= OnNextPOIChange;
+        _nextPOI = null;
+        _currentTour = null;
+    }
+    #endregion
+
+    #region EVENT METHODS
+    void OnMilestoneChanged(MilestoneMapping milestoneMapping)
+    {
+        AttachToTour(milestoneMapping?.Tour);
+        _playableCharacter = milestoneMapping?.PlayableCharacter;
     }
 
-    void OnPlayableCharacterChanged(PlayableCharacter player)
+    void OnNextPOIChange(PointOfInterest poi)
     {
-        _playableCharacter = player;
+        _nextPOI = poi;
     }
     #endregion
 }

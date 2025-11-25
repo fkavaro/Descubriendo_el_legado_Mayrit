@@ -4,15 +4,19 @@ using UnityEngine;
 [RequireComponent(typeof(SphereCollider))]
 public class PointOfInterest : MonoBehaviour
 {
+    #region PROPERTY HELPERS
+    public AInformationSO Data => _data;
+    #endregion
+
     #region EDITOR PROPERTIES
     [Tooltip("Information associated with this POI")]
-    public AInformationSO _information;
+    [SerializeField] AInformationSO _data;
     [Tooltip("Layer mask used for trigger checks (defaults to PlayableCharacter layer if present)")]
-    public LayerMask detectionMask = ~0;
+    [SerializeField] LayerMask detectionMask = ~0;
     #endregion
 
     #region INTERNAL PROPERTIES
-    public event Action OnVisitedPOIEvent;
+    public event Action<PointOfInterest> OnVisitedEvent;
 
     bool _isVisited;
     readonly float _visitRadius = 2f;
@@ -85,7 +89,7 @@ public class PointOfInterest : MonoBehaviour
         if (_isVisited) return;
 
         _isVisited = true;
-        OnVisitedPOIEvent?.Invoke();
+        OnVisitedEvent?.Invoke(this);
     }
     #endregion
 
@@ -97,7 +101,7 @@ public class PointOfInterest : MonoBehaviour
 
 #if UNITY_EDITOR
         UnityEditor.Handles.Label(transform.position + Vector3.up * (_visitRadius + 0.2f),
-            string.IsNullOrEmpty(_information.Header) ? name : _information.Header);
+            string.IsNullOrEmpty(_data.Header) ? name : _data.Header);
 #endif
     }
     #endregion

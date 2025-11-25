@@ -156,9 +156,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TourManager
   _dontDestroyOnLoad: 0
-  _tours: []
   _useNavMesh: 1
-  _lineWidth: 0.1
+  _lineWidth: 1
   _maxCorners: 512
   _colorGradient:
     serializedVersion: 2
@@ -190,15 +189,3 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  OnTourStartedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  OnAllToursCompletedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  OnTourChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  OnNextPOIChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []

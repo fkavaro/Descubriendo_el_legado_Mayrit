@@ -5,8 +5,6 @@ using System.Collections.Generic;
 [RequireComponent(typeof(LineRenderer))]
 public class TourManager : Singleton<TourManager>
 {
-
-
     #region EDITOR PROPERTIES
     [Header("Path Visualizer Settings")]
     [Tooltip("Use NavMesh.CalculatePath when available; otherwise fall back to a straight-line path.")]
@@ -21,9 +19,12 @@ public class TourManager : Singleton<TourManager>
     #endregion
 
     #region INTERNAL PROPERTIES
+    public event Action<PointOfInterest> OnTourPOIVisitedEvent;
+    public event Action<PointOfInterest> OnTourNextPOIChangeEvent;
+    public event Action<Tour> OnTourCompletedEvent;
+
     PathVisualizer _pathVisualizer;
     Tour _currentTour = null;
-    public event Action OnTourCompletedEvent;
     #endregion
 
     #region MONOBEHAVIOUR
@@ -39,6 +40,7 @@ public class TourManager : Singleton<TourManager>
 
     void Update()
     {
+        //if (CameraManager.Instance.IsInThirdPersonState)
         _pathVisualizer.UpdatePath();
     }
 
@@ -55,15 +57,6 @@ public class TourManager : Singleton<TourManager>
     }
     #endregion
 
-    #region PUBLIC METHODS
-    public void Reset()
-    {
-        // Detach from any current tour and reset index
-        if (_currentTour != null)
-            DetachFromTour(_currentTour);
-    }
-    #endregion
-
     #region PRIVATE METHODS
     // Attach to a tour managed by ProgressManager
     void AttachToTour(Tour tour)
@@ -75,27 +68,38 @@ public class TourManager : Singleton<TourManager>
             DetachFromTour(_currentTour);
 
         _currentTour = tour;
-        _currentTour.OnTourCompletedEvent += OnTourCompleted;
-        _currentTour.StartTour();
+        _currentTour.OnVisitedPOIEvent += OnTourPOIVisited;
+        _currentTour.OnNextPOIChangeEvent += OnTourNextPOIChange;
+        _currentTour.OnCompletedEvent += OnTourCompleted;
     }
 
     void DetachFromTour(Tour tour)
     {
         if (tour == null) return;
-        tour.OnTourCompletedEvent -= OnTourCompleted;
+        tour.OnCompletedEvent -= OnTourCompleted;
         _currentTour = null;
     }
     #endregion
 
     #region EVENT METHODS
-    void OnTourCompleted()
-    {
-        OnTourCompletedEvent?.Invoke();
-    }
-
     void OnMilestoneChanged(MilestoneMapping milestoneMapping)
     {
-        AttachToTour(ProgressManager.Instance.CurrentMilestoneMapping?.Tour);
+        AttachToTour(milestoneMapping?.Tour);
+    }
+
+    void OnTourPOIVisited(PointOfInterest poi)
+    {
+        OnTourPOIVisitedEvent?.Invoke(poi);
+    }
+
+    void OnTourNextPOIChange(PointOfInterest poi)
+    {
+        OnTourNextPOIChangeEvent?.Invoke(poi);
+    }
+
+    void OnTourCompleted(Tour tour)
+    {
+        OnTourCompletedEvent?.Invoke(tour);
     }
     #endregion
 }

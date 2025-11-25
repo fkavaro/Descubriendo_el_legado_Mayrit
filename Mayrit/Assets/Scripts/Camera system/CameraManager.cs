@@ -8,6 +8,12 @@ using Unity.Cinemachine;
 /// </summary>
 public class CameraManager : ASingletonBehaviourEntity<CameraManager, FiniteStateMachine<ACameraState>>
 {
+    #region PROPERTY HELPERS
+    public bool IsInSpectatorState => _fsm.IsCurrentState(_spectatorState);
+    public bool IsInOrbitalState => _fsm.IsCurrentState(_orbitalState);
+    public bool IsInThirdPersonState => _fsm.IsCurrentState(_thirdPersonState);
+    #endregion
+
     #region EDITOR PROPERTIES
     [Header("Spectator camera")]
     [Range(0.1f, 5f)]
@@ -60,12 +66,12 @@ public class CameraManager : ASingletonBehaviourEntity<CameraManager, FiniteStat
     #endregion
 
     #region INTERNAL PROPERTIES
-    public event Action OnCameraStateChanged;
+    public event Action OnCameraStateChangedEvent;
 
     FiniteStateMachine<ACameraState> _fsm;
-    public Spectator_CameraState _spectatorState;
-    public ThirdPerson_CameraState _thirdPersonState;
-    public Orbital_CameraState _orbitalState;
+    Spectator_CameraState _spectatorState;
+    ThirdPerson_CameraState _thirdPersonState;
+    Orbital_CameraState _orbitalState;
     #endregion
 
     #region INHERITED
@@ -144,7 +150,7 @@ public class CameraManager : ASingletonBehaviourEntity<CameraManager, FiniteStat
             _fsm.SwitchState(_spectatorState);
         }
 
-        OnCameraStateChanged?.Invoke();
+        OnCameraStateChangedEvent?.Invoke();
     }
 
     public void SwitchToOrbitalCamera(Transform objectToOrbitAround, AInformationSO information)
@@ -164,7 +170,7 @@ public class CameraManager : ASingletonBehaviourEntity<CameraManager, FiniteStat
 
         _fsm.SwitchState(_orbitalState);
 
-        OnCameraStateChanged?.Invoke();
+        OnCameraStateChangedEvent?.Invoke();
     }
 
     public void SwitchToThirdPersonCamera()
@@ -177,7 +183,7 @@ public class CameraManager : ASingletonBehaviourEntity<CameraManager, FiniteStat
 
         _fsm.SwitchState(_thirdPersonState);
 
-        OnCameraStateChanged?.Invoke();
+        OnCameraStateChangedEvent?.Invoke();
     }
 
     /// <summary>

@@ -19,7 +19,7 @@ public class ModernSuperposition : MonoBehaviour
     void Start()
     {
         // To know when to deactivate the mode if the camera changes to 3rd person
-        CameraManager.Instance.OnCameraStateChanged += CheckCameraState;
+        CameraManager.Instance.OnCameraStateChangedEvent += OnCameraStateChanged;
 
         // To know when the button is pressed in the HUD
         SpectatorHUD_UIState spectatorHUD = UIManager.Instance._spectatorHUDState;
@@ -37,9 +37,9 @@ public class ModernSuperposition : MonoBehaviour
         IsActive = !IsActive;
     }
 
-    void CheckCameraState()
+    void OnCameraStateChanged()
     {
-        if (CameraManager.Instance.BehaviourSystem.IsCurrentState(CameraManager.Instance._thirdPersonState))
+        if (CameraManager.Instance.IsInThirdPersonState)
             IsActive = false;
     }
 

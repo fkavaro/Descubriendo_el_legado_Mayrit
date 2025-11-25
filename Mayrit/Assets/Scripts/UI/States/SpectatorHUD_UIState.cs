@@ -105,7 +105,7 @@ public class SpectatorHUD_UIState : AUIState
         }
 
         // Hide tooltip if camera is not spectator
-        if (!CameraManager.Instance.BehaviourSystem.IsCurrentState(CameraManager.Instance._spectatorState))
+        if (!CameraManager.Instance.IsInSpectatorState)
             HideTooltip();
     }
 
@@ -147,7 +147,7 @@ public class SpectatorHUD_UIState : AUIState
         _milestoneArea.style.display = DisplayStyle.Flex;
 
         // Switch to spectator camera state if it's not current state
-        if (CameraManager.Instance.BehaviourSystem.IsCurrentState(CameraManager.Instance._orbitalState))
+        if (CameraManager.Instance.IsInOrbitalState)
             CameraManager.Instance.SwitchToSpectatorCamera();
     }
     #endregion
