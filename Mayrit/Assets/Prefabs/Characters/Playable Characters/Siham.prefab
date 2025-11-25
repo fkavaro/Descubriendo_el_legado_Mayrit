@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7322661222714234494}
-  - component: {fileID: 1596673507731933656}
   - component: {fileID: 5391638514220604821}
+  - component: {fileID: 1596673507731933656}
   m_Layer: 8
   m_Name: Siham
   m_TagString: Player
@@ -34,34 +34,6 @@ Transform:
   - {fileID: 4620937447881479969}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1596673507731933656
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5927973518140181291}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e76bbaede81e5d042be21e82d2ef9134, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _debugMode: 0
-  _isExecutionPaused: 0
-  _currentActionInfo: 
-  _walkSpeed: 1
-  _sprintSpeed: 3
-  _rotationSpeed: 4
-  _jumpForce: 2
-  _gravityForce: 9
-  _arrivedDistance: {x: 0.3, y: 1.5}
-  _nearDistance: {x: 5, y: 7}
-  _animator: {fileID: 1639577397424246107}
-  _interactionRange: 3
-  _conversationCooldown: 0
-  _gender: 0
-  _characterModel: {fileID: 5434453373518007707}
-  _information: {fileID: 11400000, guid: 4146047eade613e41aeaf3f8813dbe44, type: 2}
 --- !u!143 &5391638514220604821
 CharacterController:
   m_ObjectHideFlags: 0
@@ -87,6 +59,34 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1596673507731933656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5927973518140181291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e76bbaede81e5d042be21e82d2ef9134, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _debugMode: 0
+  _isExecutionPaused: 0
+  _currentActionInfo: 
+  _walkSpeed: 1
+  _sprintSpeed: 3
+  _rotationSpeed: 4
+  _jumpForce: 2
+  _gravityForce: 9
+  _arrivedDistance: {x: 0.3, y: 1.5}
+  _nearDistance: {x: 5, y: 7}
+  _animator: {fileID: 1639577397424246107}
+  _interactionRange: 3
+  _conversationCooldown: 0
+  _gender: 1
+  _characterModel: {fileID: 5434453373518007707}
+  _information: {fileID: 11400000, guid: 4146047eade613e41aeaf3f8813dbe44, type: 2}
 --- !u!1001 &4663850333815916325
 PrefabInstance:
   m_ObjectHideFlags: 0

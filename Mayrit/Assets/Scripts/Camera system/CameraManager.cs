@@ -176,7 +176,7 @@ public class CameraManager : ASingletonBehaviourEntity<CameraManager, FiniteStat
     public void SwitchToThirdPersonCamera()
     {
         // Update third person camera target to current playable character
-        Transform playerTranform = GameManager.Instance._playableCharacter.transform;
+        Transform playerTranform = GameManager.Instance.PlayableCharacter.transform;
 
         // Set camera follow and look at targets
         _thirdPersonCamera.LookAt.position = playerTranform.position;

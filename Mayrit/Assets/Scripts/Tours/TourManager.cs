@@ -5,17 +5,24 @@ using System.Collections.Generic;
 [RequireComponent(typeof(LineRenderer))]
 public class TourManager : Singleton<TourManager>
 {
+    #region PROPERTY HELPERS
+    public Tour CurrentTour => _currentTour;
+    #endregion
+
     #region EDITOR PROPERTIES
+    [Header("Tour manager")]
+    [SerializeField] Tour _currentTour;
+
     [Header("Path Visualizer Settings")]
     [Tooltip("Use NavMesh.CalculatePath when available; otherwise fall back to a straight-line path.")]
     public bool _useNavMesh = true;
 
     [Tooltip("Width of the line")]
-    public float _lineWidth = 0.1f;
+    [SerializeField] float _lineWidth = 0.1f;
 
     [Tooltip("Maximum number of corners to display (safety cap)")]
-    public int _maxCorners = 512;
-    public Gradient _colorGradient;
+    [SerializeField] int _maxCorners = 512;
+    [SerializeField] Gradient _colorGradient;
     #endregion
 
     #region INTERNAL PROPERTIES
@@ -24,7 +31,6 @@ public class TourManager : Singleton<TourManager>
     public event Action<Tour> OnTourCompletedEvent;
 
     PathVisualizer _pathVisualizer;
-    Tour _currentTour = null;
     #endregion
 
     #region MONOBEHAVIOUR
@@ -40,14 +46,14 @@ public class TourManager : Singleton<TourManager>
 
     void Update()
     {
-        //if (CameraManager.Instance.IsInThirdPersonState)
-        _pathVisualizer.UpdatePath();
+        if (CameraManager.Instance.IsInThirdPersonState)
+            _pathVisualizer.UpdatePath();
     }
 
     void OnDisable()
     {
         // Let the visualizer unsubscribe from ProgressManager and cleanup
-        _pathVisualizer?.Deinitialize();
+        _pathVisualizer.Deinitialize();
 
         if (ProgressManager.Instance != null)
             ProgressManager.Instance.OnMilestoneChangedEvent -= OnMilestoneChanged;
@@ -85,6 +91,7 @@ public class TourManager : Singleton<TourManager>
     void OnMilestoneChanged(MilestoneMapping milestoneMapping)
     {
         AttachToTour(milestoneMapping?.Tour);
+        _currentTour.StartTour();
     }
 
     void OnTourPOIVisited(PointOfInterest poi)

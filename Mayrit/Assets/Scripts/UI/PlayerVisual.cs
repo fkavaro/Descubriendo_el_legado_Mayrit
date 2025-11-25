@@ -7,7 +7,7 @@ public class PlayerVisual : Billboard
 {
     UIDocument _uiDocument;
     Button _playerButton;
-    public PlayableCharacter _playableCharacter;
+    PlayableCharacter _playableCharacter;
 
     void Awake()
     {
@@ -15,7 +15,6 @@ public class PlayerVisual : Billboard
         _uiDocument = GetComponent<UIDocument>();
         var root = _uiDocument.rootVisualElement;
 
-        // Try to find a Label with name 'Name' in the document
         _playerButton = root.Q<Button>(name: "PlayerButton");
         if (_playerButton == null)
         {
@@ -26,16 +25,10 @@ public class PlayerVisual : Billboard
         _playerButton.visible = false;
 
         // Subscribe to milestone change event
-        ProgressManager.Instance.OnMilestoneChangedEvent += UpdatePlayerButtonVisual;
+        ProgressManager.Instance.OnMilestoneChangedEvent += OnMilestoneChanged;
 
         // Register click event
         _playerButton.RegisterCallback<ClickEvent>(OnPlayerButtonClick);
-    }
-
-    void Start()
-    {
-        // Update current playable character
-        _playableCharacter = GameManager.Instance._playableCharacter;
     }
 
     void LateUpdate()
@@ -45,6 +38,12 @@ public class PlayerVisual : Billboard
 
     void CheckButtonVisibility()
     {
+        if (_playableCharacter == null)
+        {
+            _playerButton.visible = false;
+            return;
+        }
+
         // Hide button if not in spectator HUD state or if orbital camera is active
         if (!UIManager.Instance.BehaviourSystem.IsCurrentState(UIManager.Instance._spectatorHUDState) ||
             CameraManager.Instance.IsInOrbitalState)
@@ -70,10 +69,10 @@ public class PlayerVisual : Billboard
             _playerButton.visible = false;
     }
 
-    void UpdatePlayerButtonVisual(MilestoneMapping milestoneMapping)
+    void OnMilestoneChanged(MilestoneMapping milestoneMapping)
     {
         // Update current playable character
-        _playableCharacter = GameManager.Instance._playableCharacter;
+        _playableCharacter = milestoneMapping.PlayableCharacter;
 
         // Set this transform as player child
         transform.SetParent(_playableCharacter.transform);

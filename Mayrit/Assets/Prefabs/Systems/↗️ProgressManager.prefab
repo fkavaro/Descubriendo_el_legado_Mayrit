@@ -72,6 +72,6 @@ MonoBehaviour:
   - _milestoneData: {fileID: 11400000, guid: 2835fd8344d0dd54aa0a4199aad67e1d, type: 2}
     _playableCharacter: {fileID: 0}
     _tour: {fileID: 0}
-  - _milestoneData: {fileID: 11400000, guid: 2835fd8344d0dd54aa0a4199aad67e1d, type: 2}
+  - _milestoneData: {fileID: 11400000, guid: 7433d4c770832014cbfe261209c7ac25, type: 2}
     _playableCharacter: {fileID: 0}
     _tour: {fileID: 0}

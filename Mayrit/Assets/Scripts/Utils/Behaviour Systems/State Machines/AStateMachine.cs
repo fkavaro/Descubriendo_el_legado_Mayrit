@@ -160,13 +160,12 @@ where StateType : AState
         _currentState = _initialState;
         DebugDecision();
         _currentState?.AwakeState();
-
-        OnStateSwitchEvent?.Invoke();
     }
 
     public override void Start()
     {
         _currentState?.StartState();
+        OnStateSwitchEvent?.Invoke();
     }
 
     public override void Update()

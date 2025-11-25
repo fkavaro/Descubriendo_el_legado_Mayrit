@@ -5,12 +5,13 @@ using UnityEngine;
 public class Tour : MonoBehaviour
 {
     #region PROPERTY HELPERS
-    public PointOfInterest CurrentPOI => _currentPOI;
+    public PointOfInterest NextPOI => _nextPOI;
     #endregion
 
     #region EDITOR PROPERTIES
+    [SerializeField] PointOfInterest _nextPOI;
     [Tooltip("Ordered POIs for this tour")]
-    public List<PointOfInterest> _pointsOfInterest = new();
+    [SerializeField] List<PointOfInterest> _pointsOfInterest = new();
     #endregion
 
     #region INTERNAL PROPERTIES
@@ -19,24 +20,24 @@ public class Tour : MonoBehaviour
     public event Action<Tour> OnCompletedEvent;
 
     int _currentPOIindex = -1;
-    PointOfInterest _currentPOI;
     #endregion
 
     #region PUBLIC METHODS
-    // TODO called when selecting playable character 
     public void StartTour()
     {
         Reset();
         Activate();
-        NextPOI();
+        UpdateNextPOI();
     }
     #endregion
 
     #region PRIVATE METHODS
-    void NextPOI()
+    void UpdateNextPOI()
     {
-        _currentPOI = GetPOIFromList(_currentPOIindex);
-        DetachFromPOI(_currentPOI);
+        _nextPOI = GetPOIFromList(_currentPOIindex);
+
+        if (_nextPOI != null)
+            DetachFromPOI(_nextPOI);
 
         _currentPOIindex++;
 
@@ -48,10 +49,10 @@ public class Tour : MonoBehaviour
             return;
         }
 
-        _currentPOI = GetPOIFromList(_currentPOIindex);
-        AttachToPOI(_currentPOI);
+        _nextPOI = GetPOIFromList(_currentPOIindex);
+        AttachToPOI(_nextPOI);
 
-        OnNextPOIChangeEvent?.Invoke(_currentPOI);
+        OnNextPOIChangeEvent?.Invoke(_nextPOI);
     }
 
     PointOfInterest GetPOIFromList(int index)
@@ -107,7 +108,7 @@ public class Tour : MonoBehaviour
     void OnPOIVisited(PointOfInterest poi)
     {
         OnVisitedPOIEvent?.Invoke(poi);
-        NextPOI();
+        UpdateNextPOI();
     }
     #endregion
 }

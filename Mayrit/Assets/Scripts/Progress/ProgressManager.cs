@@ -18,7 +18,7 @@ public class ProgressManager : ASingletonBehaviourEntity<ProgressManager, Finite
     [SerializeField] bool _updateInEditor = true;
 
     [Header("Milestones")]
-    [SerializeField] int _currentMilestoneIndex = 0;
+    [SerializeField] MilestoneMapping _currentMilestoneMapping;
     [SerializeField] List<MilestoneMapping> _milestoneMappings = new();
     #endregion
 
@@ -26,6 +26,7 @@ public class ProgressManager : ASingletonBehaviourEntity<ProgressManager, Finite
     public event Action<MilestoneMapping> OnMilestoneChangedEvent;
     public event Action<bool> OnEditorUpdateChangedEvent;
 
+    int _currentMilestoneIndex = 0;
     int _lastValidatedMilestoneIndex;
     bool _lastUpdateInEditor;
     Dictionary<int, MilestoneMapping> _milestonesMappings;
@@ -38,24 +39,29 @@ public class ProgressManager : ASingletonBehaviourEntity<ProgressManager, Finite
     {
         if (_milestoneMappings == null || _milestoneMappings.Count == 0)
         {
-            Debug.LogWarning("ProgressManager: No milestone mappings configured.");
+            Debug.LogError("    ProgressManager: No milestone mappings configured.");
             return null;
         }
 
         _fsm = new(this);
 
-        // Susbcribe to state switch event to update current milestone
-        _fsm.OnStateSwitchEvent += OnStateSwitch;
-
         // Build FSM states from configured milestone mappings
-        foreach (var mapping in _milestoneMappings)
+        foreach (MilestoneMapping mapping in _milestoneMappings)
         {
-            if (mapping == null) continue;
-            var state = new MilestoneState(mapping);
-            _fsm.AddStateToSequence(state);// Initial state is first in sequence
+            if (mapping == null)
+            {
+                Debug.LogError("    ProgressManager: Null milestone mapping found in configuration.");
+                return null;
+            }
+
+            MilestoneState state = new(mapping);
+            _fsm.AddStateToSequence(state); // Initial state is first in sequence
         }
 
         BuildMappingCache();
+
+        // Susbcribe to state switch event to update current milestone
+        _fsm.OnStateSwitchEvent += OnStateSwitch;
 
         return _fsm;
     }
@@ -119,15 +125,15 @@ public class ProgressManager : ASingletonBehaviourEntity<ProgressManager, Finite
     #region PRIVATE METHODS
     void BuildMappingCache()
     {
-        _milestonesMappings = new Dictionary<int, MilestoneMapping>();
+        _milestonesMappings = new();
 
-        if (_milestoneMappings == null)
-            return;
-
-        foreach (var milestoneMapping in _milestoneMappings)
+        foreach (MilestoneMapping milestoneMapping in _milestoneMappings)
         {
-            if (milestoneMapping == null || milestoneMapping.Data == null)
-                continue;
+            if (milestoneMapping.Data == null)
+            {
+                Debug.LogError("    ProgressManager: milestone mapping with null data found in configuration.");
+                return;
+            }
 
             int idx = milestoneMapping.Data.Index;
             if (!_milestonesMappings.ContainsKey(idx))
@@ -140,7 +146,7 @@ public class ProgressManager : ASingletonBehaviourEntity<ProgressManager, Finite
         if (_milestonesMappings == null)
             BuildMappingCache();
 
-        if (_milestonesMappings != null && _milestonesMappings.TryGetValue(index, out MilestoneMapping mapping))
+        if (_milestonesMappings.TryGetValue(index, out MilestoneMapping mapping))
             return mapping;
 
         return null;
@@ -154,6 +160,25 @@ public class ProgressManager : ASingletonBehaviourEntity<ProgressManager, Finite
             return;
 
         _currentMilestoneIndex = _fsm.CurrentState.MilestoneMapping.Data.Index;
+        _currentMilestoneMapping = CurrentMilestoneMapping;
+
+        if (_currentMilestoneMapping == null)
+        {
+            Debug.LogError("    ProgressManager: Current milestone mapping is null on state switch.");
+            return;
+        }
+
+        if (_currentMilestoneMapping.Data == null || _currentMilestoneMapping.PlayableCharacter == null || _currentMilestoneMapping.Tour == null)
+        {
+            if (_currentMilestoneMapping.Data == null)
+                Debug.LogError("    ProgressManager: Current milestone data is null on state switch.");
+            if (_currentMilestoneMapping.PlayableCharacter == null)
+                Debug.LogError("    ProgressManager: Current milestone has no playable character assigned on state switch.");
+            if (_currentMilestoneMapping.Tour == null)
+                Debug.LogError("    ProgressManager: Current milestone has no tour assigned on state switch.");
+            return;
+        }
+
         OnMilestoneChangedEvent?.Invoke(CurrentMilestoneMapping);
     }
     #endregion

@@ -8,14 +8,16 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class GameManager : ASingletonBehaviourEntity<GameManager, FiniteStateMachine<AGameState>>
 {
+    #region PROPERTY HELPERS
+    public PlayableCharacter PlayableCharacter => _playableCharacter;
+    #endregion
+
     #region EDITOR PROPERTIES
     [Header("Player")]
-    public PlayableCharacter _playableCharacter; // TODO: make private
+    [SerializeField] PlayableCharacter _playableCharacter;
     #endregion
 
     #region INTERNAL PROPERTIES
-    public event Action<PlayableCharacter> OnPlayableCharacterChanged;
-
     FiniteStateMachine<AGameState> _fsm;
     public MainMenu_GameState _mainMenuState;
     public GamePlay_GameState _gamePlayState;
@@ -52,10 +54,7 @@ public class GameManager : ASingletonBehaviourEntity<GameManager, FiniteStateMac
         _inputActions = new();
 
         // Subscribe to milestone change event
-        ProgressManager.Instance.OnMilestoneChangedEvent += UpdatePlayableCharacter;
-
-        // Find the playable character
-        _playableCharacter = FindFirstObjectByType<PlayableCharacter>();
+        ProgressManager.Instance.OnMilestoneChangedEvent += OnMilestoneChanged;
     }
 
     private void OnDestroy()
@@ -65,11 +64,9 @@ public class GameManager : ASingletonBehaviourEntity<GameManager, FiniteStateMac
     #endregion
 
     #region PRIVATE METHODS
-    void UpdatePlayableCharacter(MilestoneMapping milestoneMapping)
+    void OnMilestoneChanged(MilestoneMapping milestoneMapping)
     {
-        // Find the playable character
-        _playableCharacter = FindFirstObjectByType<PlayableCharacter>();
-        OnPlayableCharacterChanged?.Invoke(_playableCharacter);
+        _playableCharacter = milestoneMapping.PlayableCharacter;
     }
     #endregion
 }

@@ -116,8 +116,8 @@ public class UIManager : ASingletonBehaviourEntity<UIManager, StackFiniteStateMa
         else
             GUILayout.Label("CameraManager: <null>");
 
-        if (GameManager.Instance != null && GameManager.Instance._playableCharacter != null)
-            GUILayout.Label($"PlayableCharacter state: {GameManager.Instance._playableCharacter.BehaviourSystem.CurrentState.StateName}");
+        if (GameManager.Instance != null && GameManager.Instance.PlayableCharacter != null)
+            GUILayout.Label($"PlayableCharacter state: {GameManager.Instance.PlayableCharacter.BehaviourSystem.CurrentState.StateName}");
         else
             GUILayout.Label("PlayableCharacter: <null>");
 

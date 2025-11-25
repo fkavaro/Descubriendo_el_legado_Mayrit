@@ -33,7 +33,6 @@ public class PathVisualizer
     public void Initialize()
     {
         ProgressManager.Instance.OnMilestoneChangedEvent += OnMilestoneChanged;
-        AttachToTour(ProgressManager.Instance.CurrentMilestoneMapping?.Tour);
 
         ConfigureLineRenderer();
     }
@@ -43,6 +42,11 @@ public class PathVisualizer
         // If no target POI or player, clear the line
         if (_nextPOI == null || _playableCharacter == null)
         {
+            if (_nextPOI == null)
+                Debug.LogWarning("PathVisualizer: Clear path - no POI target");
+            if (_playableCharacter == null)
+                Debug.LogWarning("PathVisualizer: Clear path - no playable character");
+
             Clear();
             return;
         }
@@ -55,8 +59,7 @@ public class PathVisualizer
 
     public void Deinitialize()
     {
-        if (ProgressManager.Instance != null)
-            ProgressManager.Instance.OnMilestoneChangedEvent -= OnMilestoneChanged;
+        ProgressManager.Instance.OnMilestoneChangedEvent -= OnMilestoneChanged;
 
         DetachFromTour(_currentTour);
     }
@@ -119,8 +122,7 @@ public class PathVisualizer
         DetachFromTour(_currentTour);
 
         _currentTour = tour;
-        if (_currentTour != null)
-            _currentTour.OnNextPOIChangeEvent += OnNextPOIChange;
+        _currentTour.OnNextPOIChangeEvent += OnNextPOIChange;
     }
 
     void DetachFromTour(Tour tour)
@@ -136,8 +138,8 @@ public class PathVisualizer
     #region EVENT METHODS
     void OnMilestoneChanged(MilestoneMapping milestoneMapping)
     {
-        AttachToTour(milestoneMapping?.Tour);
-        _playableCharacter = milestoneMapping?.PlayableCharacter;
+        _playableCharacter = milestoneMapping.PlayableCharacter;
+        AttachToTour(milestoneMapping.Tour);
     }
 
     void OnNextPOIChange(PointOfInterest poi)
