@@ -157,14 +157,14 @@ public class SpectatorHUD_UIState : AUIState
     {
         _milestoneArea.style.display = DisplayStyle.None;
 
-        AProgressState currentProgressState = (AProgressState)ProgressManager.Instance.BehaviourSystem.CurrentState;
+        MilestoneState currentProgressState = ProgressManager.Instance.BehaviourSystem.CurrentState;
 
         _contextualPanel.ShowInfo(currentProgressState._milestoneInformation);
     }
 
     void OverwriteMilestoneArea()
     {
-        AProgressState currentProgressState = (AProgressState)ProgressManager.Instance.BehaviourSystem.CurrentState;
+        MilestoneState currentProgressState = ProgressManager.Instance.BehaviourSystem.CurrentState;
 
         if (currentProgressState == null || currentProgressState._milestoneInformation == null)
         {

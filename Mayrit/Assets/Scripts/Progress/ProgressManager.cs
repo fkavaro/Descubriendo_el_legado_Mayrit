@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Manages the progress states and data. Singleton.
 /// </summary>
-public class ProgressManager : ASingletonBehaviourEntity<ProgressManager, FiniteStateMachine<AProgressState>>
+public class ProgressManager : ASingletonBehaviourEntity<ProgressManager, FiniteStateMachine<MilestoneState>>
 {
     #region PROPERTY HELPERS
     public int CurrentMilestoneIndex => _currentMilestoneIndex;
@@ -15,7 +15,7 @@ public class ProgressManager : ASingletonBehaviourEntity<ProgressManager, Finite
     [Header("Milestones")]
     [SerializeField] bool _updateInInspector = true;
     [SerializeField] int _currentMilestoneIndex = 0;
-    [SerializeField] List<Milestone_InformationSO> _milestoneSequence;
+    [SerializeField] List<Milestone_InformationSO> _milestonesData;
     #endregion
 
     #region INTERNAL PROPERTIES
@@ -26,11 +26,11 @@ public class ProgressManager : ASingletonBehaviourEntity<ProgressManager, Finite
     int _lastValidatedMilestoneIndex;
     bool _lastUpdateInInspector;
 
-    FiniteStateMachine<AProgressState> _fsm;
+    FiniteStateMachine<MilestoneState> _fsm;
     #endregion
 
     #region INHERITED
-    public override FiniteStateMachine<AProgressState> InitializeBehaviourSystem()
+    public override FiniteStateMachine<MilestoneState> InitializeBehaviourSystem()
     {
         _fsm = new(this);
 
@@ -38,14 +38,14 @@ public class ProgressManager : ASingletonBehaviourEntity<ProgressManager, Finite
         _fsm.OnStateSwitchEvent += OnStateSwitch;
 
         // States initialization
-        Vision_AProgressState _visionState = new(_milestoneSequence[0]);
-        Foundation_AProgressState _foundationState = new(_milestoneSequence[1]);
-        Albacar_AProgressState _albacarState = new(_milestoneSequence[2]);
-        Almudayna_AProgressState _almudaynaState = new(_milestoneSequence[3]);
-        RamiroIIAttack_AProgressState _ramiroIIState = new(_milestoneSequence[4]);
-        AlmanzorMeeting_AProgressState _almanzorState = new(_milestoneSequence[5]);
-        MaslamaSchool_AProgressState _schoolState = new(_milestoneSequence[6]);
-        Conquest_AProgressState _conquestState = new(_milestoneSequence[7]);
+        MilestoneState _visionState = new("Vision", _milestonesData[0]);
+        MilestoneState _foundationState = new("Foundation", _milestonesData[1]);
+        MilestoneState _albacarState = new("Albacar", _milestonesData[2]);
+        MilestoneState _almudaynaState = new("Almudayna", _milestonesData[3]);
+        MilestoneState _ramiroIIState = new("RamiroII", _milestonesData[4]);
+        MilestoneState _almanzorState = new("Almanzor", _milestonesData[5]);
+        MilestoneState _schoolState = new("School", _milestonesData[6]);
+        MilestoneState _conquestState = new("Conquest", _milestonesData[7]);
 
         // Add states to the FSM sequence
         _fsm.AddStateToSequence(_visionState);
@@ -117,7 +117,7 @@ public class ProgressManager : ASingletonBehaviourEntity<ProgressManager, Finite
 
     public Milestone_InformationSO GetCurrentMilestoneInfo()
     {
-        return _milestoneSequence[_currentMilestoneIndex];
+        return _milestonesData[_currentMilestoneIndex];
     }
     #endregion
 
