@@ -70,7 +70,7 @@ public class PlayerVisual : Billboard
             _playerButton.visible = false;
     }
 
-    void UpdatePlayerButtonVisual(int milestoneIndex)
+    void UpdatePlayerButtonVisual(MilestoneMapping milestoneMapping)
     {
         // Update current playable character
         _playableCharacter = GameManager.Instance._playableCharacter;

@@ -3,11 +3,12 @@ using UnityEngine;
 
 public class MilestoneState : AState
 {
-    public readonly Milestone_InformationSO _milestoneInformation;
+    readonly MilestoneMapping _milestoneMapping;
+    public MilestoneMapping MilestoneMapping => _milestoneMapping;
 
-    public MilestoneState(string name, Milestone_InformationSO milestoneInformation)
-    : base(name)
+    public MilestoneState(MilestoneMapping milestoneMapping)
+    : base(milestoneMapping.Data.Header)
     {
-        _milestoneInformation = milestoneInformation;
+        _milestoneMapping = milestoneMapping;
     }
 }

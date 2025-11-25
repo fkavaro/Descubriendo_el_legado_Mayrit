@@ -15,6 +15,7 @@ public class PathVisualizer
     PlayableCharacter _playableCharacter;
     PointOfInterest _nextPOI;
     Vector3 _playerPos, _nextPOIPos;
+    Tour _currentTour;
     #endregion
 
     #region CONSTRUCTOR
@@ -31,10 +32,31 @@ public class PathVisualizer
     #region PUBLIC METHODS
     public void Initialize()
     {
-        TourManager.Instance.OnNextPOIChangedEvent += OnNextPOIChanged;
+        // Subscribe directly to ProgressManager to get the active tour/POI updates
+        if (ProgressManager.Instance != null)
+        {
+            ProgressManager.Instance.OnMilestoneChangedEvent += OnMilestoneChanged;
+            AttachToTour(ProgressManager.Instance.CurrentMilestoneMapping?.Tour);
+        }
         GameManager.Instance.OnPlayableCharacterChanged += OnPlayableCharacterChanged;
 
         ConfigureLineRenderer();
+    }
+
+    /// <summary>
+    /// Cleanly unsubscribe from external events. Call when the owning manager is disabled/destroyed.
+    /// </summary>
+    public void Deinitialize()
+    {
+        if (ProgressManager.Instance != null)
+            ProgressManager.Instance.OnMilestoneChangedEvent -= OnMilestoneChanged;
+
+        if (GameManager.Instance != null)
+            GameManager.Instance.OnPlayableCharacterChanged -= OnPlayableCharacterChanged;
+
+        DetachFromTour(_currentTour);
+        _currentTour = null;
+        _nextPOI = null;
     }
 
     public void UpdatePath()
@@ -108,6 +130,32 @@ public class PathVisualizer
     void OnNextPOIChanged(PointOfInterest poi)
     {
         _nextPOI = poi;
+    }
+
+    void OnMilestoneChanged(MilestoneMapping milestoneMapping)
+    {
+        AttachToTour(milestoneMapping?.Tour);
+    }
+
+    void AttachToTour(Tour tour)
+    {
+        if (_currentTour == tour) return;
+
+        DetachFromTour(_currentTour);
+
+        _currentTour = tour;
+        if (_currentTour != null)
+        {
+            _currentTour.OnNextPOIChangedEvent += OnNextPOIChanged;
+        }
+    }
+
+    void DetachFromTour(Tour tour)
+    {
+        if (tour == null) return;
+        tour.OnNextPOIChangedEvent -= OnNextPOIChanged;
+        if (_nextPOI == tour.CurrentPOI)
+            _nextPOI = null;
     }
 
     void OnPlayableCharacterChanged(PlayableCharacter player)

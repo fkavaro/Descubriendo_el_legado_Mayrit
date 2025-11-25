@@ -204,7 +204,7 @@ public class TownManager : Singleton<TownManager>
     #endregion
 
     #region PRIVATE METHODS
-    void OnMilestoneChanged(int milestoneIndex)
+    void OnMilestoneChanged(MilestoneMapping milestoneMapping)
     {
         OnPopulationChanged?.Invoke(_population);
     }

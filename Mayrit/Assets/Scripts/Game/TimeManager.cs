@@ -61,13 +61,13 @@ public class TimeManager : Singleton<TimeManager>
         base.Awake();
 
         // Subscribe to ProgressManager event to set the wanted time when the game starts
-        ProgressManager.Instance.OnTimeSetEvent += (time) => { _wantedTime = time; };
+        ProgressManager.Instance.OnMilestoneChangedEvent += OnMilestoneChanged;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        _currentTime = ProgressManager.Instance.GetCurrentMilestoneInfo().WantedTime;
+        _currentTime = ProgressManager.Instance.CurrentMilestoneMapping.Data.WantedTime;
         UpdateLighting();
     }
 
@@ -208,6 +208,14 @@ public class TimeManager : Singleton<TimeManager>
         bool shouldMoonBeActive = !(_currentTime >= 6f - hysteresis && _currentTime < 17f + hysteresis);
         if (_moonSource.gameObject.activeSelf != shouldMoonBeActive)
             _moonSource.gameObject.SetActive(shouldMoonBeActive);
+    }
+    #endregion
+
+    #region EVENT METHODS
+    void OnMilestoneChanged(MilestoneMapping mapping)
+    {
+        if (mapping != null)
+            _wantedTime = mapping.Data.WantedTime;
     }
     #endregion
 }

@@ -16,6 +16,7 @@
   <Project Path="Unity.TerrainTools.Editor.csproj" />
   <Project Path="Unity.RenderPipelines.Universal.2D.Runtime.csproj" />
   <Project Path="Unity.Collections.csproj" />
+  <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Unity.ProBuilder.Poly2Tri.csproj" />
   <Project Path="Unity.Splines.csproj" />
   <Project Path="Unity.RenderPipelines.Universal.Editor.csproj" />
@@ -29,7 +30,6 @@
   <Project Path="Unity.VisualStudio.Editor.csproj" />
   <Project Path="Unity.Polybrush.csproj" />
   <Project Path="Unity.Animation.Rigging.Editor.csproj" />
-  <Project Path="Assembly-CSharp.csproj" />
   <Project Path="PPv2URPConverters.csproj" />
   <Project Path="Unity.Searcher.Editor.csproj" />
   <Project Path="Unity.ProBuilder.Editor.csproj" />

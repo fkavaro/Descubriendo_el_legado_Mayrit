@@ -8,23 +8,24 @@ using UnityEngine;
 public class ProgressManager : ASingletonBehaviourEntity<ProgressManager, FiniteStateMachine<MilestoneState>>
 {
     #region PROPERTY HELPERS
+    public MilestoneMapping CurrentMilestoneMapping => GetMappingForIndex(_currentMilestoneIndex);
     public int CurrentMilestoneIndex => _currentMilestoneIndex;
     #endregion
 
     #region EDITOR PROPERTIES
     [Header("Milestones")]
-    [SerializeField] bool _updateInInspector = true;
+    [SerializeField] bool _updateInEditor = true;
     [SerializeField] int _currentMilestoneIndex = 0;
-    [SerializeField] List<Milestone_InformationSO> _milestonesData;
+    [SerializeField] List<MilestoneMapping> _milestoneMappings = new();
     #endregion
 
     #region INTERNAL PROPERTIES
-    public event Action<int> OnMilestoneChangedEvent;
+    public event Action<MilestoneMapping> OnMilestoneChangedEvent;
     public event Action<bool> OnEditorUpdateChangedEvent;
-    public event Action<float> OnTimeSetEvent;
 
     int _lastValidatedMilestoneIndex;
     bool _lastUpdateInInspector;
+    Dictionary<int, MilestoneMapping> _mappingByIndex;
 
     FiniteStateMachine<MilestoneState> _fsm;
     #endregion
@@ -38,14 +39,14 @@ public class ProgressManager : ASingletonBehaviourEntity<ProgressManager, Finite
         _fsm.OnStateSwitchEvent += OnStateSwitch;
 
         // States initialization
-        MilestoneState _visionState = new("Vision", _milestonesData[0]);
-        MilestoneState _foundationState = new("Foundation", _milestonesData[1]);
-        MilestoneState _albacarState = new("Albacar", _milestonesData[2]);
-        MilestoneState _almudaynaState = new("Almudayna", _milestonesData[3]);
-        MilestoneState _ramiroIIState = new("RamiroII", _milestonesData[4]);
-        MilestoneState _almanzorState = new("Almanzor", _milestonesData[5]);
-        MilestoneState _schoolState = new("School", _milestonesData[6]);
-        MilestoneState _conquestState = new("Conquest", _milestonesData[7]);
+        MilestoneState _visionState = new(_milestoneMappings[0]);
+        MilestoneState _foundationState = new(_milestoneMappings[1]);
+        MilestoneState _albacarState = new(_milestoneMappings[2]);
+        MilestoneState _almudaynaState = new(_milestoneMappings[3]);
+        MilestoneState _ramiroIIState = new(_milestoneMappings[4]);
+        MilestoneState _almanzorState = new(_milestoneMappings[5]);
+        MilestoneState _schoolState = new(_milestoneMappings[6]);
+        MilestoneState _conquestState = new(_milestoneMappings[7]);
 
         // Add states to the FSM sequence
         _fsm.AddStateToSequence(_visionState);
@@ -58,6 +59,9 @@ public class ProgressManager : ASingletonBehaviourEntity<ProgressManager, Finite
         _fsm.AddStateToSequence(_conquestState);
 
         _fsm.SetInitialState(_visionState);
+
+        BuildMappingCache();
+        TourManager.Instance.OnTourCompletedEvent += OnTourCompleted;
 
         return _fsm;
     }
@@ -76,18 +80,18 @@ public class ProgressManager : ASingletonBehaviourEntity<ProgressManager, Finite
         {
             _lastValidatedMilestoneIndex = _currentMilestoneIndex;
 
-            if (_updateInInspector)
+            if (_updateInEditor)
             {
                 // To avoid issues with re-entrancy
-                UnityEditor.EditorApplication.delayCall += () => OnMilestoneChangedEvent?.Invoke(_currentMilestoneIndex);
+                UnityEditor.EditorApplication.delayCall += () => OnMilestoneChangedEvent?.Invoke(CurrentMilestoneMapping);
             }
         }
 
         // Invoke editor update changed event when _updateInInspector is changed in inspector
-        if (_lastUpdateInInspector != _updateInInspector)
+        if (_lastUpdateInInspector != _updateInEditor)
         {
-            _lastUpdateInInspector = _updateInInspector;
-            bool update = _updateInInspector;
+            _lastUpdateInInspector = _updateInEditor;
+            bool update = _updateInEditor;
 
             UnityEditor.EditorApplication.delayCall += () => OnEditorUpdateChangedEvent?.Invoke(update);
         }
@@ -114,19 +118,49 @@ public class ProgressManager : ASingletonBehaviourEntity<ProgressManager, Finite
     {
         return _fsm.AtLastStateInSequence();
     }
+    #endregion
 
-    public Milestone_InformationSO GetCurrentMilestoneInfo()
+    #region PRIVATE METHODS
+    void BuildMappingCache()
     {
-        return _milestonesData[_currentMilestoneIndex];
+        _mappingByIndex = new Dictionary<int, MilestoneMapping>();
+
+        if (_milestoneMappings == null)
+            return;
+
+        foreach (var milestoneMapping in _milestoneMappings)
+        {
+            if (milestoneMapping == null || milestoneMapping.Data == null)
+                continue;
+
+            int idx = milestoneMapping.Data.Index;
+            if (!_mappingByIndex.ContainsKey(idx))
+                _mappingByIndex[idx] = milestoneMapping;
+        }
+    }
+
+    MilestoneMapping GetMappingForIndex(int index)
+    {
+        if (_mappingByIndex == null)
+            BuildMappingCache();
+
+        if (_mappingByIndex != null && _mappingByIndex.TryGetValue(index, out MilestoneMapping mapping))
+            return mapping;
+
+        return null;
     }
     #endregion
 
     #region EVENT METHODS
     void OnStateSwitch()
     {
-        _currentMilestoneIndex = _fsm.CurrentState._milestoneInformation.MilestoneIndex;
-        OnMilestoneChangedEvent?.Invoke(_currentMilestoneIndex);
-        OnTimeSetEvent?.Invoke(_fsm.CurrentState._milestoneInformation.WantedTime);
+        _currentMilestoneIndex = _fsm.CurrentState.MilestoneMapping.Data.Index;
+        OnMilestoneChangedEvent?.Invoke(CurrentMilestoneMapping);
+    }
+
+    void OnTourCompleted()
+    {
+        throw new NotImplementedException();
     }
     #endregion
 }

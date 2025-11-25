@@ -159,21 +159,21 @@ public class SpectatorHUD_UIState : AUIState
 
         MilestoneState currentProgressState = ProgressManager.Instance.BehaviourSystem.CurrentState;
 
-        _contextualPanel.ShowInfo(currentProgressState._milestoneInformation);
+        _contextualPanel.ShowInfo(currentProgressState.MilestoneMapping.Data);
     }
 
     void OverwriteMilestoneArea()
     {
         MilestoneState currentProgressState = ProgressManager.Instance.BehaviourSystem.CurrentState;
 
-        if (currentProgressState == null || currentProgressState._milestoneInformation == null)
+        if (currentProgressState == null || currentProgressState.MilestoneMapping.Data == null)
         {
             Debug.LogWarning("Current progress state or its informationSO is null");
             return;
         }
 
-        _milestoneName.text = currentProgressState._milestoneInformation.Header;
-        _milestoneDate.text = currentProgressState._milestoneInformation.SubHeader;
+        _milestoneName.text = currentProgressState.MilestoneMapping.Data.Header;
+        _milestoneDate.text = currentProgressState.MilestoneMapping.Data.SubHeader;
     }
 
     void CheckMilestoneButtonsActivation()

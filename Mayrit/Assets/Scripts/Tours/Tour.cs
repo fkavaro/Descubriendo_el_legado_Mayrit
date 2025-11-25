@@ -31,6 +31,7 @@ public class Tour : MonoBehaviour
     public void StartTour()
     {
         Reset();
+        Activate();
         NextPOI();
     }
 

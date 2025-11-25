@@ -14,5 +14,5 @@ public class Milestone_InformationSO : AInformationSO
     [SerializeField] int _milestoneIndex;
 
     public float WantedTime => _wantedTime;
-    public int MilestoneIndex => _milestoneIndex;
+    public int Index => _milestoneIndex;
 }

@@ -70,8 +70,10 @@ public class ProgressObject : MonoBehaviour
     #endregion
 
     #region EVENTS METHODS
-    void OnMilestoneChanged(int milestoneIndex)
+    void OnMilestoneChanged(MilestoneMapping milestoneMapping)
     {
+        int milestoneIndex = milestoneMapping.Data.Index;
+
         if (this == null) return;
 
         int min = Mathf.Min((int)milestonesActivated.x, (int)milestonesActivated.y);
@@ -87,10 +89,14 @@ public class ProgressObject : MonoBehaviour
 
         if (this == null) return;
         if (!updateInEditor)
+        {
             SetChildrenActive(true);
+            return;
+        }
+
         var progressManager = FindAnyObjectByType<ProgressManager>();
         if (progressManager == null) return;
-        var milestone = progressManager.CurrentMilestoneIndex;
+        int milestone = progressManager.CurrentMilestoneIndex;
 
         int min = Mathf.Min((int)milestonesActivated.x, (int)milestonesActivated.y);
         int max = Mathf.Max((int)milestonesActivated.x, (int)milestonesActivated.y);

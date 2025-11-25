@@ -65,7 +65,7 @@ public class GameManager : ASingletonBehaviourEntity<GameManager, FiniteStateMac
     #endregion
 
     #region PRIVATE METHODS
-    void UpdatePlayableCharacter(int milestoneIndex)
+    void UpdatePlayableCharacter(MilestoneMapping milestoneMapping)
     {
         // Find the playable character
         _playableCharacter = FindFirstObjectByType<PlayableCharacter>();
