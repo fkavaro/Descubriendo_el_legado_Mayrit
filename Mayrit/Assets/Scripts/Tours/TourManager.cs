@@ -22,7 +22,6 @@ public class TourManager : Singleton<TourManager>
 
     [Tooltip("Maximum number of corners to display (safety cap)")]
     [SerializeField] int _maxCorners = 512;
-    [SerializeField] Gradient _colorGradient;
     #endregion
 
     #region INTERNAL PROPERTIES
@@ -37,7 +36,7 @@ public class TourManager : Singleton<TourManager>
     void Start()
     {
         LineRenderer lineRenderer = GetComponent<LineRenderer>();
-        _pathVisualizer = new(lineRenderer, _colorGradient, _lineWidth, _useNavMesh, _maxCorners);
+        _pathVisualizer = new(lineRenderer, _lineWidth, _useNavMesh, _maxCorners);
         _pathVisualizer.Initialize();
 
         // Subscribe to ProgressManager milestone changes to track active tour
@@ -48,6 +47,8 @@ public class TourManager : Singleton<TourManager>
     {
         if (CameraManager.Instance.IsInThirdPersonState)
             _pathVisualizer.UpdatePath();
+        else
+            _pathVisualizer.Clear();
     }
 
     void OnDisable()

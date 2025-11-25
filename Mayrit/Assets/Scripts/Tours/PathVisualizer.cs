@@ -10,17 +10,15 @@ public class PathVisualizer
     readonly bool _useNavMesh;
     readonly float _lineWidth;
     readonly int _maxCorners;
-    readonly Gradient _colorGradient;
 
     Transform _player, _nextPOI;
     Tour _currentTour;
     #endregion
 
     #region CONSTRUCTOR
-    public PathVisualizer(LineRenderer lineRenderer, Gradient colorGradient, float lineWidth, bool useNavMesh, int maxCorners)
+    public PathVisualizer(LineRenderer lineRenderer, float lineWidth, bool useNavMesh, int maxCorners)
     {
         _lineRenderer = lineRenderer;
-        _colorGradient = colorGradient;
         _lineWidth = lineWidth;
         _useNavMesh = useNavMesh;
         _maxCorners = maxCorners;
@@ -58,16 +56,21 @@ public class PathVisualizer
 
         DetachFromTour(_currentTour);
     }
+
+    public void Clear()
+    {
+        if (_lineRenderer == null) return;
+        _lineRenderer.positionCount = 0;
+        _lineRenderer.enabled = false;
+    }
     #endregion
 
     #region PRIVATE METHODS
     void ConfigureLineRenderer()
     {
         if (_lineRenderer == null) return;
-
         _lineRenderer.useWorldSpace = true;
         _lineRenderer.widthMultiplier = _lineWidth;
-        _lineRenderer.colorGradient = _colorGradient;
     }
 
     void DrawPath(Vector3 start, Vector3 end)
@@ -101,13 +104,6 @@ public class PathVisualizer
             _lineRenderer.SetPosition(i, corners[i]);
 
         _lineRenderer.enabled = true;
-    }
-
-    void Clear()
-    {
-        if (_lineRenderer == null) return;
-        _lineRenderer.positionCount = 0;
-        _lineRenderer.enabled = false;
     }
 
     void AttachToTour(Tour tour)
