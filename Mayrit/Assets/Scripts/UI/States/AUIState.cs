@@ -4,20 +4,43 @@ using UnityEngine.InputSystem;
 
 public abstract class AUIState : AState
 {
+    #region PROPERTIES
     public UIDocument _UIDocument;
     public VisualElement _screen;
+    #endregion
 
+    #region CONSTRUCTOR
     protected AUIState(string name, UIDocument uiDocument)
     : base(name)
     {
         _UIDocument = uiDocument;
     }
+    #endregion
 
+    #region INHERITED METHODS
+    public override void StartState()
+    {
+        _screen = _UIDocument.rootVisualElement.Q<VisualElement>(_stateName);
+
+        ConfigureUIElements();
+        RegisterCallbacks();
+        OnStartState();
+
+        _screen.style.display = DisplayStyle.Flex; // Show
+    }
+
+    public override void ExitState()
+    {
+        _screen.style.display = DisplayStyle.None; // Hide
+    }
+    #endregion
+
+    #region PUBLIC METHODS
     /// <summary>
     /// Returns true if the cursor is over any UI element that is a descendant of _screen.
     /// </summary>
     /// <param name="cursorPos">Screen-space position of the cursor (Input.mousePosition).</param>
-    public virtual bool IsCursorOverUI()
+    public bool IsCursorOverUI()
     {
         if (_UIDocument == null || _screen == null)
             return false;
@@ -41,4 +64,11 @@ public abstract class AUIState : AState
 
         return false;
     }
+    #endregion
+
+    #region ABSTRACT METHODS
+    protected abstract void ConfigureUIElements();
+    protected abstract void RegisterCallbacks();
+    protected virtual void OnStartState() { }
+    #endregion
 }

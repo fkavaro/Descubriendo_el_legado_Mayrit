@@ -26,7 +26,11 @@ public class UIManager : ASingletonBehaviourEntity<UIManager, StackFiniteStateMa
     #endregion
 
     #region INTERNAL PROPERTIES
-    public event Action OnModernSuperpositionEvent;
+    public event Action<AInformationSO> ShowContextualPanelEvent;
+    public event Action HideContextualPanelEvent;
+    public event Action<AInformationSO> ShowTooltipEvent;
+    public event Action HideTooltipEvent;
+    public event Action ModernSuperpositionToggledEvent;
 
     StackFiniteStateMachine<AUIState> _sfsm;
     MainMenu_UIState _mainMenuState;
@@ -59,6 +63,7 @@ public class UIManager : ASingletonBehaviourEntity<UIManager, StackFiniteStateMa
 
         // Subscribe to events
         _spectatorHUDState.OnModernSuperpositionEvent += OnModernSuperpositionToggled;
+        TourManager.Instance.OnTourPOIVisitedEvent += OnTourPOIVisited;
 
         return _sfsm;
     }
@@ -67,61 +72,66 @@ public class UIManager : ASingletonBehaviourEntity<UIManager, StackFiniteStateMa
     #region STATE HANDLING
     public void SwitchToMainMenuState()
     {
-        _sfsm.SwitchState(_mainMenuState);
+        _sfsm?.SwitchState(_mainMenuState);
     }
 
-    public void SwicthToSpectatorHUDState()
+    public void SwitchToSpectatorHUDState()
     {
-        _sfsm.SwitchState(_spectatorHUDState);
+        _sfsm?.SwitchState(_spectatorHUDState);
     }
 
     public void SwitchToPlayerHUDState()
     {
-        _sfsm.SwitchState(_playerHUDState);
+        _sfsm?.SwitchState(_playerHUDState);
     }
 
     public void SwitchToPauseState()
     {
-        _sfsm.SwitchState(_pauseState);
+        _sfsm?.SwitchState(_pauseState);
     }
 
     public void SwitchToHeritageState()
     {
-        _sfsm.SwitchState(_heritageState);
+        _sfsm?.SwitchState(_heritageState);
     }
-    #endregion 
+    #endregion
 
     #region PUBLIC METHODS
+    public bool IsCursorOverUI()
+    {
+        return BehaviourSystem.CurrentState.IsCursorOverUI();
+    }
+
     public void HideContextualPanel()
     {
-        _spectatorHUDState._contextualPanel.Hide();
+        HideContextualPanelEvent?.Invoke();
     }
 
     public void ShowContextualPanel(AInformationSO data)
     {
-        _spectatorHUDState.ShowContextualPanel(data);
+        ShowContextualPanelEvent?.Invoke(data);
     }
 
-    public bool IsCursorOverSpectatorHUD()
+    public void ShowTooltip(AInformationSO data)
     {
-        return _spectatorHUDState.IsCursorOverUI();
-    }
-
-    public void ShowTooltip(SelectableObject selectableObject)
-    {
-        _spectatorHUDState.ShowTooltip(selectableObject);
+        ShowTooltipEvent?.Invoke(data);
     }
 
     public void HideTooltip()
     {
-        _spectatorHUDState.HideTooltip();
+        HideTooltipEvent?.Invoke();
     }
     #endregion
 
     #region EVENT METHODS
     void OnModernSuperpositionToggled()
     {
-        OnModernSuperpositionEvent?.Invoke();
+        ModernSuperpositionToggledEvent?.Invoke();
+    }
+
+    void OnTourPOIVisited(PointOfInterest poi)
+    {
+        ShowContextualPanel(poi.Data);
     }
     #endregion
 }

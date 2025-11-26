@@ -27,7 +27,7 @@ public class ModernSuperposition : MonoBehaviour
         CameraManager.Instance.OnCameraStateChangedEvent += OnCameraStateChanged;
 
         // To know when the button is pressed in the HUD
-        UIManager.Instance.OnModernSuperpositionEvent += ToggleMode;
+        UIManager.Instance.ModernSuperpositionToggledEvent += ToggleMode;
     }
 
     void OnValidate()

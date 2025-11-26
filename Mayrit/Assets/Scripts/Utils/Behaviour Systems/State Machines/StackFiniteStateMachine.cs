@@ -26,7 +26,7 @@ where StateType : AState
         if (newState == _currentState) return;
 
         PushCurrentState();
-        _currentState?.OnExitState();
+        _currentState?.ExitState();
         _currentState = newState;
         DebugDecision();
         _currentState?.StartState();
@@ -51,7 +51,7 @@ where StateType : AState
     /// <summary>
     /// Returns previous state (top of the stack).
     /// </summary>
-    public AState GetPreviousState()
+    public StateType GetPreviousState()
     {
         // Empty stack
         if (_stateStack.Count == 0)

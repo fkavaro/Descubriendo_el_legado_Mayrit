@@ -96,7 +96,7 @@ public class PointOfInterest : MonoBehaviour
     #region DEBUG GIZMOW
     void OnDrawGizmos()
     {
-        Gizmos.color = _isVisited ? Color.green : Color.yellow;
+        Gizmos.color = _isVisited ? Color.green : Color.red;
         Gizmos.DrawSphere(transform.position, _visitRadius);
 
 #if UNITY_EDITOR

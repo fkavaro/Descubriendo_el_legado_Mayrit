@@ -14,19 +14,16 @@ public class SpectatorCameraSelector
     Vector2 _cursorScreenPos;
     Ray _cameraRay;
     bool _isSelectPressed;
+    #endregion
 
+    #region CONSTRUCTOR
     public SpectatorCameraSelector(LayerMask selectableLayer)
     {
         _selectableLayer = selectableLayer;
     }
     #endregion
 
-    #region MONOBEHAVIOUR
-    public void Start()
-    {
-
-    }
-
+    #region LIFE CYCLE
     public void Update()
     {
         _isSelectPressed = GameManager.Instance.InputActions.Camera.Select.IsPressed();
@@ -45,28 +42,15 @@ public class SpectatorCameraSelector
     }
     #endregion
 
-    #region PUBLIC METHODS
-    /// <returns>The currently selected GameObject, or null if none is selected.</returns>
-    public SelectableObject GetCurrentSelection()
-    {
-        return _currentSelected;
-    }
-    /// <returns>The currently hovered GameObject, or null if none is hovered.</returns>
-    public SelectableObject GetCurrentHover()
-    {
-        return _currentHover;
-    }
-    #endregion
-
-    #region PRIVATE METHODS
+    #region SELECTION METHODS
     /// <summary>
     /// This method is called when the 'SelectObject' input action is performed.
     /// It handles the raycast logic for object selection.
     /// </summary>
-    public void SelectObject()
+    void SelectObject()
     {
         // Cursor over UI element
-        if (UIManager.Instance.IsCursorOverSpectatorHUD())
+        if (UIManager.Instance.IsCursorOverUI())
             return;
 
         //Debug.DrawRay(_cameraRay.origin, _cameraRay.direction * 100, Color.green, 120f);
@@ -102,7 +86,8 @@ public class SpectatorCameraSelector
     /// </summary>
     void ApplySelection()
     {
-        CameraManager.Instance.SwitchToOrbitalCamera(_currentSelected.transform, _currentSelected._information);
+        CameraManager.Instance.SwitchToOrbitalCamera(_currentSelected.transform, _currentSelected.Data);
+        ResetHover();
     }
 
     /// <summary>
@@ -111,20 +96,22 @@ public class SpectatorCameraSelector
     void ResetSelection()
     {
         if (_currentSelected == null) return;
-        if (UIManager.Instance.IsCursorOverSpectatorHUD()) return;
+        if (UIManager.Instance.IsCursorOverUI()) return;
 
         UIManager.Instance.HideContextualPanel();
         CameraManager.Instance.SwitchToSpectatorCamera();
         _currentSelected = null;
     }
+    #endregion
 
+    #region TOOLTIP METHODS
     /// <summary>
     /// Move tooltip with the cursor if it's not over an UI element.
     /// </summary>
     void UpdateTooltip()
     {
         // Cursor over UI element
-        if (UIManager.Instance.IsCursorOverSpectatorHUD())
+        if (UIManager.Instance.IsCursorOverUI())
         {
             ResetHover();
             return;
@@ -156,7 +143,7 @@ public class SpectatorCameraSelector
     /// </summary>
     void ApplyHover()
     {
-        UIManager.Instance.ShowTooltip(_currentHover);
+        UIManager.Instance.ShowTooltip(_currentHover.Data);
     }
 
     /// <summary>

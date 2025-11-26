@@ -149,7 +149,7 @@ where StateType : AState
     #endregion
 
     #region LIFE CYCLE: DERIVED TO CURRENT STATE
-    public override void Awake()
+    public override void Start()
     {
         if (_initialState == null)
         {
@@ -157,27 +157,19 @@ where StateType : AState
             return;
         }
 
-        _currentState = _initialState;
-        DebugDecision();
-        _currentState?.AwakeState();
-    }
-
-    public override void Start()
-    {
-        _currentState?.StartState();
-        OnStateSwitchEvent?.Invoke();
+        SwitchState(_initialState);
     }
 
     public override void Update()
     {
         if (!_behaviourEntity.IsExecutionPaused)
-            _currentState?.OnUpdateState();
+            _currentState?.UpdateState();
     }
 
     public override void LateUpdate()
     {
         if (!_behaviourEntity.IsExecutionPaused)
-            _currentState?.OnLateUpdateState();
+            _currentState?.LateUpdateState();
     }
 
     public override void OnCollisionEnter(Collision collision)

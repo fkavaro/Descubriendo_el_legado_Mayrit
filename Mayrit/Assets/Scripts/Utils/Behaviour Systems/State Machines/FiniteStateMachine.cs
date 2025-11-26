@@ -22,7 +22,7 @@ where StateType : AState
     {
         if (newState == _currentState) return;
 
-        _currentState?.OnExitState();
+        _currentState?.ExitState();
         _currentState = newState;
         DebugDecision();
         _currentState?.StartState();

@@ -20,13 +20,10 @@ public class Spectator_CameraState : ACameraState
         _camera.gameObject.SetActive(true);
 
         // Change HUD
-        UIManager.Instance.SwicthToSpectatorHUDState();
+        UIManager.Instance.SwitchToSpectatorHUDState();
 
         // Adjust simulation speed
         TimeManager.Instance.SetSimulationSpeed(_simulationSpeed);
-
-        _cameraController.Start();
-        _cameraSelector.Start();
     }
 
     public override void UpdateState()

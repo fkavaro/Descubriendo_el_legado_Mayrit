@@ -1,45 +1,36 @@
 using UnityEngine;
 using UnityEngine.UIElements;
-using UnityEngine.InputSystem;
 
 public class HeritageMenu_UIState : AUIState
 {
-    #region PUBLIC PROPERTIES
-    #endregion
-
-    #region PRIVATE PROPERTIES
+    #region PROPERTIES
     Button _playButton;
     #endregion
 
-    // Constructor
+    #region CONSTRUCTOR
     public HeritageMenu_UIState(UIDocument uiDocument)
     : base("HeritageMenu", uiDocument) { }
+    #endregion
 
-    #region INHERITED
-    public override void StartState()
+    #region INHERITED METHODS
+    protected override void ConfigureUIElements()
     {
-        _screen = _UIDocument.rootVisualElement.Q<VisualElement>("HeritageMenu");
         _playButton = _screen.Q<Button>("PlayButton");
+    }
 
-        _playButton.RegisterCallback<ClickEvent>(SwitchToHUDState);
+    protected override void RegisterCallbacks()
+    {
+        _playButton.RegisterCallback<ClickEvent>(OnPlayClicked);
+    }
 
-        _screen.style.display = DisplayStyle.Flex; // Show 
-
-        // Game pause state
+    protected override void OnStartState()
+    {
         GameManager.Instance.SwitchToPauseState();
     }
-    public override void ExitState()
-    {
-        _screen.style.display = DisplayStyle.None; // Hide
-    }
     #endregion
 
-    #region PUBLIC METHODS
-
-    #endregion
-
-    #region PRIVATE METHODS
-    void SwitchToHUDState(ClickEvent evt)
+    #region CALLBACK METHODS
+    void OnPlayClicked(ClickEvent evt)
     {
         UIManager.Instance.BehaviourSystem.SwitchToPreviousStateInStack(); // Switch to previous state: player or spectator HUD
         GameManager.Instance.SwitchToGamePlayState();

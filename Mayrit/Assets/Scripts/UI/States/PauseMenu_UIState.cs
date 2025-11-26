@@ -1,60 +1,61 @@
 using UnityEngine;
 using UnityEngine.UIElements;
-using UnityEngine.InputSystem;
 
 public class PauseMenu_UIState : AUIState
 {
-    #region PUBLIC PROPERTIES
+    #region  PROPERTIES
+    Button _playButton,
+        _mainMenuButton,
+        _quitButton;
     #endregion
 
-    #region PRIVATE PROPERTIES
-    Button _playButton, _mainMenuButton, _quitButton;
-    #endregion
-
-    // Constructor
+    #region CONSTRUCTOR
     public PauseMenu_UIState(UIDocument uiDocument)
     : base("PauseMenu", uiDocument) { }
+    #endregion
 
-    #region INHERITED
-    public override void StartState()
+    #region INHERITED METHODS
+    protected override void ConfigureUIElements()
     {
         _screen = _UIDocument.rootVisualElement.Q<VisualElement>("PauseMenu");
         _playButton = _screen.Q<Button>("PlayButton");
         _mainMenuButton = _screen.Q<Button>("MainMenuButton");
         _quitButton = _screen.Q<Button>("QuitButton");
 
-        _playButton.RegisterCallback<ClickEvent>(SwitchToHUDState);
-        _mainMenuButton.RegisterCallback<ClickEvent>(SwitchToMainMenuState);
-        _quitButton.RegisterCallback<ClickEvent>(QuitGame);
+        if (_playButton == null)
+            Debug.LogWarning("_playButton not found");
+        if (_mainMenuButton == null)
+            Debug.LogWarning("_mainMenuButton not found");
+        if (_quitButton == null)
+            Debug.LogWarning("_quitButton not found");
+    }
 
-        _screen.style.display = DisplayStyle.Flex; // Show pause menu
+    protected override void RegisterCallbacks()
+    {
+        _playButton.RegisterCallback<ClickEvent>(OnPlayClicked);
+        _mainMenuButton.RegisterCallback<ClickEvent>(OnMainMenuClicked);
+        _quitButton.RegisterCallback<ClickEvent>(OnQuitClicked);
+    }
 
+    protected override void OnStartState()
+    {
         GameManager.Instance.SwitchToPauseState();
     }
-
-    public override void ExitState()
-    {
-        _screen.style.display = DisplayStyle.None; // Hide HUD
-    }
     #endregion
 
-    #region PUBLIC METHODS
-
-    #endregion
-
-    #region PRIVATE METHODS
-    void SwitchToHUDState(ClickEvent evt)
+    #region CALLBACK METHODS
+    void OnPlayClicked(ClickEvent evt)
     {
         UIManager.Instance.BehaviourSystem.SwitchToPreviousStateInStack(); // Switch to previous state: player or spectator HUD
         GameManager.Instance.SwitchToGamePlayState();
     }
 
-    void SwitchToMainMenuState(ClickEvent evt)
+    void OnMainMenuClicked(ClickEvent evt)
     {
         GameManager.Instance.SwitchToMainMenuState();
     }
 
-    void QuitGame(ClickEvent evt)
+    void OnQuitClicked(ClickEvent evt)
     {
         Application.Quit();
 #if UNITY_EDITOR

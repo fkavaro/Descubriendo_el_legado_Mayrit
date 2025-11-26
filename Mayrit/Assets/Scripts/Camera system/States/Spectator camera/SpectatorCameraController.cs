@@ -8,21 +8,21 @@ using Unity.Cinemachine;
 /// </summary>
 public class SpectatorCameraController
 {
-    #region PUBLIC PROPERTIES
-    public readonly CinemachineCamera _camera;
-    public Transform _cameraTarget;
-    public readonly CinemachineOrbitalFollow _orbitalFollow;
-    public readonly AnimationCurve _moveSpeedZoomCurve;
+    #region  PROPERTIES
+    readonly CinemachineCamera _camera;
+    Transform _cameraTarget;
+    readonly CinemachineOrbitalFollow _orbitalFollow;
+    readonly AnimationCurve _moveSpeedZoomCurve;
 
     // Edge scrolling
-    public bool _edgeScrolling;
-    public int _edgeScrollingMargin;
+    bool _edgeScrolling;
+    int _edgeScrollingMargin;
 
     // Movement
-    public float _moveSpeed,
-        _acceleration,
-        _deceleration,
-        _printSpeedMultiplier = 2f;
+    float _moveSpeed,
+       _acceleration,
+       _deceleration,
+       _printSpeedMultiplier = 2f;
     Vector3 _movementLimitsX
         , _movementLimitsZ;
 
@@ -42,9 +42,7 @@ public class SpectatorCameraController
             return Mathf.InverseLerp(axis.Range.x, axis.Range.y, axis.Value);
         }
     }
-    #endregion
 
-    #region PRIVATE PROPERTIES
     Vector2 _edgeScrollInput;
     float _decelerationMultiplier = 1f,
         _currentZoomSpeed = 0f;
@@ -55,7 +53,7 @@ public class SpectatorCameraController
     bool _sprintPressed, _middleClickPressed;
     #endregion
 
-
+    #region CONSTRUCTOR
     public SpectatorCameraController(CinemachineCamera camera,
         AnimationCurve moveSpeedZoomCurve)
     {
@@ -64,14 +62,9 @@ public class SpectatorCameraController
         _orbitalFollow = camera.GetComponent<CinemachineOrbitalFollow>();
         _moveSpeedZoomCurve = moveSpeedZoomCurve;
     }
+    #endregion
 
-
-    #region MONOBEHAVIOUR
-    public void Start()
-    {
-
-    }
-
+    #region LIFE CYCLE
     public void Update()
     {
         _edgeScrolling = CameraManager.Instance._edgeScrolling;
@@ -96,7 +89,7 @@ public class SpectatorCameraController
         _middleClickPressed = GameManager.Instance.InputActions.Camera.Rotate.IsPressed();
 
         // Cursor NOT over UI element
-        if (!UIManager.Instance.IsCursorOverSpectatorHUD())
+        if (!UIManager.Instance.IsCursorOverUI())
             _scrollInput = GameManager.Instance.InputActions.Camera.Zoom.ReadValue<Vector2>();
 
         if (_edgeScrolling)
@@ -109,7 +102,7 @@ public class SpectatorCameraController
     }
     #endregion
 
-    #region METHODS
+    #region PRIVATE METHODS
     void UpdateEdgeScrolling()
     {
         Vector2 mousePosition = Mouse.current.position.ReadValue();
@@ -130,7 +123,7 @@ public class SpectatorCameraController
     /// <summary>
     /// Moves the camera in its local XZ plane, but keeps its Y (height) unchanged.
     /// </summary>
-    private void UpdateMovement()
+    void UpdateMovement()
     {
         Vector3 forward = _camera.transform.forward;
         forward.y = 0f;
@@ -177,7 +170,7 @@ public class SpectatorCameraController
     /// <summary>
     /// Handles camera rotation with the right mouse button, orbiting around the point under the mouse.
     /// </summary>
-    private void UpdateOrbit()
+    void UpdateOrbit()
     {
         Vector2 orbitInput = _lookInput * (_middleClickPressed ? 1f : 0f);
 
@@ -198,10 +191,8 @@ public class SpectatorCameraController
     /// <summary>
     /// Handles zooming in/out with the mouse scroll wheel (moves toward/away from point under mouse).
     /// </summary>
-    private void UpdateZoom()
+    void UpdateZoom()
     {
-
-
         InputAxis zoomValue = _orbitalFollow.RadialAxis;
 
         float targetZoomSpeed = 0f;

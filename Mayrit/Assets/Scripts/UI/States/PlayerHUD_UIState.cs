@@ -1,25 +1,23 @@
 using UnityEngine;
 using UnityEngine.UIElements;
-using UnityEngine.InputSystem;
 
-public class PlayerHUD_UIState : AUIState
+public class PlayerHUD_UIState : AHUDState
 {
-    #region PUBLIC PROPERTIES
-    #endregion
-
-    #region PRIVATE PROPERTIES
+    #region  PROPERTIES
     Button _pauseButton;
     VisualElement _activityArea;
+    Label _activityName,
+        _activityDescription;
     #endregion
 
-    #region INHERITED
+    #region CONSTRUCTOR
     public PlayerHUD_UIState(UIDocument uiDocument)
     : base("PlayerHUD", uiDocument) { }
+    #endregion
 
-    public override void StartState()
+    #region UI STATE INHERITED METHODS
+    protected override void ConfigureUIElements()
     {
-        _screen = _UIDocument.rootVisualElement.Q<VisualElement>("PlayerHUD");
-
         _pauseButton = _screen.Q<Button>("PauseButton");
         _activityArea = _screen.Q<VisualElement>("ActivityArea");
 
@@ -27,29 +25,28 @@ public class PlayerHUD_UIState : AUIState
             Debug.LogWarning("_pauseButton not found");
         if (_activityArea == null)
             Debug.LogWarning("_activityArea not found");
-
-        _pauseButton.RegisterCallback<ClickEvent>(SwitchToPauseState);
-
-        _screen.style.display = DisplayStyle.Flex; // Show HUD
     }
 
-    public override void UpdateState()
+    protected override void RegisterCallbacks()
     {
-
+        _pauseButton.RegisterCallback<ClickEvent>(OnPauseClicked);
     }
-
-    public override void ExitState()
-    {
-        _screen.style.display = DisplayStyle.None; // Hide HUD
-    }
-
     #endregion
 
-    #region PUBLIC METHODS
+    #region HUD STATE INHERITED METHODS
+    protected override void OnContextualPanelShown()
+    {
+        _activityArea.style.display = DisplayStyle.None;
+    }
+
+    protected override void OnContextualPanelHidden()
+    {
+        _activityArea.style.display = DisplayStyle.Flex;
+    }
     #endregion
 
-    #region PRIVATE METHODS
-    void SwitchToPauseState(ClickEvent evt)
+    #region CALLBACK METHODS
+    void OnPauseClicked(ClickEvent evt)
     {
         UIManager.Instance.SwitchToPauseState();
     }

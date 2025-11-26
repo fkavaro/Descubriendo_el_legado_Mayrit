@@ -4,9 +4,9 @@ using UnityEngine.UIElements;
 
 public class ContextualPanel
 {
-    public event Action OnClosePanel;
+    #region PROPERTIES
+    public event Action OnHiddenEvent;
 
-    #region PRIVATE PROPERTIES
     readonly Label _header,
         _subHeader,
         _description,
@@ -20,7 +20,7 @@ public class ContextualPanel
         _image;
     #endregion
 
-    // Constructor
+    #region CONSTRUCTOR
     public ContextualPanel(VisualElement contextualPanelRoot)
     {
         _root = contextualPanelRoot;
@@ -51,9 +51,10 @@ public class ContextualPanel
         if (_playCharacterButton == null)
             Debug.LogWarning("_playCharacterButton button not found");
 
-        _closeButton.RegisterCallback<ClickEvent>(CloseContextualPanel);
-        _playCharacterButton.RegisterCallback<ClickEvent>(PlayCharacter);
+        _closeButton.RegisterCallback<ClickEvent>(OnCloseButton);
+        _playCharacterButton.RegisterCallback<ClickEvent>(OnPlayCharacter);
     }
+    #endregion
 
     #region PUBLIC METHODS
     public void ShowInfo(AInformationSO objectInfo)
@@ -85,28 +86,26 @@ public class ContextualPanel
         if (objectInfo is Character_InformationSO)
             _playCharacterButton.style.display = DisplayStyle.Flex;
 
-        // Show panel
-        _root.style.display = DisplayStyle.Flex;
+        _root.style.display = DisplayStyle.Flex; // Show
     }
 
-    public void Hide()
+    void Hide()
     {
-        // Hide panel
-        _root.style.display = DisplayStyle.None;
+        _root.style.display = DisplayStyle.None; // Hide
 
         Reset();
 
-        OnClosePanel?.Invoke();
+        OnHiddenEvent?.Invoke();
     }
     #endregion
 
     #region PRIVATE METHODS
-    void CloseContextualPanel(ClickEvent evt)
+    void OnCloseButton(ClickEvent evt)
     {
         Hide();
     }
 
-    void PlayCharacter(ClickEvent evt)
+    void OnPlayCharacter(ClickEvent evt)
     {
         CameraManager.Instance.SwitchToThirdPersonCamera();
     }
