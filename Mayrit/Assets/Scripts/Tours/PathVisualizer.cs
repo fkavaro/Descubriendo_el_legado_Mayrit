@@ -20,7 +20,6 @@ public class PathVisualizer
     // Runtime state
     Transform _player;
     Transform _nextPOI;
-    Tour _currentTour;
     #endregion
 
     #region CONSTRUCTOR
@@ -48,11 +47,33 @@ public class PathVisualizer
     public void Initialize()
     {
         ProgressManager.Instance.OnMilestoneChangedEvent += OnMilestoneChanged;
+        TourManager.Instance.OnTourNextPOIChangeEvent += OnNextPOIChange;
 
         if (_lineRenderer == null)
             return;
 
         _lineRenderer.useWorldSpace = true;
+        _lineRenderer.positionCount = 0;
+        _lineRenderer.enabled = false;
+    }
+
+    /// <summary>
+    /// Unsubscribe and detach from current tour.
+    /// </summary>
+    public void Deinitialize()
+    {
+        ProgressManager.ExistingInstance.OnMilestoneChangedEvent -= OnMilestoneChanged;
+        TourManager.Instance.OnTourNextPOIChangeEvent -= OnNextPOIChange;
+    }
+
+    /// <summary>
+    /// Clear the LineRenderer and hide it.
+    /// </summary>
+    public void Clear()
+    {
+        if (_lineRenderer == null)
+            return;
+
         _lineRenderer.positionCount = 0;
         _lineRenderer.enabled = false;
     }
@@ -78,27 +99,6 @@ public class PathVisualizer
 
         // Draw path from player to next POI
         DrawPath(_player.position, _nextPOI.position);
-    }
-
-    /// <summary>
-    /// Unsubscribe and detach from current tour.
-    /// </summary>
-    public void Deinitialize()
-    {
-        ProgressManager.ExistingInstance.OnMilestoneChangedEvent -= OnMilestoneChanged;
-        DetachFromTour(_currentTour);
-    }
-
-    /// <summary>
-    /// Clear the LineRenderer and hide it.
-    /// </summary>
-    public void Clear()
-    {
-        if (_lineRenderer == null)
-            return;
-
-        _lineRenderer.positionCount = 0;
-        _lineRenderer.enabled = false;
     }
     #endregion
 
@@ -224,34 +224,10 @@ public class PathVisualizer
     }
     #endregion
 
-    #region TOUR ATTACHMENT
-    void AttachToTour(Tour tour)
-    {
-        if (_currentTour == tour)
-            return;
-
-        DetachFromTour(_currentTour);
-
-        _currentTour = tour;
-        _currentTour.OnNextPOIChangeEvent += OnNextPOIChange;
-    }
-
-    void DetachFromTour(Tour tour)
-    {
-        if (tour == null)
-            return;
-
-        tour.OnNextPOIChangeEvent -= OnNextPOIChange;
-        _nextPOI = null;
-        _currentTour = null;
-    }
-    #endregion
-
     #region EVENT METHODS
     void OnMilestoneChanged(MilestoneMapping milestoneMapping)
     {
         _player = milestoneMapping.PlayableCharacter.transform;
-        AttachToTour(milestoneMapping.Tour);
     }
 
     void OnNextPOIChange(PointOfInterest poi)
