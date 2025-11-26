@@ -15,28 +15,12 @@ public class PathVisualizer
     readonly float _sampleDistance;      // Max distance to snap start/end to NavMesh
     readonly float _projSampleDistance;  // Max distance to project samples to NavMesh
     readonly float _renderYOffset;       // Vertical offset to lift the rendered line above navmesh
-    readonly float _simplifyTolerance;   // RDP tolerance in metres; <=0 disables simplification
     readonly int _maxPoints;             // Maximum number of points allowed on the LineRenderer
-    readonly bool _useSimplification;    // Whether to run the polyline simplification step
 
     // Runtime state
     Transform _player;
     Transform _nextPOI;
     Tour _currentTour;
-
-    // Debug arrays (populated after sampling) used by editor gizmos
-    List<Vector3> _lastSampledPoints;
-    List<Vector3> _lastSimplifiedPoints;
-
-    // Reusable buffer for RDP 'keep' markers to avoid per-call allocations.
-    bool[] _rdpKeepBuffer;
-    // Reusable stack for iterative RDP to avoid per-call allocations.
-    Stack<int> _rdpStack;
-    // Reusable result buffer for RDP output to avoid allocating a new list.
-    List<Vector3> _rdpResultBuffer;
-
-    public IReadOnlyList<Vector3> SampledPoints => _lastSampledPoints;
-    public IReadOnlyList<Vector3> SimplifiedPoints => _lastSimplifiedPoints;
     #endregion
 
     #region CONSTRUCTOR
@@ -46,9 +30,7 @@ public class PathVisualizer
         float sampleDistance,
         float projSampleDistance,
         float renderYOffset,
-        int maxPoints,
-        float simplifyTolerance,
-        bool useSimplification)
+        int maxPoints)
     {
         _lineRenderer = lineRenderer;
         _sampleSpacing = Mathf.Max(0.01f, sampleSpacing);
@@ -56,8 +38,6 @@ public class PathVisualizer
         _projSampleDistance = Mathf.Max(0.01f, projSampleDistance);
         _renderYOffset = renderYOffset;
         _maxPoints = Mathf.Max(16, maxPoints);
-        _simplifyTolerance = simplifyTolerance;
-        _useSimplification = useSimplification;
     }
     #endregion
 
@@ -96,6 +76,7 @@ public class PathVisualizer
             return;
         }
 
+        // Draw path from player to next POI
         DrawPath(_player.position, _nextPOI.position);
     }
 
@@ -122,16 +103,15 @@ public class PathVisualizer
     #endregion
 
     #region PATH SAMPLING
+    // Draw a path between start and end points using NavMesh.
     void DrawPath(Vector3 start, Vector3 end)
     {
         if (_lineRenderer == null)
             return;
 
-        // Snap start/end to the NavMesh so paths adhere to the active surface
-        bool hasStart = NavMesh.SamplePosition(start, out NavMeshHit startHit, _sampleDistance, NavMesh.AllAreas);
-        bool hasEnd = NavMesh.SamplePosition(end, out NavMeshHit endHit, _sampleDistance, NavMesh.AllAreas);
-
-        if (!hasStart || !hasEnd)
+        // Try to snap start and end to NavMesh
+        // No path if either cannot be snapped
+        if (!TryGetSnappedEndpoints(start, end, out Vector3 startPos, out Vector3 endPos))
         {
             Debug.LogWarning("PathVisualizer: Start or end not on NavMesh (or too far). Clearing path.");
             Clear();
@@ -139,23 +119,54 @@ public class PathVisualizer
         }
 
         NavMeshPath navPath = new();
-        bool pathFound = NavMesh.CalculatePath(startHit.position, endHit.position, NavMesh.AllAreas, navPath);
+        bool pathFound = NavMesh.CalculatePath(startPos, endPos, NavMesh.AllAreas, navPath);
 
-        // Clear if no path found or no corners
+        // No path found
         if (!pathFound || navPath.corners == null || navPath.corners.Length == 0)
         {
             Clear();
             return;
         }
 
-        Vector3[] baseCorners = navPath.corners;
+        // Build sample points along the path
+        List<Vector3> points = BuildSamplePoints(navPath.corners);
 
-        // Build a dense list of sample points along each straight corner-to-corner segment.
-        List<Vector3> points = new(baseCorners.Length * 2);
+        if (points == null || points.Count == 0)
+        {
+            Clear();
+            return;
+        }
 
-        // Reset debug arrays; they will be populated after sampling / simplification.
-        _lastSampledPoints = null;
-        _lastSimplifiedPoints = null;
+        // Downsample if exceeding max points
+        if (points.Count > _maxPoints)
+            points = Downsample(points, _maxPoints);
+
+        ApplyToLineRenderer(points);
+    }
+    #endregion
+
+    #region SAMPLING HELPERS
+    // Try to snap the start and end points to the NavMesh within configured distance.
+    bool TryGetSnappedEndpoints(Vector3 start, Vector3 end, out Vector3 startPos, out Vector3 endPos)
+    {
+        startPos = start;
+        endPos = end;
+
+        bool hasStart = NavMesh.SamplePosition(start, out NavMeshHit startHit, _sampleDistance, NavMesh.AllAreas);
+        bool hasEnd = NavMesh.SamplePosition(end, out NavMeshHit endHit, _sampleDistance, NavMesh.AllAreas);
+
+        if (!hasStart || !hasEnd)
+            return false;
+
+        startPos = startHit.position;
+        endPos = endHit.position;
+        return true;
+    }
+
+    // Build dense sample points along the path corners, projecting samples to NavMesh and applying Y offset.
+    List<Vector3> BuildSamplePoints(Vector3[] baseCorners)
+    {
+        var points = new List<Vector3>(baseCorners.Length * 2);
 
         for (int i = 0; i < baseCorners.Length - 1; i++)
         {
@@ -188,150 +199,28 @@ public class PathVisualizer
         if (points.Count == 0 || (points[^1] - last).sqrMagnitude > 0.0001f)
             points.Add(last);
 
-        if (points.Count == 0)
-        {
-            Clear();
-            return;
-        }
+        return points;
+    }
 
-        // Optional simplification (Ramer–Douglas–Peucker)
-        if (_useSimplification && _simplifyTolerance > 0f && points.Count > 2)
-        {
-            _lastSampledPoints = new List<Vector3>(points);
-            List<Vector3> simplified = RamerDouglasPeucker(points, _simplifyTolerance);
-            points = simplified;
-            _lastSimplifiedPoints = new List<Vector3>(points);
-        }
-        else
-        {
-            _lastSampledPoints = new List<Vector3>(points);
-            _lastSimplifiedPoints = new List<Vector3>(points);
-        }
+    // Uniformly downsample if there are more points than allowed by _maxPoints.
+    List<Vector3> Downsample(List<Vector3> points, int maxPoints)
+    {
+        List<Vector3> sampled = new(maxPoints + 1);
+        int step = Mathf.CeilToInt((float)points.Count / maxPoints);
+        for (int i = 0; i < points.Count; i += step)
+            sampled.Add(points[i]);
 
-        // Safety cap: uniformly downsample if still too many points
-        if (points.Count > _maxPoints)
-        {
-            List<Vector3> sampled = new(_maxPoints + 1);
-            int step = Mathf.CeilToInt((float)points.Count / _maxPoints);
-            for (int i = 0; i < points.Count; i += step)
-                sampled.Add(points[i]);
+        if (sampled[^1] != points[^1])
+            sampled.Add(points[^1]);
 
-            if (sampled[^1] != points[^1])
-                sampled.Add(points[^1]);
+        return sampled;
+    }
 
-            points = sampled;
-        }
-
+    void ApplyToLineRenderer(List<Vector3> points)
+    {
         _lineRenderer.positionCount = points.Count;
         _lineRenderer.SetPositions(points.ToArray());
         _lineRenderer.enabled = true;
-    }
-    #endregion
-
-    #region RDP SIMPLIFICATION
-    /// <summary>
-    /// Iterative Ramer–Douglas–Peucker polyline simplification. Preserves endpoints.
-    /// Implementation uses an explicit stack and index ranges to avoid
-    /// repeated list copying and deep recursion. Distance checks use
-    /// squared distances to avoid unnecessary sqrt operations.
-    /// </summary>
-    List<Vector3> RamerDouglasPeucker(List<Vector3> points, float epsilon)
-    {
-        if (points == null || points.Count < 3)
-            return new List<Vector3>(points ?? new List<Vector3>());
-
-        int n = points.Count;
-
-        // Boolean marker for points to keep. Endpoints always kept.
-        // Reuse a per-instance buffer when possible to avoid allocations.
-        if (_rdpKeepBuffer == null || _rdpKeepBuffer.Length < n)
-            _rdpKeepBuffer = new bool[n];
-        else
-            Array.Clear(_rdpKeepBuffer, 0, n);
-
-        bool[] keep = _rdpKeepBuffer;
-        keep[0] = true;
-        keep[n - 1] = true;
-
-        // Ensure a reusable Stack<int> exists and clear it for reuse. Using a
-        // reused Stack preserves readability while avoiding per-call allocs.
-        if (_rdpStack == null)
-            _rdpStack = new Stack<int>(n * 2);
-        else
-            _rdpStack.Clear();
-
-        _rdpStack.Push(0);
-        _rdpStack.Push(n - 1);
-
-        float epsSq = epsilon * epsilon;
-
-        while (_rdpStack.Count > 0)
-        {
-            int end = _rdpStack.Pop();
-            int start = _rdpStack.Pop();
-
-            // Find the point with maximum perpendicular squared distance
-            // to the segment [start, end].
-            float maxDistSq = 0f;
-            int pivot = -1;
-
-            Vector3 A = points[start];
-            Vector3 B = points[end];
-            Vector3 seg = B - A;
-            float segLenSq = seg.sqrMagnitude;
-
-            for (int i = start + 1; i < end; i++)
-            {
-                float distSq;
-
-                if (segLenSq <= Mathf.Epsilon)
-                {
-                    // Degenerate segment: distance to the start point.
-                    distSq = (points[i] - A).sqrMagnitude;
-                }
-                else
-                {
-                    // Perpendicular squared distance using cross-product magnitude.
-                    Vector3 v = points[i] - A;
-                    Vector3 cross = Vector3.Cross(seg, v);
-                    distSq = cross.sqrMagnitude / segLenSq;
-                }
-
-                if (distSq > maxDistSq)
-                {
-                    maxDistSq = distSq;
-                    pivot = i;
-                }
-            }
-
-            // If the maximum squared distance exceeds threshold, mark pivot
-            // and split the segment for further processing.
-            if (pivot != -1 && maxDistSq > epsSq)
-            {
-                keep[pivot] = true;
-                // Push the two subsegments: [start,pivot] and [pivot,end]
-                _rdpStack.Push(start);
-                _rdpStack.Push(pivot);
-                _rdpStack.Push(pivot);
-                _rdpStack.Push(end);
-            }
-        }
-
-        // Build result from kept points (preserves original order).
-        if (_rdpResultBuffer == null)
-            _rdpResultBuffer = new List<Vector3>(n);
-        else
-        {
-            _rdpResultBuffer.Clear();
-            if (_rdpResultBuffer.Capacity < n)
-                _rdpResultBuffer.Capacity = n;
-        }
-
-        for (int i = 0; i < n; i++)
-            if (keep[i])
-                _rdpResultBuffer.Add(points[i]);
-
-        return _rdpResultBuffer;
     }
     #endregion
 

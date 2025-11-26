@@ -23,16 +23,6 @@ public class TourManager : Singleton<TourManager>
     [SerializeField] float _renderYOffset = 0.03f;
     [Tooltip("Safety cap for points to render")]
     [SerializeField] int _maxPoints = 2000;
-    [Tooltip("RDP tolerance in meters; <=0 disables simplification")]
-    [SerializeField] float _simplifyTolerance = 0.05f;
-    [Tooltip("Whether to use simplification")]
-    [SerializeField] bool _useSimplification = true;
-
-    [Header("Debug Gizmos")]
-    [SerializeField] bool _drawPathGizmos = true;
-    [SerializeField] float _gizmoSphereSize = 0.08f;
-    [SerializeField] Color _rawGizmoColor = Color.magenta;
-    [SerializeField] Color _simplifiedGizmoColor = Color.yellow;
     #endregion
 
     #region INTERNAL PROPERTIES
@@ -48,7 +38,7 @@ public class TourManager : Singleton<TourManager>
     {
         _pathVisualizer = new PathVisualizer(GetComponent<LineRenderer>(),
             _sampleSpacing, _sampleDistance, _projSampleDistance,
-            _renderYOffset, _maxPoints, _simplifyTolerance, _useSimplification);
+            _renderYOffset, _maxPoints);
         _pathVisualizer.Initialize();
 
         // Subscribe to ProgressManager milestone changes to track active tour
@@ -125,39 +115,5 @@ public class TourManager : Singleton<TourManager>
         OnTourCompletedEvent?.Invoke(tour);
     }
     #endregion
-
-
-
-    // Draw debug gizmos in the editor during Play mode
-    void OnDrawGizmos()
-    {
-        if (!Application.isPlaying || !_drawPathGizmos) return;
-        if (_pathVisualizer == null) return;
-
-        var raw = _pathVisualizer.SampledPoints;
-        var simp = _pathVisualizer.SimplifiedPoints;
-
-        if (raw != null && raw.Count > 0)
-        {
-            Gizmos.color = _rawGizmoColor;
-            for (int i = 0; i < raw.Count; i++)
-            {
-                Gizmos.DrawSphere(raw[i], _gizmoSphereSize);
-                if (i > 0)
-                    Gizmos.DrawLine(raw[i - 1], raw[i]);
-            }
-        }
-
-        if (simp != null && simp.Count > 0)
-        {
-            Gizmos.color = _simplifiedGizmoColor;
-            for (int i = 0; i < simp.Count; i++)
-            {
-                Gizmos.DrawCube(simp[i], Vector3.one * _gizmoSphereSize);
-                if (i > 0)
-                    Gizmos.DrawLine(simp[i - 1], simp[i]);
-            }
-        }
-    }
 }
 
