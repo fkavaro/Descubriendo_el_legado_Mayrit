@@ -72,7 +72,7 @@ public class PlayerVisual : Billboard
     }
     #endregion
 
-    #region EVENT METHODS
+    #region CALLBACK METHODS
     void OnMilestoneChanged(MilestoneMapping milestoneMapping)
     {
         // Update current playable character
@@ -87,12 +87,7 @@ public class PlayerVisual : Billboard
 
     void OnPlayerButtonClick(ClickEvent evt)
     {
-        // Spectator camera
-        if (CameraManager.Instance.IsInSpectatorState)
-            CameraManager.Instance.SwitchToOrbitalCamera(_playableCharacter.GetComponent<SelectableObject>());
-        // Third person camera
-        else if (CameraManager.Instance.IsInThirdPersonState)
-            CameraManager.Instance.SwitchToSpectatorCamera();
+        CameraManager.Instance.SwitchToOrbitalCamera(_playableCharacter.GetComponent<SelectableObject>());
     }
     #endregion
 }

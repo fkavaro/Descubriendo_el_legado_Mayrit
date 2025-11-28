@@ -5,30 +5,34 @@ using UnityEngine.InputSystem;
 
 public class ThirdPerson_CameraState : ACameraState
 {
-    ThirdPersonCameraController _cameraController;
+    public event Action ExitThirdPersonCameraEvent;
+
+    readonly ThirdPersonCameraController _cameraController;
 
     public ThirdPerson_CameraState(CinemachineCamera camera, float simulationSpeed)
-    : base("Third person camera", camera, simulationSpeed) { }
+    : base("Third person camera", camera, simulationSpeed)
+    {
+        _cameraController = new(_camera);
+    }
 
     public override void StartState()
     {
         GameManager.Instance.InputActions.Player.Enable();
         GameManager.Instance.InputActions.Camera.ExitMode.Enable();
-        GameManager.Instance.InputActions.Camera.ExitMode.performed += SwitchToSpectatorCamera;
+        GameManager.Instance.InputActions.Camera.ExitMode.performed += OnExitThirdPersonModePressed;
 
         _camera.gameObject.SetActive(true);
 
-        // Change HUD
-        UIManager.Instance.SwitchToPlayerHUDState();
-
         // Adjust simulation speed
         TimeManager.Instance.SetSimulationSpeed(_simulationSpeed);
-
-        _cameraController = new(_camera);
     }
 
     public override void LateUpdateState()
     {
+        // Don't update camera if player is not being controlled
+        if (!GameManager.Instance.PlayableCharacter.IsBeingControlled)
+            return;
+
         _cameraController.Update();
     }
 
@@ -36,12 +40,12 @@ public class ThirdPerson_CameraState : ACameraState
     {
         GameManager.Instance.InputActions.Player.Disable();
         GameManager.Instance.InputActions.Camera.ExitMode.Disable();
-        GameManager.Instance.InputActions.Camera.ExitMode.performed -= SwitchToSpectatorCamera;
+        GameManager.Instance.InputActions.Camera.ExitMode.performed -= OnExitThirdPersonModePressed;
         _camera.gameObject.SetActive(false);
     }
 
-    void SwitchToSpectatorCamera(InputAction.CallbackContext context)
+    void OnExitThirdPersonModePressed(InputAction.CallbackContext context)
     {
-        CameraManager.Instance.SwitchToSpectatorCamera();
+        ExitThirdPersonCameraEvent?.Invoke();
     }
 }

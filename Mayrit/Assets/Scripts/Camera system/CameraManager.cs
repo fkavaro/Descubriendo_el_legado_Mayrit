@@ -61,6 +61,7 @@ public class CameraManager : ASingletonBehaviourEntity<CameraManager, FiniteStat
 
     #region INTERNAL PROPERTIES
     public event Action OnCameraStateChangedEvent;
+    public event Action ThirdPersonCameraExitedEvent;
 
     FiniteStateMachine<ACameraState> _fsm;
     Spectator_CameraState _spectatorState;
@@ -79,6 +80,9 @@ public class CameraManager : ASingletonBehaviourEntity<CameraManager, FiniteStat
         _thirdPersonState = new(_thirdPersonCamera, _thirdPersonSimSpeed);
 
         _fsm.SetInitialState(_spectatorState);
+
+        // Subscribe to event
+        UIManager.Instance.OnContextualPanelHiddenEvent += OnContextualPanelHidden;
 
         return _fsm;
     }
@@ -101,6 +105,10 @@ public class CameraManager : ASingletonBehaviourEntity<CameraManager, FiniteStat
                 _movementLimitsY.x,
                 _spectatorCamera.LookAt.position.z);
         }
+
+        // Subscribe to events
+        _thirdPersonState.ExitThirdPersonCameraEvent += OnExitThirdPersonCamera;
+        UIManager.Instance.PlayCharacterClickedEvent += SwitchToThirdPersonCamera;
     }
     #endregion
 
@@ -149,8 +157,6 @@ public class CameraManager : ASingletonBehaviourEntity<CameraManager, FiniteStat
 
     public void SwitchToOrbitalCamera(SelectableObject selectedElement)
     {
-        UIManager.Instance.HideContextualPanel();
-
         _orbitalState.SelectedObject = selectedElement;
 
         // Same orbit values as spectator camera
@@ -216,6 +222,20 @@ public class CameraManager : ASingletonBehaviourEntity<CameraManager, FiniteStat
 
         transform.position = newPosition;
         onComplete?.Invoke();
+    }
+    #endregion
+
+    #region CALLBACK METHODS
+    void OnExitThirdPersonCamera()
+    {
+        SwitchToSpectatorCamera();
+        ThirdPersonCameraExitedEvent?.Invoke();
+    }
+
+    void OnContextualPanelHidden()
+    {
+        if (IsInOrbitalState)
+            SwitchToSpectatorCamera();
     }
     #endregion
 }

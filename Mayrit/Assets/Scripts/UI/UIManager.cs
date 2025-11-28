@@ -29,8 +29,10 @@ public class UIManager : ASingletonBehaviourEntity<UIManager, StackFiniteStateMa
     #region INTERNAL PROPERTIES
     public event Action<DataSO, bool> ShowContextualPanelEvent;
     public event Action HideContextualPanelEvent;
+    public event Action OnContextualPanelHiddenEvent;
     public event Action<DataSO> ShowTooltipEvent;
     public event Action HideTooltipEvent;
+    public event Action PlayCharacterClickedEvent;
     public event Action ModernSuperpositionToggledEvent;
 
     StackFiniteStateMachine<AUIState> _sfsm;
@@ -63,8 +65,10 @@ public class UIManager : ASingletonBehaviourEntity<UIManager, StackFiniteStateMa
             _sfsm.SetInitialState(_mainMenuState);
 
         // Subscribe to events
+        _spectatorHUDState.ContextualPanelHiddenEvent += OnContextualPanelHidden;
+        _spectatorHUDState.OnPlayCharacterEvent += OnPlayCharacterClicked;
         _spectatorHUDState.OnModernSuperpositionEvent += OnModernSuperpositionToggled;
-        TourManager.Instance.OnTourPOIVisitedEvent += OnTourPOIVisited;
+        TourManager.Instance.TourPOIVisitedEvent += OnTourPOIVisited;
 
         return _sfsm;
     }
@@ -124,7 +128,13 @@ public class UIManager : ASingletonBehaviourEntity<UIManager, StackFiniteStateMa
     }
     #endregion
 
-    #region EVENT METHODS
+    #region CALLBACK METHODS
+    void OnPlayCharacterClicked()
+    {
+        _sfsm?.SwitchState(_playerHUDState);
+        PlayCharacterClickedEvent?.Invoke();
+    }
+
     void OnModernSuperpositionToggled()
     {
         ModernSuperpositionToggledEvent?.Invoke();
@@ -133,6 +143,11 @@ public class UIManager : ASingletonBehaviourEntity<UIManager, StackFiniteStateMa
     void OnTourPOIVisited(PointOfInterest poi)
     {
         ShowContextualPanel(poi.Data);
+    }
+
+    void OnContextualPanelHidden()
+    {
+        OnContextualPanelHiddenEvent?.Invoke();
     }
     #endregion
 }

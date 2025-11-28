@@ -26,7 +26,7 @@ public class TourManager : Singleton<TourManager>
     #endregion
 
     #region INTERNAL PROPERTIES
-    public event Action<PointOfInterest> OnTourPOIVisitedEvent;
+    public event Action<PointOfInterest> TourPOIVisitedEvent;
     public event Action<PointOfInterest> OnTourNextPOIChangeEvent;
     public event Action<Tour> OnTourCompletedEvent;
 
@@ -93,7 +93,7 @@ public class TourManager : Singleton<TourManager>
     }
     #endregion
 
-    #region EVENT METHODS
+    #region CALLBACK METHODS
     void OnMilestoneChanged(MilestoneMapping milestoneMapping)
     {
         AttachToTour(milestoneMapping?.Tour);
@@ -102,7 +102,7 @@ public class TourManager : Singleton<TourManager>
 
     void OnTourPOIVisited(PointOfInterest poi)
     {
-        OnTourPOIVisitedEvent?.Invoke(poi);
+        TourPOIVisitedEvent?.Invoke(poi);
     }
 
     void OnTourNextPOIChange(PointOfInterest poi)

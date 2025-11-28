@@ -108,7 +108,7 @@ public class Tour : MonoBehaviour
     }
     #endregion
 
-    #region EVENT METHODS
+    #region CALLBACK METHODS
     void OnPOIVisited(PointOfInterest poi)
     {
         OnVisitedPOIEvent?.Invoke(poi);

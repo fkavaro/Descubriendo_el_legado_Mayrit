@@ -5,6 +5,8 @@ using UnityEngine.UIElements;
 public abstract class AHUDState : AUIState
 {
     #region PROPERTIES
+    public event Action OnPlayCharacterEvent;
+    public event Action ContextualPanelHiddenEvent;
     protected ContextualPanel _contextualPanel;
     #endregion
 
@@ -20,6 +22,10 @@ public abstract class AHUDState : AUIState
 
         InitializeContextualPanel();
 
+        _contextualPanel.PlayCharacterClickedEvent += () => OnPlayCharacterEvent?.Invoke();
+        _contextualPanel.HiddenEvent += () => ContextualPanelHiddenEvent?.Invoke();
+        _contextualPanel.ShownEvent += OnContextualPanelShown;
+        _contextualPanel.HiddenEvent += OnContextualPanelHidden;
         UIManager.Instance.ShowContextualPanelEvent += ShowContextualPanel;
         UIManager.Instance.HideContextualPanelEvent += HideContextualPanel;
     }
@@ -28,6 +34,10 @@ public abstract class AHUDState : AUIState
     {
         base.ExitState();
 
+        _contextualPanel.PlayCharacterClickedEvent -= () => OnPlayCharacterEvent?.Invoke();
+        _contextualPanel.HiddenEvent -= () => ContextualPanelHiddenEvent?.Invoke();
+        _contextualPanel.ShownEvent -= OnContextualPanelShown;
+        _contextualPanel.HiddenEvent -= OnContextualPanelHidden;
         UIManager.Instance.ShowContextualPanelEvent -= ShowContextualPanel;
         UIManager.Instance.HideContextualPanelEvent -= HideContextualPanel;
     }
@@ -37,13 +47,11 @@ public abstract class AHUDState : AUIState
     protected void ShowContextualPanel(DataSO data, bool isCharacterData = false)
     {
         _contextualPanel.ShowInfo(data, isCharacterData);
-        OnContextualPanelShown();
     }
 
     protected void HideContextualPanel()
     {
         _contextualPanel.Hide();
-        OnContextualPanelHidden();
     }
     #endregion
 
