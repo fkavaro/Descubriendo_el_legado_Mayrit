@@ -112,9 +112,16 @@ public class CameraManager : ASingletonBehaviourEntity<CameraManager, FiniteStat
         UIManager.Instance.OnContextualPanelHiddenEvent += OnContextualPanelHidden;
         UIManager.Instance.PlayCharacterClickedEvent += SwitchToThirdPersonCamera;
         TourManager.Instance.TourPOIVisitedEvent += OnTourPOIVisited;
+        GameManager.Instance.GamePausedEvent += OnGamePaused;
     }
 
-
+    private void OnGamePaused(bool isGamePaused)
+    {
+        if (isGamePaused)
+            GameManager.Instance.InputActions.Camera.Disable();
+        else if (IsInSpectatorState || IsInThirdPersonState)
+            GameManager.Instance.InputActions.Camera.Enable();
+    }
     #endregion
 
     #region STATE HANDLING

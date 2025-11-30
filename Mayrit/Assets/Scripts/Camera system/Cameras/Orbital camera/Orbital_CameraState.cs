@@ -25,8 +25,6 @@ public class Orbital_CameraState : ACameraState
 
     public override void OnStateStarted()
     {
-        GameManager.Instance.InputActions.Camera.Enable();
-
         if (_selectedObject == null)
         {
             Debug.LogWarning("Orbital camera state started without a selected object to orbit around.");
@@ -52,10 +50,7 @@ public class Orbital_CameraState : ACameraState
         AutomaticOrbit();
     }
 
-    public override void OnStateExited()
-    {
-        GameManager.Instance.InputActions.Camera.Disable();
-    }
+    public override void OnStateExited() { }
 
     void ApplyContextualPanelOffset()
     {

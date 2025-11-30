@@ -21,6 +21,8 @@ public class GameManager : ASingletonBehaviourEntity<GameManager, FiniteStateMac
     #endregion
 
     #region INTERNAL PROPERTIES
+    public event Action<bool> GamePausedEvent;
+
     GameInputActions _inputActions;
     FiniteStateMachine<AGameState> _fsm;
     MainMenu_GameState _mainMenuState;
@@ -56,7 +58,9 @@ public class GameManager : ASingletonBehaviourEntity<GameManager, FiniteStateMac
 
         _inputActions = new();
 
-        // Subscribe to milestone change event
+
+        // Subscribe events
+        _pauseState.GamePausedEvent += OnGamePaused;
         ProgressManager.Instance.OnMilestoneChangedEvent += OnMilestoneChanged;
     }
 
@@ -84,6 +88,11 @@ public class GameManager : ASingletonBehaviourEntity<GameManager, FiniteStateMac
     #endregion
 
     #region EVENT METHODS
+    void OnGamePaused(bool isPaused)
+    {
+        GamePausedEvent?.Invoke(isPaused);
+    }
+
     void OnMilestoneChanged(MilestoneMapping milestoneMapping)
     {
         _playableCharacter = milestoneMapping.PlayableCharacter;

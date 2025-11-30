@@ -72,6 +72,11 @@ public class SpectatorHUD_UIState : AHUDState
         UIManager.Instance.HideTooltipEvent += OnHideTooltip;
         ProgressManager.Instance.OnMilestoneChangedEvent += OnMilestoneChanged;
     }
+
+    protected override void OnStartState()
+    {
+        _milestoneArea.style.display = DisplayStyle.Flex;
+    }
     #endregion
 
     #region HUD STATE INHERITED METHODS

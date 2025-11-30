@@ -48,6 +48,7 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
         UIManager.Instance.OnContextualPanelHiddenEvent += SwitchToControlledState;
         TourManager.Instance.TourPOIVisitedEvent += OnTourPOIVisited;
         CameraManager.Instance.ThirdPersonCameraExitedEvent += OnExitThirdPersonCamera;
+        GameManager.Instance.GamePausedEvent += OnGamePaused;
     }
 
     void OnDisable()
@@ -57,6 +58,7 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
         UIManager.ExistingInstance.OnContextualPanelHiddenEvent -= OnContextualPanelHidden;
         TourManager.ExistingInstance.TourPOIVisitedEvent -= OnTourPOIVisited;
         CameraManager.ExistingInstance.ThirdPersonCameraExitedEvent -= OnExitThirdPersonCamera;
+        GameManager.ExistingInstance.GamePausedEvent -= OnGamePaused;
     }
     #endregion
 
@@ -97,6 +99,15 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
     void OnExitThirdPersonCamera()
     {
         SwitchToNotControlledState();
+    }
+
+    void OnGamePaused(bool isGamePaused)
+    {
+        // Disable character controls when game is paused
+        if (isGamePaused)
+            GameManager.Instance.InputActions.Player.Disable();
+        else if (IsBeingControlled)
+            GameManager.Instance.InputActions.Player.Enable();
     }
     #endregion
 }

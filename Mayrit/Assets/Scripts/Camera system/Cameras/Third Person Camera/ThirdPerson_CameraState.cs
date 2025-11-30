@@ -17,8 +17,7 @@ public class ThirdPerson_CameraState : ACameraState
 
     public override void OnStateStarted()
     {
-        GameManager.Instance.InputActions.Player.Enable();
-        GameManager.Instance.InputActions.Camera.ExitMode.Enable();
+        GameManager.Instance.InputActions.Camera.Enable();
         GameManager.Instance.InputActions.Camera.ExitMode.performed += OnExitThirdPersonModePressed;
     }
 
@@ -33,8 +32,7 @@ public class ThirdPerson_CameraState : ACameraState
 
     public override void OnStateExited()
     {
-        GameManager.Instance.InputActions.Player.Disable();
-        GameManager.Instance.InputActions.Camera.ExitMode.Disable();
+        GameManager.Instance.InputActions.Camera.Disable();
         GameManager.Instance.InputActions.Camera.ExitMode.performed -= OnExitThirdPersonModePressed;
     }
 
