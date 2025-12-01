@@ -158,7 +158,7 @@ public class PlayableCharacterMovementController
     /// Moves the player towards the given destination position.
     /// </summary>
     /// <returns>True if the player has arrived at the destination, false otherwise.</returns>
-    public bool UpdateMovementTowards(Vector3 destinationPos)
+    public bool SetDestination(Vector3 destinationPos)
     {
         Vector3 playerPos = _player.transform.position;
 

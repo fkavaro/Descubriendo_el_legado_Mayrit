@@ -1,4 +1,5 @@
 using System;
+using System.Data.Common;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -7,6 +8,10 @@ public class NPCMovementController
     #region PROPERTIES
     readonly INPC _npc;
     readonly NavMeshAgent _agent;
+    readonly float _positionLeniency = 0f; // Allowable leniency when setting destination
+    readonly NavMeshQueryFilter _queryFilter;
+
+    Vector3 _destinationPos;
     Spot _destinationSpot;
 
     float ArrivedHorizontalDistance => _npc.ArrivedDistance.x;
@@ -32,6 +37,9 @@ public class NPCMovementController
         int offset = UnityEngine.Random.Range(-_npc.AvoidancePriorityVariance, _npc.AvoidancePriorityVariance + 1);
         _agent.avoidancePriority = Mathf.Clamp(_npc.BaseAvoidancePriority + offset, 0, 99);
 
+        _queryFilter = new() { areaMask = _agent.areaMask, agentTypeID = _agent.agentTypeID };
+        _positionLeniency = _agent.radius + _agent.stoppingDistance + _agent.height;
+
         // Deactivate agent initially
         _agent.enabled = false;
     }
@@ -42,7 +50,7 @@ public class NPCMovementController
     /// Checks and updates the NPC's NavMeshAgent movement state.
     /// Should be called regularly to ensure proper movement behavior.
     /// </summary>
-    public void CheckNPCExecution()
+    public void CheckBehaviourExecution()
     {
         if (!_agent.isOnNavMesh)
             return;
@@ -78,7 +86,7 @@ public class NPCMovementController
     #region DESTINATION METHODS
     public Vector3 GetDestinationPos()
     {
-        return _agent.destination;
+        return _destinationPos;
     }
 
     public Spot GetDestinationSpot()
@@ -88,7 +96,7 @@ public class NPCMovementController
 
     public bool IsDestination(Vector3 position)
     {
-        return _agent.destination == position;
+        return _destinationPos == position;
     }
 
     public bool IsDestination(Spot spot)
@@ -107,9 +115,37 @@ public class NPCMovementController
     #endregion
 
     #region SET DESTINATION METHODS
-    public void SetDestination(Vector3 destinationPos)
+    /// <summary>
+    /// Sets the target destination for the NPC's NavMeshAgent.
+    /// Manually calculates the path to the target position and assigns it to the agent.
+    /// If a position leniency is defined, it attempts to sample a valid NavMesh position near the target.
+    /// If the NPC is already at the destination, it does not change the animation state.
+    /// SetDestination() is not used because it causes jittering in the movement (in Unity 6)
+    /// </summary>
+    public void SetDestination(Vector3 targetPosition)
     {
-        if (_agent.destination == destinationPos) return;
+        if (targetPosition == _destinationPos) return;
+
+        NavMeshPath path = new();
+
+        if (_positionLeniency != 0f)
+        {
+            if (NavMesh.SamplePosition(targetPosition, out NavMeshHit hit, _positionLeniency, _queryFilter))
+                _destinationPos = hit.position; // Adjust destination to sampled position
+            else
+            {
+                Debug.LogWarning(_npc.Name + ": SetDestination() - Could not sample position near target destination within leniency.");
+                return;
+            }
+        }
+
+        bool canSetPath = NavMesh.CalculatePath(_agent.transform.position, targetPosition, _queryFilter, path);
+
+        if (!canSetPath)
+        {
+            Debug.LogWarning(_npc.Name + ": SetDestination() - Could not calculate path to target destination.");
+            return;
+        }
 
         if (_destinationSpot != null)
         {
@@ -118,8 +154,7 @@ public class NPCMovementController
         }
 
         _agent.updateRotation = true;
-        _agent.SetDestination(destinationPos);
-
+        _agent.SetPath(path);
         if (HasArrivedAtDestination()) return;
         else _npc.AnimationController.ChangeToWalk();
     }
@@ -142,7 +177,7 @@ public class NPCMovementController
 
     public bool IsCloseToDestination(float horizontalDistance = 2f, float verticalDistance = 3.5f)
     {
-        return IsCloseTo(_agent.destination, horizontalDistance, verticalDistance);
+        return IsCloseTo(_destinationPos, horizontalDistance, verticalDistance);
     }
 
     public bool IsCloseTo(Vector3 destination, float horizontalDistance = 2f, float verticalDistance = 3.5f)
@@ -173,7 +208,7 @@ public class NPCMovementController
     #region HAS ARRIVED METHODS
     public bool HasArrivedAtDestination(bool fixRotation = false, bool fixPosition = false)
     {
-        return HasArrivedAt(_agent.destination, fixRotation, fixPosition);
+        return HasArrivedAt(_destinationPos, fixRotation, fixPosition);
     }
 
     public bool HasArrivedAt(Spot spot, bool fixRotation = false, bool fixPosition = false)
@@ -231,7 +266,7 @@ public class NPCMovementController
     #endregion
 
     #region PLACEMENT METHODS
-    public void PlaceAt(Spot spot)
+    public void PlaceAtSpot(Spot spot)
     {
         if (spot == null)
         {
@@ -283,7 +318,7 @@ public class NPCMovementController
 
     public void PlaceAtDestination()
     {
-        PlaceAt(_agent.destination);
+        PlaceAt(_destinationPos);
     }
     #endregion
 

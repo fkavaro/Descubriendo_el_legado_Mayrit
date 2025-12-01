@@ -97,7 +97,7 @@ where BehaviourSystemType : ABehaviourSystem
     {
         base.Update();
 
-        _movementController.CheckNPCExecution();
+        _movementController.CheckBehaviourExecution();
     }
     #endregion
 

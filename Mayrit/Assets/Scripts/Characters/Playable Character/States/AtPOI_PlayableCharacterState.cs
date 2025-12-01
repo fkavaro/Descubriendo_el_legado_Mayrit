@@ -40,7 +40,7 @@ public class AtPOI_PlayableCharacterState : APlayableCharacterState
             _isRotated = _playableCharacter.MovementController.SmoothRotation(_currentPOI.Camera.transform.rotation);
         // Move towards POI
         else
-            _hasArrived = _playableCharacter.MovementController.UpdateMovementTowards(_currentPOI.transform.position);
+            _hasArrived = _playableCharacter.MovementController.SetDestination(_currentPOI.transform.position);
     }
     #endregion
 }
