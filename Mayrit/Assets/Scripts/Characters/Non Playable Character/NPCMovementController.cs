@@ -97,7 +97,8 @@ public class NPCMovementController
 
     public bool IsDestination(Vector3 position)
     {
-        return _destinationPos == position;
+        // Difference is minimal
+        return Vector3.Distance(_destinationPos, position) < 0.1f;
     }
 
     public bool IsDestination(Spot spot)
@@ -125,14 +126,14 @@ public class NPCMovementController
     /// </summary>
     public void SetDestination(Vector3 targetPosition)
     {
-        if (targetPosition == _destinationPos) return;
+        if (IsDestination(targetPosition)) return;
 
         NavMeshPath path = new();
 
         if (_positionLeniency != 0f)
         {
             if (NavMesh.SamplePosition(targetPosition, out NavMeshHit hit, _positionLeniency, _queryFilter))
-                _destinationPos = hit.position; // Adjust destination to sampled position
+                targetPosition = hit.position; // Adjust destination to sampled position
             else
             {
                 Debug.LogWarning(_npc.Name + ": SetDestination() - Could not sample position near target destination within leniency.");
@@ -154,8 +155,10 @@ public class NPCMovementController
             _destinationSpot = null; // Reset the target spot
         }
 
+        _destinationPos = targetPosition;
         _agent.updateRotation = true;
         _agent.SetPath(path);
+
         if (HasArrivedAtDestination()) return;
         else _npc.AnimationController.ChangeToWalk();
     }
@@ -220,15 +223,14 @@ public class NPCMovementController
     public bool HasArrivedAt(Vector3 destination, bool fixRotation = false, bool fixPosition = false)
     {
         Vector3 agentPos = _agent.transform.position;
-        Vector3 destPos = destination;
 
         // Horizontal distance on XZ plane
         Vector2 agentXZ = new(agentPos.x, agentPos.z);
-        Vector2 destXZ = new(destPos.x, destPos.z);
+        Vector2 destXZ = new(destination.x, destination.z);
         float horizontalDist = Vector2.Distance(agentXZ, destXZ);
 
         // Vertical distance on Y axis
-        float verticalDist = Mathf.Abs(agentPos.y - destPos.y);
+        float verticalDist = Mathf.Abs(agentPos.y - destination.y);
 
         // Check if within stopping distances
         if (horizontalDist < ArrivedHorizontalDistance && verticalDist < ArrivedVerticalDistance)
