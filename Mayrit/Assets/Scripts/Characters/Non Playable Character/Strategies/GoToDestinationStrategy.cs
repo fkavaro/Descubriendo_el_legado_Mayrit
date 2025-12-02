@@ -24,14 +24,22 @@ public class GoToDestinationStrategy : AStrategy
             return Node.Status.Success;
         }
         else
+        {
+            if (_npc.DebugMode)
+                Debug.LogWarning($"[GoToDestinationStrategy.Start()] {_npc.Name} could not set destination");
             return Node.Status.Failure;
+        }
     }
 
     public override Node.Status Update()
     {
         // Failure if not going to destination anymore
         if (!_npc.MovementController.IsDestination(_destinationSpot))
-            return Node.Status.Failure;
+        {
+            if (_npc.DebugMode)
+                Debug.LogWarning($"[GoToDestinationStrategy.Update()] {_npc.Name} fixing destination");
+            _npc.MovementController.SetDestinationSpot(_destinationSpot);
+        }
 
         if (_npc.MovementController.IsCloseTo(_destinationSpot))
             _npc.IsInStreet = false;

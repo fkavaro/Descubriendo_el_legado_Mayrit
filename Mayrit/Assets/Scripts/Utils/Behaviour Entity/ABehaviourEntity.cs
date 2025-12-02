@@ -18,6 +18,12 @@ where BehaviourSystemType : ABehaviourSystem
         set => _isExecutionPaused = value;
     }
 
+    public bool DebugMode
+    {
+        get => _debugMode;
+        set => _debugMode = value;
+    }
+
     public string CurrentActionInfo
     {
         get => _currentActionInfo;
@@ -28,7 +34,7 @@ where BehaviourSystemType : ABehaviourSystem
     #region EDITOR PROPERTIES
     [Header("Behaviour System")]
     [Tooltip("Whether to show debug messages in the console or not")]
-    [SerializeField] protected bool _debugMode;
+    [SerializeField] protected bool _debugMode = false;
     [Tooltip("Whether to pause the execution of the behaviour system or not")]
     [SerializeField] protected bool _isExecutionPaused;
     [SerializeField, ReadOnly]
