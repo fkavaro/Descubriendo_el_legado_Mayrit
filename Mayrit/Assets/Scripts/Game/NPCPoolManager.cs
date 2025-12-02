@@ -279,10 +279,9 @@ public class NPCPoolManager : Singleton<NPCPoolManager>
 
         // Activate and reset components
         villager.gameObject.SetActive(true);
-        //villager.InitializeBehaviourSystem(); // Again
+        villager.InitializeBehaviourSystem(); // Again
         randomFreeHouse.PlaceAtRandomEntrance(villager);
         villager.BehaviourSystem.Reset();
-        villager.MovementController.Reset();
         villager.Agent.enabled = true; // Activated once its placed
     }
 

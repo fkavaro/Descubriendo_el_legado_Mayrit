@@ -163,12 +163,13 @@ public class NPCMovementController
         else _npc.AnimationController.ChangeToWalk();
     }
 
-    public void SetDestinationSpot(Spot targetSpot)
+    public void SetDestinationSpot(Spot destinationSpot)
     {
-        if (_destinationSpot == targetSpot) return;
+        if (_destinationSpot == destinationSpot) return;
 
-        _destinationSpot = targetSpot;
-        SetDestination(_destinationSpot.transform.position);
+        SetDestination(destinationSpot.transform.position); // Set the target position for the NavMeshAgent
+
+        _destinationSpot = destinationSpot;
     }
     #endregion
 
@@ -419,13 +420,6 @@ public class NPCMovementController
         SetDestination(destination);
 
         return destination;
-    }
-
-    public void Reset()
-    {
-        _destinationSpot = null;
-        _destinationPos = Vector3.zero;
-        _agent.ResetPath();
     }
     #endregion
 }
