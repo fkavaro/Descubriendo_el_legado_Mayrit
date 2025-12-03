@@ -34,7 +34,8 @@ public class Villager : ANPC<BehaviourTree>
         // Conversation sequence
         ConditionStrategy isInStreetStrategy = new(this, () => IsInStreet);
         ConditionStrategy isFollowingConversationStrategy = new(this, IsFollowingConversation);
-        GoToMiddlePointStrategy goToMiddlePointStrategy = new(this);
+        GoToMiddlePointStrategy goToMiddlePointStrategyForFollower = new(this);
+        GoToMiddlePointStrategy goToMiddlePointStrategyForInitiator = new(this);
         ConversationFollowerStrategy followConversationStrategy = new(this);
         ConditionStrategy canSomeoneNearbyTalkStrategy = new(this, CanSomeoneNearbyTalk);
         ConversationInitiatorStrategy initiateConversationStrategy = new(this);
@@ -47,7 +48,8 @@ public class Villager : ANPC<BehaviourTree>
 
         LeafNode isInStreetLeaf = new(this, "Is in street?", isInStreetStrategy);
         LeafNode isBeingTalkedToLeaf = new(this, "Is following conversation?", isFollowingConversationStrategy);
-        LeafNode goToMiddlePointLeaf = new(this, "Going to middle point", goToMiddlePointStrategy);
+        LeafNode goToMiddlePointLeafForFollower = new(this, "Going to middle point", goToMiddlePointStrategyForFollower);
+        LeafNode goToMiddlePointLeafForInitiator = new(this, "Going to middle point", goToMiddlePointStrategyForInitiator);
         LeafNode followConversationLeaf = new(this, "Talking", followConversationStrategy);
         LeafNode isOtherNearbyLeaf = new(this, "Can someone nearby talk?", canSomeoneNearbyTalkStrategy);
         LeafNode initiateConversationLeafCheck = new(this, "Talking", initiateConversationStrategy);
@@ -57,11 +59,11 @@ public class Villager : ANPC<BehaviourTree>
         conversationSequence.AddChild(roleSelector);
         roleSelector.AddChild(followConversationSequence);
         followConversationSequence.AddChild(isBeingTalkedToLeaf);
-        followConversationSequence.AddChild(goToMiddlePointLeaf);
+        followConversationSequence.AddChild(goToMiddlePointLeafForFollower);
         followConversationSequence.AddChild(followConversationLeaf);
         roleSelector.AddChild(initiateConversationSequence);
         initiateConversationSequence.AddChild(isOtherNearbyLeaf);
-        initiateConversationSequence.AddChild(goToMiddlePointLeaf);
+        initiateConversationSequence.AddChild(goToMiddlePointLeafForInitiator);
         initiateConversationSequence.AddChild(initiateConversationLeafCheck);
 
         // Routine sequence
