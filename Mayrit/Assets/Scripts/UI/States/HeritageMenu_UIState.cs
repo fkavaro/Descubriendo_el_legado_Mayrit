@@ -25,15 +25,15 @@ public class HeritageMenu_UIState : AUIState
 
     protected override void OnStartState()
     {
-        GameManager.Instance.SwitchToPauseState();
+        _gameManager.SwitchToPauseState();
     }
     #endregion
 
     #region CALLBACK METHODS
     void OnPlayClicked(ClickEvent evt)
     {
-        UIManager.Instance.BehaviourSystem.SwitchToPreviousStateInStack(); // Switch to previous state: player or spectator HUD
-        GameManager.Instance.SwitchToGamePlayState();
+        _uiManager.BehaviourSystem.SwitchToPreviousStateInStack(); // Switch to previous state: player or spectator HUD
+        _gameManager.SwitchToGamePlayState();
     }
     #endregion
 }

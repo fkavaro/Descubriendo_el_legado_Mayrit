@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Manages the progress states and data. Singleton.
 /// </summary>
-public class ProgressManager : ASingletonBehaviourEntity<ProgressManager, FiniteStateMachine<MilestoneState>>
+public class ProgressManager : ABehaviourEntity<FiniteStateMachine<MilestoneState>>
 {
     #region PROPERTY HELPERS
     public MilestoneMapping CurrentMilestoneMapping => GetMappingForIndex(_currentMilestoneIndex);

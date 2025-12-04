@@ -18,6 +18,12 @@ public abstract class ACameraState : AState
     #region PROPERTIES
     protected CinemachineCamera _camera;
     protected readonly float _simulationSpeed;
+
+    // Dependency Injection
+    protected TimeManager _timeManager;
+    protected UIManager _uiManager;
+    protected GameManager _gameManager;
+    protected CameraManager _cameraManager;
     #endregion
 
     #region CONSTRUCTOR
@@ -34,16 +40,46 @@ public abstract class ACameraState : AState
     #region INHERITED METHODS
     public override void StartState()
     {
-        OnStateStarted();
-
         if (_camera == null)
         {
-            Debug.LogWarning($"Camera state '{_stateName}' started without a valid Cinemachine camera assigned.");
+            Debug.LogWarning($"ACameraState.StartState: Cannot start camera state {StateName} because the CinemachineCamera reference is null.");
             return;
         }
 
+        // Get dependencies from ServiceLocator
+        _timeManager = ServiceLocator.Instance.Get<TimeManager>();
+        _uiManager = ServiceLocator.Instance.Get<UIManager>();
+        _gameManager = ServiceLocator.Instance.Get<GameManager>();
+        _cameraManager = ServiceLocator.Instance.Get<CameraManager>();
+
+        // Validate dependencies
+        if (_timeManager == null)
+        {
+            Debug.LogError($"ACameraState.StartState: TimeManager not found when starting camera state {StateName}.");
+            return;
+        }
+        else
+            _timeManager.SetSimulationSpeed(_simulationSpeed);
+
+        if (_uiManager == null)
+        {
+            Debug.LogError($"ACameraState.StartState: UIManager not found when starting camera state {StateName}.");
+            return;
+        }
+        if (_gameManager == null)
+        {
+            Debug.LogError($"ACameraState.StartState: GameManager not found when starting camera state {StateName}.");
+            return;
+        }
+        if (_cameraManager == null)
+        {
+            Debug.LogError($"ACameraState.StartState: CameraManager not found when starting camera state {StateName}.");
+            return;
+        }
+
+        OnStateStarted();
+
         _camera.gameObject.SetActive(true);
-        TimeManager.Instance.SetSimulationSpeed(_simulationSpeed);
     }
 
     public override void ExitState()

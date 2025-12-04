@@ -9,6 +9,10 @@ public class PlayerVisual : Billboard
     Button _playerButton;
     PlayableCharacter _playableCharacter;
 
+    ProgressManager _progressManager;
+    UIManager _uiManager;
+    CameraManager _cameraManager;
+
     #region LIFE CYCLLE
     void Awake()
     {
@@ -25,10 +29,24 @@ public class PlayerVisual : Billboard
 
         _playerButton.visible = false;
 
-        // Subscribe to milestone change event
-        ProgressManager.Instance.OnMilestoneChangedEvent += OnMilestoneChanged;
+        // Get dependencies from Service Locator
+        _progressManager = ServiceLocator.Instance.Get<ProgressManager>();
+        _uiManager = ServiceLocator.Instance.Get<UIManager>();
+        _cameraManager = ServiceLocator.Instance.Get<CameraManager>();
 
-        // Register click event
+        // Validate dependencies
+        if (_progressManager == null)
+            Debug.LogError("PlayerVisual: ProgressManager not found in ServiceLocator!");
+        if (_uiManager == null)
+            Debug.LogError("PlayerVisual: UIManager not found in ServiceLocator!");
+        if (_cameraManager == null)
+            Debug.LogError("PlayerVisual: CameraManager not found in ServiceLocator!");
+    }
+
+    void Start()
+    {
+        // Subscribe to events and callbacks
+        _progressManager.OnMilestoneChangedEvent += OnMilestoneChanged;
         _playerButton.RegisterCallback<ClickEvent>(OnPlayerButtonClick);
     }
 
@@ -48,7 +66,7 @@ public class PlayerVisual : Billboard
         }
 
         // Hide button if not in spectator HUD state or if orbital camera is active
-        if (!UIManager.Instance.IsInSpectatorHUDState || CameraManager.Instance.IsInOrbitalState)
+        if (!_uiManager.IsInSpectatorHUDState || _cameraManager.IsInOrbitalState)
         {
             _playerButton.visible = false;
             return;
@@ -87,7 +105,7 @@ public class PlayerVisual : Billboard
 
     void OnPlayerButtonClick(ClickEvent evt)
     {
-        CameraManager.Instance.SwitchToOrbitalCamera(_playableCharacter.GetComponent<SelectableObject>());
+        _cameraManager.SwitchToOrbitalCamera(_playableCharacter.GetComponent<SelectableObject>());
     }
     #endregion
 }

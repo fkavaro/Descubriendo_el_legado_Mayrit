@@ -7,7 +7,7 @@ using UnityEngine.Pool;
 /// <summary>
 /// Pool manager for NPCs (Non-Player Characters).
 /// </summary>
-public class NPCPoolManager : Singleton<NPCPoolManager>
+public class NPCPoolManager : MonoBehaviour
 {
     #region EDITOR PROPERTIES
     [Header("Villagers pool")]
@@ -36,19 +36,14 @@ public class NPCPoolManager : Singleton<NPCPoolManager>
 
     Collider[] _overlapResults; // Cached buffer for OverlapSphereNonAlloc
     Dictionary<Collider, Villager> _colliderToVillager; // Cache to avoid GetComponent calls on colliders returned by physics queries
+
+    // Dependency Injection
+    TownManager _townManager;
     #endregion
 
     #region LIFE CYCLE
-    void OnEnable()
+    void Awake()
     {
-        // NamesDatabase is required for name generation. Disable this manager if not assigned.
-        if (_namesDatabase == null)
-        {
-            Debug.LogError("NPCPoolManager requires a NamesDatabase assigned in the inspector. Disabling NPCPoolManager.");
-            enabled = false;
-            return;
-        }
-
         // Pool creation
         _villagerPool = new ObjectPool<Villager>(
             createFunc: CreateVillager,
@@ -62,20 +57,19 @@ public class NPCPoolManager : Singleton<NPCPoolManager>
         // Initialize collider->villager cache
         _colliderToVillager = new Dictionary<Collider, Villager>(_maxActiveVillagers > 0 ? _maxActiveVillagers * 2 : 32);
 
-        // Subscribe to town population changes
-        TownManager.Instance.OnPopulationChanged += OnTownPopulationChanged;
+
+        // Dependency Injection: get services from ServiceLocator
+        _townManager = ServiceLocator.Instance.Get<TownManager>();
+
+        // Validate dependencies
+        if (_townManager == null)
+            Debug.LogError("NPCPoolManager: TownManager not found in ServiceLocator!");
     }
 
-    void OnDestroy()
+    void Start()
     {
-        // Unsubscribe from town population changes (guarded to avoid NullReferenceException during teardown)
-        try
-        {
-            var tm = TownManager.ExistingInstance;
-            if (tm != null)
-                tm.OnPopulationChanged -= OnTownPopulationChanged;
-        }
-        catch { }
+        // Subscribe to town population changes
+        _townManager.OnPopulationChanged += OnTownPopulationChanged;
     }
 
     void Update()
@@ -83,6 +77,23 @@ public class NPCPoolManager : Singleton<NPCPoolManager>
         // Spawn a villager (per frame) if active villagers are below max
         if (_villagerPool != null && _activeVillagers.Count < _maxActiveVillagers)
             _villagerPool.Get();
+    }
+
+    void OnEnable()
+    {
+        // NamesDatabase is required for name generation. Disable this manager if not assigned.
+        if (_namesDatabase == null)
+        {
+            Debug.LogError("NPCPoolManager requires a NamesDatabase assigned in the inspector. Disabling NPCPoolManager.");
+            enabled = false;
+            return;
+        }
+    }
+
+    void OnDestroy()
+    {
+        // Unsubscribe from town population changes (guarded to avoid NullReferenceException during teardown)
+        _townManager.OnPopulationChanged -= OnTownPopulationChanged;
     }
     #endregion
 
@@ -265,16 +276,16 @@ public class NPCPoolManager : Singleton<NPCPoolManager>
         }
         catch { }
 
-        House randomFreeHouse = TownManager.Instance.GetHouse();
+        House randomFreeHouse = _townManager.GetHouse();
         villager.AssignHome(randomFreeHouse);
 
-        Workplace randomWorkplace = TownManager.Instance.GetWorkplace();
+        Workplace randomWorkplace = _townManager.GetWorkplace();
         villager.AssignWorkplace(randomWorkplace);
 
-        Sanctuary nearestSanctuary = TownManager.Instance.GetNearestSanctuary(randomFreeHouse);
+        Sanctuary nearestSanctuary = _townManager.GetNearestSanctuary(randomFreeHouse);
         villager.AssignSanctuary(nearestSanctuary);
 
-        Market randomMarket = TownManager.Instance.GetNearestMarket(randomFreeHouse);
+        Market randomMarket = _townManager.GetNearestMarket(randomFreeHouse);
         villager.AssignMarket(randomMarket);
 
         // Activate and reset components

@@ -39,7 +39,7 @@ public class MainMenu_UIState : AUIState
     #region CALLBACK METHODS
     void OnPlayClicked(ClickEvent evt)
     {
-        GameManager.Instance.SwitchToGamePlayState();
+        _gameManager.SwitchToGamePlayState();
     }
 
     void OnSettingsClicked(ClickEvent evt)

@@ -42,7 +42,7 @@ public class Orbital_CameraState : ACameraState
         _orbitalFollow.Radius = _zoomValue;
         ApplyContextualPanelOffset();
 
-        UIManager.Instance.ShowContextualPanel(_selectedObject.Data, _selectedObject.IsCharacter);
+        _uiManager.ShowContextualPanel(_selectedObject.Data, _selectedObject.IsCharacter);
     }
 
     public override void UpdateState()

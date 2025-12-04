@@ -18,6 +18,12 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
     NotControlled_PlayableCharacterState _notControlledState;
     Controlled_PlayableCharacterState _controlledState;
     AtPOI_PlayableCharacterState _atPOIState;
+
+    // Dependency Injection
+    TourManager _tourManager;
+    UIManager _uiManager;
+    GameManager _gameManager;
+    CameraManager _cameraManager;
     #endregion
 
     #region INHERITED
@@ -43,22 +49,43 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
         AnimationController = new(this, this, CharacterAnimator);
         _movementController = new(this, GetComponent<CharacterController>());
 
+        // Get dependencies from ServiceLocator
+        _uiManager = ServiceLocator.Instance.Get<UIManager>();
+        _tourManager = ServiceLocator.Instance.Get<TourManager>();
+        _gameManager = ServiceLocator.Instance.Get<GameManager>();
+        _cameraManager = ServiceLocator.Instance.Get<CameraManager>();
+
+        // Validate dependencies
+        if (_uiManager == null)
+            Debug.LogError("PlayableCharacter: UIManager not found in ServiceLocator!");
+        if (_tourManager == null)
+            Debug.LogError("PlayableCharacter: TourManager not found in ServiceLocator!");
+        if (_gameManager == null)
+            Debug.LogError("PlayableCharacter: GameManager not found in ServiceLocator!");
+        if (_cameraManager == null)
+            Debug.LogError("PlayableCharacter: CameraManager not found in ServiceLocator!");
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+
         // Subscribe to events
-        UIManager.Instance.PlayCharacterClickedEvent += SwitchToControlledState;
-        UIManager.Instance.OnContextualPanelHiddenEvent += SwitchToControlledState;
-        TourManager.Instance.TourPOIVisitedEvent += OnTourPOIVisited;
-        CameraManager.Instance.ThirdPersonCameraExitedEvent += OnExitThirdPersonCamera;
-        GameManager.Instance.GamePausedEvent += OnGamePaused;
+        _uiManager.PlayCharacterClickedEvent += SwitchToControlledState;
+        _uiManager.OnContextualPanelHiddenEvent += SwitchToControlledState;
+        _tourManager.TourPOIVisitedEvent += OnTourPOIVisited;
+        _cameraManager.ThirdPersonCameraExitedEvent += OnExitThirdPersonCamera;
+        _gameManager.GamePausedEvent += OnGamePaused;
     }
 
     void OnDisable()
     {
         // Unsubscribe from events
-        UIManager.ExistingInstance.PlayCharacterClickedEvent -= OnPlayCharacterClicked;
-        UIManager.ExistingInstance.OnContextualPanelHiddenEvent -= OnContextualPanelHidden;
-        TourManager.ExistingInstance.TourPOIVisitedEvent -= OnTourPOIVisited;
-        CameraManager.ExistingInstance.ThirdPersonCameraExitedEvent -= OnExitThirdPersonCamera;
-        GameManager.ExistingInstance.GamePausedEvent -= OnGamePaused;
+        _uiManager.PlayCharacterClickedEvent -= OnPlayCharacterClicked;
+        _uiManager.OnContextualPanelHiddenEvent -= OnContextualPanelHidden;
+        _tourManager.TourPOIVisitedEvent -= OnTourPOIVisited;
+        _cameraManager.ThirdPersonCameraExitedEvent -= OnExitThirdPersonCamera;
+        _gameManager.GamePausedEvent -= OnGamePaused;
     }
     #endregion
 
@@ -105,9 +132,9 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
     {
         // Disable character controls when game is paused
         if (isGamePaused)
-            GameManager.Instance.InputActions.Player.Disable();
+            _gameManager.InputActions.Player.Disable();
         else if (IsBeingControlled)
-            GameManager.Instance.InputActions.Player.Enable();
+            _gameManager.InputActions.Player.Enable();
     }
     #endregion
 }

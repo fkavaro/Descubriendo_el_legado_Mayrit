@@ -39,20 +39,20 @@ public class PauseMenu_UIState : AUIState
 
     protected override void OnStartState()
     {
-        GameManager.Instance.SwitchToPauseState();
+        _gameManager.SwitchToPauseState();
     }
     #endregion
 
     #region CALLBACK METHODS
     void OnPlayClicked(ClickEvent evt)
     {
-        UIManager.Instance.BehaviourSystem.SwitchToPreviousStateInStack(); // Switch to previous state: player or spectator HUD
-        GameManager.Instance.SwitchToGamePlayState();
+        _uiManager.BehaviourSystem.SwitchToPreviousStateInStack(); // Switch to previous state: player or spectator HUD
+        _gameManager.SwitchToGamePlayState();
     }
 
     void OnMainMenuClicked(ClickEvent evt)
     {
-        GameManager.Instance.SwitchToMainMenuState();
+        _gameManager.SwitchToMainMenuState();
     }
 
     void OnQuitClicked(ClickEvent evt)

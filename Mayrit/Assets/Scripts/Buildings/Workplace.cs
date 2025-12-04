@@ -18,20 +18,17 @@ public class Workplace : AAssignedBuilding
     #region INHERITED METHODS
     public override void RegisterBuilding()
     {
-        var tm = TownManager.ExistingInstance;
-        if (tm != null) tm.RegisterWorkplace(this);
+        _townManager.RegisterWorkplace(this);
     }
 
     public override void UnregisterBuilding()
     {
-        var tm = TownManager.ExistingInstance;
-        if (tm != null) tm.UnregisterWorkplace(this);
+        _townManager.UnregisterWorkplace(this);
     }
 
     public override void Reassign(List<Villager> employees)
     {
-        var tm = TownManager.ExistingInstance;
-        if (tm != null) tm.ReassignEmployees(this, employees);
+        _townManager.ReassignEmployees(this, employees);
     }
     #endregion
 

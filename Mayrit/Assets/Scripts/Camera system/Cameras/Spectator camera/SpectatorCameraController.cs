@@ -51,46 +51,58 @@ public class SpectatorCameraController
     // Input
     Vector2 _moveInput, _lookInput, _scrollInput;
     bool _sprintPressed, _middleClickPressed;
+
+    // Dependency Injection
+    readonly CameraManager _cameraManager;
+    readonly GameManager _gameManager;
+    readonly UIManager _uiManager;
     #endregion
 
     #region CONSTRUCTOR
-    public SpectatorCameraController(CinemachineCamera camera,
-        AnimationCurve moveSpeedZoomCurve)
+    public SpectatorCameraController(CinemachineCamera camera)
     {
         _camera = camera;
         _cameraTarget = camera.Target.TrackingTarget.transform;
         _orbitalFollow = camera.GetComponent<CinemachineOrbitalFollow>();
-        _moveSpeedZoomCurve = moveSpeedZoomCurve;
+
+        // Get dependencies from ServiceLocator
+        _cameraManager = ServiceLocator.Instance.Get<CameraManager>();
+
+        // Validate dependencies
+        if (_cameraManager == null)
+            Debug.LogError("SpectatorCameraController: CameraManager not found in ServiceLocator!");
+        else
+            _moveSpeedZoomCurve = _cameraManager._moveSpeedZoomCurve;
     }
     #endregion
 
     #region LIFE CYCLE
     public void Update()
     {
-        _edgeScrolling = CameraManager.Instance._edgeScrolling;
-        _edgeScrollingMargin = CameraManager.Instance._edgeScrollingMargin;
-        _moveSpeed = CameraManager.Instance._moveSpeed;
-        _acceleration = CameraManager.Instance._acceleration;
-        _deceleration = CameraManager.Instance._deceleration;
-        _printSpeedMultiplier = CameraManager.Instance._sprintSpeedMultiplier;
-        _movementLimitsX = CameraManager.Instance._movementLimitsX;
-        _movementLimitsZ = CameraManager.Instance._movementLimitsZ;
-        _orbitSpeed = CameraManager.Instance._spectatorCameraOrbitSpeed;
-        _orbitSmoothing = CameraManager.Instance._orbitSmoothing;
-        _zoomSpeed = CameraManager.Instance._zoomSpeed;
-        _zoomSmoothing = CameraManager.Instance._zoomSmoothing;
+        _edgeScrolling = _cameraManager._edgeScrolling;
+        _edgeScrollingMargin = _cameraManager._edgeScrollingMargin;
+        _moveSpeed = _cameraManager._moveSpeed;
+        _acceleration = _cameraManager._acceleration;
+        _deceleration = _cameraManager._deceleration;
+        _printSpeedMultiplier = _cameraManager._sprintSpeedMultiplier;
+        _movementLimitsX = _cameraManager._movementLimitsX;
+        _movementLimitsZ = _cameraManager._movementLimitsZ;
+        _orbitSpeed = _cameraManager._spectatorCameraOrbitSpeed;
+        _orbitSmoothing = _cameraManager._orbitSmoothing;
+        _zoomSpeed = _cameraManager._zoomSpeed;
+        _zoomSmoothing = _cameraManager._zoomSmoothing;
     }
 
     public void LateUpdate()
     {
-        _moveInput = GameManager.Instance.InputActions.Camera.Move.ReadValue<Vector2>();
-        _sprintPressed = GameManager.Instance.InputActions.Camera.Sprint.IsPressed();
-        _lookInput = GameManager.Instance.InputActions.Camera.Look.ReadValue<Vector2>();
-        _middleClickPressed = GameManager.Instance.InputActions.Camera.Rotate.IsPressed();
+        _moveInput = _gameManager.InputActions.Camera.Move.ReadValue<Vector2>();
+        _sprintPressed = _gameManager.InputActions.Camera.Sprint.IsPressed();
+        _lookInput = _gameManager.InputActions.Camera.Look.ReadValue<Vector2>();
+        _middleClickPressed = _gameManager.InputActions.Camera.Rotate.IsPressed();
 
         // Cursor NOT over UI element
-        if (!UIManager.Instance.IsCursorOverUI())
-            _scrollInput = GameManager.Instance.InputActions.Camera.Zoom.ReadValue<Vector2>();
+        if (!_uiManager.IsCursorOverUI())
+            _scrollInput = _gameManager.InputActions.Camera.Zoom.ReadValue<Vector2>();
 
         if (_edgeScrolling)
             UpdateEdgeScrolling();

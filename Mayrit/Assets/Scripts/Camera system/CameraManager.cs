@@ -6,7 +6,7 @@ using Unity.Cinemachine;
 /// <summary>
 /// Manages the camera states and data. Singleton.
 /// </summary>
-public class CameraManager : ASingletonBehaviourEntity<CameraManager, FiniteStateMachine<ACameraState>>
+public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
 {
     #region PROPERTY HELPERS
     public bool IsInSpectatorState => _fsm.IsCurrentState(_spectatorState);
@@ -69,6 +69,11 @@ public class CameraManager : ASingletonBehaviourEntity<CameraManager, FiniteStat
     ThirdPerson_CameraState _thirdPersonState;
     Orbital_CameraState _orbitalState;
     POI_CameraState _poiState;
+
+    // Dependency Injection
+    UIManager _uiManager;
+    TourManager _tourManager;
+    GameManager _gameManager;
     #endregion
 
     #region INHERITED
@@ -89,6 +94,24 @@ public class CameraManager : ASingletonBehaviourEntity<CameraManager, FiniteStat
     #endregion
 
     #region LIFE CYCLE
+    protected override void Awake()
+    {
+        base.Awake();
+
+        // Dependency Injection: get services from ServiceLocator
+        _uiManager = ServiceLocator.Instance.Get<UIManager>();
+        _tourManager = ServiceLocator.Instance.Get<TourManager>();
+        _gameManager = ServiceLocator.Instance.Get<GameManager>();
+
+        // Validate dependencies
+        if (_uiManager == null)
+            Debug.LogError("CameraManager: UIManager not found in ServiceLocator!");
+        if (_tourManager == null)
+            Debug.LogError("CameraManager: TourManager not found in ServiceLocator!");
+        if (_gameManager == null)
+            Debug.LogError("CameraManager: GameManager not found in ServiceLocator!");
+    }
+
     protected override void Start()
     {
         base.Start();
@@ -109,18 +132,18 @@ public class CameraManager : ASingletonBehaviourEntity<CameraManager, FiniteStat
         // Subscribe to events
         _spectatorState.ObjectSelectedEvent += SwitchToOrbitalCamera;
         _thirdPersonState.ExitThirdPersonCameraEvent += OnExitThirdPersonCamera;
-        UIManager.Instance.OnContextualPanelHiddenEvent += OnContextualPanelHidden;
-        UIManager.Instance.PlayCharacterClickedEvent += SwitchToThirdPersonCamera;
-        TourManager.Instance.TourPOIVisitedEvent += OnTourPOIVisited;
-        GameManager.Instance.GamePausedEvent += OnGamePaused;
+        _uiManager.OnContextualPanelHiddenEvent += OnContextualPanelHidden;
+        _uiManager.PlayCharacterClickedEvent += SwitchToThirdPersonCamera;
+        _tourManager.TourPOIVisitedEvent += OnTourPOIVisited;
+        _gameManager.GamePausedEvent += OnGamePaused;
     }
 
     private void OnGamePaused(bool isGamePaused)
     {
         if (isGamePaused)
-            GameManager.Instance.InputActions.Camera.Disable();
+            _gameManager.InputActions.Camera.Disable();
         else if (IsInSpectatorState || IsInThirdPersonState)
-            GameManager.Instance.InputActions.Camera.Enable();
+            _gameManager.InputActions.Camera.Enable();
     }
     #endregion
 
@@ -185,7 +208,7 @@ public class CameraManager : ASingletonBehaviourEntity<CameraManager, FiniteStat
     public void SwitchToThirdPersonCamera()
     {
         // Update third person camera target to current playable character
-        Transform playerTranform = GameManager.Instance.PlayableCharacter.transform;
+        Transform playerTranform = _gameManager.PlayableCharacter.transform;
 
         // Set camera follow and look at targets
         _thirdPersonCamera.LookAt.position = playerTranform.position;

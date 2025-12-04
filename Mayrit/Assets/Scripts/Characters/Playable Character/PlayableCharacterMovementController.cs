@@ -27,6 +27,10 @@ public class PlayableCharacterMovementController
         _right;
 
     Vector2 _movementInput;
+
+    // Dependency Injection
+    readonly CameraManager _cameraManager;
+    readonly GameManager _gameManager;
     #endregion
 
     #region CONSTRUCTOR
@@ -34,7 +38,16 @@ public class PlayableCharacterMovementController
     {
         _player = player;
         _playerCharacterController = playerCharacterController;
-        _cameraTarget = CameraManager.Instance._thirdPersonCamera.LookAt;
+
+        // Get dependencies from ServiceLocator
+        _cameraManager = ServiceLocator.Instance.Get<CameraManager>();
+        _gameManager = ServiceLocator.Instance.Get<GameManager>();
+
+        // Validate dependencies
+        if (_cameraManager == null)
+            Debug.LogError("PlayableCharacterMovementController: CameraManager not found in ServiceLocator!");
+        else
+            _cameraTarget = _cameraManager._thirdPersonCamera.LookAt;
     }
     #endregion
 
@@ -48,10 +61,10 @@ public class PlayableCharacterMovementController
         if (_isJumping && _playerCharacterController.isGrounded)
             _movementInput = Vector2.zero;
         else
-            _movementInput = GameManager.Instance.InputActions.Player.Move.ReadValue<Vector2>();
+            _movementInput = _gameManager.InputActions.Player.Move.ReadValue<Vector2>();
 
-        _isRunPressed = GameManager.Instance.InputActions.Player.Sprint.IsPressed();
-        _isJumpPressed = GameManager.Instance.InputActions.Player.Jump.IsPressed();
+        _isRunPressed = _gameManager.InputActions.Player.Sprint.IsPressed();
+        _isJumpPressed = _gameManager.InputActions.Player.Jump.IsPressed();
 
         // Get direction in 3D space based on camera orientation
         _forward = _cameraTarget.forward.normalized;

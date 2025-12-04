@@ -20,6 +20,7 @@ public class Villager : ANPC<BehaviourTree>
 
     #region INTERNAL PROPERTIES
     BehaviourTree _villagerBT;
+    NPCPoolManager _npcPoolManager;
     #endregion
 
     #region INHERITED
@@ -151,6 +152,20 @@ public class Villager : ANPC<BehaviourTree>
     }
     #endregion
 
+    #region LIFE CYCLE
+    protected override void Awake()
+    {
+        base.Awake();
+
+        // Get dependency from Service Locator
+        _npcPoolManager = ServiceLocator.Instance.Get<NPCPoolManager>();
+
+        // Validate dependency
+        if (_npcPoolManager == null)
+            Debug.LogError("Villager: NPCPoolManager not found in ServiceLocator!");
+    }
+    #endregion
+
     #region PUBLIC METHODS
     public void AssignHome(House home)
     {
@@ -225,11 +240,8 @@ public class Villager : ANPC<BehaviourTree>
             return false;
         }
 
-        var pool = NPCPoolManager.Instance;
-        if (pool == null) return false;
-
         // Get a villager in the interaction range from this position
-        Villager someoneNearby = pool.GetAnyNearbyVillager(transform.position, _interactionRange, this);
+        Villager someoneNearby = _npcPoolManager.GetAnyNearbyVillager(transform.position, _interactionRange, this);
 
         // If no candidate found, return false
         if (someoneNearby == null)

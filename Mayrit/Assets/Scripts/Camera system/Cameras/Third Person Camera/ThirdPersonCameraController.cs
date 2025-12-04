@@ -6,6 +6,7 @@ using Unity.Cinemachine;
 /// </summary>
 public class ThirdPersonCameraController
 {
+    #region PROPERTIES
     readonly Transform _cameraTarget;
     readonly float _orbitSpeed,
         _followSpeed,
@@ -18,21 +19,43 @@ public class ThirdPersonCameraController
     // Input
     Vector2 _lookInput;
 
+    // Dependency Injection
+    readonly CameraManager _cameraManager;
+    readonly GameManager _gameManager;
+    #endregion
+
+    #region CONSTRUCTOR
     public ThirdPersonCameraController(CinemachineCamera camera)
     {
         _cameraTarget = camera.LookAt;
         _targetPitch = 0f;
         _targetYaw = 0f;
-        _orbitSpeed = CameraManager.Instance._3rdPersonCameraOrbitSpeed;
-        _followSpeed = CameraManager.Instance._3rdPersonCameraFollowSpeed;
-        _bottomClamp = CameraManager.Instance._bottomClamp;
-        _topClamp = CameraManager.Instance._topClamp;
-    }
 
+        // Get dependencies from ServiceLocator
+        _cameraManager = ServiceLocator.Instance.Get<CameraManager>();
+        _gameManager = ServiceLocator.Instance.Get<GameManager>();
+
+        // Validate dependencies
+        if (_cameraManager == null)
+            Debug.LogError("ThirdPersonCameraController: CameraManager not found in ServiceLocator!");
+        else
+        {
+            _orbitSpeed = _cameraManager._3rdPersonCameraOrbitSpeed;
+            _followSpeed = _cameraManager._3rdPersonCameraFollowSpeed;
+            _bottomClamp = _cameraManager._bottomClamp;
+            _topClamp = _cameraManager._topClamp;
+        }
+
+        if (_gameManager == null)
+            Debug.LogError("ThirdPersonCameraController: GameManager not found in ServiceLocator!");
+    }
+    #endregion
+
+    #region PUBLIC METHODS
     public void MouseTracking()
     {
         // Read input
-        _lookInput = GameManager.Instance.InputActions.Player.Look.ReadValue<Vector2>();
+        _lookInput = _gameManager.InputActions.Player.Look.ReadValue<Vector2>();
 
         // Update pitch and yaw based on input
         _targetPitch = Mathf.Clamp(_targetPitch - _lookInput.y * _orbitSpeed * Time.deltaTime, _bottomClamp, _topClamp);
@@ -53,7 +76,8 @@ public class ThirdPersonCameraController
         if (_cameraTarget == null) return;
 
         // Move smoothly camera target to follow the player
-        Transform player = GameManager.Instance.PlayableCharacter.transform;
+        Transform player = _gameManager.PlayableCharacter.transform;
         _cameraTarget.position = Vector3.Lerp(_cameraTarget.position, player.position, Time.unscaledDeltaTime * _followSpeed);
     }
+    #endregion
 }

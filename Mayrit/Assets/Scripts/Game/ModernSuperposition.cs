@@ -18,16 +18,31 @@ public class ModernSuperposition : MonoBehaviour
     #region EDITOR PROPERTIES
     [Header("Settings")]
     public bool _isActive = false;
+
+    // Dependency Injection
+    CameraManager _cameraManager;
+    UIManager _uiManager;
     #endregion
 
     #region LIFE CYCLE
+    void Awake()
+    {
+        // Get dependencies from ServiceLocator
+        _cameraManager = ServiceLocator.Instance.Get<CameraManager>();
+        _uiManager = ServiceLocator.Instance.Get<UIManager>();
+
+        // Validate dependencies
+        if (_cameraManager == null)
+            Debug.LogError("ModernSuperposition: CameraManager not found in ServiceLocator!");
+        if (_uiManager == null)
+            Debug.LogError("ModernSuperposition: UIManager not found in ServiceLocator!");
+    }
+
     void Start()
     {
-        // To know when to deactivate the mode if the camera changes to 3rd person
-        CameraManager.Instance.OnCameraStateChangedEvent += OnCameraStateChanged;
-
-        // To know when the button is pressed in the HUD
-        UIManager.Instance.ModernSuperpositionToggledEvent += ToggleMode;
+        // Subscribe to events
+        _cameraManager.OnCameraStateChangedEvent += OnCameraStateChanged;
+        _uiManager.ModernSuperpositionToggledEvent += ToggleMode;
     }
 
     void OnValidate()
@@ -46,7 +61,7 @@ public class ModernSuperposition : MonoBehaviour
     #region PRIVATE METHODS
     void OnCameraStateChanged()
     {
-        if (!CameraManager.Instance.IsInSpectatorState)
+        if (!_cameraManager.IsInSpectatorState)
             IsActive = false;
     }
 

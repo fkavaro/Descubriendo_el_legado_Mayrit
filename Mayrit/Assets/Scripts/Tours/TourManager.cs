@@ -1,9 +1,8 @@
 using System;
 using UnityEngine;
-using System.Collections.Generic;
 
 [RequireComponent(typeof(LineRenderer))]
-public class TourManager : Singleton<TourManager>
+public class TourManager : MonoBehaviour
 {
     #region PROPERTY HELPERS
     public Tour CurrentTour => _currentTour;
@@ -31,9 +30,30 @@ public class TourManager : Singleton<TourManager>
     public event Action<Tour> OnTourCompletedEvent;
 
     PathVisualizer _pathVisualizer;
+
+    // Dependency Injection
+    ProgressManager _progressManager;
+    UIManager _uiManager;
+    GameManager _gameManager;
     #endregion
 
     #region LIFE CYCLE
+    void Awake()
+    {
+        // Dependency Injection: get services from ServiceLocator
+        _progressManager = ServiceLocator.Instance.Get<ProgressManager>();
+        _uiManager = ServiceLocator.Instance.Get<UIManager>();
+        _gameManager = ServiceLocator.Instance.Get<GameManager>();
+
+        // Validate dependencies
+        if (_progressManager == null)
+            Debug.LogError("TourManager: ProgressManager not found in ServiceLocator!");
+        if (_uiManager == null)
+            Debug.LogError("TourManager: UIManager not found in ServiceLocator!");
+        if (_gameManager == null)
+            Debug.LogError("TourManager: GameManager not found in ServiceLocator!");
+    }
+
     void Start()
     {
         _pathVisualizer = new PathVisualizer(GetComponent<LineRenderer>(),
@@ -42,18 +62,24 @@ public class TourManager : Singleton<TourManager>
         _pathVisualizer.Initialize();
 
         // Subscribe to events
-        ProgressManager.Instance.OnMilestoneChangedEvent += OnMilestoneChanged;
-        UIManager.Instance.OnContextualPanelHiddenEvent += OnContextualPanelHidden;
-        UIManager.Instance.PlayCharacterClickedEvent += OnPlayCharacterClicked;
+        _progressManager.OnMilestoneChangedEvent += OnMilestoneChanged;
+        _uiManager.OnContextualPanelHiddenEvent += OnContextualPanelHidden;
+        _uiManager.PlayCharacterClickedEvent += OnPlayCharacterClicked;
     }
 
     void Update()
     {
-        if (GameManager.Instance.PlayableCharacter.IsBeingControlled &&
+        if (_gameManager != null &&
+            _gameManager.PlayableCharacter != null &&
+            _gameManager.PlayableCharacter.IsBeingControlled &&
             _currentTour != null && !_currentTour.IsCompleted)
+        {
             _pathVisualizer.UpdatePath();
+        }
         else
+        {
             _pathVisualizer.Clear();
+        }
     }
 
     void OnDisable()
@@ -61,8 +87,15 @@ public class TourManager : Singleton<TourManager>
         // Let the visualizer unsubscribe from ProgressManager and cleanup
         _pathVisualizer.Deinitialize();
 
-        ProgressManager.ExistingInstance.OnMilestoneChangedEvent -= OnMilestoneChanged;
-        UIManager.ExistingInstance.OnContextualPanelHiddenEvent -= OnContextualPanelHidden;
+        // Unsubscribe from events
+        if (_progressManager != null)
+            _progressManager.OnMilestoneChangedEvent -= OnMilestoneChanged;
+
+        if (_uiManager != null)
+        {
+            _uiManager.OnContextualPanelHiddenEvent -= OnContextualPanelHidden;
+            _uiManager.PlayCharacterClickedEvent -= OnPlayCharacterClicked;
+        }
 
         DetachFromCurrentTour();
     }

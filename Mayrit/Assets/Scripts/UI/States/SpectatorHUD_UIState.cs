@@ -18,11 +18,26 @@ public class SpectatorHUD_UIState : AHUDState
         _previousMilestoneButton,
         _modernSuperpositionButton;
     VisualElement _milestoneArea;
+
+    // Dependency Injection
+    CameraManager _cameraManager;
+    ProgressManager _progressManager;
     #endregion
 
     #region CONSTRUCTOR
     public SpectatorHUD_UIState(UIDocument uiDocument)
-    : base("SpectatorHUD", uiDocument) { }
+    : base("SpectatorHUD", uiDocument)
+    {
+        // Get dependencies from Service Locator
+        _cameraManager = ServiceLocator.Instance.Get<CameraManager>();
+        _progressManager = ServiceLocator.Instance.Get<ProgressManager>();
+
+        // Validate dependencies
+        if (_cameraManager == null)
+            Debug.LogError("SpectatorHUD_UIState: CameraManager not found in ServiceLocator!");
+        if (_progressManager == null)
+            Debug.LogError("SpectatorHUD_UIState: ProgressManager not found in ServiceLocator!");
+    }
     #endregion
 
     #region UI STATE INHERITED METHODS
@@ -69,9 +84,9 @@ public class SpectatorHUD_UIState : AHUDState
         _modernSuperpositionButton.RegisterCallback<ClickEvent>(OnModerSuperpositionToggled);
         _contextualPanel.PlayCharacterClickedEvent += OnPlayCharacterClicked;
 
-        UIManager.Instance.ShowTooltipEvent += OnShowTooltip;
-        UIManager.Instance.HideTooltipEvent += OnHideTooltip;
-        ProgressManager.Instance.OnMilestoneChangedEvent += OnMilestoneChanged;
+        _uiManager.ShowTooltipEvent += OnShowTooltip;
+        _uiManager.HideTooltipEvent += OnHideTooltip;
+        _progressManager.OnMilestoneChangedEvent += OnMilestoneChanged;
     }
 
     private void OnPlayCharacterClicked()
@@ -102,27 +117,27 @@ public class SpectatorHUD_UIState : AHUDState
     #region CALLBACK METHODS
     void OnPauseClicked(ClickEvent evt)
     {
-        UIManager.Instance.SwitchToPauseState();
+        _uiManager.SwitchToPauseState();
     }
 
     void OnHeritageClicked(ClickEvent evt)
     {
-        UIManager.Instance.SwitchToHeritageState();
+        _uiManager.SwitchToHeritageState();
     }
 
     void OnMilestoneClicked(ClickEvent evt)
     {
-        ShowContextualPanel(ProgressManager.Instance.CurrentMilestoneMapping.Data);
+        ShowContextualPanel(_progressManager.CurrentMilestoneMapping.Data);
     }
 
     void OnPreviousMilestoneClicked(ClickEvent evt)
     {
-        ProgressManager.Instance.SwitchToPreviousMilestone();
+        _progressManager.SwitchToPreviousMilestone();
     }
 
     void OnNextMilestoneClicked(ClickEvent evt)
     {
-        ProgressManager.Instance.SwitchToNextMilestone();
+        _progressManager.SwitchToNextMilestone();
     }
 
     void OnModerSuperpositionToggled(ClickEvent evt)
@@ -138,14 +153,14 @@ public class SpectatorHUD_UIState : AHUDState
 
         // Check progress for enabling/disabling buttons
         // Last milestone
-        if (ProgressManager.Instance.AtLastMilestone())
+        if (_progressManager.AtLastMilestone())
             // Disable next button
             _nextMilestoneButton.SetEnabled(false);
         else
             _nextMilestoneButton.SetEnabled(true);
 
         // First milestone
-        if (ProgressManager.Instance.AtFirstMilestone())
+        if (_progressManager.AtFirstMilestone())
             // Disable previous button
             _previousMilestoneButton.SetEnabled(false);
         else
@@ -156,7 +171,7 @@ public class SpectatorHUD_UIState : AHUDState
 
     void OnShowTooltip(DataSO data)
     {
-        if (!CameraManager.Instance.IsInSpectatorState)
+        if (!_cameraManager.IsInSpectatorState)
         {
             OnHideTooltip();
             return;
@@ -169,8 +184,8 @@ public class SpectatorHUD_UIState : AHUDState
 
         // UI Toolkit's Y axis is from top to bottom, 
         // while screen coordinates are from bottom to top
-        _tooltip.style.left = _cursorScreenPos.x + UIManager.Instance._tooltipOffset.x; ;
-        _tooltip.style.top = Screen.height - _cursorScreenPos.y + UIManager.Instance._tooltipOffset.y;
+        _tooltip.style.left = _cursorScreenPos.x + _uiManager._tooltipOffset.x; ;
+        _tooltip.style.top = Screen.height - _cursorScreenPos.y + _uiManager._tooltipOffset.y;
     }
 
     void OnHideTooltip()

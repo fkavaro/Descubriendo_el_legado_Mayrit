@@ -8,6 +8,10 @@ public abstract class ABuilding : MonoBehaviour
     [SerializeField] List<Spot> _accessSpots;
     #endregion
 
+    #region INTERNAL PROPERTIES
+    protected TownManager _townManager;
+    #endregion
+
     #region ABSTRACT METHODS
     public abstract void RegisterBuilding();
     public abstract void UnregisterBuilding();
@@ -16,6 +20,16 @@ public abstract class ABuilding : MonoBehaviour
     #region LIFE CYCLE
     public virtual void OnEnable()
     {
+        // Get from ServiceLocator
+        _townManager = ServiceLocator.Instance.Get<TownManager>();
+
+        // Validate
+        if (_townManager == null)
+        {
+            Debug.LogError($"ABuilding.OnEnable: TownManager not found for building {gameObject.name}.");
+            return;
+        }
+
         RegisterBuilding();
     }
 

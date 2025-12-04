@@ -36,8 +36,8 @@ public abstract class AHUDState : AUIState
         _contextualPanel.HiddenEvent += () => ContextualPanelHiddenEvent?.Invoke();
         _contextualPanel.ShownEvent += OnContextualPanelShowCallback;
         _contextualPanel.HiddenEvent += OnContextualPanelHiddenCallback;
-        UIManager.Instance.ShowContextualPanelEvent += ShowContextualPanel;
-        UIManager.Instance.HideContextualPanelEvent += HideContextualPanel;
+        _uiManager.ShowContextualPanelEvent += ShowContextualPanel;
+        _uiManager.HideContextualPanelEvent += HideContextualPanel;
     }
 
     public override void ExitState()
@@ -52,8 +52,8 @@ public abstract class AHUDState : AUIState
         _contextualPanel.HiddenEvent -= () => ContextualPanelHiddenEvent?.Invoke();
         _contextualPanel.ShownEvent -= OnContextualPanelShowCallback;
         _contextualPanel.HiddenEvent -= OnContextualPanelHiddenCallback;
-        UIManager.Instance.ShowContextualPanelEvent -= ShowContextualPanel;
-        UIManager.Instance.HideContextualPanelEvent -= HideContextualPanel;
+        _uiManager.ShowContextualPanelEvent -= ShowContextualPanel;
+        _uiManager.HideContextualPanelEvent -= HideContextualPanel;
     }
     #endregion
 

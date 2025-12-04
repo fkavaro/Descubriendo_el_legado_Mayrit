@@ -20,6 +20,10 @@ public class PathVisualizer
     // Runtime state
     Transform _player;
     Transform _nextPOI;
+
+    // Dependency Injection
+    readonly ProgressManager _progressManager;
+    readonly TourManager _tourManager;
     #endregion
 
     #region CONSTRUCTOR
@@ -37,6 +41,16 @@ public class PathVisualizer
         _projSampleDistance = Mathf.Max(0.01f, projSampleDistance);
         _renderYOffset = renderYOffset;
         _maxPoints = Mathf.Max(16, maxPoints);
+
+        // Get dependencies from Service Locator
+        _progressManager = ServiceLocator.Instance.Get<ProgressManager>();
+        _tourManager = ServiceLocator.Instance.Get<TourManager>();
+
+        // Validate dependencies
+        if (_progressManager == null)
+            Debug.LogError("PathVisualizer: ProgressManager not found in ServiceLocator!");
+        if (_tourManager == null)
+            Debug.LogError("PathVisualizer: TourManager not found in ServiceLocator!");
     }
     #endregion
 
@@ -46,8 +60,8 @@ public class PathVisualizer
     /// </summary>
     public void Initialize()
     {
-        ProgressManager.Instance.OnMilestoneChangedEvent += OnMilestoneChanged;
-        TourManager.Instance.OnTourNextPOIChangeEvent += OnNextPOIChange;
+        _progressManager.OnMilestoneChangedEvent += OnMilestoneChanged;
+        _tourManager.OnTourNextPOIChangeEvent += OnNextPOIChange;
 
         if (_lineRenderer == null)
             return;
@@ -62,8 +76,8 @@ public class PathVisualizer
     /// </summary>
     public void Deinitialize()
     {
-        ProgressManager.ExistingInstance.OnMilestoneChangedEvent -= OnMilestoneChanged;
-        TourManager.Instance.OnTourNextPOIChangeEvent -= OnNextPOIChange;
+        _progressManager.OnMilestoneChangedEvent -= OnMilestoneChanged;
+        _tourManager.OnTourNextPOIChangeEvent -= OnNextPOIChange;
     }
 
     /// <summary>

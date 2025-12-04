@@ -10,6 +10,18 @@ public class LandmarkVisual : MonoBehaviour
 
     public DataSO _information;
 
+    UIManager _uiManager;
+
+    void Awake()
+    {
+        // Get dependency from Service Locator
+        _uiManager = ServiceLocator.Instance.Get<UIManager>();
+
+        // Validate dependency
+        if (_uiManager == null)
+            Debug.LogError("LandmarkVisual: UIManager not found in ServiceLocator!");
+    }
+
     void OnEnable()
     {
         // Try to get the UIDocument component from the same GameObject
@@ -41,6 +53,6 @@ public class LandmarkVisual : MonoBehaviour
     void OnNameButtonClick(ClickEvent evt)
     {
         // Open contextual panel with landmark information
-        UIManager.Instance.ShowContextualPanel(_information);
+        _uiManager.ShowContextualPanel(_information);
     }
 }

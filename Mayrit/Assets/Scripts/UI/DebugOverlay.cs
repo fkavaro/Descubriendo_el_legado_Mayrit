@@ -6,6 +6,16 @@ public class DebugOverlay : MonoBehaviour
     [Tooltip("Collapse the debug overlay to a small header")]
     public bool _isCollapsed = true;
 
+    // Dependencies
+    UIManager _uiManager;
+    GameManager _gameManager;
+    ProgressManager _progressManager;
+    CameraManager _cameraManager;
+    TimeManager _timeManager;
+    TownManager _townManager;
+    NPCPoolManager _npcPoolManager;
+
+
     void OnGUI()
     {
         // Smaller box positioned at bottom-left
@@ -39,45 +49,53 @@ public class DebugOverlay : MonoBehaviour
         GUILayout.EndHorizontal();
         GUILayout.Space(4);
 
-        if (UIManager.Instance != null && UIManager.Instance.BehaviourSystem != null)
-            GUILayout.Label($"UIManager state: {UIManager.Instance.BehaviourSystem.CurrentState.StateName}");
+        // Get dependencies from Service Locator
+        _uiManager = ServiceLocator.Instance.Get<UIManager>();
+        _gameManager = ServiceLocator.Instance.Get<GameManager>();
+        _progressManager = ServiceLocator.Instance.Get<ProgressManager>();
+        _cameraManager = ServiceLocator.Instance.Get<CameraManager>();
+        _timeManager = ServiceLocator.Instance.Get<TimeManager>();
+        _townManager = ServiceLocator.Instance.Get<TownManager>();
+        _npcPoolManager = ServiceLocator.Instance.Get<NPCPoolManager>();
+
+        // Display states of various managers
+        if (_uiManager != null && _uiManager.BehaviourSystem != null)
+            GUILayout.Label($"UIManager state: {_uiManager.BehaviourSystem.CurrentState.StateName}");
         else
             GUILayout.Label("UIManager: <null>");
 
-        if (GameManager.Instance != null && GameManager.Instance.BehaviourSystem != null)
-            GUILayout.Label($"GameManager state: {GameManager.Instance.BehaviourSystem.CurrentState.StateName}");
+        if (_gameManager != null && _gameManager.BehaviourSystem != null)
+            GUILayout.Label($"GameManager state: {_gameManager.BehaviourSystem.CurrentState.StateName}");
         else
             GUILayout.Label("GameManager: <null>");
 
-        if (ProgressManager.Instance != null && ProgressManager.Instance.BehaviourSystem != null)
-            GUILayout.Label($"ProgressManager state: {ProgressManager.Instance.BehaviourSystem.CurrentState.StateName}");
+        if (_progressManager != null && _progressManager.BehaviourSystem != null)
+            GUILayout.Label($"ProgressManager state: {_progressManager.BehaviourSystem.CurrentState.StateName}");
         else
             GUILayout.Label("ProgressManager: <null>");
 
-        if (CameraManager.Instance != null && CameraManager.Instance.BehaviourSystem != null)
-            GUILayout.Label($"CameraManager state: {CameraManager.Instance.BehaviourSystem.CurrentState.StateName}");
+        if (_cameraManager != null && _cameraManager.BehaviourSystem != null)
+            GUILayout.Label($"CameraManager state: {_cameraManager.BehaviourSystem.CurrentState.StateName}");
         else
             GUILayout.Label("CameraManager: <null>");
 
-        if (GameManager.Instance != null && GameManager.Instance.PlayableCharacter != null)
-            GUILayout.Label($"PlayableCharacter state: {GameManager.Instance.PlayableCharacter.BehaviourSystem.CurrentState.StateName}");
+        if (_gameManager != null && _gameManager.PlayableCharacter != null)
+            GUILayout.Label($"PlayableCharacter state: {_gameManager.PlayableCharacter.BehaviourSystem.CurrentState.StateName}");
         else
             GUILayout.Label("PlayableCharacter: <null>");
 
-        if (TimeManager.Instance != null)
-            GUILayout.Label($"TimeManager current time: {TimeManager.Instance.CurrentTime:F0}h");
+        if (_timeManager != null)
+            GUILayout.Label($"TimeManager current time: {_timeManager.CurrentTime:F0}h");
         else
             GUILayout.Label("TimeManager: <null>");
 
-        // Town Manager (use ExistingInstance to avoid creating objects during scene teardown)
-        var town = TownManager.Instance;
-        if (town != null)
-            GUILayout.Label($"TownManager population: {town._population}");
+        if (_townManager != null)
+            GUILayout.Label($"TownManager population: {_townManager._population}");
         else
             GUILayout.Label("TownManager: <null>");
 
-        if (NPCPoolManager.Instance != null)
-            GUILayout.Label($"NPCPoolManager max villagers: {NPCPoolManager.Instance._maxActiveVillagers}");
+        if (_npcPoolManager != null)
+            GUILayout.Label($"NPCPoolManager max villagers: {_npcPoolManager._maxActiveVillagers}");
         else
             GUILayout.Label("NPCPoolManager: <null>");
 

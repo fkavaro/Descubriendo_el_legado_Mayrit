@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 /// <summary>
 /// Manages the game states and data. Singleton.
 /// </summary>
-public class GameManager : ASingletonBehaviourEntity<GameManager, FiniteStateMachine<AGameState>>
+public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
 {
     #region PROPERTY HELPERS
     public PlayableCharacter PlayableCharacter => _playableCharacter;
@@ -28,6 +28,9 @@ public class GameManager : ASingletonBehaviourEntity<GameManager, FiniteStateMac
     MainMenu_GameState _mainMenuState;
     GamePlay_GameState _gamePlayState;
     Pause_GameState _pauseState;
+
+    // Dependency Injection
+    ProgressManager _progressManager;
     #endregion
 
     #region INHERITED
@@ -58,10 +61,21 @@ public class GameManager : ASingletonBehaviourEntity<GameManager, FiniteStateMac
 
         _inputActions = new();
 
+        // Dependency Injection: get services from ServiceLocator
+        _progressManager = ServiceLocator.Instance.Get<ProgressManager>();
 
-        // Subscribe events
+        // Validate dependencies
+        if (_progressManager == null)
+            Debug.LogError("GameManager: ProgressManager not found in ServiceLocator!");
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+
+        // Subscribe to events
         _pauseState.GamePausedEvent += OnGamePaused;
-        ProgressManager.Instance.OnMilestoneChangedEvent += OnMilestoneChanged;
+        _progressManager.OnMilestoneChangedEvent += OnMilestoneChanged;
     }
 
     void OnDestroy()

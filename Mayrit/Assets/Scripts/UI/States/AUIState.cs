@@ -7,6 +7,10 @@ public abstract class AUIState : AState
     #region PROPERTIES
     public UIDocument _UIDocument;
     public VisualElement _screen;
+
+    // Dependency Injection
+    protected readonly UIManager _uiManager;
+    protected readonly GameManager _gameManager;
     #endregion
 
     #region CONSTRUCTOR
@@ -14,6 +18,16 @@ public abstract class AUIState : AState
     : base(name)
     {
         _UIDocument = uiDocument;
+
+        // Get dependencies from Service Locator
+        _uiManager = ServiceLocator.Instance.Get<UIManager>();
+        _gameManager = ServiceLocator.Instance.Get<GameManager>();
+
+        // Validate dependencies
+        if (_uiManager == null)
+            Debug.LogError("AUIState: UIManager not found in ServiceLocator!");
+        if (_gameManager == null)
+            Debug.LogError("AUIState: GameManager not found in ServiceLocator!");
     }
     #endregion
 

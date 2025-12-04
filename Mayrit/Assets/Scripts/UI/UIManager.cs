@@ -2,13 +2,12 @@ using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
-using NUnit.Framework;
 
 /// <summary>
 /// Manages the user interface states and data. Singleton.
 /// </summary>
 [RequireComponent(typeof(UIDocument))]
-public class UIManager : ASingletonBehaviourEntity<UIManager, StackFiniteStateMachine<AUIState>>
+public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
 {
     #region PROPERTY HELPERS
     public bool IsInMainMenuState => _sfsm.IsCurrentState(_mainMenuState);
@@ -41,6 +40,9 @@ public class UIManager : ASingletonBehaviourEntity<UIManager, StackFiniteStateMa
     PlayerHUD_UIState _playerHUDState;
     PauseMenu_UIState _pauseState;
     HeritageMenu_UIState _heritageState;
+
+    // Dependency Injection
+    TourManager _tourManager;
     #endregion
 
     #region INHERITED
@@ -64,13 +66,34 @@ public class UIManager : ASingletonBehaviourEntity<UIManager, StackFiniteStateMa
         else
             _sfsm.SetInitialState(_mainMenuState);
 
+
+
+        return _sfsm;
+    }
+    #endregion
+
+    #region LIFE CYCLE
+    protected override void Awake()
+    {
+        base.Awake();
+
+        // Dependency Injection: get services from ServiceLocator
+        _tourManager = ServiceLocator.Instance.Get<TourManager>();
+
+        // Validate dependencies
+        if (_tourManager == null)
+            Debug.LogError("GameManager: ProgressManager not found in ServiceLocator!");
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+
         // Subscribe to events
         _spectatorHUDState.ContextualPanelHiddenEvent += OnContextualPanelHidden;
         _spectatorHUDState.OnPlayCharacterEvent += OnPlayCharacterClicked;
         _spectatorHUDState.OnModernSuperpositionEvent += OnModernSuperpositionToggled;
-        TourManager.Instance.TourPOIVisitedEvent += OnTourPOIVisited;
-
-        return _sfsm;
+        _tourManager.TourPOIVisitedEvent += OnTourPOIVisited;
     }
     #endregion
 

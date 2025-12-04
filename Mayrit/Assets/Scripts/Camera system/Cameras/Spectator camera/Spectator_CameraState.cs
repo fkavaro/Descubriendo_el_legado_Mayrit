@@ -12,14 +12,14 @@ public class Spectator_CameraState : ACameraState
     public Spectator_CameraState(CinemachineCamera camera, float simulationSpeed)
     : base("Spectator camera", camera, simulationSpeed)
     {
-        _cameraController = new(camera, CameraManager.Instance._moveSpeedZoomCurve);
-        _cameraSelector = new(CameraManager.Instance._selectableLayer);
+        _cameraController = new(camera);
+        _cameraSelector = new();
     }
 
     public override void OnStateStarted()
     {
-        GameManager.Instance.InputActions.Camera.Enable();
-        UIManager.Instance.SwitchToSpectatorHUDState();
+        _gameManager.InputActions.Camera.Enable();
+        _uiManager.SwitchToSpectatorHUDState();
         _cameraSelector.ObjectSelectedEvent += OnObjectSelected;
     }
 
@@ -36,7 +36,7 @@ public class Spectator_CameraState : ACameraState
 
     public override void OnStateExited()
     {
-        GameManager.Instance.InputActions.Camera.Disable();
+        _gameManager.InputActions.Camera.Disable();
     }
 
     void OnObjectSelected(SelectableObject selectedObject)

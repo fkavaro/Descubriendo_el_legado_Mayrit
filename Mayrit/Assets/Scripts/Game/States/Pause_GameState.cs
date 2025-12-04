@@ -5,8 +5,17 @@ public class Pause_GameState : AGameState
 {
     public event Action<bool> GamePausedEvent;
 
+    readonly TimeManager _timeManager;
+
     public Pause_GameState()
-    : base("Pause") { }
+    : base("Pause")
+    {
+        // Get dependencies from Service Locator
+        _timeManager = ServiceLocator.Instance.Get<TimeManager>();
+
+        if (_timeManager == null)
+            Debug.LogError("Pause_GameState: TimeManager not found in ServiceLocator!");
+    }
 
     public override void StartState()
     {
@@ -17,7 +26,7 @@ public class Pause_GameState : AGameState
 
     public override void ExitState()
     {
-        Time.timeScale = TimeManager.Instance.SimulationSpeed;
+        Time.timeScale = _timeManager.SimulationSpeed;
 
         GamePausedEvent?.Invoke(false);
     }

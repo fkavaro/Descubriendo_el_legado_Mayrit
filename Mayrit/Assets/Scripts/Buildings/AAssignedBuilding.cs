@@ -13,6 +13,10 @@ public abstract class AAssignedBuilding : ABuilding
     public bool IsEmpty => _assignedVillagers.Count == 0;
     #endregion
 
+    #region INTERNAL PROPERTIES
+    protected NPCPoolManager _npcPoolManager;
+    #endregion
+
     #region ABSTRACT METHODS
     public abstract void Reassign(List<Villager> assigned);
     #endregion
@@ -20,8 +24,7 @@ public abstract class AAssignedBuilding : ABuilding
     #region LIFE CYCLE
     public override void OnDisable()
     {
-        var tm = TownManager.ExistingInstance;
-        if (tm != null)
+        if (_townManager != null)
         {
             UnregisterBuilding();
 
@@ -46,16 +49,24 @@ public abstract class AAssignedBuilding : ABuilding
         else
         {
             // Return assigned to pool if possible, then clear.
-            var pool = NPCPoolManager.ExistingInstance;
+            _npcPoolManager = ServiceLocator.Instance.Get<NPCPoolManager>();
+
+            // Validate and return
+            if (_npcPoolManager != null)
+            {
+                Debug.LogError($"AAssignedBuilding.OnDisable: TownManager not found.");
+                return;
+            }
+
             if (_assignedVillagers.Count > 0)
             {
-                if (pool != null)
+                if (_npcPoolManager != null)
                 {
                     // Iterate over a snapshot to avoid collection-modified exceptions:
                     var snapshot = _assignedVillagers.ToArray();
                     foreach (var villager in snapshot)
                     {
-                        try { pool.ReturnVillagerToPool(villager); } catch { }
+                        try { _npcPoolManager.ReturnVillagerToPool(villager); } catch { }
                     }
                 }
                 _assignedVillagers.Clear();

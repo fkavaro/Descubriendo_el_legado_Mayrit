@@ -12,14 +12,12 @@ public class Market : ABuilding
     #region INHERITED METHODS
     public override void RegisterBuilding()
     {
-        var tm = TownManager.ExistingInstance;
-        if (tm != null) tm.RegisterMarket(this);
+        _townManager.RegisterMarket(this);
     }
 
     public override void UnregisterBuilding()
     {
-        var tm = TownManager.ExistingInstance;
-        if (tm != null) tm.UnregisterMarket(this);
+        _townManager.UnregisterMarket(this);
     }
     #endregion
 

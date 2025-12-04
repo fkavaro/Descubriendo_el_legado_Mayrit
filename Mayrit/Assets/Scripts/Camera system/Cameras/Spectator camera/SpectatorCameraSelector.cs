@@ -15,19 +15,39 @@ public class SpectatorCameraSelector
     Vector2 _cursorScreenPos;
     Ray _cameraRay;
     bool _isSelectPressed;
+
+    // Dependency Injection
+    readonly CameraManager _cameraManager;
+    readonly GameManager _gameManager;
+    readonly UIManager _uiManager;
     #endregion
 
     #region CONSTRUCTOR
-    public SpectatorCameraSelector(LayerMask selectableLayer)
+    public SpectatorCameraSelector()
     {
-        _selectableLayer = selectableLayer;
+        // Get dependencies from ServiceLocator
+        _cameraManager = ServiceLocator.Instance.Get<CameraManager>();
+        _gameManager = ServiceLocator.Instance.Get<GameManager>();
+        _uiManager = ServiceLocator.Instance.Get<UIManager>();
+
+        // Validate dependencies
+        if (_cameraManager == null)
+            Debug.LogError("SpectatorCameraSelector: CameraManager not found in ServiceLocator!");
+        else
+            _selectableLayer = _cameraManager._selectableLayer;
+
+        if (_gameManager == null)
+            Debug.LogError("SpectatorCameraSelector: GameManager not found in ServiceLocator!");
+
+        if (_uiManager == null)
+            Debug.LogError("SpectatorCameraSelector: UIManager not found in ServiceLocator!");
     }
     #endregion
 
     #region LIFE CYCLE
     public void Update()
     {
-        _isSelectPressed = GameManager.Instance.InputActions.Camera.Select.IsPressed();
+        _isSelectPressed = _gameManager.InputActions.Camera.Select.IsPressed();
 
         // Get the current mouse position
         _cursorScreenPos = Mouse.current.position.ReadValue();
@@ -51,10 +71,8 @@ public class SpectatorCameraSelector
     void SelectObject()
     {
         // Cursor over UI element
-        if (UIManager.Instance.IsCursorOverUI())
+        if (_uiManager.IsCursorOverUI())
             return;
-
-        //Debug.DrawRay(_cameraRay.origin, _cameraRay.direction * 100, Color.green, 120f);
 
         // Ray has collided with a selectable object
         if (Physics.Raycast(_cameraRay, out RaycastHit hit, Mathf.Infinity, _selectableLayer))
@@ -97,7 +115,7 @@ public class SpectatorCameraSelector
     void ResetSelection()
     {
         if (_currentSelected == null) return;
-        if (UIManager.Instance.IsCursorOverUI()) return;
+        if (_uiManager.IsCursorOverUI()) return;
 
         _currentSelected = null;
     }
@@ -110,7 +128,7 @@ public class SpectatorCameraSelector
     void UpdateTooltip()
     {
         // Cursor over UI element
-        if (UIManager.Instance.IsCursorOverUI())
+        if (_uiManager.IsCursorOverUI())
         {
             ResetHover();
             return;
@@ -142,7 +160,7 @@ public class SpectatorCameraSelector
     /// </summary>
     void ApplyHover()
     {
-        UIManager.Instance.ShowTooltip(_currentHover.Data);
+        _uiManager.ShowTooltip(_currentHover.Data);
     }
 
     /// <summary>
@@ -153,7 +171,7 @@ public class SpectatorCameraSelector
         if (_currentHover == null) return;
 
         _currentHover = null;
-        UIManager.Instance.HideTooltip();
+        _uiManager.HideTooltip();
     }
     #endregion
 }

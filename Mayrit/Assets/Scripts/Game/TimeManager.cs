@@ -1,10 +1,11 @@
 using System;
+using Unity.Mathematics;
 using UnityEngine;
 
 /// <summary>
 /// Manages the time in game and data. Singleton.
 /// </summary>
-public class TimeManager : Singleton<TimeManager>
+public class TimeManager : MonoBehaviour
 {
     #region PROPERTIES HELPERS
     public float SimulationSpeed => _gameSimulationSpeed;
@@ -53,23 +54,31 @@ public class TimeManager : Singleton<TimeManager>
     bool _isWantedTimeReached, // Whether the current time is close enough to the wanted time
         _increaseTime; // Whether the time should be increased or decreased
     float _normalisedTime; // Normalised time value between 0 and 1, where 0 is midnight and 1 is the next midnight
+
+    // Dependency Injection
+    ProgressManager _progressManager;
     #endregion
 
     #region LIFE CYCLE
     // Awake is called when the script instance is being loaded
-    protected override void Awake()
+    void Awake()
     {
-        // Singleton
-        base.Awake();
+        // Dependency Injection: get services from ServiceLocator
+        _progressManager = ServiceLocator.Instance.Get<ProgressManager>();
 
-        // Subscribe to ProgressManager event to set the wanted time when the game starts
-        ProgressManager.Instance.OnMilestoneChangedEvent += OnMilestoneChanged;
+        // Validate dependencies
+        if (_progressManager == null)
+            Debug.LogError("TimeManager: ProgressManager not found in ServiceLocator!");
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        _currentTime = ProgressManager.Instance.CurrentMilestoneMapping.WantedTime;
+        // Subscribe to ProgressManager event to set the wanted time when the game starts
+        _progressManager.OnMilestoneChangedEvent += OnMilestoneChanged;
+
+
+        _currentTime = _progressManager.CurrentMilestoneMapping.WantedTime;
         UpdateLighting();
     }
 
