@@ -37,6 +37,12 @@ where BehaviourSystemType : ABehaviourSystem
         set => _conversationRole = value;
     }
 
+    public bool ShouldTalk
+    {
+        get => _shouldTalk;
+        set => _shouldTalk = value;
+    }
+
     public bool IsReadyToTalk
     {
         get => _isReadyToTalk;
@@ -86,6 +92,7 @@ where BehaviourSystemType : ABehaviourSystem
     NPCMovementController _movementController;
     NavMeshAgent _agent;
     bool _isInStreet = true;
+    bool _shouldTalk = false;
     bool _isReadyToTalk = false;
     public INPC _currentConversationTarget, _lastConversationTarget;
     #endregion
@@ -126,7 +133,7 @@ where BehaviourSystemType : ABehaviourSystem
     #region CONVERSATION METHODS
     public virtual bool IsAvailableForConversation()
     {
-        return _isInStreet && CharacterModel.activeInHierarchy;
+        return _isInStreet && _shouldTalk && CharacterModel.activeInHierarchy;
     }
 
     public virtual bool IsStillInConversation(INPC otherNpc)

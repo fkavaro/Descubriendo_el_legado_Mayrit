@@ -25,6 +25,7 @@ public interface INPC : ICharacter
     public string FamilyName { get; }
     bool IsInStreet { get; set; }
     RoleInConversation ConversationRole { get; set; }
+    bool ShouldTalk { get; set; }
     bool IsReadyToTalk { get; set; }
     public INPC CurrentConversationTarget { get; set; }
     public INPC LastConversationTarget { get; set; }

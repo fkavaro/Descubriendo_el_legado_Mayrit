@@ -112,6 +112,9 @@ MonoBehaviour:
   _conversationRole: 2
   _currentConversationTargetGO: {fileID: 0}
   _lastConversationTargetGO: {fileID: 0}
+  _noTalkLayerMask:
+    serializedVersion: 2
+    m_Bits: 512
   _avoidanceRadius: 0.7
   _maxSamplingDistance: 1
   _isStopped: 0
@@ -122,6 +125,7 @@ MonoBehaviour:
   _workplace: {fileID: 0}
   _sanctuary: {fileID: 0}
   _market: {fileID: 0}
+  _marketStall: {fileID: 0}
 --- !u!1001 &2545030637896681716
 PrefabInstance:
   m_ObjectHideFlags: 0
