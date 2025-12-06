@@ -143,4 +143,8 @@
 
 .clickableArea :hover {
     background-color: rgba(0, 0, 0, 0.78);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
 }
