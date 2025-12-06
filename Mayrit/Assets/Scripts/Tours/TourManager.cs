@@ -61,8 +61,7 @@ public class TourManager : MonoBehaviour
 
     void Update()
     {
-        if (_gameManager != null &&
-            _gameManager.PlayableCharacter != null &&
+        if (_gameManager.PlayableCharacter != null &&
             _gameManager.PlayableCharacter.IsBeingControlled &&
             _currentTour != null && !_currentTour.IsCompleted)
         {

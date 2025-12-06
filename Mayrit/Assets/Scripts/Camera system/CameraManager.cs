@@ -62,7 +62,6 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
 
     #region INTERNAL PROPERTIES
     public event Action OnCameraStateChangedEvent;
-    public event Action ThirdPersonCameraExitedEvent;
 
     FiniteStateMachine<ACameraState> _fsm;
     Spectator_CameraState _spectatorState;
@@ -263,7 +262,6 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
     void OnExitThirdPersonCamera()
     {
         SwitchToSpectatorCamera();
-        ThirdPersonCameraExitedEvent?.Invoke();
     }
 
     void OnContextualPanelHidden()

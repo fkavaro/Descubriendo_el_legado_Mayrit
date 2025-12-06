@@ -61,10 +61,10 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
         base.Start();
 
         // Subscribe to events
-        _uiManager.PlayCharacterClickedEvent += SwitchToControlledState;
-        _uiManager.OnContextualPanelHiddenEvent += SwitchToControlledState;
+        _uiManager.PlayCharacterClickedEvent += OnPlayCharacterClicked;
+        _uiManager.OnContextualPanelHiddenEvent += OnContextualPanelHidden;
         _tourManager.TourPOIVisitedEvent += OnTourPOIVisited;
-        _cameraManager.ThirdPersonCameraExitedEvent += OnExitThirdPersonCamera;
+        _cameraManager.OnCameraStateChangedEvent += OnCameraStateChanged;
         _gameManager.GamePausedEvent += OnGamePaused;
     }
 
@@ -74,7 +74,7 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
         _uiManager.PlayCharacterClickedEvent -= OnPlayCharacterClicked;
         _uiManager.OnContextualPanelHiddenEvent -= OnContextualPanelHidden;
         _tourManager.TourPOIVisitedEvent -= OnTourPOIVisited;
-        _cameraManager.ThirdPersonCameraExitedEvent -= OnExitThirdPersonCamera;
+        _cameraManager.OnCameraStateChangedEvent -= OnCameraStateChanged;
         _gameManager.GamePausedEvent -= OnGamePaused;
     }
     #endregion
@@ -105,7 +105,8 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
 
     void OnContextualPanelHidden()
     {
-        SwitchToControlledState();
+        if (!_cameraManager.IsInSpectatorState)
+            SwitchToControlledState();
     }
 
     void OnTourPOIVisited(PointOfInterest poi)
@@ -113,9 +114,12 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
         SwitchToAtPOIState(poi);
     }
 
-    void OnExitThirdPersonCamera()
+    void OnCameraStateChanged()
     {
-        SwitchToNotControlledState();
+        if (_cameraManager.IsInThirdPersonState)
+            SwitchToControlledState();
+        else
+            SwitchToNotControlledState();
     }
 
     void OnGamePaused(bool isGamePaused)
