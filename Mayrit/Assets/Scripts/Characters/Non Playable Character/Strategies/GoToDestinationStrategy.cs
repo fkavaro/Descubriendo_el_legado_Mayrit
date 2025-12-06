@@ -24,7 +24,7 @@ where NPCtype : INPC
             if (_npc.CurrentConversationTarget != null || _npc.ConversationRole != INPC.RoleInConversation.None)
             {
                 if (_npc.DebugMode)
-                    Debug.LogWarning($"[GoToDestinationStrategy.Start()] {_npc.Name} is going to {_destinationSpot.name}. Ending conversation with {_npc.CurrentConversationTarget.Name}.");
+                    Debug.Log($"[GoToDestinationStrategy.Start()] {_npc.Name} is going to {_destinationSpot.name}. Ending conversation with {_npc.CurrentConversationTarget.Name}.");
 
                 _npc.EndConversation();
             }

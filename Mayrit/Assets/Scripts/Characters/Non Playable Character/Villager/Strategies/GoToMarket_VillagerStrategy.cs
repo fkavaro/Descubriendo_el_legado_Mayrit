@@ -29,7 +29,7 @@ public class GoToMarket_VillagerStrategy : ANPCStrategy<Villager>
             if (_npc.CurrentConversationTarget != null || _npc.ConversationRole != INPC.RoleInConversation.None)
             {
                 if (_npc.DebugMode)
-                    Debug.LogWarning($"[GoToDestinationStrategy.Start()] {_npc.Name} is going to {_marketStallSpot.name}. Ending conversation with {_npc.CurrentConversationTarget.Name}.");
+                    Debug.Log($"[GoToDestinationStrategy.Start()] {_npc.Name} is going to {_marketStallSpot.name}. Ending conversation with {_npc.CurrentConversationTarget.Name}.");
 
                 _npc.EndConversation();
             }
@@ -48,6 +48,15 @@ public class GoToMarket_VillagerStrategy : ANPCStrategy<Villager>
                 Debug.Log($"[GoToMarket_VillagerStrategy.Update()] {_npc.Name} could not find an available stall spot in the market.");
 
             return Node.Status.Failure;
+        }
+
+        // Fix destination if needed
+        if (!_npc.MovementController.IsDestination(_marketStallSpot))
+        {
+            if (_npc.DebugMode)
+                Debug.LogWarning($"[GoToMarket_VillagerStrategy.Update()] {_npc.Name} fixing destination");
+
+            _npc.MovementController.SetDestinationSpot(_marketStallSpot);
         }
 
         // Is close to destination stall spot
