@@ -16,6 +16,7 @@ public enum SFXType
     UI_ButtonClick,
     UI_TourStart,
     UI_TourEnd,
+    Camera_Change
 }
 #endregion
 
