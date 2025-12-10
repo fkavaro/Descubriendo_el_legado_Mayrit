@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MainMenuInstaller : MonoBehaviour
+public class BaseGameServicesInstaller : MonoBehaviour
 {
     [Header("Manager References")]
     [SerializeField] private GameManager _gameManager;

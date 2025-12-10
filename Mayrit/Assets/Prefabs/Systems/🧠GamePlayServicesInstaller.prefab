@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1904343252161154156}
   - component: {fileID: 3426093817009604374}
   m_Layer: 0
-  m_Name: "\U0001F9E0GamePlayInstaller"
+  m_Name: "\U0001F9E0GamePlayServicesInstaller"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

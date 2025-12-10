@@ -3,7 +3,7 @@ using UnityEngine;
 /// <summary>
 /// Installer/Bootstrapper that registers all game services at startup.
 /// </summary>
-public class GamePlayInstaller : MainMenuInstaller
+public class GamePlayServicesInstaller : BaseGameServicesInstaller
 {
     [SerializeField] private ProgressManager _progressManager;
     [SerializeField] private CameraManager _cameraManager;
