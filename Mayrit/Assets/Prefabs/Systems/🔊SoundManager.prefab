@@ -271,7 +271,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 397e7ea0c455c6b4b9b964073c431ddb, type: 3}
   - _type: 2
     _sounds:
-    - {fileID: 8300000, guid: 0062dfcc32f7dd14dafd6f41de967110, type: 3}
+    - {fileID: 8300000, guid: 56525ea6f105a8e41a07977592eeab31, type: 3}
   - _type: 3
     _sounds:
     - {fileID: 8300000, guid: 270d896f1955cc6499cae8d48e0f975a, type: 3}

@@ -81,7 +81,6 @@ public abstract class AHUDState : AUIState
     {
         _wasContextualPanelShown = false;
         _contextualPanel.Hide();
-        _soundManager.PlayButtonClickSFX();
     }
 
     protected void OnPauseClicked(ClickEvent evt)
@@ -143,7 +142,6 @@ public abstract class AHUDState : AUIState
         ContextualPanelHiddenEvent?.Invoke();
         _wasContextualPanelShown = false;
         OnContextualPanelHidden();
-        _soundManager.PlayButtonClickSFX();
     }
     #endregion
 

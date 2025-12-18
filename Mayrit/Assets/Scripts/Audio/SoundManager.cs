@@ -396,31 +396,31 @@ public class SoundManager : MonoBehaviour
     /// <summary>
     /// Plays a UI button click sound effect.
     /// </summary>
-    public void PlayButtonClickSFX(float volume = 1)
+    public void PlayButtonClickSFX()
     {
-        PlaySFX(SFXType.UI_ButtonClick, volume);
+        PlaySFX(SFXType.UI_ButtonClick);
     }
 
     /// <summary>
     /// Plays a tour start sound effect.
     /// </summary>
-    public void PlayTourStartSFX(float volume = 1)
+    public void PlayTourStartSFX()
     {
-        PlaySFX(SFXType.UI_TourStart, volume);
+        PlaySFX(SFXType.UI_TourStart);
     }
 
     /// <summary>
     /// Plays a tour end sound effect.
     /// </summary>
-    public void PlayTourEndSFX(float volume = 1)
+    public void PlayTourEndSFX()
     {
-        PlaySFX(SFXType.UI_TourEnd, volume);
+        PlaySFX(SFXType.UI_TourEnd);
     }
 
     /// <summary>
     /// Plays a random sound of the specified SFX type using <see cref="AudioSource.PlayOneShot(AudioClip,float)"/>.
     /// </summary>
-    public void PlaySFX(SFXType type, float volume = 1)
+    public void PlaySFX(SFXType type)
     {
         // Return if type is none
         if (type == SFXType.None)
@@ -440,7 +440,7 @@ public class SoundManager : MonoBehaviour
 
 
         // Played in effectsSource
-        _effectsSource.PlayOneShot(randomClip, volume);
+        _effectsSource.PlayOneShot(randomClip, _effectsVolume);
     }
 
     /// <summary>

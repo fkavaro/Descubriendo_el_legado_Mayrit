@@ -4,7 +4,6 @@ public class PlaySFX : StateMachineBehaviour
 {
     [SerializeField] private SFXType _enterSFXType = SFXType.None;
     [SerializeField] private SFXType _exitSFXType = SFXType.None;
-    [SerializeField, Range(0, 1)] private float _volume = 1f;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -12,7 +11,7 @@ public class PlaySFX : StateMachineBehaviour
         SoundManager soundManager = ServiceLocator.Instance.Get<SoundManager>();
 
         if (soundManager != null)
-            soundManager.PlaySFX(_enterSFXType, _volume);
+            soundManager.PlaySFX(_enterSFXType);
         else
             Debug.LogError("PlaySFXEnter: SoundManager service not found!");
     }
@@ -23,7 +22,7 @@ public class PlaySFX : StateMachineBehaviour
         SoundManager soundManager = ServiceLocator.Instance.Get<SoundManager>();
 
         if (soundManager != null)
-            soundManager.PlaySFX(_exitSFXType, _volume);
+            soundManager.PlaySFX(_exitSFXType);
         else
             Debug.LogError("PlaySFXEnter: SoundManager service not found!");
     }

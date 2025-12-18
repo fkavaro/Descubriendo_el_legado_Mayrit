@@ -20,6 +20,9 @@ public class ContextualPanel
     readonly VisualElement _root,
         _icon,
         _image;
+
+    // Dependency Injection
+    SoundManager _soundManager;
     #endregion
 
     #region CONSTRUCTOR
@@ -55,6 +58,9 @@ public class ContextualPanel
 
         _closeButton.RegisterCallback<ClickEvent>(OnCloseButton);
         _playCharacterButton.RegisterCallback<ClickEvent>(OnPlayCharacter);
+
+        // Get SoundManager dependency from Service Locator
+        _soundManager = ServiceLocator.Instance.Get<SoundManager>();
     }
     #endregion
 
@@ -107,6 +113,7 @@ public class ContextualPanel
     void OnCloseButton(ClickEvent evt)
     {
         Hide();
+        _soundManager.PlayButtonClickSFX();
     }
 
     void OnPlayCharacter(ClickEvent evt)
