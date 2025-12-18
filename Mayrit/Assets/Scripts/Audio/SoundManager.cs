@@ -54,6 +54,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField, Range(0, 1)] private float _resumeGuardSeconds = 0.25f;
     [SerializeField] private List<MusicList> _musicLists = new();
     [SerializeField] private List<SFXlist> _SFXLists = new();
+    [SerializeField] private bool _skipToNextTrack;
     #endregion
 
     // Playlist state
@@ -143,6 +144,12 @@ public class SoundManager : MonoBehaviour
         // Avoid overriding fade-in/out transitions
         if (!_isFadingMusic && _musicVolume != _musicSource.volume)
             _musicSource.volume = _musicVolume;
+
+        if (_skipToNextTrack)
+        {
+            _skipToNextTrack = false;
+            SkipToNextMusicTrack();
+        }
     }
     #endregion
 
@@ -180,11 +187,12 @@ public class SoundManager : MonoBehaviour
             _musicSource.clip = null;
         }
 
-        PlayNextInPlaylistInternal();
-
         // Start auto-advance loop if not already running
         if (Application.isPlaying && _playlistCoroutine == null)
+        {
             _playlistCoroutine = StartCoroutine(PlaylistLoop());
+            Debug.Log($"SoundManager: Started {type} playlist.");
+        }
     }
 
     /// <summary>
@@ -222,9 +230,37 @@ public class SoundManager : MonoBehaviour
 
     #region PLAYLIST HELPERS
     /// <summary>
+    /// Watches the music source and advances only when a track actually ends.
+    /// Respects focus/pause guards to avoid unintended skipping on resume.
+    /// </summary>
+    private IEnumerator PlaylistLoop()
+    {
+        while (_currentMusicType != MusicType.None)
+        {
+            // Skip if paused/unfocused or within resume guard window
+            if (!_suspendAutoAdvance && Time.unscaledTime >= _ignoreAdvanceUntilTime)
+            {
+                if (_musicSource.clip == null)
+                {
+                    PlayNextTrack();
+                }
+                // Advance only when clip truly ended (not just paused)
+                else if (_musicSource.clip != null && !_musicSource.isPlaying &&
+                    _musicSource.timeSamples >= _musicSource.clip.samples - 1)
+                {
+                    PlayNextTrack();
+                }
+            }
+            yield return null;
+        }
+
+        _playlistCoroutine = null;
+    }
+
+    /// <summary>
     /// Dequeues and plays the next track from the current playlist. Uses fade if configured.
     /// </summary>
-    private void PlayNextInPlaylistInternal()
+    private void PlayNextTrack()
     {
         if (_currentMusicType == MusicType.None) return;
 
@@ -238,18 +274,17 @@ public class SoundManager : MonoBehaviour
         var nextClip = queue.Dequeue();
         if (nextClip == null) return;
 
-        // Use crossfade if a clip exists to fade out and fade is enabled
-        if (_musicFadeDuration > 0f && _musicSource.clip != null)
-        {
-            StartCoroutine(CrossfadeToClip(nextClip));
-        }
-        else
-        {
-            _musicSource.Stop();
-            _musicSource.clip = nextClip;
-            _musicSource.volume = _musicVolume;
-            _musicSource.Play();
-        }
+        Debug.Log($"SoundManager | {_currentMusicType} playlist - Advancing to next track: {nextClip.name}.");
+
+        // Direct approach
+        _musicSource.Stop();
+        _musicSource.clip = nextClip;
+        _musicSource.volume = _musicVolume;
+        _musicSource.Play();
+
+        // For crossfade transitions
+        // if (_musicFadeDuration > 0f && _musicSource.clip != null)
+        //     StartCoroutine(CrossfadeToClip(nextClip));
     }
 
     /// <summary>
@@ -300,30 +335,6 @@ public class SoundManager : MonoBehaviour
             (list[i], list[j]) = (list[j], list[i]);
         }
     }
-
-    /// <summary>
-    /// Watches the music source and advances only when a track actually ends.
-    /// Respects focus/pause guards to avoid unintended skipping on resume.
-    /// </summary>
-    private IEnumerator PlaylistLoop()
-    {
-        while (_currentMusicType != MusicType.None)
-        {
-            // Skip if paused/unfocused or within resume guard window
-            if (!_suspendAutoAdvance && Time.unscaledTime >= _ignoreAdvanceUntilTime)
-            {
-                // Advance only when clip truly ended (not just paused)
-                if (_musicSource.clip != null && !_musicSource.isPlaying &&
-                    _musicSource.timeSamples >= _musicSource.clip.samples - 1)
-                {
-                    PlayNextInPlaylistInternal();
-                }
-            }
-            yield return null;
-        }
-
-        _playlistCoroutine = null;
-    }
     #endregion
 
     #region TRANSITIONS
@@ -371,13 +382,13 @@ public class SoundManager : MonoBehaviour
     /// Skips to the next track in the current playlist.
     /// If a fade is in progress, it is cancelled before skipping.
     /// </summary>
-    public void SkipToNextTrack()
+    public void SkipToNextMusicTrack()
     {
         // Manual skip ignores guard; if fading, stop fade first
         if (_isFadingMusic)
             StopAllCoroutines();
         _playlistCoroutine = StartCoroutine(PlaylistLoop());
-        PlayNextInPlaylistInternal();
+        PlayNextTrack();
     }
     #endregion
 
