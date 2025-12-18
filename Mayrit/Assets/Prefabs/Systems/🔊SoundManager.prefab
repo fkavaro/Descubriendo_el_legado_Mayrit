@@ -248,17 +248,19 @@ MonoBehaviour:
   _musicLists:
   - _type: 1
     _sounds:
-    - {fileID: 8300000, guid: 894ee0c52bfa4b34a93648afd36bb76f, type: 3}
+    - {fileID: 8300000, guid: b5281e1fa100da94f98ab3d99bca01ef, type: 3}
+    - {fileID: 8300000, guid: 86ea4f05e9bdbda46abca9d6e5562c27, type: 3}
   - _type: 2
     _sounds:
     - {fileID: 8300000, guid: f3a81a3550214a84bb4664194ee11399, type: 3}
     - {fileID: 8300000, guid: 5e1fece5ec394c243961707e44abf5bc, type: 3}
+    - {fileID: 8300000, guid: 894ee0c52bfa4b34a93648afd36bb76f, type: 3}
     - {fileID: 8300000, guid: 5fa9ab42acee4f04b927d4c9bf81d3c0, type: 3}
     - {fileID: 8300000, guid: 2ec921b8550fffc4b8d26062674735b3, type: 3}
     - {fileID: 8300000, guid: 88ce60c43ca9aa64cb095e8e1a6a84e0, type: 3}
     - {fileID: 8300000, guid: ededfee2f016d9f49a750cd830b78445, type: 3}
     - {fileID: 8300000, guid: e880dbea54f66974eb3413d35eac133a, type: 3}
-    - {fileID: 8300000, guid: eef417d6e7da7b74983a79f237f18714, type: 3}
+    - {fileID: 8300000, guid: f32e0af7a18523044b9cbb86cc75294f, type: 3}
     - {fileID: 8300000, guid: f48a7464045b05741a508898b3a755c0, type: 3}
     - {fileID: 8300000, guid: 41ad6850379851941811b3d7b8e2b351, type: 3}
     - {fileID: 8300000, guid: 596a3e72adcc5ff45aa2dcaa75a5adeb, type: 3}

@@ -12,6 +12,8 @@ public class MainMenu_GameState : AGameState
 
     public override void StartState()
     {
+        base.StartState();
+
         if (SceneManager.GetActiveScene().name != "MainMenuScene")
             SceneManager.LoadScene("MainMenuScene");
     }

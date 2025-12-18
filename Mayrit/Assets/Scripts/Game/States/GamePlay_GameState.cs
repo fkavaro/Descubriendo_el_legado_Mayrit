@@ -12,6 +12,8 @@ public class GamePlay_GameState : AGameState
 
     public override void StartState()
     {
+        base.StartState();
+
         if (SceneManager.GetActiveScene().name != "GameScene")
             SceneManager.LoadScene("GameScene");
     }

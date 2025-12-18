@@ -6,7 +6,5 @@ using System.Threading.Tasks;
 public abstract class AGameState : AState
 {
     protected AGameState(string name)
-    : base(name)
-    {
-    }
+    : base(name) { }
 }

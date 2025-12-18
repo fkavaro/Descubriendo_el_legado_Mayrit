@@ -12,7 +12,7 @@ public class PlaySFX : StateMachineBehaviour
         SoundManager soundManager = ServiceLocator.Instance.Get<SoundManager>();
 
         if (soundManager != null)
-            soundManager.PlaySoundEffect(_enterSFXType, _volume);
+            soundManager.PlaySFX(_enterSFXType, _volume);
         else
             Debug.LogError("PlaySFXEnter: SoundManager service not found!");
     }
@@ -23,7 +23,7 @@ public class PlaySFX : StateMachineBehaviour
         SoundManager soundManager = ServiceLocator.Instance.Get<SoundManager>();
 
         if (soundManager != null)
-            soundManager.PlaySoundEffect(_exitSFXType, _volume);
+            soundManager.PlaySFX(_exitSFXType, _volume);
         else
             Debug.LogError("PlaySFXEnter: SoundManager service not found!");
     }

@@ -31,6 +31,7 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
 
     // Dependency Injection
     ProgressManager _progressManager;
+    SoundManager _soundManager;
     #endregion
 
     #region INHERITED
@@ -63,6 +64,8 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
     {
         // Subscribe to scene change event
         SceneManager.sceneLoaded += OnSceneLoaded;
+
+        _soundManager = ServiceLocator.Instance.Get<SoundManager>();
 
         _inputActions = new();
 
@@ -108,15 +111,29 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (SceneManager.GetActiveScene().name != "GameScene")
+        if (_soundManager == null)
+            _soundManager = ServiceLocator.Instance.Get<SoundManager>();
+
+        // In main menu scene
+        if (SceneManager.GetActiveScene().name == "MainMenuScene")
+        {
+            // Play menu music
+            _soundManager.PlayMenuMusic();
             return;
+        }
+        // In game play scene
+        else if (SceneManager.GetActiveScene().name == "GameScene")
+        {
+            // Play gameplay music
+            _soundManager.PlayGameplayMusic();
 
-        // Get dependencies from ServiceLocator
-        _progressManager = ServiceLocator.Instance.Get<ProgressManager>();
+            // Get dependencies from ServiceLocator
+            _progressManager = ServiceLocator.Instance.Get<ProgressManager>();
 
-        // Subscribe to events
-        _pauseState.GamePausedEvent += OnGamePaused;
-        _progressManager.OnMilestoneChangedEvent += OnMilestoneChanged;
+            // Subscribe to events
+            _pauseState.GamePausedEvent += OnGamePaused;
+            _progressManager.OnMilestoneChangedEvent += OnMilestoneChanged;
+        }
     }
     #endregion
 }

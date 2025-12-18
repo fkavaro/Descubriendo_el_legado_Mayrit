@@ -108,7 +108,17 @@ public class SoundManager : MonoBehaviour
     #endregion
 
     #region MUSIC METHODS
-    public void PlayMusic(MusicType type, float volume = 1)
+    public void PlayMenuMusic(float volume = 1)
+    {
+        PlayMusic(MusicType.MenuMusic, volume);
+    }
+
+    public void PlayGameplayMusic(float volume = 1)
+    {
+        PlayMusic(MusicType.GameplayMusic, volume);
+    }
+
+    private void PlayMusic(MusicType type, float volume = 1)
     {
         // Return if type is none
         if (type == MusicType.None)
@@ -157,23 +167,23 @@ public class SoundManager : MonoBehaviour
     #region SOUND EFFECT METHODS
     public void PlayButtonClickSFX(float volume = 1)
     {
-        PlaySoundEffect(SFXType.UI_ButtonClick, volume);
+        PlaySFX(SFXType.UI_ButtonClick, volume);
     }
 
     public void PlayTourStartSFX(float volume = 1)
     {
-        PlaySoundEffect(SFXType.UI_TourStart, volume);
+        PlaySFX(SFXType.UI_TourStart, volume);
     }
 
     public void PlayTourEndSFX(float volume = 1)
     {
-        PlaySoundEffect(SFXType.UI_TourEnd, volume);
+        PlaySFX(SFXType.UI_TourEnd, volume);
     }
 
     /// <summary>
     /// Plays random sound of a specific type
     /// </summary>
-    public void PlaySoundEffect(SFXType type, float volume = 1)
+    public void PlaySFX(SFXType type, float volume = 1)
     {
         // Return if type is none
         if (type == SFXType.None)
@@ -196,13 +206,13 @@ public class SoundManager : MonoBehaviour
         _effectsSource.PlayOneShot(randomClip, volume);
     }
 
-    public void StopSoundEffect()
+    public void StopSFX()
     {
         _effectsSource.Stop();
         _effectsSource.clip = null;
     }
 
-    public void UpdateEffectsVolume(float volume)
+    public void UpdateSFXVolume(float volume)
     {
         _effectsVolume = volume;
         _effectsSource.volume = volume;
