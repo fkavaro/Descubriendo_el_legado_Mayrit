@@ -238,8 +238,8 @@ public class SoundManager : MonoBehaviour
         var nextClip = queue.Dequeue();
         if (nextClip == null) return;
 
-        // Use crossfade if already playing and fade is enabled
-        if (_musicFadeDuration > 0f && _musicSource.isPlaying && _musicSource.clip != null)
+        // Use crossfade if a clip exists to fade out and fade is enabled
+        if (_musicFadeDuration > 0f && _musicSource.clip != null)
         {
             StartCoroutine(CrossfadeToClip(nextClip));
         }
@@ -263,6 +263,7 @@ public class SoundManager : MonoBehaviour
             _musicQueues[type] = queue;
         }
 
+        // Refill queue when empty to loop the playlist
         if (queue.Count == 0)
         {
             var clips = GetMusicClips(type);
@@ -350,6 +351,7 @@ public class SoundManager : MonoBehaviour
         // Switch to next track
         _musicSource.Stop();
         _musicSource.clip = nextClip;
+        _musicSource.volume = 0f;
         _musicSource.Play();
 
         // Fade in new track
