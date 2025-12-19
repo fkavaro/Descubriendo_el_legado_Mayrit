@@ -140,9 +140,40 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     #endregion
 
     #region CALLBACK METHODS
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (SceneManager.GetActiveScene().name == "GameScene")
+        {
+            SwitchToSpectatorHUDState();
+
+            // Get dependencies from ServiceLocator
+            _tourManager = ServiceLocator.Instance.Get<TourManager>();
+
+            // Subscribe to events
+            _playerHUDState.ContextualPanelHiddenEvent += OnContextualPanelHidden;
+            _spectatorHUDState.ContextualPanelHiddenEvent += OnContextualPanelHidden;
+            _spectatorHUDState.PlayCharacterEvent += OnPlayCharacterClicked;
+            _spectatorHUDState.OnModernSuperpositionEvent += OnModernSuperpositionToggled;
+            _tourManager.TourPOIVisitedEvent += OnTourPOIVisited;
+        }
+        else if (SceneManager.GetActiveScene().name == "MainMenuScene")
+        {
+            SwitchToMainMenuState();
+
+            // Unsubscribe from events
+            if (_tourManager != null)
+                _tourManager.TourPOIVisitedEvent -= OnTourPOIVisited;
+
+            _playerHUDState.ContextualPanelHiddenEvent -= OnContextualPanelHidden;
+            _spectatorHUDState.ContextualPanelHiddenEvent -= OnContextualPanelHidden;
+            _spectatorHUDState.PlayCharacterEvent -= OnPlayCharacterClicked;
+            _spectatorHUDState.OnModernSuperpositionEvent -= OnModernSuperpositionToggled;
+        }
+    }
+
     void OnPlayCharacterClicked()
     {
-        _sfsm?.SwitchState(_playerHUDState);
+        SwitchToPlayerHUDState();
         PlayCharacterClickedEvent?.Invoke();
     }
 
@@ -159,22 +190,6 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     void OnContextualPanelHidden()
     {
         OnContextualPanelHiddenEvent?.Invoke();
-    }
-
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        if (SceneManager.GetActiveScene().name != "GameScene")
-            return;
-
-        // Get dependencies from ServiceLocator
-        _tourManager = ServiceLocator.Instance.Get<TourManager>();
-
-        // Subscribe to events
-        _playerHUDState.ContextualPanelHiddenEvent += OnContextualPanelHidden;
-        _spectatorHUDState.ContextualPanelHiddenEvent += OnContextualPanelHidden;
-        _spectatorHUDState.PlayCharacterEvent += OnPlayCharacterClicked;
-        _spectatorHUDState.OnModernSuperpositionEvent += OnModernSuperpositionToggled;
-        _tourManager.TourPOIVisitedEvent += OnTourPOIVisited;
     }
     #endregion
 }

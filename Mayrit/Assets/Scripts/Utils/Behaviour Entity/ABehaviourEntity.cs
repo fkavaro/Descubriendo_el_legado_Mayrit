@@ -56,6 +56,8 @@ where BehaviourSystemType : ABehaviourSystem
     #region LIFE CYCLE: DERIVED TO BEHAVIOUR SYSTEM
     protected virtual void Awake()
     {
+        if (DebugMode)
+            Debug.Log($"Awaking {Name} behaviour entity...");
         _behaviourSystem = DefineBehaviourSystemOnAwake();
     }
 

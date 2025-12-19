@@ -207,9 +207,17 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
     public void SwitchToThirdPersonCamera()
     {
         // Update third person camera target to current playable character
-        Transform playerTranform = _gameManager.PlayableCharacter.transform;
+        Transform playerTranform;
 
-        // Set camera follow and look at targets
+        if (_gameManager.PlayableCharacter != null)
+            playerTranform = _gameManager.PlayableCharacter.transform;
+        else
+        {
+            Debug.LogError("Cannot switch to third person camera: PlayableCharacter is null.");
+            return;
+        }
+
+        // Set camera follow and look at target
         _thirdPersonCamera.LookAt.position = playerTranform.position;
 
         _fsm.SwitchState(_thirdPersonState);
