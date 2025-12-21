@@ -45,7 +45,7 @@ public class MainMenu_UIState : AUIState
 
     void OnSettingsClicked(ClickEvent evt)
     {
-        // TODO: settings menu
+        _uiManager.SwitchToSettingsMenuState();
         _soundManager.PlayButtonClickSFX();
     }
 

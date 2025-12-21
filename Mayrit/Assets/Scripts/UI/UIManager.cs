@@ -31,6 +31,10 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     public event Action HideTooltipEvent;
     public event Action PlayCharacterClickedEvent;
     public event Action ModernSuperpositionToggledEvent;
+    public event Action<bool> EdgeScrollingToggledEvent;
+    public event Action<bool> ShowControlsToggledEvent;
+    public event Action<float> MusicVolumeChangedEvent;
+    public event Action<float> SFXVolumeChangedEvent;
 
     StackFiniteStateMachine<AUIState> _sfsm;
     MainMenu_UIState _mainMenuState;
@@ -38,6 +42,7 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     PlayerHUD_UIState _playerHUDState;
     PauseMenu_UIState _pauseState;
     HeritageMenu_UIState _heritageState;
+    SettingsMenu_UIState _settingsMenuState;
 
     // Dependency Injection
     TourManager _tourManager;
@@ -56,6 +61,7 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
         _playerHUDState = new(_uiDocument);
         _pauseState = new(_uiDocument);
         _heritageState = new(_uiDocument);
+        _settingsMenuState = new(_uiDocument);
 
         // State AwakeState calls
         _mainMenuState.AwakeState();
@@ -63,6 +69,7 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
         _playerHUDState.AwakeState();
         _pauseState.AwakeState();
         _heritageState.AwakeState();
+        _settingsMenuState.AwakeState();
 
         // Set initial state based on scene name
         if (SceneManager.GetActiveScene().name == "GameScene")
@@ -114,6 +121,11 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     public void SwitchToHeritageState()
     {
         _sfsm?.SwitchState(_heritageState);
+    }
+
+    public void SwitchToSettingsMenuState()
+    {
+        _sfsm?.SwitchState(_settingsMenuState);
     }
     #endregion
 
@@ -190,6 +202,26 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     void OnContextualPanelHidden()
     {
         OnContextualPanelHiddenEvent?.Invoke();
+    }
+
+    public void InvokeEdgeScrollingToggledEvent(bool newValue)
+    {
+        EdgeScrollingToggledEvent?.Invoke(newValue);
+    }
+
+    public void InvokeShowControlsToggledEvent(bool newValue)
+    {
+        ShowControlsToggledEvent?.Invoke(newValue);
+    }
+
+    public void InvokeMusicVolumeChangedEvent(float newValue)
+    {
+        MusicVolumeChangedEvent?.Invoke(newValue);
+    }
+
+    public void InvokeSFXVolumeChangedEvent(float newValue)
+    {
+        SFXVolumeChangedEvent?.Invoke(newValue);
     }
     #endregion
 }

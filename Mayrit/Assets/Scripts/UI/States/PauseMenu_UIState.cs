@@ -6,6 +6,7 @@ public class PauseMenu_UIState : AUIState
     #region  PROPERTIES
     Button _playButton,
         _mainMenuButton,
+        _settingsButton,
         _quitButton;
     #endregion
 
@@ -20,12 +21,15 @@ public class PauseMenu_UIState : AUIState
         _screen = _UIDocument.rootVisualElement.Q<VisualElement>("PauseMenu");
         _playButton = _screen.Q<Button>("PlayButton");
         _mainMenuButton = _screen.Q<Button>("MainMenuButton");
+        _settingsButton = _screen.Q<Button>("SettingsButton");
         _quitButton = _screen.Q<Button>("QuitButton");
 
         if (_playButton == null)
             Debug.LogWarning("_playButton not found");
         if (_mainMenuButton == null)
             Debug.LogWarning("_mainMenuButton not found");
+        if (_settingsButton == null)
+            Debug.LogWarning("_settingsButton not found");
         if (_quitButton == null)
             Debug.LogWarning("_quitButton not found");
     }
@@ -34,6 +38,7 @@ public class PauseMenu_UIState : AUIState
     {
         _playButton.RegisterCallback<ClickEvent>(OnPlayClicked);
         _mainMenuButton.RegisterCallback<ClickEvent>(OnMainMenuClicked);
+        _settingsButton.RegisterCallback<ClickEvent>(OnSettingsClicked);
         _quitButton.RegisterCallback<ClickEvent>(OnQuitClicked);
     }
 
@@ -47,7 +52,7 @@ public class PauseMenu_UIState : AUIState
     #region CALLBACK METHODS
     void OnPlayClicked(ClickEvent evt)
     {
-        _uiManager.BehaviourSystem.SwitchToPreviousStateInStack(); // Switch to previous state: player or spectator HUD
+        _uiManager.BehaviourSystem.SwitchToPreviousStateInStack();
         _gameManager.SwitchToGamePlayState();
         _soundManager.PlayButtonClickSFX();
     }
@@ -55,6 +60,12 @@ public class PauseMenu_UIState : AUIState
     void OnMainMenuClicked(ClickEvent evt)
     {
         _gameManager.SwitchToMainMenuState();
+        _soundManager.PlayButtonClickSFX();
+    }
+
+    void OnSettingsClicked(ClickEvent evt)
+    {
+        _uiManager.SwitchToSettingsMenuState();
         _soundManager.PlayButtonClickSFX();
     }
 
