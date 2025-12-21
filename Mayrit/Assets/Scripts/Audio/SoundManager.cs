@@ -159,13 +159,7 @@ public class SoundManager : MonoBehaviour
         if (!Application.isPlaying)
             return;// To avoid error in editor
 
-        // Update volumes in case they were changed in the inspector
-        if (_effectsVolume != _effectsSource.volume)
-            _effectsSource.volume = _effectsVolume;
-        // Avoid overriding fade-in/out transitions
-        if (!_isFadingMusic && _musicVolume != _musicSource.volume)
-            _musicSource.volume = _musicVolume;
-
+        // TODO remove or implement in game
         if (_skipToNextTrack)
         {
             _skipToNextTrack = false;
@@ -178,27 +172,25 @@ public class SoundManager : MonoBehaviour
     /// <summary>
     /// Starts the menu music playlist. Tracks are shuffled, then played sequentially.
     /// </summary>
-    public void PlayMenuMusic(float volume = 1)
+    public void PlayMenuMusic()
     {
-        PlayMusic(MusicType.MenuMusic, volume);
+        PlayMusic(MusicType.MenuMusic);
     }
 
     /// <summary>
     /// Starts the gameplay music playlist. Tracks are shuffled, then played sequentially.
     /// </summary>
-    public void PlayGameplayMusic(float volume = 1)
+    public void PlayGameplayMusic()
     {
-        PlayMusic(MusicType.GameplayMusic, volume);
+        PlayMusic(MusicType.GameplayMusic);
     }
 
     /// <summary>
     /// Starts or switches the active music playlist to <paramref name="type"/> with the target volume.
     /// </summary>
-    private void PlayMusic(MusicType type, float volume = 1)
+    private void PlayMusic(MusicType type)
     {
         if (type == MusicType.None) return;
-
-        _musicVolume = volume;
 
         // Reset if switching to a different playlist type
         if (_currentMusicType != type)
@@ -246,6 +238,7 @@ public class SoundManager : MonoBehaviour
     public void UpdateMusicVolume(float volume)
     {
         _musicVolume = volume;
+        _musicSource.volume = volume;
     }
     #endregion
 
@@ -467,9 +460,8 @@ public class SoundManager : MonoBehaviour
         // Randomly selects a clip from the list
         AudioClip randomClip = clips[UnityEngine.Random.Range(0, clips.Count)];
 
-
         // Played in effectsSource
-        _effectsSource.PlayOneShot(randomClip, _effectsVolume);
+        _effectsSource.PlayOneShot(randomClip);
     }
 
     /// <summary>
@@ -487,6 +479,7 @@ public class SoundManager : MonoBehaviour
     public void UpdateSFXVolume(float volume)
     {
         _effectsVolume = volume;
+        _effectsSource.volume = volume;
     }
     #endregion
 }
