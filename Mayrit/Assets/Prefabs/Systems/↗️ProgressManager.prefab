@@ -47,7 +47,6 @@ MonoBehaviour:
   _debugMode: 0
   _isExecutionPaused: 0
   _currentActionInfo: 
-  _dontDestroyOnLoad: 0
   _updateInEditor: 0
   _currentMilestoneIndex: 0
   _currentMilestoneMapping:

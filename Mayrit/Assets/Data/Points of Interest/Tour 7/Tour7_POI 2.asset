@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abc58fc9460fcf84eb0c46c995f89837, type: 3}
+  m_Name: Tour7_POI 2
+  m_EditorClassIdentifier: Assembly-CSharp::DataSO
+  _header: Point of Interest 2
+  _subHeader: Tour 0
+  _description: Relevant information.
+  _icon: {fileID: 0}
+  _image: {fileID: 0}
+  _imageCaption: 
