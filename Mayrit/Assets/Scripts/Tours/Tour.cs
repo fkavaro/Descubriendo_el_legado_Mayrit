@@ -36,17 +36,17 @@ public class Tour : MonoBehaviour
         SubscribeToRuntimeEvents();
     }
 
-    void OnDisable()
-    {
-        UnsubscribeFromRuntimeEvents();
-    }
-
     void OnValidate()
     {
 #if UNITY_EDITOR
         if (!Application.isPlaying)
             SubscribeToRuntimeEvents();
 #endif
+    }
+
+    void OnDestroy()
+    {
+        UnsubscribeFromRuntimeEvents();
     }
     #endregion
 

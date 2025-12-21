@@ -33,7 +33,7 @@ public abstract class AUIState : AState
 
         if (_UIDocument.rootVisualElement == null)
         {
-            Debug.LogError($"{_stateName} UI State: UIDocument rootVisualElement is null!");
+            Debug.LogWarning($"{_stateName} UI State: UIDocument rootVisualElement is null!");
             return;
         }
 

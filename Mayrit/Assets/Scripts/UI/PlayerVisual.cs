@@ -88,15 +88,14 @@ public class PlayerVisual : Billboard
         // Update current playable character
         _playableCharacter = milestoneMapping.PlayableCharacter;
 
-        // Set this transform as player child
-        transform.SetParent(_playableCharacter.transform);
-
-        // Fix position
-        transform.position = _playableCharacter.transform.position + 10 * Vector3.up;
+        // Update position to follow the new player
+        if (_playableCharacter != null)
+            transform.position = _playableCharacter.transform.position + 10 * Vector3.up;
     }
 
     void OnPlayerButtonClick(ClickEvent evt)
     {
+        Debug.Log("PlayerVisual: Player button clicked.");
         _cameraManager.SwitchToOrbitalCamera(_playableCharacter.GetComponent<SelectableObject>());
         _soundManager.PlayButtonClickSFX();
     }

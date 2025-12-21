@@ -24,6 +24,8 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
     UIManager _uiManager;
     GameManager _gameManager;
     CameraManager _cameraManager;
+
+    ProgressManager _progressManager;
     #endregion
 
     #region INHERITED
@@ -42,6 +44,19 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
     #endregion
 
     #region LIFE CYCLE
+    void OnEnable()
+    {
+        SubscribeToRuntimeEvents();
+    }
+
+    void OnValidate()
+    {
+#if UNITY_EDITOR
+        if (!Application.isPlaying)
+            SubscribeToRuntimeEvents();
+#endif
+    }
+
     protected override void Awake()
     {
         base.Awake();
@@ -74,6 +89,11 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
         _uiManager.OnContextualPanelHiddenEvent -= OnContextualPanelHidden;
         _tourManager.TourPOIVisitedEvent -= OnTourPOIVisited;
         _cameraManager.OnCameraStateChangedEvent -= OnCameraStateChanged;
+    }
+
+    void OnDestroy()
+    {
+        UnsubscribeFromRuntimeEvents();
     }
     #endregion
 
@@ -118,6 +138,58 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
             SwitchToControlledState();
         else
             SwitchToNotControlledState();
+    }
+    #endregion
+
+    #region EDITOR UPDATES
+    void SubscribeToRuntimeEvents()
+    {
+        _progressManager = FindAnyObjectByType<ProgressManager>();
+
+        if (_progressManager != null)
+        {
+            _progressManager.OnMilestoneChangedEvent += OnMilestoneChanged;
+            _progressManager.OnEditorUpdateChangedEvent += OnEditorUpdateChanged;
+        }
+    }
+
+    void UnsubscribeFromRuntimeEvents()
+    {
+        _progressManager = FindAnyObjectByType<ProgressManager>();
+
+        if (_progressManager != null)
+        {
+            _progressManager.OnMilestoneChangedEvent -= OnMilestoneChanged;
+            _progressManager.OnEditorUpdateChangedEvent -= OnEditorUpdateChanged;
+        }
+    }
+
+    void OnMilestoneChanged(MilestoneMapping milestoneMapping)
+    {
+        GO.SetActive(milestoneMapping.PlayableCharacter == this);
+    }
+
+    void OnEditorUpdateChanged(bool updateInEditor)
+    {
+#if UNITY_EDITOR
+        if (Application.isPlaying)
+            return;
+
+        if (this == null) return;
+
+        // Not updated through editor
+        if (!updateInEditor)
+            // All playable characters active
+            GO.SetActive(true);
+        else
+        {
+            // Only active if corresponding to current milestone
+            if (_progressManager.CurrentMilestoneMapping.PlayableCharacter == this)
+                GO.SetActive(true);
+            else
+                GO.SetActive(false);
+        }
+#endif
     }
     #endregion
 }
