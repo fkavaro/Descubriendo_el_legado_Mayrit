@@ -1,0 +1,8 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="Area" style="flex-grow: 1; margin-top: 0; margin-right: 45px; margin-bottom: 45px; margin-left: 45px; background-color: rgb(113, 119, 153); border-left-color: rgb(47, 68, 89); border-right-color: rgb(47, 68, 89); border-top-color: rgb(47, 68, 89); border-bottom-color: rgb(47, 68, 89); border-top-width: 3px; border-right-width: 3px; border-bottom-width: 3px; border-left-width: 3px; border-top-left-radius: 30px; border-top-right-radius: 30px; border-bottom-right-radius: 30px; border-bottom-left-radius: 30px; padding-top: 15px; padding-right: 15px; padding-bottom: 15px; padding-left: 15px; justify-content: space-around; align-self: stretch;">
+        <ui:VisualElement name="Title" style="flex-grow: 0; align-items: center; justify-content: center; align-self: stretch;">
+            <ui:Label text="Label" class="subHeader" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;"/>
+        </ui:VisualElement>
+        <ui:VisualElement style="flex-grow: 1;"/>
+    </ui:VisualElement>
+</ui:UXML>
