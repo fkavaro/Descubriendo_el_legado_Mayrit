@@ -32,12 +32,18 @@ public class Spectator_CameraState : ACameraState
 
     public override void UpdateState()
     {
+        if (_gameManager.IsInPauseState)
+            return;
+
         _cameraController.Update();
         _cameraSelector.Update();
     }
 
     public override void LateUpdateState()
     {
+        if (_gameManager.IsInPauseState)
+            return;
+
         _cameraController.LateUpdate();
     }
 

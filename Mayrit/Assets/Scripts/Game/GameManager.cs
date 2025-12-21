@@ -21,8 +21,6 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
     #endregion
 
     #region INTERNAL PROPERTIES
-    public event Action<bool> GamePausedEvent;
-
     GameInputActions _inputActions;
     FiniteStateMachine<AGameState> _fsm;
     MainMenu_GameState _mainMenuState;
@@ -99,11 +97,6 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
     #endregion
 
     #region CALLBACK METHODS
-    void OnGamePaused(bool isPaused)
-    {
-        GamePausedEvent?.Invoke(isPaused);
-    }
-
     void OnMilestoneChanged(MilestoneMapping milestoneMapping)
     {
         _playableCharacter = milestoneMapping.PlayableCharacter;
@@ -131,7 +124,6 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
             _progressManager = ServiceLocator.Instance.Get<ProgressManager>();
 
             // Subscribe to events
-            _pauseState.GamePausedEvent += OnGamePaused;
             _progressManager.OnMilestoneChangedEvent += OnMilestoneChanged;
         }
     }

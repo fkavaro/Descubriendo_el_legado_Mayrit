@@ -77,6 +77,7 @@ public class SpectatorCameraController
     #region LIFE CYCLE
     public void Update()
     {
+        // TODO: move to constructor when final values
         _edgeScrolling = _cameraManager._edgeScrolling;
         _edgeScrollingMargin = _cameraManager._edgeScrollingMargin;
         _moveSpeed = _cameraManager._moveSpeed;
@@ -93,10 +94,6 @@ public class SpectatorCameraController
 
     public void LateUpdate()
     {
-        // Stop if game is paused
-        if (_gameManager.IsInPauseState)
-            return;
-
         _moveInput = _gameManager.InputActions.Camera.Move.ReadValue<Vector2>();
         _sprintPressed = _gameManager.InputActions.Camera.Sprint.IsPressed();
         _lookInput = _gameManager.InputActions.Camera.Look.ReadValue<Vector2>();

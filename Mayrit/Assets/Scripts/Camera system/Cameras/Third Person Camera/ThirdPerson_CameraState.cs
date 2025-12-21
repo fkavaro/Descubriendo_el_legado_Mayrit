@@ -30,6 +30,9 @@ public class ThirdPerson_CameraState : ACameraState
 
     public override void LateUpdateState()
     {
+        if (_gameManager.IsInPauseState)
+            return;
+
         _cameraController.TargetSmoothFolow();
 
         // Only allow camera rotation if the playable character is being controlled

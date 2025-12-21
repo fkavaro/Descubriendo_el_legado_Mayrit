@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class Pause_GameState : AGameState
 {
-    public event Action<bool> GamePausedEvent;
-
     // Dependency Injection
     protected TimeManager _timeManager;
 
@@ -21,8 +19,6 @@ public class Pause_GameState : AGameState
         base.StartState();
 
         Time.timeScale = 0f;
-
-        GamePausedEvent?.Invoke(true);
     }
 
     public override void ExitState()

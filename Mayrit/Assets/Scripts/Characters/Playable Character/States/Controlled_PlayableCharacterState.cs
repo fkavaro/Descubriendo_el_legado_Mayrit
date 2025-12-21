@@ -15,6 +15,9 @@ public class Controlled_PlayableCharacterState : APlayableCharacterState
 
     public override void UpdateState()
     {
+        if (_gameManager.IsInPauseState)
+            return;
+
         _playableCharacter.MovementController.UpdateInputMovement();
     }
 

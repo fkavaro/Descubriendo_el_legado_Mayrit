@@ -111,7 +111,6 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
         _uiManager.OnContextualPanelHiddenEvent += OnContextualPanelHidden;
         _uiManager.PlayCharacterClickedEvent += OnPlayCharacterClicked;
         _tourManager.TourPOIVisitedEvent += OnTourPOIVisited;
-        _gameManager.GamePausedEvent += OnGamePaused;
 
         // Set camera target at min height
         CinemachineOrbitalFollow _orbitalFollow = _spectatorCamera.GetComponent<CinemachineOrbitalFollow>();
@@ -135,7 +134,6 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
         _uiManager.OnContextualPanelHiddenEvent -= OnContextualPanelHidden;
         _uiManager.PlayCharacterClickedEvent -= OnPlayCharacterClicked;
         _tourManager.TourPOIVisitedEvent -= OnTourPOIVisited;
-        _gameManager.GamePausedEvent -= OnGamePaused;
     }
     #endregion
 
@@ -295,14 +293,6 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
     #endregion
 
     #region CALLBACK METHODS
-    void OnGamePaused(bool isGamePaused)
-    {
-        if (isGamePaused)
-            _gameManager.InputActions.Camera.Disable();
-        else if (IsInSpectatorState || IsInThirdPersonState)
-            _gameManager.InputActions.Camera.Enable();
-    }
-
     void OnExitThirdPersonCamera()
     {
         SwitchToSpectatorCamera();
