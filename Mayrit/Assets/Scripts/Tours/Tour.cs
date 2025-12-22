@@ -108,6 +108,8 @@ public class Tour : MonoBehaviour
 
     void AttachToPOI(PointOfInterest poi)
     {
+        DetachFromPOI(_nextPOI);
+
         if (poi != null)
         {
             poi.OnVisitedEvent += OnPOIVisited;
