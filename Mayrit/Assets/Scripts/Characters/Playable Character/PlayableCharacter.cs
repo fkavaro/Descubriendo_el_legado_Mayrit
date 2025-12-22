@@ -79,7 +79,7 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
         _uiManager.PlayCharacterClickedEvent += OnPlayCharacterClicked;
         _uiManager.OnContextualPanelHiddenEvent += OnContextualPanelHidden;
         _tourManager.TourPOIVisitedEvent += OnTourPOIVisited;
-        _cameraManager.OnCameraStateChangedEvent += OnCameraStateChanged;
+        _cameraManager.CameraStateChangedEvent += OnCameraStateChanged;
     }
 
     void OnDisable()
@@ -88,7 +88,7 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
         _uiManager.PlayCharacterClickedEvent -= OnPlayCharacterClicked;
         _uiManager.OnContextualPanelHiddenEvent -= OnContextualPanelHidden;
         _tourManager.TourPOIVisitedEvent -= OnTourPOIVisited;
-        _cameraManager.OnCameraStateChangedEvent -= OnCameraStateChanged;
+        _cameraManager.CameraStateChangedEvent -= OnCameraStateChanged;
     }
 
     void OnDestroy()
@@ -148,7 +148,7 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
 
         if (_progressManager != null)
         {
-            _progressManager.OnMilestoneChangedEvent += OnMilestoneChanged;
+            _progressManager.MilestoneChangedEvent += OnMilestoneChanged;
             _progressManager.OnEditorUpdateChangedEvent += OnEditorUpdateChanged;
         }
     }
@@ -159,7 +159,7 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
 
         if (_progressManager != null)
         {
-            _progressManager.OnMilestoneChangedEvent -= OnMilestoneChanged;
+            _progressManager.MilestoneChangedEvent -= OnMilestoneChanged;
             _progressManager.OnEditorUpdateChangedEvent -= OnEditorUpdateChanged;
         }
     }

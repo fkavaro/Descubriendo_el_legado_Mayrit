@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abc58fc9460fcf84eb0c46c995f89837, type: 3}
   m_Name: Tour 4
   m_EditorClassIdentifier: Assembly-CSharp::DataSO
-  _header: Tour 0
+  _header: Tour 4
   _subHeader: Aldeana
   _description: "Informaci\xF3n relevante sobre el tour."
   _icon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}

@@ -89,7 +89,7 @@ public class SpectatorHUD_UIState : AHUDState
 
         _uiManager.ShowTooltipEvent += OnShowTooltip;
         _uiManager.HideTooltipEvent += OnHideTooltip;
-        _progressManager.OnMilestoneChangedEvent += OnMilestoneChanged;
+        _progressManager.MilestoneChangedEvent += OnMilestoneChanged;
     }
 
     public override void StartState()
@@ -108,7 +108,7 @@ public class SpectatorHUD_UIState : AHUDState
 
         _uiManager.ShowTooltipEvent -= OnShowTooltip;
         _uiManager.HideTooltipEvent -= OnHideTooltip;
-        _progressManager.OnMilestoneChangedEvent -= OnMilestoneChanged;
+        _progressManager.MilestoneChangedEvent -= OnMilestoneChanged;
     }
     #endregion
 

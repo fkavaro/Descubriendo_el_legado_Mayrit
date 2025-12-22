@@ -35,7 +35,7 @@ public class ModernSuperposition : MonoBehaviour
     void Start()
     {
         // Subscribe to events
-        _cameraManager.OnCameraStateChangedEvent += OnCameraStateChanged;
+        _cameraManager.CameraStateChangedEvent += OnCameraStateChanged;
         _uiManager.ModernSuperpositionToggledEvent += ToggleMode;
     }
 

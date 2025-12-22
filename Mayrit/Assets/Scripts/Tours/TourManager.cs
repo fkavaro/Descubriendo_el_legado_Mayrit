@@ -50,7 +50,7 @@ public class TourManager : MonoBehaviour
         _soundManager = ServiceLocator.Instance.Get<SoundManager>();
 
         // Subscribe to events
-        _progressManager.OnMilestoneChangedEvent += OnMilestoneChanged;
+        _progressManager.MilestoneChangedEvent += OnMilestoneChanged;
         _uiManager.OnContextualPanelHiddenEvent += OnContextualPanelHidden;
         _uiManager.PlayCharacterClickedEvent += OnPlayCharacterClicked;
 
@@ -80,7 +80,7 @@ public class TourManager : MonoBehaviour
         _pathVisualizer.Deinitialize();
 
         // Unsubscribe from events
-        _progressManager.OnMilestoneChangedEvent -= OnMilestoneChanged;
+        _progressManager.MilestoneChangedEvent -= OnMilestoneChanged;
         _uiManager.OnContextualPanelHiddenEvent -= OnContextualPanelHidden;
         _uiManager.PlayCharacterClickedEvent -= OnPlayCharacterClicked;
 

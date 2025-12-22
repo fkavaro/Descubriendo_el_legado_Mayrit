@@ -124,7 +124,7 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
             _progressManager = ServiceLocator.Instance.Get<ProgressManager>();
 
             // Subscribe to events
-            _progressManager.OnMilestoneChangedEvent += OnMilestoneChanged;
+            _progressManager.MilestoneChangedEvent += OnMilestoneChanged;
         }
     }
     #endregion

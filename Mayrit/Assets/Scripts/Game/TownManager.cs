@@ -31,13 +31,13 @@ public class TownManager : MonoBehaviour
         _npcPoolManager = ServiceLocator.Instance.Get<NPCPoolManager>();
 
         // Subscribe to milestone changes to update population accordingly
-        _progressManager.OnMilestoneChangedEvent += OnMilestoneChanged;
+        _progressManager.MilestoneChangedEvent += OnMilestoneChanged;
     }
 
     void OnDestroy()
     {
         // Unsubscribe from milestone changes
-        _progressManager.OnMilestoneChangedEvent -= OnMilestoneChanged;
+        _progressManager.MilestoneChangedEvent -= OnMilestoneChanged;
     }
     #endregion
 

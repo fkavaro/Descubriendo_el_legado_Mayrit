@@ -38,7 +38,7 @@ public class PlayerVisual : Billboard
         _soundManager = ServiceLocator.Instance.Get<SoundManager>();
 
         // Subscribe to events and callbacks
-        _progressManager.OnMilestoneChangedEvent += OnMilestoneChanged;
+        _progressManager.MilestoneChangedEvent += OnMilestoneChanged;
         _playerButton.RegisterCallback<ClickEvent>(OnPlayerButtonClick);
     }
 

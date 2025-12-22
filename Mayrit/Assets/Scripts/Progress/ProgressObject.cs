@@ -52,7 +52,7 @@ public class ProgressObject : MonoBehaviour
 
         if (progressManager != null)
         {
-            progressManager.OnMilestoneChangedEvent += OnMilestoneChanged;
+            progressManager.MilestoneChangedEvent += OnMilestoneChanged;
             progressManager.OnEditorUpdateChangedEvent += OnEditorUpdateChanged;
         }
     }
@@ -63,7 +63,7 @@ public class ProgressObject : MonoBehaviour
 
         if (progressManager != null)
         {
-            progressManager.OnMilestoneChangedEvent -= OnMilestoneChanged;
+            progressManager.MilestoneChangedEvent -= OnMilestoneChanged;
             progressManager.OnEditorUpdateChangedEvent -= OnEditorUpdateChanged;
         }
     }

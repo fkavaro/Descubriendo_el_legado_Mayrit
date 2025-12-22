@@ -68,7 +68,7 @@ public class TimeManager : MonoBehaviour
         _progressManager = ServiceLocator.Instance.Get<ProgressManager>();
 
         // Subscribe to ProgressManager event to set the wanted time when the game starts
-        _progressManager.OnMilestoneChangedEvent += OnMilestoneChanged;
+        _progressManager.MilestoneChangedEvent += OnMilestoneChanged;
 
         _currentTime = _progressManager.CurrentMilestoneMapping.WantedTime;
         UpdateLighting();

@@ -62,7 +62,7 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
     #endregion
 
     #region INTERNAL PROPERTIES
-    public event Action OnCameraStateChangedEvent;
+    public event Action CameraStateChangedEvent;
 
     // Finiste State Machine and states
     FiniteStateMachine<ACameraState> _fsm;
@@ -165,7 +165,7 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
             if (DebugMode)
                 Debug.Log("Switched to spectator camera from third person.");
 
-            OnCameraStateChangedEvent?.Invoke();
+            CameraStateChangedEvent?.Invoke();
         }
         else if (IsInOrbitalState)
         {
@@ -193,7 +193,7 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
             if (DebugMode)
                 Debug.Log("Switched to spectator camera from orbital.");
 
-            OnCameraStateChangedEvent?.Invoke();
+            CameraStateChangedEvent?.Invoke();
         }
     }
 
@@ -214,7 +214,7 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
         if (DebugMode)
             Debug.Log($"Switched to orbital camera around '{selectedElement.name}'.");
 
-        OnCameraStateChangedEvent?.Invoke();
+        CameraStateChangedEvent?.Invoke();
     }
 
     public void SwitchToThirdPersonCamera()
@@ -241,7 +241,7 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
 
         _fsm.SwitchState(_thirdPersonState);
 
-        OnCameraStateChangedEvent?.Invoke();
+        CameraStateChangedEvent?.Invoke();
 
         if (DebugMode)
             Debug.Log("Switched to third person camera.");
@@ -252,7 +252,7 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
         _soundManager.PlayCameraTransitionSFX();
         _poiState.Camera = camera;
         _fsm.SwitchState(_poiState);
-        OnCameraStateChangedEvent?.Invoke();
+        CameraStateChangedEvent?.Invoke();
     }
     #endregion
 

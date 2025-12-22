@@ -25,7 +25,7 @@ public class ProgressManager : ABehaviourEntity<FiniteStateMachine<MilestoneStat
     #endregion
 
     #region INTERNAL PROPERTIES
-    public event Action<MilestoneMapping> OnMilestoneChangedEvent;
+    public event Action<MilestoneMapping> MilestoneChangedEvent;
     public event Action<bool> OnEditorUpdateChangedEvent;
 
     int _lastValidatedMilestoneIndex;
@@ -85,7 +85,7 @@ public class ProgressManager : ABehaviourEntity<FiniteStateMachine<MilestoneStat
             if (_updateInEditor)
             {
                 // To avoid issues with re-entrancy
-                UnityEditor.EditorApplication.delayCall += () => OnMilestoneChangedEvent?.Invoke(CurrentMilestoneMapping);
+                UnityEditor.EditorApplication.delayCall += () => MilestoneChangedEvent?.Invoke(CurrentMilestoneMapping);
             }
         }
 
@@ -180,7 +180,7 @@ public class ProgressManager : ABehaviourEntity<FiniteStateMachine<MilestoneStat
             return;
         }
 
-        OnMilestoneChangedEvent?.Invoke(CurrentMilestoneMapping);
+        MilestoneChangedEvent?.Invoke(CurrentMilestoneMapping);
     }
     #endregion
 }

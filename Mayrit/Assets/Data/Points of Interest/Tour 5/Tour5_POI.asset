@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Tour5_POI
   m_EditorClassIdentifier: Assembly-CSharp::DataSO
   _header: Point of Interest 0
-  _subHeader: Tour 0
+  _subHeader: Tour 5
   _description: Relevant information.
   _icon: {fileID: 0}
   _image: {fileID: 0}

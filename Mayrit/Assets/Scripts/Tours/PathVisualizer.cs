@@ -54,7 +54,7 @@ public class PathVisualizer
     /// </summary>
     public void Initialize()
     {
-        _progressManager.OnMilestoneChangedEvent += OnMilestoneChanged;
+        _progressManager.MilestoneChangedEvent += OnMilestoneChanged;
         _tourManager.OnTourNextPOIChangeEvent += OnNextPOIChange;
 
         if (_lineRenderer == null)
@@ -70,7 +70,7 @@ public class PathVisualizer
     /// </summary>
     public void Deinitialize()
     {
-        _progressManager.OnMilestoneChangedEvent -= OnMilestoneChanged;
+        _progressManager.MilestoneChangedEvent -= OnMilestoneChanged;
         _tourManager.OnTourNextPOIChangeEvent -= OnNextPOIChange;
     }
 

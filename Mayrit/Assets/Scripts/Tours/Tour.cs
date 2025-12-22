@@ -160,7 +160,7 @@ public class Tour : MonoBehaviour
 
         if (_progressManager != null)
         {
-            _progressManager.OnMilestoneChangedEvent += OnMilestoneChanged;
+            _progressManager.MilestoneChangedEvent += OnMilestoneChanged;
             _progressManager.OnEditorUpdateChangedEvent += OnEditorUpdateChanged;
         }
     }
@@ -171,7 +171,7 @@ public class Tour : MonoBehaviour
 
         if (_progressManager != null)
         {
-            _progressManager.OnMilestoneChangedEvent -= OnMilestoneChanged;
+            _progressManager.MilestoneChangedEvent -= OnMilestoneChanged;
             _progressManager.OnEditorUpdateChangedEvent -= OnEditorUpdateChanged;
         }
     }
