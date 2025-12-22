@@ -11,6 +11,8 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
     #endregion
 
     #region INTERNAL PROPERTIES
+    Vector3 _originalPosition;
+    Quaternion _originalRotation;
     PlayableCharacterMovementController _movementController;
 
     // State machine and states
@@ -23,7 +25,6 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
     TourManager _tourManager;
     UIManager _uiManager;
     CameraManager _cameraManager;
-
     ProgressManager _progressManager;
     #endregion
 
@@ -70,6 +71,10 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
         _uiManager = ServiceLocator.Instance.Get<UIManager>();
         _tourManager = ServiceLocator.Instance.Get<TourManager>();
         _cameraManager = ServiceLocator.Instance.Get<CameraManager>();
+        _progressManager = ServiceLocator.Instance.Get<ProgressManager>();
+
+        _originalPosition = transform.position;
+        _originalRotation = transform.rotation;
     }
 
     protected override void Start()
@@ -140,6 +145,7 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
         _uiManager.OnContextualPanelHiddenEvent += OnContextualPanelHidden;
         _tourManager.POIVisitedEvent += OnTourPOIVisited;
         _cameraManager.CameraStateChangedEvent += OnCameraStateChanged;
+        _progressManager.MilestoneChangedEvent += OnMilestoneChanged;
     }
 
     void UnsubscribeFromServicesEvents()
@@ -148,6 +154,7 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
         _uiManager.OnContextualPanelHiddenEvent -= OnContextualPanelHidden;
         _tourManager.POIVisitedEvent -= OnTourPOIVisited;
         _cameraManager.CameraStateChangedEvent -= OnCameraStateChanged;
+        _progressManager.MilestoneChangedEvent -= OnMilestoneChanged;
     }
 
     #region EDITOR UPDATES
@@ -175,7 +182,16 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
 
     void OnMilestoneChanged(MilestoneMapping milestoneMapping)
     {
-        GO.SetActive(milestoneMapping.PlayableCharacter == this);
+        // Return if not this playable character
+        if (milestoneMapping.PlayableCharacter != this)
+            return;
+
+        GO.SetActive(true);
+
+        // Reset position and rotation if tour is completed
+        if (milestoneMapping.Tour != null &&
+            milestoneMapping.Tour.IsCompleted)
+            GO.transform.SetPositionAndRotation(_originalPosition, _originalRotation);
     }
 
     void OnEditorUpdateChanged(bool updateInEditor)
