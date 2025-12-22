@@ -39,26 +39,29 @@ public class PlayerVisual : Billboard
 
         // Subscribe to events and callbacks
         _progressManager.MilestoneChangedEvent += OnMilestoneChanged;
+        _cameraManager.CameraStateChangedEvent += OnCameraStateChanged;
         _playerButton.RegisterCallback<ClickEvent>(OnPlayerButtonClick);
     }
 
     void LateUpdate()
     {
-        CheckButtonVisibility();
+        UpdateScreenPosition();
     }
     #endregion
 
     #region PRIVATE METHODS
-    void CheckButtonVisibility()
+    void UpdateTransformPosition()
     {
-        if (_playableCharacter == null)
-        {
-            _playerButton.visible = false;
-            return;
-        }
+        if (_playableCharacter != null)
+            transform.position = _playableCharacter.transform.position + 10 * Vector3.up;
+    }
 
-        // Hide button if not in spectator HUD state or if orbital camera is active
-        if (!_uiManager.IsInSpectatorHUDState || _cameraManager.IsInOrbitalState)
+    void UpdateScreenPosition()
+    {
+        // Hide if no playable character is set and not in spectator HUD nor camera
+        if (_playableCharacter == null &&
+            !_uiManager.IsInSpectatorHUDState &&
+            !_cameraManager.IsInSpectatorState)
         {
             _playerButton.visible = false;
             return;
@@ -88,9 +91,13 @@ public class PlayerVisual : Billboard
         // Update current playable character
         _playableCharacter = milestoneMapping.PlayableCharacter;
 
-        // Update position to follow the new player
-        if (_playableCharacter != null)
-            transform.position = _playableCharacter.transform.position + 10 * Vector3.up;
+        UpdateTransformPosition();
+    }
+
+    void OnCameraStateChanged()
+    {
+        if (_cameraManager.IsInSpectatorState)
+            UpdateTransformPosition();
     }
 
     void OnPlayerButtonClick(ClickEvent evt)
