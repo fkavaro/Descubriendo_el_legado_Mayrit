@@ -8,8 +8,6 @@ public class SpectatorHUD_UIState : AHUDState
     #region PROPERTIES
     public event Action OnModernSuperpositionEvent;
 
-    Tour _currentTour;
-
     Label _tooltip,
         _milestoneName,
         _milestoneDate;
@@ -100,20 +98,12 @@ public class SpectatorHUD_UIState : AHUDState
     public override void StartState()
     {
         base.StartState();
-
-        _currentTour = _progressManager.CurrentMilestoneMapping.Tour;
-
         if (_wasContextualPanelShown)
             _milestoneArea.style.display = DisplayStyle.None;
         else
             _milestoneArea.style.display = DisplayStyle.Flex;
 
-        if (_currentTour.IsCompleted)
-        {
-            // Enable next milestone button after tour is completed
-            if (!_progressManager.AtLastMilestone())
-                _nextMilestoneButton.SetEnabled(true);
-        }
+        _nextMilestoneButton.SetEnabled(_progressManager.IsNextMilestoneAvailable);
     }
 
     protected override void UnsubscribeToServicesEventsOnExit()
@@ -171,14 +161,11 @@ public class SpectatorHUD_UIState : AHUDState
 
     void OnMilestoneChanged(MilestoneMapping mapping)
     {
-        _currentTour = mapping.Tour;
-
         // Overwrite milestone area
         _milestoneName.text = mapping.Data.Header;
         _milestoneDate.text = mapping.Data.SubHeader;
 
-        // Next milestone according to tour completion
-        _nextMilestoneButton.SetEnabled(_currentTour.HasBeenCompleted);
+        _nextMilestoneButton.SetEnabled(_progressManager.IsNextMilestoneAvailable);
 
         // First milestone
         if (_progressManager.AtFirstMilestone())

@@ -9,13 +9,16 @@ public class ProgressManager : ABehaviourEntity<FiniteStateMachine<MilestoneStat
 {
     #region PROPERTY HELPERS
     public MilestoneMapping CurrentMilestoneMapping => GetMappingForIndex(_currentMilestoneIndex);
+    public bool IsNextMilestoneAvailable => CheckIfNextMilestoneAvailable();
+
     public int CurrentMilestoneIndex => _currentMilestoneIndex;
     #endregion
 
     #region EDITOR PROPERTIES
-    [Header("Scene changes")]
+    [Header("Debug tweaks")]
+    [SerializeField] bool _canSkipTours = false;
     [Tooltip("Wether to update scene at milestone changes in editor")]
-    [SerializeField] bool _updateInEditor = true;
+    [SerializeField] bool _changesInEditor = false;
 
     [Header("Milestones")]
     [Range(0, 7)]
@@ -82,7 +85,7 @@ public class ProgressManager : ABehaviourEntity<FiniteStateMachine<MilestoneStat
         {
             _lastValidatedMilestoneIndex = _currentMilestoneIndex;
 
-            if (_updateInEditor)
+            if (_changesInEditor)
             {
                 // To avoid issues with re-entrancy
                 UnityEditor.EditorApplication.delayCall += () => MilestoneChangedEvent?.Invoke(CurrentMilestoneMapping);
@@ -90,10 +93,10 @@ public class ProgressManager : ABehaviourEntity<FiniteStateMachine<MilestoneStat
         }
 
         // Invoke editor update changed event when _updateInEditor is changed in inspector
-        if (_lastUpdateInEditor != _updateInEditor)
+        if (_lastUpdateInEditor != _changesInEditor)
         {
-            _lastUpdateInEditor = _updateInEditor;
-            bool update = _updateInEditor;
+            _lastUpdateInEditor = _changesInEditor;
+            bool update = _changesInEditor;
 
             UnityEditor.EditorApplication.delayCall += () => OnEditorUpdateChangedEvent?.Invoke(update);
         }
@@ -151,6 +154,15 @@ public class ProgressManager : ABehaviourEntity<FiniteStateMachine<MilestoneStat
             return mapping;
 
         return null;
+    }
+
+    bool CheckIfNextMilestoneAvailable()
+    {
+        bool canSkipInRuntime = Application.isPlaying && Application.isEditor && _canSkipTours;
+        bool tourCompleted = CurrentMilestoneMapping.Tour.HasBeenCompleted;
+        bool isNextMilestoneAvailable = !AtLastMilestone() && (canSkipInRuntime || tourCompleted);
+
+        return isNextMilestoneAvailable;
     }
     #endregion
 
