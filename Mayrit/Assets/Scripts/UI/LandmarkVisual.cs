@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -13,13 +14,18 @@ public class LandmarkVisual : MonoBehaviour
     // Dependency Injection
     UIManager _uiManager;
     SoundManager _soundManager;
+    CameraManager _cameraManager;
 
     void Awake()
     {
         // Get dependency from Service Locator
         _uiManager = ServiceLocator.Instance.Get<UIManager>();
         _soundManager = ServiceLocator.Instance.Get<SoundManager>();
+        _cameraManager = ServiceLocator.Instance.Get<CameraManager>();
+
+        _cameraManager.CameraStateChangedEvent += OnCameraStateChanged;
     }
+
 
     void OnEnable()
     {
@@ -53,5 +59,15 @@ public class LandmarkVisual : MonoBehaviour
     {
         _uiManager.ShowContextualPanel(_information);
         _soundManager.PlayButtonClickSFX();
+    }
+
+    void OnCameraStateChanged()
+    {
+        if (_cameraManager.IsInSpectatorState)
+        {
+            _nameButton.visible = true;
+        }
+        else
+            _nameButton.visible = false;
     }
 }

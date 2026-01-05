@@ -42,11 +42,6 @@ public class PlayerVisual : Billboard
         _cameraManager.CameraStateChangedEvent += OnCameraStateChanged;
         _playerButton.RegisterCallback<ClickEvent>(OnPlayerButtonClick);
     }
-
-    void LateUpdate()
-    {
-        UpdateScreenPosition();
-    }
     #endregion
 
     #region PRIVATE METHODS
@@ -54,34 +49,6 @@ public class PlayerVisual : Billboard
     {
         if (_playableCharacter != null)
             transform.position = _playableCharacter.transform.position + 10 * Vector3.up;
-    }
-
-    void UpdateScreenPosition()
-    {
-        // Hide if no playable character is set and not in spectator HUD nor camera
-        if (_playableCharacter == null &&
-            !_uiManager.IsInSpectatorHUDState &&
-            !_cameraManager.IsInSpectatorState)
-        {
-            _playerButton.visible = false;
-            return;
-        }
-
-        // Get player position in world space and convert to screen space
-        Vector3 worldPos = _playableCharacter.transform.position + Vector3.up;
-        Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
-
-        // Check if player is in-screen
-        bool playerInScreen = screenPos.z > 0 &&
-                    screenPos.x >= 0 && screenPos.x <= Screen.width &&
-                    screenPos.y >= 0 && screenPos.y <= Screen.height;
-
-        // Show button if player is in-screen
-        if (playerInScreen)
-            _playerButton.visible = true;
-        // Hide button if not
-        else
-            _playerButton.visible = false;
     }
     #endregion
 
@@ -92,12 +59,18 @@ public class PlayerVisual : Billboard
         _playableCharacter = milestoneMapping.PlayableCharacter;
 
         UpdateTransformPosition();
+        OnCameraStateChanged();
     }
 
     void OnCameraStateChanged()
     {
         if (_cameraManager.IsInSpectatorState)
+        {
             UpdateTransformPosition();
+            _playerButton.visible = true;
+        }
+        else
+            _playerButton.visible = false;
     }
 
     void OnPlayerButtonClick(ClickEvent evt)
