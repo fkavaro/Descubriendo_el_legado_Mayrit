@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
 public class PauseMenu_UIState : AUIState
@@ -56,6 +57,15 @@ public class PauseMenu_UIState : AUIState
     {
         base.StartState();
         _gameManager.SwitchToPauseState();
+        _gameManager.InputActions.UI.Enable();
+        _gameManager.InputActions.UI.Pause.performed += OnPauseKeyPressed;
+    }
+
+    public override void ExitState()
+    {
+        base.ExitState();
+        _gameManager.InputActions.UI.Disable();
+        _gameManager.InputActions.UI.Pause.performed -= OnPauseKeyPressed;
     }
     #endregion
 
@@ -69,6 +79,11 @@ public class PauseMenu_UIState : AUIState
             _uiManager.SwitchToSpectatorHUDState();
         else // Third Person or POI cameras
             _uiManager.SwitchToPlayerHUDState();
+    }
+
+    void OnPauseKeyPressed(InputAction.CallbackContext context)
+    {
+        OnPlayClicked(null);
     }
 
     void OnMainMenuClicked(ClickEvent evt)

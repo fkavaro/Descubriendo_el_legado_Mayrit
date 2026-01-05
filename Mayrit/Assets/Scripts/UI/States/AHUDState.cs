@@ -1,6 +1,7 @@
 using System;
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
 public abstract class AHUDState : AUIState
@@ -56,6 +57,9 @@ public abstract class AHUDState : AUIState
         _controlsVisualRoot.style.display = _uiManager.ControlsVisibilityValueSet ?
             DisplayStyle.Flex :
             DisplayStyle.None;
+
+        _gameManager.InputActions.UI.Enable();
+        _gameManager.InputActions.UI.Pause.performed += OnPauseKeyPressed;
     }
 
     protected override void SubscribeToServicesEventsOnStart()
@@ -80,6 +84,9 @@ public abstract class AHUDState : AUIState
 
         // Hide contextual panel root
         _contextualPanelRoot.style.display = DisplayStyle.None;
+
+        _gameManager.InputActions.UI.Disable();
+        _gameManager.InputActions.UI.Pause.performed -= OnPauseKeyPressed;
     }
 
     public override bool IsCursorOverUI()
@@ -137,6 +144,11 @@ public abstract class AHUDState : AUIState
     {
         _uiManager.SwitchToPauseState();
         _soundManager.PlayButtonClickSFX();
+    }
+
+    void OnPauseKeyPressed(InputAction.CallbackContext context)
+    {
+        OnPauseClicked(null);
     }
 
     void OnContextualPanelShownCallback()

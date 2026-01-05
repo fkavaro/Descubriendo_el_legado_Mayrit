@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
 public class HeritageMenu_UIState : AUIState
@@ -30,6 +31,17 @@ public class HeritageMenu_UIState : AUIState
     {
         base.StartState();
         _gameManager.SwitchToPauseState();
+
+        _gameManager.InputActions.UI.Enable();
+        _gameManager.InputActions.UI.Pause.performed += OnPauseKeyPressed;
+    }
+
+    public override void ExitState()
+    {
+        base.ExitState();
+
+        _gameManager.InputActions.UI.Disable();
+        _gameManager.InputActions.UI.Pause.performed -= OnPauseKeyPressed;
     }
     #endregion
 
@@ -39,6 +51,11 @@ public class HeritageMenu_UIState : AUIState
         _uiManager.BehaviourSystem.SwitchToPreviousStateInStack(); // Player or spectator HUD
         _gameManager.SwitchToGamePlayState();
         _soundManager.PlayButtonClickSFX();
+    }
+
+    void OnPauseKeyPressed(InputAction.CallbackContext context)
+    {
+        OnPlayClicked(null);
     }
     #endregion
 }
