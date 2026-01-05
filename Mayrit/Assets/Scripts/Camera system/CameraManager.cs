@@ -267,6 +267,7 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
 
     /// <summary>
     /// Smoothly moves the given transform to the new position in given speed.
+    /// Only interpolates axes that actually change, allowing other axes to be modified by external input.
     /// </summary>
     IEnumerator SmoothMove(Transform transform, Vector3 newPosition, float speed, Action onComplete)
     {
@@ -274,25 +275,44 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
             yield break;
 
         Vector3 startPosition = transform.position;
-        float distance = Vector3.Distance(startPosition, newPosition);
+        Vector3 endPosition = newPosition;
+        float distance = Vector3.Distance(startPosition, endPosition);
         if (distance < 0.001f)
         {
-            transform.position = newPosition;
             onComplete?.Invoke();
             yield break;
         }
 
-        float moved = 0f;
-        while (moved < distance)
+        float totalTime = distance / speed;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < totalTime)
         {
-            float step = speed * Time.unscaledDeltaTime;
-            moved += step;
-            float t = Mathf.Clamp01(moved / distance);
-            transform.position = Vector3.Lerp(startPosition, newPosition, t);
+            elapsedTime += Time.unscaledDeltaTime;
+            float t = Mathf.Clamp01(elapsedTime / totalTime);
+
+            Vector3 currentPos = transform.position;
+            // Only lerp axes that actually change, preserving other axes for input-based movement
+            if (Mathf.Abs(endPosition.x - startPosition.x) > 0.001f)
+                currentPos.x = Mathf.Lerp(startPosition.x, endPosition.x, t);
+            if (Mathf.Abs(endPosition.y - startPosition.y) > 0.001f)
+                currentPos.y = Mathf.Lerp(startPosition.y, endPosition.y, t);
+            if (Mathf.Abs(endPosition.z - startPosition.z) > 0.001f)
+                currentPos.z = Mathf.Lerp(startPosition.z, endPosition.z, t);
+
+            transform.position = currentPos;
             yield return null;
         }
 
-        transform.position = newPosition;
+        Vector3 finalPos = transform.position;
+        // Ensure final position has correct values for axes that changed
+        if (Mathf.Abs(endPosition.x - startPosition.x) > 0.001f)
+            finalPos.x = endPosition.x;
+        if (Mathf.Abs(endPosition.y - startPosition.y) > 0.001f)
+            finalPos.y = endPosition.y;
+        if (Mathf.Abs(endPosition.z - startPosition.z) > 0.001f)
+            finalPos.z = endPosition.z;
+        transform.position = finalPos;
         onComplete?.Invoke();
     }
     #endregion

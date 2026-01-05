@@ -20,9 +20,9 @@ public class SpectatorCameraController
 
     // Movement
     float _moveSpeed,
-       _acceleration,
-       _deceleration,
-       _printSpeedMultiplier = 2f;
+        _acceleration,
+        _deceleration,
+        _printSpeedMultiplier = 2f;
     Vector3 _movementLimitsX
         , _movementLimitsZ;
 
