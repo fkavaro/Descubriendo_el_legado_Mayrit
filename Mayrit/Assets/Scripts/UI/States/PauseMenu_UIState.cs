@@ -68,12 +68,7 @@ public class PauseMenu_UIState : AUIState
         if (_cameraManager.IsInSpectatorState || _cameraManager.IsInOrbitalState)
             _uiManager.SwitchToSpectatorHUDState();
         else // Third Person or POI cameras
-        {
-            if (_gameManager.PlayableCharacter != null && _gameManager.PlayableCharacter.IsBeingControlled)
-                _uiManager.SwitchToPlayerHUDState();
-            else
-                Debug.LogWarning($"{StateName}: No playable character is being controlled when resuming from pause.");
-        }
+            _uiManager.SwitchToPlayerHUDState();
     }
 
     void OnMainMenuClicked(ClickEvent evt)
