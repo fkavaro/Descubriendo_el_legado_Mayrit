@@ -1053,6 +1053,7 @@ GameObject:
   - component: {fileID: 3238848245768901089}
   - component: {fileID: 3635656677400482638}
   - component: {fileID: 8388738891960218150}
+  - component: {fileID: 2684851220759006466}
   m_Layer: 0
   m_Name: TejadoPequenoPatio_low
   m_TagString: Untagged
@@ -1132,6 +1133,28 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &2684851220759006466
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5320778795056963515}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -947712362379145489, guid: 3fc9f31ae9255c74b97d51eececf3782, type: 3}
 --- !u!1 &5399670737698118662
 GameObject:
   m_ObjectHideFlags: 0
@@ -1323,6 +1346,7 @@ GameObject:
   - component: {fileID: 5746698959977883069}
   - component: {fileID: 353505131530688796}
   - component: {fileID: 226511286116441156}
+  - component: {fileID: 2549779042402780930}
   m_Layer: 0
   m_Name: Puerta_low019
   m_TagString: Untagged
@@ -1402,6 +1426,28 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &2549779042402780930
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6497670308881883379}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 6963013555582144561, guid: 3fc9f31ae9255c74b97d51eececf3782, type: 3}
 --- !u!1 &6570830461523662203
 GameObject:
   m_ObjectHideFlags: 0
@@ -1900,6 +1946,7 @@ GameObject:
   - component: {fileID: 2040628771817932609}
   - component: {fileID: 3082252623341801456}
   - component: {fileID: 2352573365596635672}
+  - component: {fileID: 4886512821584841653}
   m_Layer: 0
   m_Name: CasaPatio_low
   m_TagString: Untagged
@@ -1982,6 +2029,28 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &4886512821584841653
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8752388810743549267}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -5015849566315324586, guid: 3fc9f31ae9255c74b97d51eececf3782, type: 3}
 --- !u!1 &8900612392618280496
 GameObject:
   m_ObjectHideFlags: 0
@@ -2175,6 +2244,7 @@ GameObject:
   - component: {fileID: 2683635723518880474}
   - component: {fileID: 4827788289230653794}
   - component: {fileID: 1912654517637105239}
+  - component: {fileID: 270823441846336975}
   m_Layer: 0
   m_Name: ParedPatio_low
   m_TagString: Untagged
@@ -2254,6 +2324,28 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &270823441846336975
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9082986771795255196}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 5123553521615400024, guid: 3fc9f31ae9255c74b97d51eececf3782, type: 3}
 --- !u!1001 &5844192709324943374
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2265,6 +2357,10 @@ PrefabInstance:
     - target: {fileID: 1917410211841214093, guid: 02ef6d58990547940b0774ed43f34953, type: 3}
       propertyPath: m_Name
       value: Small corner house model
+      objectReference: {fileID: 0}
+    - target: {fileID: 5482459854255525749, guid: 02ef6d58990547940b0774ed43f34953, type: 3}
+      propertyPath: m_VersionIndex
+      value: 3347
       objectReference: {fileID: 0}
     - target: {fileID: 7092616770630309891, guid: 02ef6d58990547940b0774ed43f34953, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2305,6 +2401,10 @@ PrefabInstance:
     - target: {fileID: 7092616770630309891, guid: 02ef6d58990547940b0774ed43f34953, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7680150255654664422, guid: 02ef6d58990547940b0774ed43f34953, type: 3}
+      propertyPath: m_VersionIndex
+      value: 3402
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2363,6 +2463,10 @@ PrefabInstance:
     - target: {fileID: 848587875322552143, guid: 70996e4c9ca58bf458584ec8fa52c5e1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3153480581593627837, guid: 70996e4c9ca58bf458584ec8fa52c5e1, type: 3}
+      propertyPath: m_VersionIndex
+      value: 1327
       objectReference: {fileID: 0}
     - target: {fileID: 9184778573565746444, guid: 70996e4c9ca58bf458584ec8fa52c5e1, type: 3}
       propertyPath: m_Name

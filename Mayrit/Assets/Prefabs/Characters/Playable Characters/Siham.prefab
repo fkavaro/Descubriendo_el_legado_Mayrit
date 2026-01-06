@@ -84,7 +84,6 @@ MonoBehaviour:
   _nearDistance: {x: 5, y: 7}
   _animator: {fileID: 1639577397424246107}
   _interactionRange: 3
-  _conversationCooldown: 0
   _gender: 1
   _characterModel: {fileID: 5434453373518007707}
 --- !u!114 &59659429370565961
