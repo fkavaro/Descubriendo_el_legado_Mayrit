@@ -73,6 +73,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8038429083490279149}
     m_Modifications:
+    - target: {fileID: 1150420159964736154, guid: f6ee54542fb2bd3478a80558a77cdb24, type: 3}
+      propertyPath: m_VersionIndex
+      value: 147
+      objectReference: {fileID: 0}
     - target: {fileID: 2093209467128789361, guid: f6ee54542fb2bd3478a80558a77cdb24, type: 3}
       propertyPath: m_Name
       value: Arch segment
@@ -116,6 +120,34 @@ PrefabInstance:
     - target: {fileID: 3756045470309909538, guid: f6ee54542fb2bd3478a80558a77cdb24, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4423318336605868917, guid: f6ee54542fb2bd3478a80558a77cdb24, type: 3}
+      propertyPath: m_VersionIndex
+      value: 224
+      objectReference: {fileID: 0}
+    - target: {fileID: 5490118026278572116, guid: f6ee54542fb2bd3478a80558a77cdb24, type: 3}
+      propertyPath: m_VersionIndex
+      value: 224
+      objectReference: {fileID: 0}
+    - target: {fileID: 5632869949337828479, guid: f6ee54542fb2bd3478a80558a77cdb24, type: 3}
+      propertyPath: m_VersionIndex
+      value: 224
+      objectReference: {fileID: 0}
+    - target: {fileID: 7051083292209829172, guid: f6ee54542fb2bd3478a80558a77cdb24, type: 3}
+      propertyPath: m_VersionIndex
+      value: 184
+      objectReference: {fileID: 0}
+    - target: {fileID: 7228707848746483869, guid: f6ee54542fb2bd3478a80558a77cdb24, type: 3}
+      propertyPath: m_VersionIndex
+      value: 184
+      objectReference: {fileID: 0}
+    - target: {fileID: 7755781048083799463, guid: f6ee54542fb2bd3478a80558a77cdb24, type: 3}
+      propertyPath: m_VersionIndex
+      value: 224
+      objectReference: {fileID: 0}
+    - target: {fileID: 7903508879127112009, guid: f6ee54542fb2bd3478a80558a77cdb24, type: 3}
+      propertyPath: m_VersionIndex
+      value: 184
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
