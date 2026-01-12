@@ -50,17 +50,17 @@ public class CharacterAnimationController
                 Debug.LogWarning($"[AnimationController.ChangeAnimationTo()] {_behaviourEntity.Name}: Animator not available", _behaviourEntity.GO);
         }
 
-        AnimatorStateInfo currentState = _animator.GetCurrentAnimatorStateInfo(0);
-        int currentAnimation = currentState.shortNameHash;
+        // Determine effective state (current or next when in transition)
+        int effectiveState = GetEffectiveStateHash(0);
 
-        // Change to requested animation if is not already playing
-        if (currentAnimation != requestedAnimation)
+        // Change to requested animation if it isn't already active or transitioning to it
+        if (effectiveState != requestedAnimation)
         {
-            // Update bookkeeping
-            _lastPlayedAnimation = currentAnimation;
+            // Update bookkeeping with current state's shortNameHash
+            _lastPlayedAnimation = _animator.GetCurrentAnimatorStateInfo(0).shortNameHash;
 
-            // Interpolate transition to new animation
-            _animator.CrossFade(requestedAnimation, duration);
+            // Crossfade to the new animation on base layer (layer 0)
+            _animator.CrossFade(requestedAnimation, duration, 0);
         }
     }
 
@@ -111,6 +111,45 @@ public class CharacterAnimationController
 
         _behaviourEntity.IsExecutionPaused = false;
         onComplete?.Invoke();
+    }
+    #endregion
+
+    #region PRIVATE METHODS
+    bool IsAnimatorAvailable()
+    {
+        return _animator != null && _animator.isActiveAndEnabled;
+    }
+
+    bool IsCurrentAnimation(int animation)
+    {
+        if (!IsAnimatorAvailable())
+            return false;
+
+        // Compare requested animation against effective state (handles transitions)
+        return GetEffectiveStateHash(0) == animation;
+    }
+
+    bool IsAnimationFinished(int animation)
+    {
+        if (!IsAnimatorAvailable())
+            return true;
+
+        if (!IsCurrentAnimation(animation))
+            return false;
+
+        return IsCurrentAnimationFinished();
+    }
+
+    // Returns the active state's shortNameHash, considering ongoing transitions
+    int GetEffectiveStateHash(int layer)
+    {
+        if (_animator.IsInTransition(layer))
+        {
+            AnimatorStateInfo next = _animator.GetNextAnimatorStateInfo(layer);
+            if (next.shortNameHash != 0)
+                return next.shortNameHash;
+        }
+        return _animator.GetCurrentAnimatorStateInfo(layer).shortNameHash;
     }
     #endregion
 
@@ -218,36 +257,6 @@ public class CharacterAnimationController
     public bool IsTalking()
     {
         return IsCurrentAnimation(_talkAnim);
-    }
-    #endregion
-
-    #region PRIVATE METHODS
-    bool IsAnimatorAvailable()
-    {
-        return _animator != null && _animator.isActiveAndEnabled;
-    }
-
-    bool IsCurrentAnimation(int animation)
-    {
-        if (!IsAnimatorAvailable())
-            return false;
-
-        // Get current animation state info
-        AnimatorStateInfo currentStateInfo = _animator.GetCurrentAnimatorStateInfo(0);
-
-        // Given animation is the current one
-        return currentStateInfo.shortNameHash == animation;
-    }
-
-    bool IsAnimationFinished(int animation)
-    {
-        if (!IsAnimatorAvailable())
-            return true;
-
-        if (!IsCurrentAnimation(animation))
-            return false;
-
-        return IsCurrentAnimationFinished();
     }
     #endregion
 }

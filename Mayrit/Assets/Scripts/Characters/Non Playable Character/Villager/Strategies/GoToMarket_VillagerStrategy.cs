@@ -60,7 +60,7 @@ public class GoToMarket_VillagerStrategy : ANPCStrategy<Villager>
         }
 
         // Is close to destination stall spot
-        if (_npc.MovementController.IsCloseTo(_marketStallSpot))
+        if (_npc.MovementController.IsCloseTo(_marketStallSpot, 1f))
         {
             if (!_market.IsOpen())
             {
