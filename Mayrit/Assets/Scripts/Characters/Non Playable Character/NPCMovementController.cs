@@ -4,19 +4,19 @@ using UnityEngine.AI;
 
 public class NPCMovementController
 {
-    #region PROPERTIES HELPERS
-    public Spot DestinationSpot => _destinationSpot;
-    public Vector3 DestinationPos => _destinationPos;
-    #endregion
-
     #region PROPERTIES
     readonly INPC _npc;
     readonly NavMeshAgent _agent;
-    readonly float _positionLeniency; // Allowable leniency when setting destination
+    readonly float _positionLeniency;
     readonly NavMeshQueryFilter _queryFilter;
 
     Vector3 _destinationPos;
     Spot _destinationSpot;
+
+    // Public getters
+    public Spot DestinationSpot => _destinationSpot;
+    public Vector3 DestinationPos => _destinationPos;
+    public bool IsAgentValid => _agent != null && _agent.isOnNavMesh;
     #endregion
 
     #region CONSTRUCTOR
@@ -46,6 +46,16 @@ public class NPCMovementController
         // Deactivate agent initially
         _agent.enabled = false;
     }
+
+    public void Reset()
+    {
+        if (_destinationSpot != null)
+        {
+            _destinationSpot.SetOccupied(false);
+            _destinationSpot = null;
+        }
+        _destinationPos = Vector3.zero;
+    }
     #endregion
 
     #region IF STOPPED METHODS
@@ -67,21 +77,14 @@ public class NPCMovementController
 
     public void SetIfStopped(bool isStopped)
     {
-        if (_agent.isStopped == isStopped) return;
-
-        if (_agent == null)
+        if (!IsAgentValid)
         {
-            Debug.LogError(_npc.Name + ", IsStopped(): NavMeshAgent is null.");
+            Debug.LogWarning($"[SetIfStopped] {_npc.Name} agent is not valid.", _npc.GO);
             return;
         }
 
-        if (!_agent.isOnNavMesh)
-        {
-            Debug.LogError(_npc.Name + ", IsStopped(): NavMeshAgent is not on a NavMesh.");
-            return;
-        }
-
-        _npc.IsStopped = isStopped;
+        if (_agent.isStopped != isStopped)
+            _npc.IsStopped = isStopped;
     }
     #endregion
 
@@ -102,11 +105,20 @@ public class NPCMovementController
     #region SET DESTINATION METHODS
     public bool SetDestinationSpot(Spot targetSpot)
     {
-        if (_agent == null || !_agent.isOnNavMesh)
+        if (!IsAgentValid)
+        {
+            Debug.LogWarning($"[SetDestinationSpot] {_npc.Name} agent is not valid.", _npc.GO);
             return false;
+        }
 
-        if (targetSpot == null) return false;
-        if (IsDestinationSpot(targetSpot)) return true;
+        if (targetSpot == null)
+        {
+            Debug.LogWarning($"[SetDestinationSpot] {_npc.Name} target spot is null.", _npc.GO);
+            return false;
+        }
+
+        if (IsDestinationSpot(targetSpot))
+            return true;
 
         bool success = SetDestination(targetSpot.transform.position);
         if (success)
@@ -117,10 +129,14 @@ public class NPCMovementController
 
     public bool SetDestination(Vector3 targetPos)
     {
-        if (_agent == null || !_agent.isOnNavMesh)
+        if (!IsAgentValid)
+        {
+            Debug.LogWarning($"[SetDestination] {_npc.Name} agent is not valid.", _npc.GO);
             return false;
+        }
 
-        if (IsDestination(targetPos)) return true;
+        if (IsDestination(targetPos))
+            return true;
 
         NavMeshPath path = new();
 
@@ -160,9 +176,9 @@ public class NPCMovementController
     #endregion
 
     #region IS CLOSE METHODS
-    public bool IsCloseToSpot(Spot targetSpot, float horizontalDistance = 2f, float verticalDistance = 3.5f)
+    public bool IsCloseToSpot(Spot targetSpot, float checkingDistance = 2f)
     {
-        if (_agent == null || !_agent.isOnNavMesh)
+        if (!IsAgentValid)
             return false;
 
         if (targetSpot == null)
@@ -171,28 +187,30 @@ public class NPCMovementController
         if (!IsDestinationSpot(targetSpot))
         {
             if (_npc.DebugMode)
-                Debug.LogWarning($"{_npc.Name} checking close distance at unset destination spot.", _npc.GO);
+                Debug.LogWarning($"[IsCloseToSpot] {_npc.Name} checking close distance at unset destination spot.", _npc.GO);
             return false;
         }
 
-        return IsCloseToDestination(horizontalDistance);
+        return IsCloseToDestination(checkingDistance);
     }
 
-    public bool IsCloseToDestination(float checkingDistance = 1f)
+    public bool IsCloseToDestination(float checkingDistance = 2f)
     {
-        if (_agent == null || !_agent.isOnNavMesh)
+        if (!IsAgentValid)
             return false;
 
-        float nearDistance = checkingDistance > 1f ? checkingDistance : _npc.NearDistance;
+        if (_agent.pathPending)
+            return false;
 
-        return _agent.remainingDistance <= nearDistance;
+        float distance = Mathf.Max(checkingDistance, _npc.NearDistance);
+        return _agent.remainingDistance <= distance;
     }
     #endregion
 
     #region HAS ARRIVED METHODS
     public bool HasArrivedAtSpot(Spot targetSpot, bool fixRotation = false)
     {
-        if (_agent == null || !_agent.isOnNavMesh)
+        if (!IsAgentValid)
             return false;
 
         if (targetSpot == null)
@@ -201,7 +219,7 @@ public class NPCMovementController
         if (!IsDestinationSpot(targetSpot))
         {
             if (_npc.DebugMode)
-                Debug.LogWarning($"{_npc.Name} checking arrival at unset destination spot.", _npc.GO);
+                Debug.LogWarning($"[HasArrivedAtSpot] {_npc.Name} checking arrival at unset destination spot.", _npc.GO);
             return false;
         }
 
@@ -223,10 +241,10 @@ public class NPCMovementController
 
     public bool HasArrivedAtDestination()
     {
-        if (_agent == null || !_agent.isOnNavMesh)
+        if (!IsAgentValid || _agent.pathPending)
             return false;
 
-        return !_agent.pathPending && _agent.remainingDistance <= _agent.stoppingDistance;
+        return _agent.remainingDistance <= _agent.stoppingDistance;
     }
     #endregion
 
@@ -269,7 +287,7 @@ public class NPCMovementController
     {
         if (spot == null)
         {
-            Debug.LogWarning("PlaceAtSpot(Spot): spot is null.");
+            Debug.LogWarning($"[PlaceAtSpot] {_npc.Name} spot is null.", _npc.GO);
             return;
         }
 
@@ -305,8 +323,17 @@ public class NPCMovementController
 
     public Vector3 GoToMiddlePoint(INPC otherNPC)
     {
-        if (_agent == null || !_agent.isOnNavMesh)
+        if (!IsAgentValid)
+        {
+            Debug.LogWarning($"[GoToMiddlePoint] {_npc.Name} agent is not valid.", _npc.GO);
             return Vector3.zero;
+        }
+
+        if (otherNPC == null)
+        {
+            Debug.LogWarning($"[GoToMiddlePoint] {_npc.Name} other NPC is null.", _npc.GO);
+            return _agent.transform.position;
+        }
 
         // Compute midpoint and safe target positions offset so NPCs don't overlap
         Vector3 posA = _npc.GO.transform.position;
@@ -379,10 +406,4 @@ public class NPCMovementController
         }
     }
     #endregion
-
-    public void Reset()
-    {
-        _destinationSpot = null;
-        _destinationPos = Vector3.zero;
-    }
 }
