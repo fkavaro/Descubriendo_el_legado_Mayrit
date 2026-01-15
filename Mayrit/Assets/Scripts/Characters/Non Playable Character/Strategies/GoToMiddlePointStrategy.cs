@@ -25,7 +25,8 @@ where NPCtype : INPC
         if (_otherNPC == null)
         {
             if (_npc.DebugMode)
-                Debug.LogWarning($"[GoToMiddlePointStrategy.Start()] {_npc.Name} trying to talk to null NPC", _npc.GO);
+                Debug.LogWarning($"[{_npc.Name}.GoToMiddlePointStrategy.Start()] trying to talk to null NPC", _npc.GO);
+            _npc.ConversationInterrupted();
             return Node.Status.Failure;
         }
 
@@ -38,17 +39,18 @@ where NPCtype : INPC
         if (_lastMiddlePoint == Vector3.zero || IsMiddlePointTooFar(_lastMiddlePoint))
         {
             if (_npc.DebugMode)
-                Debug.LogWarning($"[GoToMiddlePointStrategy.Start()] {_npc.Name} could not calculate a valid middle point to {_otherNPC.Name}", _npc.GO);
+                Debug.LogWarning($"[{_npc.Name}.GoToMiddlePointStrategy.Start()] could not calculate a valid middle point to {_otherNPC.Name}", _npc.GO);
 
+            _npc.ConversationInterrupted();
             return Node.Status.Failure;
         }
 
         _isMoving = true;
         _timeSinceLastUpdate = 0f;
-        _npc.IsReadyToTalk = false;
+        _npc.HasArrivedToMiddlePoint = false;
 
         if (_npc.DebugMode)
-            Debug.Log($"[GoToMiddlePointStrategy.Start()] {_npc.Name} moving to talk to {_otherNPC.Name} as {_npc.ConversationRole}", _npc.GO);
+            Debug.Log($"[{_npc.Name}.GoToMiddlePointStrategy.Start()] moving to talk to {_otherNPC.Name} as {_npc.ConversationRole}", _npc.GO);
 
         return Node.Status.Success;
     }
@@ -75,7 +77,7 @@ where NPCtype : INPC
                 _isMoving = false;
             }
 
-            _npc.IsReadyToTalk = true;
+            _npc.HasArrivedToMiddlePoint = true;
         }
         else
         {
@@ -95,9 +97,8 @@ where NPCtype : INPC
                 if (IsMiddlePointTooFar(newMiddlePoint))
                 {
                     if (_npc.DebugMode)
-                        Debug.LogWarning($"[GoToMiddlePointStrategy.Update()] {_npc.Name} midpoint too far from {_otherNPC.Name}; aborting conversation.", _npc.GO);
+                        Debug.LogWarning($"[{_npc.Name}.GoToMiddlePointStrategy.Update()] midpoint too far from {_otherNPC.Name}; aborting conversation.", _npc.GO);
 
-                    _npc.EndConversation();
                     return Node.Status.Failure;
                 }
 
@@ -106,7 +107,7 @@ where NPCtype : INPC
                 {
                     _lastMiddlePoint = newMiddlePoint;
                     if (_npc.DebugMode)
-                        Debug.Log($"[GoToMiddlePointStrategy.Update()] {_npc.Name} recalculating middle point, distance drifted.", _npc.GO);
+                        Debug.Log($"[{_npc.Name}.GoToMiddlePointStrategy.Update()] recalculating middle point, distance drifted.", _npc.GO);
                 }
 
                 _timeSinceLastUpdate = 0f;
@@ -114,7 +115,7 @@ where NPCtype : INPC
         }
 
         // Success if both are ready to talk
-        if (_npc.IsReadyToTalk && _otherNPC.IsReadyToTalk)
+        if (_npc.HasArrivedToMiddlePoint && _otherNPC.HasArrivedToMiddlePoint)
             return Node.Status.Success;
 
         return Node.Status.Running;
@@ -122,16 +123,11 @@ where NPCtype : INPC
 
     bool IsOtherStillInConversation()
     {
-        if (!_otherNPC.IsStillInConversation(_npc))
-        {
-            if (_npc.DebugMode)
-                Debug.Log($"[GoToMiddlePointStrategy] {_npc.Name} found that {_otherNPC.Name} is no longer in conversation.", _npc.GO);
+        if (_otherNPC.IsStillInConversationWith(_npc))
+            return true;
 
-            _npc.EndConversation();
-            return false;
-        }
-
-        return true;
+        _npc.ConversationInterrupted();
+        return false;
     }
 
     bool IsMiddlePointTooFar(Vector3 candidate)
@@ -141,6 +137,13 @@ where NPCtype : INPC
             _npc.AvoidanceRadius + _otherNPC.AvoidanceRadius + _npc.StoppingDistance + _otherNPC.StoppingDistance + SEPARATION_BUFFER);
 
         float distanceToOther = Vector3.Distance(candidate, _otherNPC.GO.transform.position);
-        return distanceToOther > desiredSeparation * MAX_MIDPOINT_DISTANCE_FACTOR;
+
+        if (distanceToOther > desiredSeparation * MAX_MIDPOINT_DISTANCE_FACTOR)
+        {
+            _npc.ConversationInterrupted();
+            return true;
+        }
+
+        return false;
     }
 }

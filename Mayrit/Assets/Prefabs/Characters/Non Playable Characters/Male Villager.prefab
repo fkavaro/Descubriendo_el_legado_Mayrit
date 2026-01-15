@@ -92,7 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61fe6012eefc0c24f8fb01bc39327cdd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Villager
-  _debugMode: 0
+  _debugMode: 1
   _isExecutionPaused: 0
   _currentActionInfo: 
   _walkSpeed: 1.5

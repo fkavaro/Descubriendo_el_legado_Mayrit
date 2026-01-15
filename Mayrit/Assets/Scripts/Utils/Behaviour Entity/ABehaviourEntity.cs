@@ -37,8 +37,7 @@ where BehaviourSystemType : ABehaviourSystem
     [SerializeField] protected bool _debugMode = false;
     [Tooltip("Whether to pause the execution of the behaviour system or not")]
     [SerializeField] protected bool _isExecutionPaused;
-    [SerializeField, ReadOnly]
-    protected string _currentActionInfo = "";
+    [SerializeField, ReadOnly] protected string _currentActionInfo = "";
     #endregion
 
     #region INTERNAL PROPERTIES
@@ -56,8 +55,6 @@ where BehaviourSystemType : ABehaviourSystem
     #region LIFE CYCLE: DERIVED TO BEHAVIOUR SYSTEM
     protected virtual void Awake()
     {
-        if (DebugMode)
-            Debug.Log($"Awaking {Name} behaviour entity...", GO);
         _behaviourSystem = DefineBehaviourSystemOnAwake();
     }
 

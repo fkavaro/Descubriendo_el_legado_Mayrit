@@ -11,8 +11,8 @@ using UnityEngine;
 public class SequenceNode : Node
 {
     #region CONSTRUCTOR
-    public SequenceNode(IBehaviourEntity entity, int priority = 0)
-    : base(entity, "Sequence", priority) { }
+    public SequenceNode(IBehaviourEntity entity, string name = "Sequence", int priority = 0)
+    : base(entity, name, priority) { }
     #endregion
 
     #region INHERITED METHODS

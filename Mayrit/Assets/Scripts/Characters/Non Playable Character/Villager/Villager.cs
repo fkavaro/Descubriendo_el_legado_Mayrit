@@ -40,39 +40,39 @@ public class Villager : ANPC<BehaviourTree>
             homeEntrance = _home.GetRandomAccessSpot();
 
         // Conversation sequence
-        ConditionStrategy canTalkStrategy = new(() => CanTalk);
+        ConditionStrategy notInAccessZoneStrategy = new(() => NotInAccessZone);
         ConditionStrategy isFollowingConversationStrategy = new(IsFollowingConversation);
         GoToMiddlePointStrategy<Villager> goToMiddlePointStrategyForFollower = new(this);
         GoToMiddlePointStrategy<Villager> goToMiddlePointStrategyForInitiator = new(this);
         ConversationFollowerStrategy<Villager> followConversationStrategy = new(this);
-        ConditionStrategy canSomeoneNearbyTalkStrategy = new(CanSomeoneNearbyTalk);
+        ConditionStrategy canSomeoneNearbyTalkStrategy = new(CanInitiateConversationWithSomeoneNearby);
         ConversationInitiatorStrategy<Villager> initiateConversationStrategy = new(this);
 
         CooldownDecorator conversationCooldown = new(this, _conversationCooldown);
-        SequenceNode conversationSequence = new(this);
+        SequenceNode conversationSequence = new(this, "Conversation Sequence");
         SelectorNode roleSelector = new(this);
         SequenceNode followConversationSequence = new(this);
         SequenceNode initiateConversationSequence = new(this);
 
-        LeafNode canTalkLeaf = new(this, "Can talk?", canTalkStrategy);
+        LeafNode notInAccessZoneLeaf = new(this, "Can talk?", notInAccessZoneStrategy);
         LeafNode isBeingTalkedToLeaf = new(this, "Is following conversation?", isFollowingConversationStrategy);
-        LeafNode goToMiddlePointLeafForFollower = new(this, "Going to middle point", goToMiddlePointStrategyForFollower);
-        LeafNode goToMiddlePointLeafForInitiator = new(this, "Going to middle point", goToMiddlePointStrategyForInitiator);
+        LeafNode goToMiddlePointAsFollowerLeaf = new(this, "Going to middle point", goToMiddlePointStrategyForFollower);
+        LeafNode goToMiddlePointAsInitiatorLeaf = new(this, "Going to middle point", goToMiddlePointStrategyForInitiator);
         LeafNode followConversationLeaf = new(this, "Talking", followConversationStrategy);
         LeafNode isOtherNearbyLeaf = new(this, "Can someone nearby talk?", canSomeoneNearbyTalkStrategy);
-        LeafNode initiateConversationLeafCheck = new(this, "Talking", initiateConversationStrategy);
+        LeafNode initiateConversationLeaf = new(this, "Talking", initiateConversationStrategy);
 
         conversationCooldown.AddChild(conversationSequence);
-        conversationSequence.AddChild(canTalkLeaf);
+        conversationSequence.AddChild(notInAccessZoneLeaf);
         conversationSequence.AddChild(roleSelector);
         roleSelector.AddChild(followConversationSequence);
         followConversationSequence.AddChild(isBeingTalkedToLeaf);
-        followConversationSequence.AddChild(goToMiddlePointLeafForFollower);
+        followConversationSequence.AddChild(goToMiddlePointAsFollowerLeaf);
         followConversationSequence.AddChild(followConversationLeaf);
         roleSelector.AddChild(initiateConversationSequence);
         initiateConversationSequence.AddChild(isOtherNearbyLeaf);
-        initiateConversationSequence.AddChild(goToMiddlePointLeafForInitiator);
-        initiateConversationSequence.AddChild(initiateConversationLeafCheck);
+        initiateConversationSequence.AddChild(goToMiddlePointAsInitiatorLeaf);
+        initiateConversationSequence.AddChild(initiateConversationLeaf);
 
         // Routine sequence
         SequenceNode routineSequence = new(this);
@@ -220,55 +220,16 @@ public class Villager : ANPC<BehaviourTree>
     #endregion
 
     #region CONDITIONAL STRATEGIES METHODS
-    bool IsFollowingConversation()
+    bool CanInitiateConversationWithSomeoneNearby()
     {
-        return _conversationRole.Equals(INPC.RoleInConversation.Follower);
-    }
-
-    bool CanSomeoneNearbyTalk()
-    {
-        // Return if already talking
-        if (!_conversationRole.Equals(INPC.RoleInConversation.None))
-        {
-            if (DebugMode)
-                Debug.LogWarning($"[CanSomeoneNearbyTalk()] {Name} cannot look for someone to talk to because is already in conversation.", this);
-
+        // False if already talking
+        if (IsTalking())
             return false;
-        }
 
-        // Get a villager in the interaction range from this position
         Villager someoneNearby = _npcPoolManager.GetAnyNearbyVillager(transform.position, _interactionRange, this);
 
-        // If no candidate found, return false
-        if (someoneNearby == null)
-        {
-            // if (DebugMode)
-            //     Debug.Log($"[CanSomeoneNearbyTalk()] {Name} found no one nearby to talk to.");
-            return false;
-        }
-
-        // Conversation is accepted by the target
-        if (someoneNearby.CanAcceptConversation(this))
-        {
-            // Set other as current interaction target
-            _currentConversationTarget = someoneNearby;
-            _currentConversationTargetGO = someoneNearby.GO;
-
-            // This is the initiator
-            _conversationRole = INPC.RoleInConversation.Initiator;
-
-            if (DebugMode)
-                Debug.Log($"[CanSomeoneNearbyTalk()] {Name} can talk to {_currentConversationTarget.Name}.", this);
-
-            return true;
-        }
-        // Conversation is denied
-        else
-        {
-            // if (DebugMode)
-            //     Debug.Log($"[CanSomeoneNearbyTalk()] {Name} found {someoneNearby.Name} to talk to, but the conversation was denied.");
-            return false;
-        }
+        // Return according to handshake
+        return TryInitiateConversationWith(someoneNearby);
     }
     #endregion
 }

@@ -16,8 +16,8 @@ where NPCtype : INPC
         if (_otherNPC == null)
         {
             if (_npc.DebugMode)
-                Debug.LogWarning($"[ConversationFollowerStrategy.Start()] {_npc.Name} is being talked to by null NPC", _npc.GO);
-
+                Debug.LogWarning($"[{_npc.Name}.ConversationFollowerStrategy.Start()] is being talked to by null NPC", _npc.GO);
+            _npc.ConversationInterrupted();
             return Node.Status.Failure;
         }
 
@@ -26,32 +26,29 @@ where NPCtype : INPC
             return Node.Status.Failure;
 
         // Subscribe to conversation end event
-        _otherNPC.ConversationFinishedEvent += OnConversationFinished;
+        _otherNPC.ConversationEndedEvent += OnConversationEnded;
         _otherFinishedTalking = false;
 
         _npc.Talk();
-
-        if (_npc.DebugMode)
-            Debug.Log($"[ConversationFollowerStrategy.Start()] {_npc.Name} is being talked to by {_otherNPC.Name}", _npc.GO);
 
         return Node.Status.Success;
     }
 
     public override Node.Status Update()
     {
-        // Failure if other NPC is no longer in conversation
-        if (!IsOtherStillInConversation())
-            return Node.Status.Failure;
-
         // Success if other finished talking
         if (_otherFinishedTalking)
         {
-            // Unsubscribe from conversation end event
-            _otherNPC.ConversationFinishedEvent -= OnConversationFinished;
-
-            _npc.EndConversation();
-
+            _otherNPC.ConversationEndedEvent -= OnConversationEnded;
+            _npc.ConversationSucceeded();
             return Node.Status.Success;
+        }
+
+        // Failure if other NPC is no longer in conversation
+        if (!IsOtherStillInConversation())
+        {
+            _otherNPC.ConversationEndedEvent -= OnConversationEnded;
+            return Node.Status.Failure;
         }
 
         // Keep facing other NPC (XZ plane only)
@@ -59,24 +56,20 @@ where NPCtype : INPC
         targetPosition.y = _npc.GO.transform.position.y;
         _npc.GO.transform.LookAt(targetPosition);
 
+        _npc.ConversationDuration = _otherNPC.ConversationDuration;
         return Node.Status.Running;
     }
 
     bool IsOtherStillInConversation()
     {
-        if (!_otherNPC.IsStillInConversation(_npc))
-        {
-            if (_npc.DebugMode)
-                Debug.Log($"[ConversationFollowerStrategy] {_npc.Name} found that {_otherNPC.Name} is no longer in conversation.", _npc.GO);
+        if (_otherNPC.IsStillInConversationWith(_npc))
+            return true;
 
-            _npc.EndConversation();
-            return false;
-        }
-
-        return true;
+        _npc.ConversationInterrupted();
+        return false;
     }
 
-    void OnConversationFinished()
+    void OnConversationEnded()
     {
         _otherFinishedTalking = true;
     }

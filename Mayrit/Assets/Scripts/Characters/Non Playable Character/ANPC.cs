@@ -32,16 +32,16 @@ where BehaviourSystemType : ABehaviourSystem
         set => _conversationRole = value;
     }
 
-    public bool CanTalk
+    public bool NotInAccessZone
     {
-        get => _canTalk;
-        set => _canTalk = value;
+        get => _notInAccessZone;
+        set => _notInAccessZone = value;
     }
 
-    public bool IsReadyToTalk
+    public bool HasArrivedToMiddlePoint
     {
-        get => _isReadyToTalk;
-        set => _isReadyToTalk = value;
+        get => _hasArrivedToMiddlePoint;
+        set => _hasArrivedToMiddlePoint = value;
     }
     public INPC CurrentConversationTarget
     {
@@ -52,6 +52,12 @@ where BehaviourSystemType : ABehaviourSystem
     {
         get => _lastConversationTarget;
         set => _lastConversationTarget = value;
+    }
+
+    public float ConversationDuration
+    {
+        get => _conversationDuration;
+        set => _conversationDuration = value;
     }
     #endregion
 
@@ -66,6 +72,7 @@ where BehaviourSystemType : ABehaviourSystem
     [SerializeField] protected INPC.RoleInConversation _conversationRole = INPC.RoleInConversation.None;
     [SerializeField] protected GameObject _currentConversationTargetGO;
     [SerializeField] protected GameObject _lastConversationTargetGO;
+    [SerializeField, ReadOnly] protected float _conversationDuration = 0f;
 
     [Header("NavMeshAgent")]
     [Tooltip("Distance to which the agent will avoid other agents"), Range(0.5f, 2f)]
@@ -83,12 +90,12 @@ where BehaviourSystemType : ABehaviourSystem
     #endregion
 
     #region INTERNAL PROPERTIES
-    public event Action ConversationFinishedEvent;
+    public event Action ConversationEndedEvent;
 
     NPCMovementController _movementController;
     NavMeshAgent _agent;
-    bool _canTalk = true;
-    bool _isReadyToTalk = false;
+    bool _notInAccessZone = true;
+    bool _hasArrivedToMiddlePoint = false;
     int _originalAvoidancePriority;
     protected INPC _currentConversationTarget, _lastConversationTarget;
     #endregion
@@ -130,32 +137,114 @@ where BehaviourSystemType : ABehaviourSystem
     #region CONVERSATION METHODS
     public virtual bool IsAvailableForConversation()
     {
-        return _canTalk && CharacterModel.activeInHierarchy;
+        return _notInAccessZone && CharacterModel.activeInHierarchy;
     }
 
-    public virtual bool IsStillInConversation(INPC otherNpc)
+    public virtual bool IsTalking()
     {
         return IsAvailableForConversation()
-            && _currentConversationTarget == otherNpc
-            && Vector3.Distance(GO.transform.position, otherNpc.GO.transform.position) < 5f;
+            && (_currentConversationTarget != null || _conversationRole != INPC.RoleInConversation.None);
     }
 
-    public virtual bool CanAcceptConversation(INPC initiator)
+    public virtual bool IsStillInConversationWith(INPC otherNpc)
     {
-        if (IsAvailableForConversation()
-            && _conversationRole.Equals(INPC.RoleInConversation.None)
-            && _lastConversationTarget != initiator)
+        if (!IsTalking())
         {
-            _currentConversationTargetGO = initiator.GO;
-            _currentConversationTarget = initiator;
-
-            // This is the follower
-            _conversationRole = INPC.RoleInConversation.Follower;
-
-            return true;
-        }
-        else
+            if (DebugMode)
+                Debug.Log($"[{Name}.IsStillInConversationWith()] is not talking: {_notInAccessZone}, {CharacterModel.activeInHierarchy}, {_currentConversationTarget != null}, {_conversationRole != INPC.RoleInConversation.None}", GO);
             return false;
+        }
+
+        if (_currentConversationTarget != otherNpc)
+        {
+            if (DebugMode)
+                Debug.Log($"[{Name}.IsStillInConversationWith()] current conversation target is not {otherNpc.Name}", GO);
+            return false;
+        }
+
+        // Use generous distance while moving to middle point (2x interaction range)
+        // Tighten once both arrive (1x interaction range)
+        float maxDistance = (_hasArrivedToMiddlePoint && otherNpc.HasArrivedToMiddlePoint)
+            ? _interactionRange
+            : _interactionRange * 2f;
+
+        if (Vector3.Distance(GO.transform.position, otherNpc.GO.transform.position) < maxDistance)
+            return true;
+        else
+        {
+            if (DebugMode)
+                Debug.Log($"[{Name}.IsStillInConversationWith()] too far from {otherNpc.Name} to continue conversation as {_conversationRole}", GO);
+
+            return false;
+        }
+    }
+
+    public virtual bool IsFollowingConversation()
+    {
+        return IsTalking() && _conversationRole == INPC.RoleInConversation.Follower;
+    }
+
+    public virtual bool TryInitiateConversationWith(INPC target)
+    {
+        // False if target is null or already talking, or if self is already talking
+        if (target == null || target.IsTalking() || IsTalking())
+            return false;
+
+        // Set initiator role BEFORE attempting acceptance (handshake)
+        _conversationRole = INPC.RoleInConversation.Initiator;
+
+        // Verify the other NPC accepts the conversation with this as initiator
+        if (!target.CanAcceptNewConversationFrom(this))
+        {
+            // Reset state on failure
+            _conversationRole = INPC.RoleInConversation.None;
+            _currentConversationTarget = null;
+            _currentConversationTargetGO = null;
+            return false;
+        }
+
+        // Assign current conversation target
+        _currentConversationTarget = target;
+        _currentConversationTargetGO = target.GO;
+
+        if (DebugMode)
+            Debug.Log($"[{Name}.TryInitiateConversation()] successfully initiated conversation with {target.Name}", GO);
+
+        return true;
+    }
+
+    public virtual bool CanAcceptNewConversationFrom(INPC initiator)
+    {
+        // Verify initiator has claimed the Initiator role (handshake verification)
+        if (!initiator.ConversationRole.Equals(INPC.RoleInConversation.Initiator))
+        {
+            if (DebugMode)
+                Debug.LogWarning($"[{Name}.CanAcceptConversation()] cannot accept conversation from {initiator.Name} because they are not an Initiator", GO);
+            return false;
+        }
+
+        // Reject if not available for conversation (in access zone or model inactive)
+        if (!IsAvailableForConversation())
+        {
+            // if (DebugMode)
+            //     Debug.LogWarning($"[{Name}.CanAcceptConversation()] cannot accept conversation from {initiator.Name} because not available", GO);
+            return false;
+        }
+
+        // Reject if already talking with someone else or the same as last time
+        if (IsTalking() || _lastConversationTarget == initiator)
+        {
+            // if (DebugMode)
+            //     Debug.LogWarning($"[{Name}.CanAcceptConversation()] cannot accept conversation from {initiator.Name} because already talked recently", GO);
+            return false;
+        }
+
+        // Assign follower role and initiatort as current conversation target
+        _conversationRole = INPC.RoleInConversation.Follower;
+        _currentConversationTargetGO = initiator.GO;
+        _currentConversationTarget = initiator;
+
+        return true;
     }
 
     public virtual void Talk()
@@ -171,20 +260,41 @@ where BehaviourSystemType : ABehaviourSystem
         AnimationController.ChangeToTalk();
     }
 
-    public virtual void EndConversation()
+    public virtual void EndConversationAsInitiator()
     {
-        ConversationFinishedEvent?.Invoke();
+        if (_conversationRole != INPC.RoleInConversation.Initiator)
+        {
+            if (DebugMode)
+                Debug.LogWarning($"[{Name}.EndConversation()] trying to end conversation but not as Initiator", GO);
+            return;
+        }
 
+        ConversationEndedEvent?.Invoke();
+        ConversationSucceeded();
+    }
+
+    public virtual void ConversationSucceeded()
+    {
+        UpdateConversationState(_currentConversationTarget, _currentConversationTargetGO);
+    }
+
+    public virtual void ConversationInterrupted()
+    {
+        UpdateConversationState(null, null);
+    }
+
+    public virtual void UpdateConversationState(INPC otherNpc, GameObject otherNpcGO)
+    {
         // Restore original avoidance priority
         if (_agent != null)
             _agent.avoidancePriority = _originalAvoidancePriority;
 
-        _isReadyToTalk = false;
-        _lastConversationTarget = _currentConversationTarget;
-        _lastConversationTargetGO = _currentConversationTargetGO;
+        _lastConversationTarget = otherNpc;
+        _lastConversationTargetGO = otherNpcGO;
         _currentConversationTarget = null;
         _currentConversationTargetGO = null;
-
+        _hasArrivedToMiddlePoint = false;
+        _conversationDuration = 0f;
         _conversationRole = INPC.RoleInConversation.None;
     }
     #endregion

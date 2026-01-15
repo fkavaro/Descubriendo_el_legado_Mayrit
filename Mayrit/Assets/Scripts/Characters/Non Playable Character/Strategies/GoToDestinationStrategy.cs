@@ -15,22 +15,20 @@ where NPCtype : INPC
 
     public override Node.Status Start()
     {
-        if (_npc.MovementController.SetDestinationSpot(_destinationSpot))
+        // Clean up any stale conversation state
+        if (_npc.IsTalking())
         {
-            if (_npc.CurrentConversationTarget != null || _npc.ConversationRole != INPC.RoleInConversation.None)
-            {
-                if (_npc.DebugMode)
-                    Debug.Log($"[GoToDestinationStrategy.Start()] {_npc.Name} is going to {_destinationSpot.name}. Ending conversation with {_npc.CurrentConversationTarget.Name}.", _npc.GO);
-
-                _npc.EndConversation();
-            }
-
-            return Node.Status.Success;
+            if (_npc.DebugMode)
+                Debug.LogWarning($"{_npc.Name}.GoToDestinationStrategy.Start()] starting routine with stale conversation state - cleaning up", _npc.GO);
+            _npc.ConversationInterrupted();
         }
+
+        if (_npc.MovementController.SetDestinationSpot(_destinationSpot))
+            return Node.Status.Success;
         else
         {
             if (_npc.DebugMode)
-                Debug.LogWarning($"[GoToDestinationStrategy.Start()] {_npc.Name} could not set destination", _npc.GO);
+                Debug.LogWarning($"[{_npc.Name}.GoToDestinationStrategy.Start()] could not set destination", _npc.GO);
             return Node.Status.Failure;
         }
     }
@@ -41,7 +39,7 @@ where NPCtype : INPC
         if (!_npc.MovementController.IsDestinationSpot(_destinationSpot))
         {
             if (_npc.DebugMode)
-                Debug.LogWarning($"[GoToDestinationStrategy.Update()] {_npc.Name} fixing destination", _npc.GO);
+                Debug.LogWarning($"[{_npc.Name}.GoToDestinationStrategy.Update()] fixing destination", _npc.GO);
 
             _npc.MovementController.SetDestinationSpot(_destinationSpot);
         }

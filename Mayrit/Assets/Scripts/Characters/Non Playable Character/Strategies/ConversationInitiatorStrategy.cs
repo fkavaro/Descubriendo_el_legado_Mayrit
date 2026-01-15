@@ -15,8 +15,9 @@ where NPCtype : INPC
         if (_otherNPC == null)
         {
             if (_npc.DebugMode)
-                Debug.LogWarning($"[ConversationInitiatorStrategy.Start()] {_npc.Name} trying to talk to null NPC", _npc.GO);
+                Debug.LogWarning($"[{_npc.Name}.ConversationInitiatorStrategy.Start()] trying to talk to null NPC", _npc.GO);
 
+            _npc.ConversationInterrupted();
             return Node.Status.Failure;
         }
 
@@ -27,7 +28,7 @@ where NPCtype : INPC
         _npc.Talk();
 
         if (_npc.DebugMode)
-            Debug.Log($"[ConversationInitiatorStrategy.Start()] {_npc.Name} initiating conversation with {_otherNPC.Name}", _npc.GO);
+            Debug.Log($"[{_npc.Name}.ConversationInitiatorStrategy.Start()] initiating conversation with {_otherNPC.Name}", _npc.GO);
 
         return Node.Status.Success;
     }
@@ -44,25 +45,21 @@ where NPCtype : INPC
         _npc.GO.transform.LookAt(targetPosition);
 
         // Continue timing
+        _npc.ConversationDuration = StartegyRemainingTime;
         return base.Update();
     }
 
     bool IsOtherStillInConversation()
     {
-        if (!_otherNPC.IsStillInConversation(_npc))
-        {
-            if (_npc.DebugMode)
-                Debug.Log($"[ConversationInitiatorStrategy] {_npc.Name} found that {_otherNPC.Name} is no longer in conversation.", _npc.GO);
+        if (_otherNPC.IsStillInConversationWith(_npc))
+            return true;
 
-            _npc.EndConversation();
-            return false;
-        }
-
-        return true;
+        _npc.ConversationInterrupted();
+        return false;
     }
 
     public override void OnTimerComplete()
     {
-        _npc.EndConversation();
+        _npc.EndConversationAsInitiator();
     }
 }

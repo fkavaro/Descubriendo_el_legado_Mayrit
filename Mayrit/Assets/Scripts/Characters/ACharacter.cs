@@ -40,7 +40,7 @@ where BehaviourSystemType : ABehaviourSystem
 
     [Header("Interaction")]
     [Tooltip("Minimum range to start an interaction with another character")]
-    [SerializeField] protected float _interactionRange = 2f;
+    [SerializeField] protected float _interactionRange = 5f;
 
     [Header("Character information")]
     [SerializeField] protected ICharacter.CharacterGender _gender = ICharacter.CharacterGender.Male;
