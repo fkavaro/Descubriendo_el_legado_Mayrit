@@ -208,7 +208,7 @@ where BehaviourSystemType : ABehaviourSystem
         _currentConversationTargetGO = target.GO;
 
         if (DebugMode)
-            Debug.Log($"[{Name}.TryInitiateConversation()] successfully initiated conversation with {target.Name}", GO);
+            Debug.Log($"[{Name}.TryInitiateConversation()] successfully engaged in conversation with {target.Name}", GO);
 
         return true;
     }

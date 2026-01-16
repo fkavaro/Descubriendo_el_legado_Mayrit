@@ -16,7 +16,6 @@ where NPCtype : INPC
         {
             if (_npc.DebugMode)
                 Debug.LogWarning($"[{_npc.Name}.ConversationInitiatorStrategy.Start()] trying to talk to null NPC", _npc.GO);
-
             _npc.ConversationInterrupted();
             return Node.Status.Failure;
         }

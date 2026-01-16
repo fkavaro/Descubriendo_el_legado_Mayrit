@@ -39,7 +39,7 @@ where NPCtype : INPC
         if (!_npc.MovementController.IsDestinationSpot(_destinationSpot))
         {
             if (_npc.DebugMode)
-                Debug.LogWarning($"[{_npc.Name}.GoToDestinationStrategy.Update()] fixing destination", _npc.GO);
+                Debug.Log($"[{_npc.Name}.GoToDestinationStrategy.Update()] fixing destination", _npc.GO);
 
             _npc.MovementController.SetDestinationSpot(_destinationSpot);
         }
