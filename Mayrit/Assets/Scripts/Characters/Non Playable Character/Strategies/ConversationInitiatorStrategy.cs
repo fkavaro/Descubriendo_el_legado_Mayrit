@@ -50,7 +50,7 @@ where NPCtype : INPC
 
     bool IsOtherStillInConversation()
     {
-        if (_otherNPC.IsStillInConversationWith(_npc))
+        if (_otherNPC.IsStillTalkingWith(_npc))
             return true;
 
         _npc.ConversationInterrupted();

@@ -52,7 +52,7 @@ public interface INPC : ICharacter
     /// <summary>
     /// Returns true if still talking with the other npc and both are close enough.
     /// </summary>
-    public bool IsStillInConversationWith(INPC otherNpc);
+    public bool IsStillTalkingWith(INPC otherNpc);
 
     /// <summary>
     /// Returns true if the NPC has follower role.

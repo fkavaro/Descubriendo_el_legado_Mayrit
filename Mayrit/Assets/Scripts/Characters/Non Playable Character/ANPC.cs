@@ -146,7 +146,7 @@ where BehaviourSystemType : ABehaviourSystem
             && (_currentConversationTarget != null || _conversationRole != INPC.RoleInConversation.None);
     }
 
-    public virtual bool IsStillInConversationWith(INPC otherNpc)
+    public virtual bool IsStillTalkingWith(INPC otherNpc)
     {
         if (!IsTalking())
         {

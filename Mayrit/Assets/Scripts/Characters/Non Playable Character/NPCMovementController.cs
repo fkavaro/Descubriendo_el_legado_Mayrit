@@ -14,6 +14,14 @@ public class NPCMovementController
     private const float DEFAULT_CLOSE_DISTANCE = 2f;
     private const int MIDDLE_POINT_SAMPLES = 9;
     private const float SEPARATION_BUFFER = 0.2f;
+    private const float MAX_MIDPOINT_DISTANCE_FACTOR = 1.5f; // Fail if midpoint ends too far from partner
+    #endregion
+
+    #region PROPERTIES HELPERS
+    public Spot DestinationSpot => _destinationSpot;
+    public Vector3 DestinationPos => _destinationPos;
+    public bool IsAgentValid => _agent != null && _agent.isOnNavMesh;
+    public bool HasDestination => _destinationSpot != null || _destinationPos.sqrMagnitude >= POSITION_ZERO_THRESHOLD;
     #endregion
 
     #region PROPERTIES
@@ -24,12 +32,6 @@ public class NPCMovementController
 
     Vector3 _destinationPos;
     Spot _destinationSpot;
-
-    // Public getters
-    public Spot DestinationSpot => _destinationSpot;
-    public Vector3 DestinationPos => _destinationPos;
-    public bool IsAgentValid => _agent != null && _agent.isOnNavMesh;
-    public bool HasDestination => _destinationSpot != null || _destinationPos.sqrMagnitude >= POSITION_ZERO_THRESHOLD;
     #endregion
 
     #region CONSTRUCTOR
@@ -433,90 +435,158 @@ public class NPCMovementController
     /// Commands the NPC to move to the middle point between itself and another NPC, adjusted for separation.
     /// </summary>
     /// <returns>The destination position that was set.</returns>
-    public Vector3 GoToMiddlePoint(INPC otherNPC)
+    public bool GoToMiddlePoint(INPC otherNPC)
     {
         if (!IsAgentValid)
         {
-            Debug.LogWarning($"[GoToMiddlePoint] {_npc.Name} agent is not valid.", _npc.GO);
-            return Vector3.zero;
+            if (_npc.DebugMode)
+                Debug.LogWarning($"[GoToMiddlePoint] {_npc.Name} agent is not valid.", _npc.GO);
+            return false;
         }
 
         if (otherNPC == null)
         {
-            Debug.LogWarning($"[GoToMiddlePoint] {_npc.Name} other NPC is null.", _npc.GO);
-            return _agent.transform.position;
+            if (_npc.DebugMode)
+                Debug.LogWarning($"[GoToMiddlePoint] {_npc.Name} other NPC is null.", _npc.GO);
+            return false;
         }
 
-        Vector3 destination = FindMidpointDestination(otherNPC);
-        SetDestination(destination);
-        return destination;
+        Vector3 midPoint = FindMidpointTo(otherNPC);
+
+        // Failure if middle point too far
+        if (IsMiddlePointTooFar(midPoint, otherNPC))
+        {
+            if (_npc.DebugMode)
+                Debug.LogWarning($"[GoToMiddlePoint] {_npc.Name} could not find valid middle point to {otherNPC.Name}.", _npc.GO);
+
+            return false;
+        }
+
+        SetDestination(midPoint);
+        return true;
     }
 
     /// <summary>
     /// Finds the best reachable midpoint destination between two NPCs.
+    /// Prioritizes positions that balance distance and collision avoidance.
     /// </summary>
-    private Vector3 FindMidpointDestination(INPC otherNPC)
+    public Vector3 FindMidpointTo(INPC otherNPC)
     {
         Vector3 posA = _npc.GO.transform.position;
         Vector3 posB = otherNPC.GO.transform.position;
-        Vector3 midPoint = (posA + posB) * 0.5f;
+        Vector3 directVector = posB - posA;
 
-        // Calculate direction between NPCs
-        Vector3 direction = posB - posA;
-        if (direction.sqrMagnitude < DIRECTION_ZERO_THRESHOLD)
-            direction = _npc.GO.transform.forward;
-        direction.Normalize();
+        // Handle case where NPCs are at same position
+        if (directVector.sqrMagnitude < DIRECTION_ZERO_THRESHOLD)
+            directVector = _npc.GO.transform.forward;
 
-        // Calculate separation offset
+        directVector.Normalize();
+        float distanceBetweenNPCs = Vector3.Distance(posA, posB);
+
+        // Calculate desired separation
         float desiredSeparation = Mathf.Max(
             MIN_SEPARATION,
             _npc.AvoidanceRadius + otherNPC.AvoidanceRadius + _npc.StoppingDistance + otherNPC.StoppingDistance + SEPARATION_BUFFER);
 
-        Vector3 correctedMidPoint = midPoint - direction * (desiredSeparation * 0.5f);
-
-        // Try reachable positions in order of preference
-        if (CanReachPosition(correctedMidPoint, otherNPC, desiredSeparation, out Vector3 reachablePos))
+        // Primary strategy: Move toward center, but back off by half separation
+        Vector3 centerPoint = (posA + posB) * 0.5f;
+        Vector3 correctedMidPoint = centerPoint - directVector * (desiredSeparation * 0.5f);
+        if (CanReachPosition(correctedMidPoint, otherNPC, out Vector3 reachablePos))
             return reachablePos;
 
-        if (CanReachPosition(midPoint, otherNPC, desiredSeparation, out reachablePos))
+        // Secondary: Try pure midpoint
+        if (CanReachPosition(centerPoint, otherNPC, out reachablePos))
             return reachablePos;
 
-        // Sample along the line between NPCs
-        for (int i = 1; i <= MIDDLE_POINT_SAMPLES; i++)
+        // Tertiary: Sample along the line between NPCs for alternative positions
+        int sampleCount = Mathf.Min(MIDDLE_POINT_SAMPLES, Mathf.CeilToInt(distanceBetweenNPCs / 0.5f));
+        for (int i = 1; i <= sampleCount; i++)
         {
-            float t = i / (float)(MIDDLE_POINT_SAMPLES + 1);
+            float t = i / (float)(sampleCount + 1);
             Vector3 sample = Vector3.Lerp(posA, posB, t);
-            if (CanReachPosition(sample, otherNPC, desiredSeparation, out reachablePos))
+
+            if (CanReachPosition(sample, otherNPC, out reachablePos))
                 return reachablePos;
         }
 
-        // Last resort: stay in place
+        // Quaternary: Try offset perpendicular to the line between NPCs
+        Vector3 perpendicular = new(-directVector.z, directVector.y, directVector.x);
+        Vector3 offsetPoint = centerPoint + perpendicular * (desiredSeparation * 0.5f);
+        if (CanReachPosition(offsetPoint, otherNPC, out reachablePos))
+            return reachablePos;
+
+        // Final fallback: Current position if nothing else works
         return _agent.transform.position;
     }
 
     /// <summary>
-    /// Checks if a position is reachable on the NavMesh.
+    /// Checks if a position is reachable on the NavMesh and maintains proper separation.
     /// </summary>
-    /// <returns>True if the position is reachable.</returns>
-    private bool CanReachPosition(Vector3 targetPos, INPC otherNPC, float requiredSeparation, out Vector3 reachablePos)
+    /// <returns>True if the position is reachable and valid for conversation placement.</returns>
+    private bool CanReachPosition(Vector3 targetPos, INPC otherNPC, out Vector3 reachablePos)
     {
-        if (NavMesh.SamplePosition(targetPos, out NavMeshHit hitLocation, _npc.MaxSamplingDistance, NavMesh.AllAreas))
+        // Sample position on NavMesh
+        if (!NavMesh.SamplePosition(targetPos, out NavMeshHit hitLocation, _npc.MaxSamplingDistance, NavMesh.AllAreas))
         {
-            // Reject positions that would place this NPC inside the other agent's avoidance area
-            float minDistanceToOther = otherNPC.AvoidanceRadius + _npc.AvoidanceRadius + SEPARATION_BUFFER;
-            float distanceToOther = Vector3.Distance(hitLocation.position, otherNPC.GO.transform.position);
-            if (distanceToOther < Mathf.Max(minDistanceToOther, requiredSeparation * 0.5f))
-            {
-                reachablePos = Vector3.zero;
-                return false;
-            }
-
-            reachablePos = hitLocation.position;
-            return true;
+            reachablePos = _agent.transform.position;
+            return false;
         }
 
-        reachablePos = Vector3.zero;
-        return false;
+        Vector3 sampledPosition = hitLocation.position;
+        Vector3 otherNPCPos = otherNPC.GO.transform.position;
+
+        // Minimum distance to other NPC to prevent overlap
+        float minDistanceToOther = otherNPC.AvoidanceRadius + _npc.AvoidanceRadius + SEPARATION_BUFFER;
+        float distanceToOther = Vector3.Distance(sampledPosition, otherNPCPos);
+
+        // Reject if too close to other NPC
+        if (distanceToOther < minDistanceToOther)
+        {
+            reachablePos = _agent.transform.position;
+            return false;
+        }
+
+        // Verify there's a valid path to this position
+        if (!HasValidPathTo(sampledPosition))
+        {
+            reachablePos = _agent.transform.position;
+            return false;
+        }
+
+        reachablePos = sampledPosition;
+        return true;
+    }
+
+    /// <summary>
+    /// Checks if a valid path exists to the target position.
+    /// </summary>
+    private bool HasValidPathTo(Vector3 targetPos)
+    {
+        NavMeshPath testPath = new();
+        if (!NavMesh.CalculatePath(_agent.transform.position, targetPos, _queryFilter, testPath))
+            return false;
+
+        // Path found, but check if it's complete (not partial)
+        return testPath.status == NavMeshPathStatus.PathComplete;
+    }
+
+    /// <summary>
+    /// Checks if a middle point position is valid and not too far from the other NPC.
+    /// </summary>
+    /// <returns>True if the middle point is too far and should be rejected.</returns>
+    private bool IsMiddlePointTooFar(Vector3 candidate, INPC otherNPC)
+    {
+        if (otherNPC == null)
+            return true;
+
+        float desiredSeparation = Mathf.Max(
+            MIN_SEPARATION,
+            _npc.AvoidanceRadius + otherNPC.AvoidanceRadius + _npc.StoppingDistance + otherNPC.StoppingDistance + SEPARATION_BUFFER);
+
+        float distanceToOther = Vector3.Distance(candidate, otherNPC.GO.transform.position);
+        float maxAllowedDistance = desiredSeparation * MAX_MIDPOINT_DISTANCE_FACTOR;
+
+        return distanceToOther > maxAllowedDistance;
     }
     #endregion
 }
