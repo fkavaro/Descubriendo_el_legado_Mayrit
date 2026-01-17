@@ -23,8 +23,6 @@ where BehaviourSystemType : ABehaviourSystem
         get => _isStopped;
         set => _isStopped = value;
     }
-    public string GivenName => _givenName;
-    public string FamilyName => _familyName;
 
     public INPC.RoleInConversation ConversationRole
     {
@@ -73,10 +71,6 @@ where BehaviourSystemType : ABehaviourSystem
     #endregion
 
     #region EDITOR PROPERTIES
-    // Character information
-    [SerializeField] protected string _givenName = "";
-    [SerializeField] protected string _familyName = "";
-
     [Header("Conversation")]
     [Tooltip("Cooldown time between interactions with other NPCs")]
     [SerializeField] protected float _conversationCooldown = 0f;
@@ -112,7 +106,7 @@ where BehaviourSystemType : ABehaviourSystem
     {
         base.Awake();
 
-        AnimationController = new(this, this, CharacterAnimator);
+        _animationController = new(this, this, CharacterAnimator);
         _agent = GetComponent<NavMeshAgent>();
         _movementController = new(this);
         _interactionController = new(this, _agent, _interactionRange, _conversationCooldownNode);
@@ -125,21 +119,6 @@ where BehaviourSystemType : ABehaviourSystem
 
         if (_destinationSpot != _movementController.DestinationSpot)
             _destinationSpot = _movementController.DestinationSpot;
-    }
-    #endregion
-
-    #region CHARACTER INFORMATION METHODS
-    public void SetFullName(string given, string family)
-    {
-        _givenName = given;
-        _familyName = family;
-        try
-        {
-            gameObject.name = string.IsNullOrEmpty(_familyName) ?
-                _givenName :
-                $"{_givenName} {_familyName}";
-        }
-        catch { }
     }
     #endregion
 }

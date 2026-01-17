@@ -11,9 +11,11 @@ public interface ICharacter : IBehaviourEntity
 
     #region PROPERTIES HELPERS
     public Animator CharacterAnimator { get; }
-    public CharacterAnimationController AnimationController { get; set; }
+    public CharacterAnimationController AnimationController { get; }
     public GameObject CharacterModel { get; }
     public bool IsFemale { get; }
+    public string GivenName { get; }
+    public string FamilyName { get; }
     float WalkSpeed { get; }
     float SprintSpeed { get; }
     float RotationSpeed { get; }

@@ -64,7 +64,7 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
     {
         base.Awake();
 
-        AnimationController = new(this, this, CharacterAnimator);
+        _animationController = new(this, this, CharacterAnimator);
         _movementController = new(this, GetComponent<CharacterController>());
 
         // Get dependencies from ServiceLocator

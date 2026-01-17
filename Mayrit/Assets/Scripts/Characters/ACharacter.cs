@@ -6,14 +6,13 @@ where BehaviourSystemType : ABehaviourSystem
 {
     #region PROPERTIES HELPERS
     public Animator CharacterAnimator => _animator;
-    public CharacterAnimationController AnimationController
-    {
-        get => _animationController;
-        set => _animationController = value;
-    }
+    public CharacterAnimationController AnimationController => _animationController;
 
     public GameObject CharacterModel => _characterModel;
     public bool IsFemale => _gender == ICharacter.CharacterGender.Female;
+    public string GivenName => _givenName;
+    public string FamilyName => _familyName;
+
     public float WalkSpeed => _walkSpeed;
     public float SprintSpeed => _sprintSpeed;
     public float RotationSpeed => _rotationSpeed;
@@ -45,9 +44,26 @@ where BehaviourSystemType : ABehaviourSystem
     [Header("Character information")]
     [SerializeField] protected ICharacter.CharacterGender _gender = ICharacter.CharacterGender.Male;
     [SerializeField] protected GameObject _characterModel;
+    [SerializeField] protected string _givenName = "";
+    [SerializeField] protected string _familyName = "";
     #endregion
 
     #region INTERNAL PROPERTIES   
-    CharacterAnimationController _animationController;
+    protected CharacterAnimationController _animationController;
+    #endregion
+
+    #region CHARACTER INFORMATION METHODS
+    public void SetFullName(string given, string family)
+    {
+        _givenName = given;
+        _familyName = family;
+        try
+        {
+            gameObject.name = string.IsNullOrEmpty(_familyName) ?
+                _givenName :
+                $"{_givenName} {_familyName}";
+        }
+        catch { }
+    }
     #endregion
 }
