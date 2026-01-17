@@ -29,7 +29,7 @@ where NPCtype : INPC
         if (_npc.DebugMode)
             Debug.Log($"[{_npc.Name}.ConversationInitiatorStrategy.Start()] initiating conversation with {_otherNPC.Name}", _npc.GO);
 
-        return Node.Status.Success;
+        return base.Start();
     }
 
     public override Node.Status Update()
@@ -42,7 +42,7 @@ where NPCtype : INPC
         _npc.MovementController.RotateSmoothlyTowards(_otherNPC.GO);
 
         // Continue timing
-        _npc.ConversationDuration = StartegyRemainingTime;
+        _npc.ConversationDuration = _strategyRemainingTime;
         return base.Update();
     }
 

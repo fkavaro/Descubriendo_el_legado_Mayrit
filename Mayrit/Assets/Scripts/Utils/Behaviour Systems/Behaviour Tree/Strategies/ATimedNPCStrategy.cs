@@ -5,13 +5,18 @@ where NPCtype : INPC
 {
     readonly float _strategyDuration;
     float _strategyElapsedTime;
-    protected float StartegyRemainingTime => _strategyDuration - _strategyElapsedTime;
+    protected float _strategyRemainingTime => _strategyDuration - _strategyElapsedTime;
 
     public ATimedNPCStrategy(NPCtype npc, float min = 30, float max = 120)
     : base(npc)
     {
         _strategyDuration = Random.Range(min, max);
+    }
+
+    public override Node.Status Start()
+    {
         _strategyElapsedTime = 0f;
+        return Node.Status.Success;
     }
 
     public override Node.Status Update()
