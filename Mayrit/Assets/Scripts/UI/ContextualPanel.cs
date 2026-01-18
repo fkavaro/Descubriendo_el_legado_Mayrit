@@ -23,6 +23,11 @@ public class ContextualPanel
 
     // Dependency Injection
     SoundManager _soundManager;
+
+    // Tracking flags
+    bool _hadIcon;
+    bool _hadImage;
+    bool _hadPlayButton;
     #endregion
 
     #region CONSTRUCTOR
@@ -67,32 +72,63 @@ public class ContextualPanel
     #region PUBLIC METHODS
     public void ShowInfo(DataSO data, bool isCharacterData)
     {
-        Reset();
-
-        // Overwrite panel information
+        // Clear previous content
         _header.text = data.Header;
         _subHeader.text = data.SubHeader;
         _description.text = data.Description;
 
-        // Theres is an icon
+        // Data has icon
         if (data.Icon != null)
         {
+            // Show it
             _icon.style.backgroundImage = new StyleBackground(data.Icon.texture);
-            _icon.style.display = DisplayStyle.Flex;
+            if (!_hadIcon)
+            {
+                _icon.style.display = DisplayStyle.Flex;
+                _hadIcon = true;
+            }
+        }
+        else
+        {
+            _icon.style.backgroundImage = new StyleBackground();
+            _icon.style.display = DisplayStyle.None;
+            _hadIcon = false;
         }
 
-        // There is an image
+        // Handle image
         if (data.Image != null)
         {
             _image.style.backgroundImage = new StyleBackground(data.Image.texture);
-            _image.style.display = DisplayStyle.Flex;
             _imageCaption.text = data.ImageCaption;
-            _imageCaption.style.display = DisplayStyle.Flex;
+            if (!_hadImage)
+            {
+                _image.style.display = DisplayStyle.Flex;
+                _imageCaption.style.display = DisplayStyle.Flex;
+                _hadImage = true;
+            }
+        }
+        else
+        {
+            _image.style.backgroundImage = new StyleBackground();
+            _image.style.display = DisplayStyle.None;
+            _imageCaption.style.display = DisplayStyle.None;
+            _hadImage = false;
         }
 
-        // If the information type is Character, show the play button
+        // Handle play button
         if (isCharacterData)
-            _playCharacterButton.style.display = DisplayStyle.Flex;
+        {
+            if (!_hadPlayButton)
+            {
+                _playCharacterButton.style.display = DisplayStyle.Flex;
+                _hadPlayButton = true;
+            }
+        }
+        else
+        {
+            _playCharacterButton.style.display = DisplayStyle.None;
+            _hadPlayButton = false;
+        }
 
         _root.style.display = DisplayStyle.Flex; // Show
 
@@ -104,20 +140,32 @@ public class ContextualPanel
     void Hide()
     {
         _root.style.display = DisplayStyle.None; // Hide
-        Reset();
-    }
 
-    void Reset()
-    {
+        // Only clear if something was shown
+        if (_hadIcon)
+        {
+            _icon.style.backgroundImage = new StyleBackground();
+            _icon.style.display = DisplayStyle.None;
+            _hadIcon = false;
+        }
+
+        if (_hadImage)
+        {
+            _image.style.backgroundImage = new StyleBackground();
+            _image.style.display = DisplayStyle.None;
+            _imageCaption.style.display = DisplayStyle.None;
+            _hadImage = false;
+        }
+
+        if (_hadPlayButton)
+        {
+            _playCharacterButton.style.display = DisplayStyle.None;
+            _hadPlayButton = false;
+        }
+
         _header.text = string.Empty;
         _subHeader.text = string.Empty;
         _description.text = string.Empty;
-        _icon.style.backgroundImage = null;
-        _icon.style.display = DisplayStyle.None;
-        _image.style.backgroundImage = null;
-        _image.style.display = DisplayStyle.None;
-        _imageCaption.style.display = DisplayStyle.None;
-        _playCharacterButton.style.display = DisplayStyle.None;
     }
     #endregion
 
