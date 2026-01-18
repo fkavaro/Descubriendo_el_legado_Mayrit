@@ -290,7 +290,7 @@ MonoBehaviour:
   _isDynamic: 0
   _wantedTime: 10
   _currentTime: 10
-  _timeSpeed: 3
+  _timeSpeed: 0.2
   _sunSource: {fileID: 6097541470270510900}
   _sunAngle: 150
   _sunLatitude: 40

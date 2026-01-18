@@ -26,7 +26,7 @@ public class TimeManager : MonoBehaviour
     [Range(0f, 24f)]
     [SerializeField] float _currentTime;
     [Tooltip("Time cycle speed multiplier")]
-    [SerializeField] float _timeSpeed = 1f;
+    [SerializeField] float _timeSpeed = 0.2f;
 
     [Header("Sun Light Settings")]
     [SerializeField] Light _sunSource;
@@ -51,9 +51,9 @@ public class TimeManager : MonoBehaviour
 
     #region INTERNAL PROPERTIES
     [HideInInspector] public bool _isDayTime = true; // Whether current time is between 6 and 18 hours or not
-    bool _isWantedTimeReached, // Whether the current time is close enough to the wanted time
-        _increaseTime; // Whether the time should be increased or decreased
+    bool _isWantedTimeReached; // Whether the current time is close enough to the wanted time
     float _normalisedTime; // Normalised time value between 0 and 1, where 0 is midnight and 1 is the next midnight
+    float _timeVelocity; // Velocity for SmoothDamp
 
     // Dependency Injection
     ProgressManager _progressManager;
@@ -79,15 +79,6 @@ public class TimeManager : MonoBehaviour
     {
         // Difference between current time and wanted time is less than threshold of 0.1f
         _isWantedTimeReached = Mathf.Abs(_currentTime - _wantedTime) < 0.1f;
-
-        float timeDifference = _currentTime - _wantedTime;
-
-        // If positive, current time is ahead of wanted time, so decrease time
-        if (timeDifference > 0f)
-            _increaseTime = false;
-        // If negative, current time is behind wanted time, so increase time
-        else
-            _increaseTime = true;
 
         // If dynamic time is enabled or if the wanted time has not been reached yet
         if (_isDynamic || !_isWantedTimeReached)
@@ -141,11 +132,9 @@ public class TimeManager : MonoBehaviour
     #region PRIVATE METHODS
     void UpdateTimeOfDay()
     {
-        // Update the current unscaled time based on the time speed
-        if (_increaseTime)
-            _currentTime += Time.unscaledDeltaTime * _timeSpeed;
-        else
-            _currentTime -= Time.unscaledDeltaTime * _timeSpeed;
+        // Smoothly interpolate towards wanted time with damping for smooth transitions
+        const float smoothTime = 1f; // Time to reach wanted time
+        _currentTime = Mathf.SmoothDamp(_currentTime, _wantedTime, ref _timeVelocity, smoothTime, Mathf.Infinity, Time.unscaledDeltaTime * _timeSpeed);
 
         // Ensure current time wraps around after 24 hours
         if (_currentTime >= 24f)
