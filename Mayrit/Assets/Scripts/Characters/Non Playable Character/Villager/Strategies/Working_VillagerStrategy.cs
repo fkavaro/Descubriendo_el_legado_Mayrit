@@ -16,7 +16,14 @@ public class Working_VillagerStrategy : ATimedNPCStrategy<Villager>
         if (_workplace == null)
         {
             if (_npc.DebugMode)
-                Debug.LogWarning($"[{_npc.Name}.Working_VillagerStrategy.Start()] has null Workplace", _npc.GO);
+                Debug.LogWarning($"[{_npc.Name}.Working_VillagerStrategy.Start()] has null workplace", _npc.GO);
+            return Node.Status.Failure;
+        }
+
+        if (!_npc.MovementController.IsCloseToAnyAccessOf(_workplace))
+        {
+            if (_npc.DebugMode)
+                Debug.LogWarning($"[{_npc.Name}.Working_VillagerStrategy.Start()] not in workplace", _npc.GO);
             return Node.Status.Failure;
         }
 

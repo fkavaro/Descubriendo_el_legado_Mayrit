@@ -3,6 +3,8 @@ using UnityEngine;
 
 public abstract class ABuilding : MonoBehaviour
 {
+    public List<Spot> AccessSpots => _accessSpots;
+
     #region EDITOR PROPERTIES
     [Header("Building Properties")]
     [SerializeField] List<Spot> _accessSpots;

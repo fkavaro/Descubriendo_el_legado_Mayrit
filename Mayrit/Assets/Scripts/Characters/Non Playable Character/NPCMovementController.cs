@@ -282,6 +282,20 @@ public class NPCMovementController
 
         return _agent.remainingDistance <= effectiveDistance;
     }
+
+    public bool IsCloseToAnyAccessOf(ABuilding building)
+    {
+        if (building == null)
+            return false;
+
+        foreach (Spot spot in building.AccessSpots)
+        {
+            if (IsCloseToSpot(spot))
+                return true;
+        }
+
+        return false;
+    }
     #endregion
 
     #region HAS ARRIVED METHODS
