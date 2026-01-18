@@ -23,18 +23,10 @@ public class Villager : ANPC<BehaviourTree>
     #region BEHAVIOUR SYSTEM DEFINITION
     public override BehaviourTree DefineBehaviourSystemOnAwake()
     {
-        // Get entrance spots
-        Spot sanctuaryEntrance = null;
-        if (_sanctuary != null)
-            sanctuaryEntrance = _sanctuary.GetRandomAccessSpot();
-
-        Spot workplaceEntrance = null;
-        if (_workplace != null)
-            workplaceEntrance = _workplace.GetRandomWorkingSpot();
-
-        Spot homeEntrance = null;
-        if (_home != null)
-            homeEntrance = _home.GetRandomAccessSpot();
+        // Lazy spot getters
+        Spot getSanctuaryEntrance() => _sanctuary != null ? _sanctuary.GetRandomAccessSpot() : null;
+        Spot getWorkplaceEntrance() => _workplace != null ? _workplace.GetRandomWorkingSpot() : null;
+        Spot getHomeEntrance() => _home != null ? _home.GetRandomAccessSpot() : null;
 
         // Conversation sequence
         ConditionStrategy notInAccessZoneStrategy = new(() => !InAccessZone);
@@ -74,9 +66,9 @@ public class Villager : ANPC<BehaviourTree>
         // Routine sequence
         SequenceNode routineSequence = new(this);
 
-        if (sanctuaryEntrance != null)
+        if (getSanctuaryEntrance() != null)
         {
-            GoToDestinationStrategy<Villager> goToSanctuaryStrategy = new(this, sanctuaryEntrance);
+            GoToDestinationStrategy<Villager> goToSanctuaryStrategy = new(this, getSanctuaryEntrance, true);
             InInteriorStrategy<Villager> prayingStrategy = new(this);
 
             SequenceNode prayingSequence = new(this);
@@ -88,9 +80,9 @@ public class Villager : ANPC<BehaviourTree>
             routineSequence.AddChild(prayingSequence);
         }
 
-        if (workplaceEntrance != null)
+        if (getWorkplaceEntrance() != null)
         {
-            GoToDestinationStrategy<Villager> goToWorkStrategy = new(this, workplaceEntrance, true);
+            GoToDestinationStrategy<Villager> goToWorkStrategy = new(this, getWorkplaceEntrance, true);
             Working_VillagerStrategy workingStrategy = new(this, _workplace, 60, 180);
 
             SequenceNode workingSequence = new(this);
@@ -123,9 +115,9 @@ public class Villager : ANPC<BehaviourTree>
             routineSequence.AddChild(shoppingSucceeder);
         }
 
-        if (homeEntrance != null)
+        if (getHomeEntrance() != null)
         {
-            GoToDestinationStrategy<Villager> goToHomeStrategy = new(this, homeEntrance);
+            GoToDestinationStrategy<Villager> goToHomeStrategy = new(this, getHomeEntrance, true);
             AtHome_VillagerStrategy atHomeStrategy = new(this);
 
             SequenceNode atHomeSequence = new(this);

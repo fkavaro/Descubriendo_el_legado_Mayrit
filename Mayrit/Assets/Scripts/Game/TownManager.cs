@@ -288,7 +288,8 @@ public class TownManager : MonoBehaviour
         List<T> candidates = new();
         foreach (var building in buildings)
         {
-            if (building == excludedBuilding) continue;
+            if (building == null || building == excludedBuilding) continue;
+            if (!building.gameObject.activeSelf) continue;
             if (!building.AtMaxCapacity) candidates.Add(building);
         }
         if (candidates.Count == 0) return null;

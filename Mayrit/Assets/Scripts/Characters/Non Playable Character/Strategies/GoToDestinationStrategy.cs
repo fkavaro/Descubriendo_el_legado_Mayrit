@@ -1,15 +1,17 @@
+using System;
 using UnityEngine;
 
 public class GoToDestinationStrategy<NPCtype> : ANPCStrategy<NPCtype>
 where NPCtype : INPC
 {
-    readonly Spot _destinationSpot;
+    readonly Func<Spot> _destinationResolver; // Lazy resolver to avoid stale cached spots
+    Spot _destinationSpot;
     private readonly bool _fixRotation;
 
-    public GoToDestinationStrategy(NPCtype npc, Spot destinationSpot, bool fixRotation = false)
+    public GoToDestinationStrategy(NPCtype npc, Func<Spot> destinationResolver, bool fixRotation = false)
     : base(npc)
     {
-        _destinationSpot = destinationSpot;
+        _destinationResolver = destinationResolver;
         _fixRotation = fixRotation;
     }
 
@@ -23,14 +25,21 @@ where NPCtype : INPC
             _npc.InteractionController.ConversationInterrupted();
         }
 
-        if (_npc.MovementController.SetDestinationSpot(_destinationSpot))
-            return Node.Status.Success;
-        else
+        _destinationSpot = _destinationResolver?.Invoke();
+
+        if (_destinationSpot == null)
         {
             if (_npc.DebugMode)
-                Debug.LogWarning($"[{_npc.Name}.GoToDestinationStrategy.Start()] could not set destination", _npc.GO);
+                Debug.LogWarning($"[{_npc.Name}.GoToDestinationStrategy.Start()] destination spot is null", _npc.GO);
             return Node.Status.Failure;
         }
+
+        if (_npc.MovementController.SetDestinationSpot(_destinationSpot))
+            return Node.Status.Success;
+
+        if (_npc.DebugMode)
+            Debug.LogWarning($"[{_npc.Name}.GoToDestinationStrategy.Start()] could not set destination", _npc.GO);
+        return Node.Status.Failure;
     }
 
     public override Node.Status Update()
@@ -43,20 +52,23 @@ where NPCtype : INPC
             _npc.InteractionController.ConversationInterrupted();
         }
 
-        // Fix destination if needed
+        if (_destinationSpot == null)
+        {
+            if (_npc.DebugMode)
+                Debug.LogWarning($"[{_npc.Name}.GoToDestinationStrategy.Start()] destination spot is null", _npc.GO);
+            return Node.Status.Failure;
+        }
+
+        // Fix destination if needed; fail if it cannot be (e.g., unreachable now)
         if (!_npc.MovementController.IsDestinationSpot(_destinationSpot))
         {
-            // if (_npc.DebugMode)
-            //     Debug.Log($"[{_npc.Name}.GoToDestinationStrategy.Update()] fixing destination", _npc.GO);
-
-            _npc.MovementController.SetDestinationSpot(_destinationSpot);
+            if (!_npc.MovementController.SetDestinationSpot(_destinationSpot))
+                return Node.Status.Failure;
         }
 
         // Success if arrived at destination
-        if (_npc.MovementController.HasArrivedAtSpot(_destinationSpot, _fixRotation))
-            return Node.Status.Success;
-        // Continue if not
-        else
-            return Node.Status.Running;
+        return _npc.MovementController.HasArrivedAtSpot(_destinationSpot, _fixRotation)
+            ? Node.Status.Success
+            : Node.Status.Running;
     }
 }

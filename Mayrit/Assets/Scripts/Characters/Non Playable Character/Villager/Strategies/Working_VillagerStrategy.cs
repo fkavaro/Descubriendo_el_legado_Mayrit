@@ -13,6 +13,13 @@ public class Working_VillagerStrategy : ATimedNPCStrategy<Villager>
     // Start
     public override Node.Status Start()
     {
+        if (_workplace == null)
+        {
+            if (_npc.DebugMode)
+                Debug.LogWarning($"[{_npc.Name}.Working_VillagerStrategy.Start()] has null Workplace", _npc.GO);
+            return Node.Status.Failure;
+        }
+
         _npc.AnimationController.ChangeToIdle();
         _workplace.IsWorkplaceOpen = true;
 
