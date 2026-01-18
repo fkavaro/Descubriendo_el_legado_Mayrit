@@ -78,7 +78,7 @@ public class GoToMarket_VillagerStrategy : ANPCStrategy<Villager>
             }
 
             // Is open
-            if (_marketStall.IsWorkplaceOpen)
+            if (_marketStall._isOpen)
             {
                 // Is occupied
                 if (_marketStallSpot.IsOccupied())

@@ -309,11 +309,12 @@ public class NPCPoolManager : MonoBehaviour
         villager.AssignMarket(randomMarket);
 
         // Activate and reset components
-        villager.gameObject.SetActive(true);
-        randomFreeHouse.PlaceAtRandomEntrance(villager);
+        randomFreeHouse.PlaceAtRandomAccess(villager);
         villager.BehaviourSystem.Reset();
         villager.MovementController.Reset();
+        villager.InteractionController.Reset();
         villager.AnimationController.Reset();
+        villager.gameObject.SetActive(true);
         villager.Agent.enabled = true; // Activated once its placed
     }
 

@@ -38,10 +38,7 @@ public class AccessZone : MonoBehaviour
 
         // Try to get the INPC interface
         if (!other.TryGetComponent<INPC>(out var npc))
-        {
-            Debug.LogWarning("AccessZone: Colliding object does not implement INPC interface", other.gameObject);
             return;
-        }
 
         if (!npc.InAccessZone)
             npc.InAccessZone = true;

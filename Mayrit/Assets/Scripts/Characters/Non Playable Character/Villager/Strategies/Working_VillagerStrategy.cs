@@ -10,7 +10,6 @@ public class Working_VillagerStrategy : ATimedNPCStrategy<Villager>
         _workplace = workplace;
     }
 
-    // Start
     public override Node.Status Start()
     {
         if (_workplace == null)
@@ -27,14 +26,21 @@ public class Working_VillagerStrategy : ATimedNPCStrategy<Villager>
             return Node.Status.Failure;
         }
 
-        _npc.AnimationController.ChangeToIdle();
-        _workplace.IsWorkplaceOpen = true;
+        if (_workplace.IsInterior)
+            _npc.GO.SetActive(false);
+        else
+            _npc.AnimationController.ChangeToIdle();
+
+        _workplace._isOpen = true;
 
         return Node.Status.Success;
     }
 
     public override void OnTimerComplete()
     {
-        _workplace.IsWorkplaceOpen = false;
+        if (_npc.GO.activeSelf == false)
+            _npc.gameObject.SetActive(true);
+
+        _workplace._isOpen = false;
     }
 }

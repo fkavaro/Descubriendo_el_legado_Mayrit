@@ -48,7 +48,7 @@ public class Shopping_VillagerStrategy : ATimedNPCStrategy<Villager>
         }
 
         // Stall is closed
-        if (!_npc.MarketStall.IsWorkplaceOpen)
+        if (!_npc.MarketStall._isOpen)
         {
             if (_npc.DebugMode)
                 Debug.LogWarning($"[Shopping_VillagerStrategy.Update()] {_npc.Name} found that stall {_npc.MarketStall.name} is closed. Ending shopping.");

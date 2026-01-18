@@ -23,9 +23,4 @@ public class AtHome_VillagerStrategy : ANPCStrategy<Villager>
         else
             return Node.Status.Failure;
     }
-
-    public override Node.Status Update()
-    {
-        return Node.Status.Success;
-    }
 }

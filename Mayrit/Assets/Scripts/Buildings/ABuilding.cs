@@ -35,7 +35,7 @@ public abstract class ABuilding : MonoBehaviour
     #endregion
 
     #region PUBLIC METHODS
-    public void PlaceAtRandomEntrance(INPC npc)
+    public void PlaceAtRandomAccess(INPC npc)
     {
         if (npc == null || npc.Agent == null)
         {
@@ -43,11 +43,11 @@ public abstract class ABuilding : MonoBehaviour
             return;
         }
 
-        Spot entranceSpot = GetRandomAccessSpot();
-        if (entranceSpot != null)
+        Spot accessSpot = GetRandomAccessSpot();
+        if (accessSpot != null)
         {
-            npc.MovementController.PlaceAt(entranceSpot.transform.position);
-            npc.MovementController.ForceRotation(entranceSpot.WorldDirection);
+            npc.MovementController.PlaceAt(accessSpot.transform.position);
+            npc.MovementController.ForceRotation(accessSpot.WorldDirection);
         }
         else
         {

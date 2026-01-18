@@ -7,12 +7,10 @@ public class Workplace : AAssignedBuilding
     #region EDITOR PROPERTIES
     [Header("Workplace Properties")]
     [SerializeField] List<Spot> _workSpots;
-    [SerializeField] bool _isOpen = false;
-    public bool IsWorkplaceOpen
-    {
-        get { return _isOpen; }
-        set { _isOpen = value; }
-    }
+    [SerializeField] protected bool _isInterior = false;
+    public bool _isOpen = false;
+
+    public bool IsInterior => _isInterior;
     #endregion
 
     #region INHERITED METHODS

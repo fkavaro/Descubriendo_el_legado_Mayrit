@@ -14,6 +14,8 @@ public class Stall : Workplace
     {
         base.OnEnable();
 
+        _isInterior = false;
+
         // Get parent with market component (searches this GameObject and ancestors)
         if (_parentMarket == null)
             _parentMarket = GetComponentInParent<Market>();
