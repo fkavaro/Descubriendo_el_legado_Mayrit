@@ -17,17 +17,17 @@ public class Workplace : AAssignedBuilding
     #region INHERITED METHODS
     public override void RegisterBuilding()
     {
-        _townManager.RegisterWorkplace(this);
+        TownManager.RegisterWorkplace(this);
     }
 
     public override void UnregisterBuilding()
     {
-        _townManager.UnregisterWorkplace(this);
+        TownManager.UnregisterWorkplace(this);
     }
 
-    public override void Reassign(List<Villager> employees)
+    public override void ReassignVillagers(List<Villager> employees)
     {
-        _townManager.ReassignEmployees(this, employees);
+        TownManager.ReassignEmployees(this, employees);
     }
     #endregion
 

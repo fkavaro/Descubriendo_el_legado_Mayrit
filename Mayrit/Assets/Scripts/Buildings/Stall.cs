@@ -7,6 +7,11 @@ public class Stall : Workplace
     #region EDITOR PROPERTIES
     [Header("Stall Properties")]
     [SerializeField] Market _parentMarket;
+    [SerializeField] int _maxClientsWaiting = 3;
+    [SerializeField] int _currentClientsWaiting;
+    readonly HashSet<INPC> _clientsWaiting = new();
+
+    public bool TooManyClientsWaiting => _clientsWaiting.Count >= _maxClientsWaiting;
     #endregion
 
     #region LIFE CYCLE
@@ -30,9 +35,23 @@ public class Stall : Workplace
 
         // Unregister from parent market if previously registered
         if (_parentMarket != null)
-        {
-            try { _parentMarket.UnregisterStall(this); } catch { }
-        }
+            _parentMarket.UnregisterStall(this);
+    }
+    #endregion
+
+    #region PUBLIC METHODS
+    public void RegisterClientWaiting(INPC npc)
+    {
+        if (npc == null) return;
+        _clientsWaiting.Add(npc);
+        _currentClientsWaiting = _clientsWaiting.Count;
+    }
+
+    public void UnregisterClientWaiting(INPC npc)
+    {
+        if (npc == null) return;
+        _clientsWaiting.Remove(npc);
+        _currentClientsWaiting = _clientsWaiting.Count;
     }
     #endregion
 }

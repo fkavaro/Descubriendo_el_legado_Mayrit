@@ -22,10 +22,10 @@ public class GoToMarket_VillagerStrategy : ANPCStrategy<Villager>
             _npc.InteractionController.ConversationInterrupted();
         }
 
-        if (!GetStallAndSetDestination())
+        if (!GetOpenStallAndSetDestination())
         {
             if (_npc.DebugMode)
-                Debug.LogWarning($"[ {_npc.Name}.GoToMarket_VillagerStrategy.Update()] could not find an available stall spot in the market.", _npc.GO);
+                Debug.Log($"[{_npc.Name}.GoToMarket_VillagerStrategy.Update()] could not go to any open stall in the market.", _npc.GO);
 
             return Node.Status.Failure;
         }
@@ -53,26 +53,20 @@ public class GoToMarket_VillagerStrategy : ANPCStrategy<Villager>
                 return Node.Status.Failure;
         }
 
-        // Not close enough yet - keep moving
+        // NOT CLOSE TO STALL SPOT YET
         if (!_npc.MovementController.IsCloseToSpot(_marketStallSpot))
         {
+            // Keep moving
             _npc.MovementController.SetIfStopped(false);
             return Node.Status.Running;
         }
 
-        // Close to stall - fail if market is closed
-        if (!_market.IsOpen())
-        {
-            if (_npc.DebugMode)
-                Debug.LogWarning($"[{_npc.Name}.GoToMarket_VillagerStrategy.Update()] market is closed", _npc.GO);
-            return Node.Status.Failure;
-        }
-
-        // Close to stall - check if stall is still open
+        // CLOSE TO STALL SPOT
+        // If stall is closed
         if (!_npc.MarketStall._isOpen)
         {
-            // Stall closed - try another
-            if (!GetStallAndSetDestination())
+            // Try to get another opened stall; fail if none available
+            if (!GetOpenStallAndSetDestination())
             {
                 if (_npc.DebugMode)
                     Debug.LogWarning($"[{_npc.Name}.GoToMarket_VillagerStrategy.Update()] no available stalls found", _npc.GO);
@@ -81,11 +75,27 @@ public class GoToMarket_VillagerStrategy : ANPCStrategy<Villager>
             return Node.Status.Running;
         }
 
-        // Success if arrived at stall spot
+        // ARRIVED AT STALL SPOT
         if (_npc.MovementController.HasArrivedAtSpot(_marketStallSpot, true))
+        {
+            _npc.MarketStall.UnregisterClientWaiting(_npc);
             return Node.Status.Success;
+        }
 
-        // Not arrived yet - check if spot is occupied by another NPC
+        // Try get other stall if too many clients are already waiting
+        if (_npc.MarketStall.TooManyClientsWaiting)
+        {
+            if (!GetOpenStallAndSetDestination())
+            {
+                if (_npc.DebugMode)
+                    Debug.LogWarning($"[{_npc.Name}.GoToMarket_VillagerStrategy.Update()] no available stalls found when trying to avoid crowd", _npc.GO);
+                return Node.Status.Failure;
+            }
+            return Node.Status.Running;
+        }
+
+        // NOT ARRIVED AT STALL SPOT YET, but close
+        // If spot is occupied
         if (_marketStallSpot.IsOccupied())
         {
             // Wait for spot to become available
@@ -96,7 +106,7 @@ public class GoToMarket_VillagerStrategy : ANPCStrategy<Villager>
 
                 _npc.MovementController.SetIfStopped(true);
                 _npc.AnimationController.ChangeToIdle();
-
+                _npc.MarketStall.RegisterClientWaiting(_npc);
                 _isWaitingForAccess = true;
             }
 
@@ -104,7 +114,8 @@ public class GoToMarket_VillagerStrategy : ANPCStrategy<Villager>
             return Node.Status.Running;
         }
 
-        // Spot available and we haven't arrived yet - move to it
+        // CLOSE TO STALL SPOT AND SPOT IS FREE
+        // Resume movement
         _isWaitingForAccess = false;
         _npc.MovementController.SetIfStopped(false);
         _npc.AnimationController.ChangeToWalk();
@@ -112,9 +123,9 @@ public class GoToMarket_VillagerStrategy : ANPCStrategy<Villager>
         return Node.Status.Running;
     }
 
-    bool GetStallAndSetDestination()
+    bool GetOpenStallAndSetDestination()
     {
-        _npc.MarketStall = _market.GetRandomStall();
+        _npc.MarketStall = _market.GetRandomOpenedStall();
         if (_npc.MarketStall == null)
             return false;
 

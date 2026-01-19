@@ -3,21 +3,13 @@ using UnityEngine;
 
 public class Villager : ANPC<BehaviourTree>
 {
-    #region PROPERTIES HELPERS
-    public Stall MarketStall
-    {
-        get => _marketStall;
-        set => _marketStall = value;
-    }
-    #endregion
-
     #region EDITOR PROPERTIES
     [Header("Villager")]
     [SerializeField] protected House _home;
     [SerializeField] protected Workplace _workplace;
     [SerializeField] protected Sanctuary _sanctuary;
     [SerializeField] protected Market _market;
-    [SerializeField] protected Stall _marketStall;
+    public Stall MarketStall;
     #endregion
 
     #region BEHAVIOUR SYSTEM DEFINITION

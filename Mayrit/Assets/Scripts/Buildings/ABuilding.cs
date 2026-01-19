@@ -11,7 +11,8 @@ public abstract class ABuilding : MonoBehaviour
     #endregion
 
     #region INTERNAL PROPERTIES
-    protected TownManager _townManager;
+    TownManager _townManager;
+    protected TownManager TownManager => _townManager;
     #endregion
 
     #region ABSTRACT METHODS
@@ -24,6 +25,12 @@ public abstract class ABuilding : MonoBehaviour
     {
         // Get from ServiceLocator
         _townManager = ServiceLocator.Instance.Get<TownManager>();
+
+        if (_townManager == null)
+        {
+            Debug.LogError($"[{gameObject.name}.OnEnable] TownManager not found.", gameObject);
+            return;
+        }
 
         RegisterBuilding();
     }
@@ -39,7 +46,7 @@ public abstract class ABuilding : MonoBehaviour
     {
         if (npc == null || npc.Agent == null)
         {
-            Debug.LogWarning($"PlaceAtRandomEntrance: npc or npc.Agent is null for building {gameObject.name}.");
+            Debug.LogWarning($"[{gameObject.name}PlaceAtRandomAccess] Npc or npc.Agent is null.", gameObject);
             return;
         }
 
@@ -52,7 +59,7 @@ public abstract class ABuilding : MonoBehaviour
         else
         {
             npc.MovementController.PlaceAt(transform.position);
-            Debug.LogWarning($"No entrance spots defined for building {gameObject.name}. Placing villager at building position.");
+            Debug.LogWarning($"[{gameObject.name}PlaceAtRandomAccess] No entrance spots defined. Placing npc at building position.");
         }
     }
 

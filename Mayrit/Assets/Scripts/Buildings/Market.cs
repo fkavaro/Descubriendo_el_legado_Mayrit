@@ -6,18 +6,19 @@ public class Market : ABuilding
 {
     #region EDITOR PROPERTIES
     [Header("Market Properties")]
-    [SerializeField] List<Stall> _stalls = new();
+    [SerializeField] int _numberOfStalls;
+    readonly HashSet<Stall> _stalls = new();
     #endregion
 
     #region INHERITED METHODS
     public override void RegisterBuilding()
     {
-        _townManager.RegisterMarket(this);
+        TownManager.RegisterMarket(this);
     }
 
     public override void UnregisterBuilding()
     {
-        _townManager.UnregisterMarket(this);
+        TownManager.UnregisterMarket(this);
     }
     #endregion
 
@@ -25,35 +26,26 @@ public class Market : ABuilding
     public void RegisterStall(Stall stall)
     {
         if (stall == null) return;
-        if (!_stalls.Contains(stall))
-            _stalls.Add(stall);
+        _stalls.Add(stall);
+        _numberOfStalls = _stalls.Count;
     }
 
     public void UnregisterStall(Stall stall)
     {
         if (stall == null) return;
-        if (_stalls.Contains(stall))
-            _stalls.Remove(stall);
+        _stalls.Remove(stall);
+        _numberOfStalls = _stalls.Count;
     }
 
-    public Stall GetRandomStall()
-    {
-        if (_stalls == null || _stalls.Count == 0) return null;
-        int randomIndex = UnityEngine.Random.Range(0, _stalls.Count);
-        return _stalls[randomIndex];
-    }
-
-
-    /// <returns>A random opened stall from the market</returns>
     public Stall GetRandomOpenedStall()
     {
-        if (_stalls == null || _stalls.Count == 0) return null;
+        if (_stalls.Count == 0) return null;
 
         List<Stall> openedStalls = new();
 
-        foreach (var stall in _stalls)
+        foreach (Stall stall in _stalls)
         {
-            if (stall._isOpen)
+            if (stall != null && stall._isOpen)
                 openedStalls.Add(stall);
         }
 
@@ -61,28 +53,6 @@ public class Market : ABuilding
 
         int randomIndex = UnityEngine.Random.Range(0, openedStalls.Count);
         return openedStalls[randomIndex];
-    }
-
-    /// <returns>The access spot of a random opened stall in the market
-    public Spot GetRandomStallSpot()
-    {
-        Spot spot = null;
-        Stall stall = GetRandomStall();
-
-        if (stall != null)
-            spot = stall.GetRandomAccessSpot();
-
-        return spot;
-    }
-
-    public bool IsOpen()
-    {
-        foreach (var stall in _stalls)
-        {
-            if (stall._isOpen)
-                return true;
-        }
-        return false;
     }
     #endregion
 }

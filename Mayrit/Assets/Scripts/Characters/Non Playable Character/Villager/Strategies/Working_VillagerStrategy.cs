@@ -38,7 +38,10 @@ public class Working_VillagerStrategy : ATimedNPCStrategy<Villager>
             // Deactivate model and agent
             _npc.SetCharacterAndAgentActive(false);
         else
+        {
             _npc.AnimationController.ChangeToIdle();
+            _npc.MovementController.SetIfStopped(true);
+        }
 
         _workplace._isOpen = true;
 

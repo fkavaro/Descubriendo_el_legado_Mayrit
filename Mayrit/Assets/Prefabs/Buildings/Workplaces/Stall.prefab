@@ -166,7 +166,7 @@ Transform:
   m_GameObject: {fileID: 3126207604362981114}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -337,6 +337,8 @@ MonoBehaviour:
   _isInterior: 0
   _isOpen: 0
   _parentMarket: {fileID: 0}
+  _maxClientsWaiting: 3
+  _currentClientsWaiting: 0
 --- !u!1 &8205122105290053257
 GameObject:
   m_ObjectHideFlags: 0

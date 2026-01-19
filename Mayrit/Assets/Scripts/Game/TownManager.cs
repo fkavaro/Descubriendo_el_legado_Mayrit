@@ -52,7 +52,7 @@ public class TownManager : MonoBehaviour
     /// </summary>
     public void RegisterHouse(House house)
     {
-        RegisterBuilding(_houses, house, house._capacity);
+        RegisterBuilding(_houses, house, house.Capacity);
     }
 
     /// <summary>
@@ -60,7 +60,7 @@ public class TownManager : MonoBehaviour
     /// </summary>
     public void UnregisterHouse(House house)
     {
-        UnregisterBuilding(_houses, house, -house._capacity);
+        UnregisterBuilding(_houses, house, -house.Capacity);
     }
 
     public void RegisterWorkplace(Workplace workplace)
@@ -100,7 +100,7 @@ public class TownManager : MonoBehaviour
     /// Optionally excluding given house.
     /// </summary>
     /// <returns>Never null. If no house with free capacity found, returns a random house with increased capacity.</returns>
-    public House GetHouse(House excludedHouse = null)
+    public House GetHouse()
     {
         House house;
 
@@ -110,26 +110,23 @@ public class TownManager : MonoBehaviour
             return null;
         }
 
-        // First try to get an empty house
-        house = GetEmptyBuilding(_houses, excludedHouse);
-
-        // If no empty house found, try to get a house with free capacity
-        if (house == null)
-            house = GetBuildingWithFreeCapacity(_houses, excludedHouse);
+        house = TryGetBuildingWithFreeCapacity(_houses);
 
         // If no house with free capacity found
-        if (house != null)
+        if (house == null)
         {
             // Return random house and increase its capacity
             house = _houses[UnityEngine.Random.Range(0, _houses.Count)];
             house.IncreaseCapacity(1);
+
+            Debug.LogWarning($"TownManager.GetHouse: No houses with free capacity found. Increasing capacity of house {house.name}.", house);
         }
 
         // Never return null assured
         return house;
     }
 
-    public Workplace GetWorkplace(Workplace excludedWorkplace = null)
+    public Workplace GetWorkplace()
     {
         Workplace workplace;
 
@@ -139,12 +136,7 @@ public class TownManager : MonoBehaviour
             return null;
         }
 
-        // First try to get an empty workplace
-        workplace = GetEmptyBuilding(_workplaces, excludedWorkplace);
-
-        // If no empty workplace found, try to get one with free capacity
-        if (workplace == null)
-            workplace = GetBuildingWithFreeCapacity(_workplaces, excludedWorkplace);
+        workplace = TryGetBuildingWithFreeCapacity(_workplaces);
 
         // Can be null if all workplaces are at max capacity
         return workplace;
@@ -155,7 +147,7 @@ public class TownManager : MonoBehaviour
     /// </returns>
     public Workplace GetWorkplaceWithFreeCapacity(Workplace excludedWorkplace = null)
     {
-        return GetBuildingWithFreeCapacity(_workplaces, excludedWorkplace);
+        return TryGetBuildingWithFreeCapacity(_workplaces, excludedWorkplace);
     }
 
     public Sanctuary GetNearestSanctuary(ABuilding other)
@@ -265,23 +257,7 @@ public class TownManager : MonoBehaviour
         return nearestBuilding;
     }
 
-    T GetEmptyBuilding<T>(List<T> buildings, T excludedBuilding)
-    where T : AAssignedBuilding
-    {
-        if (buildings == null || buildings.Count == 0) return null;
-        List<T> candidates = new();
-        foreach (var building in buildings)
-        {
-            if (building == null || building == excludedBuilding) continue;
-            if (!building.gameObject.activeSelf) continue;
-
-            if (building.IsEmpty) candidates.Add(building);
-        }
-        if (candidates.Count == 0) return null;
-        return candidates[UnityEngine.Random.Range(0, candidates.Count)];
-    }
-
-    T GetBuildingWithFreeCapacity<T>(List<T> buildings, T excludedBuilding)
+    T TryGetBuildingWithFreeCapacity<T>(List<T> buildings, T excludedBuilding = null)
     where T : AAssignedBuilding
     {
         if (buildings == null || buildings.Count == 0) return null;
@@ -306,7 +282,7 @@ public class TownManager : MonoBehaviour
 
             try
             {
-                var target = GetBuildingWithFreeCapacity(buildings, previousBuilding);
+                var target = TryGetBuildingWithFreeCapacity(buildings, previousBuilding);
                 if (target != null)
                 {
                     assignAction(villager, target);

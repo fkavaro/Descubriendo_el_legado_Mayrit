@@ -7,23 +7,23 @@ public class House : AAssignedBuilding
     #region INHERITED METHODS
     public override void RegisterBuilding()
     {
-        _townManager.RegisterHouse(this);
+        TownManager.RegisterHouse(this);
     }
 
     public override void UnregisterBuilding()
     {
-        _townManager.UnregisterHouse(this);
+        TownManager.UnregisterHouse(this);
     }
 
-    public override void Reassign(List<Villager> residents)
+    public override void ReassignVillagers(List<Villager> residents)
     {
-        _townManager.ReassignResidents(this, residents);
+        TownManager.ReassignResidents(this, residents);
     }
     #endregion
 
     public override void IncreaseCapacity(int increase)
     {
         base.IncreaseCapacity(increase);
-        _townManager.UpdatePopulation(increase);
+        TownManager.UpdatePopulation(increase);
     }
 }

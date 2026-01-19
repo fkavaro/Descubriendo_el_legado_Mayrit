@@ -6,9 +6,6 @@ public class NPCMovementController
 {
     #region CONSTANTS
     private const float NAVMESH_SAMPLE_DISTANCE = 2f;
-    private const int MIDDLE_POINT_SAMPLES = 9;
-    private const float SEPARATION_BUFFER = 0.1f;
-    private const float MAX_MIDPOINT_DISTANCE_FACTOR = 1.5f; // Fail if midpoint ends too far from partner
     #endregion
 
     #region PROPERTIES HELPERS
@@ -286,15 +283,33 @@ public class NPCMovementController
     public bool IsCloseToAnyWorkSpotOf(Workplace worplace)
     {
         if (worplace == null)
+        {
+            if (_npc.DebugMode)
+                Debug.LogWarning($"[IsCloseToAnyWorkSpotOf] {_npc.Name} workplace is null.", _npc.GO);
             return false;
+        }
 
         foreach (Spot spot in worplace.WorkSpots)
         {
-            if (IsCloseToSpot(spot))
+            if (IsCloseToPosition(spot.transform.position))
                 return true;
         }
 
+        if (_npc.DebugMode)
+            Debug.LogWarning($"[IsCloseToAnyWorkSpotOf] {_npc.Name} not close to any work spot of workplace.", _npc.GO);
+
         return false;
+    }
+
+    public bool IsCloseToPosition(Vector3 position, float checkingDistance = -1f)
+    {
+        float effectiveDistance = checkingDistance;
+
+        if (checkingDistance < 0f)
+            effectiveDistance = _npc.NearDistance;
+
+        float distanceToPosition = Vector3.Distance(_npc.GO.transform.position, position);
+        return distanceToPosition <= effectiveDistance;
     }
     #endregion
 

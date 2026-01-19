@@ -5,12 +5,12 @@ public class Sanctuary : ABuilding
     #region INHERITED METHODS
     public override void RegisterBuilding()
     {
-        _townManager.RegisterSanctuary(this);
+        TownManager.RegisterSanctuary(this);
     }
 
     public override void UnregisterBuilding()
     {
-        _townManager.UnregisterSanctuary(this);
+        TownManager.UnregisterSanctuary(this);
     }
     #endregion
 }

@@ -6,11 +6,11 @@ public abstract class AAssignedBuilding : ABuilding
 {
     #region EDITOR PROPERTIES
     [Header("Assigned Properties")]
-    public int _capacity = 1;
-    [SerializeField]
-    protected List<Villager> _assignedVillagers = new();
+    [SerializeField] int _capacity = 1;
+    [SerializeField] protected List<Villager> _assignedVillagers = new();
+
+    public int Capacity => _capacity;
     public bool AtMaxCapacity => _assignedVillagers.Count >= _capacity;
-    public bool IsEmpty => _assignedVillagers.Count == 0;
     #endregion
 
     #region INTERNAL PROPERTIES
@@ -18,13 +18,13 @@ public abstract class AAssignedBuilding : ABuilding
     #endregion
 
     #region ABSTRACT METHODS
-    public abstract void Reassign(List<Villager> assigned);
+    public abstract void ReassignVillagers(List<Villager> assigned);
     #endregion
 
     #region LIFE CYCLE
     public override void OnDisable()
     {
-        if (_townManager != null)
+        if (TownManager != null)
         {
             UnregisterBuilding();
 
@@ -35,7 +35,7 @@ public abstract class AAssignedBuilding : ABuilding
 
                 try
                 {
-                    Reassign(residentsCopy);
+                    ReassignVillagers(residentsCopy);
                 }
                 catch (Exception ex)
                 {
