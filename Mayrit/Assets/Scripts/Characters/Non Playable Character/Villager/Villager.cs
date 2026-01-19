@@ -10,6 +10,10 @@ public class Villager : ANPC<BehaviourTree>
     [SerializeField] protected Sanctuary _sanctuary;
     [SerializeField] protected Market _market;
     public Stall MarketStall;
+
+    public House Home => _home;
+    public Workplace Workplace => _workplace;
+    public Sanctuary Sanctuary => _sanctuary;
     #endregion
 
     #region BEHAVIOUR SYSTEM DEFINITION
