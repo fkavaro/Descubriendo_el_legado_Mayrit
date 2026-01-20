@@ -78,7 +78,8 @@ public class NPCMovementController
     {
         if (!IsAgentValid)
         {
-            Debug.LogWarning($"[SetIfStopped] {_npc.Name} agent is not valid.", _npc.GO);
+            if (_npc.DebugMode)
+                Debug.LogWarning($"[{_npc.Name}.SetIfStopped] agent is not valid.", _npc.GO);
             return;
         }
 
@@ -128,13 +129,15 @@ public class NPCMovementController
     {
         if (!IsAgentValid)
         {
-            Debug.LogWarning($"[SetDestinationSpot] {_npc.Name} agent is not valid.", _npc.GO);
+            if (_npc.DebugMode)
+                Debug.LogWarning($"[{_npc.Name}.TrySetDestinationSpot] agent is not valid.", _npc.GO);
             return false;
         }
 
         if (targetSpot == null)
         {
-            Debug.LogWarning($"[SetDestinationSpot] {_npc.Name} target spot is null.", _npc.GO);
+            if (_npc.DebugMode)
+                Debug.LogWarning($"[{_npc.Name}.TrySetDestinationSpot] target spot is null.", _npc.GO);
             return false;
         }
 
@@ -159,7 +162,8 @@ public class NPCMovementController
     {
         if (!IsAgentValid)
         {
-            Debug.LogWarning($"[SetDestination] {_npc.Name} agent is not valid.", _npc.GO);
+            if (_npc.DebugMode)
+                Debug.LogWarning($"[{_npc.Name}.TrySetDestination] agent is not valid.", _npc.GO);
             return false;
         }
 
@@ -203,8 +207,9 @@ public class NPCMovementController
             targetPos = hit.position;
             return true;
         }
+        if (_npc.DebugMode)
+            Debug.LogWarning($"[{_npc.Name}.MovementController] could not sample a valid NavMesh position near target.", _npc.GO);
 
-        Debug.LogWarning($"[SetDestination] {_npc.Name} could not sample NavMesh position near target.", _npc.GO);
         return false;
     }
 
@@ -217,7 +222,9 @@ public class NPCMovementController
         if (NavMesh.CalculatePath(_agent.transform.position, targetPos, _queryFilter, path))
             return true;
 
-        Debug.LogWarning($"[SetDestination] {_npc.Name} could not calculate a valid path to target.", _npc.GO);
+        if (_npc.DebugMode)
+            Debug.LogWarning($"[{_npc.Name}.MovementController] could not calculate a valid path to target position.", _npc.GO);
+
         return false;
     }
 
@@ -252,6 +259,12 @@ public class NPCMovementController
             return false;
         }
 
+        if (newStall.TooManyClientsWaiting)
+        {
+            stallSpot = null;
+            return false;
+        }
+
         Spot newDestinationSpot = newStall.GetRandomAccessSpot();
         if (newDestinationSpot == null)
         {
@@ -267,8 +280,50 @@ public class NPCMovementController
 
         _npc.MarketStall = newStall;
         stallSpot = newDestinationSpot;
+        _npc.MarketStall.RegisterClientWaiting(_npc);
         _npc.IsWaitingForAccess = false;
         return true;
+    }
+    #endregion
+
+    #region HAS ARRIVED METHODS
+    public bool HasArrivedAtDestinationSpot(Spot targetSpot, bool fixRotation = false)
+    {
+        // Validate agent and spot
+        if (!IsAgentValid || targetSpot == null)
+            return false;
+
+        // Must be tracking this spot as destination
+        if (!IsDestinationSpot(targetSpot))
+        {
+            if (_npc.DebugMode)
+                Debug.LogWarning($"[{_npc.Name}.HasArrivedAtDestinationSpot] checking arrival at untracked spot.", _npc.GO);
+            return false;
+        }
+
+        // Check if arrived at destination
+        if (!HasArrivedAtDestination())
+            return false;
+
+        // Handle rotation if required
+        if (!fixRotation || RotateSmoothlyTowards(targetSpot.WorldDirection))
+        {
+            // Arrived - mark spot as occupied
+            targetSpot.SetOccupied(true);
+            return true;
+        }
+
+        return false;
+    }
+
+    public bool HasArrivedAtDestination()
+    {
+        return IsWithinDistanceToDestination(_npc.ArrivingDistance);
+    }
+
+    public bool HasArrivedAtPosition(Vector3 position)
+    {
+        return IsWithinDistanceToPosition(position, _npc.ArrivingDistance);
     }
     #endregion
 
@@ -303,7 +358,7 @@ public class NPCMovementController
         if (!IsDestinationSpot(targetSpot))
         {
             if (_npc.DebugMode)
-                Debug.LogWarning($"[IsCloseToSpot] {_npc.Name} checking distance to untracked spot.", _npc.GO);
+                Debug.LogWarning($"[{_npc.Name}.IsNearDestinationSpot] checking proximity to untracked spot.", _npc.GO);
             return false;
         }
 
@@ -325,7 +380,7 @@ public class NPCMovementController
         if (worplace == null)
         {
             if (_npc.DebugMode)
-                Debug.LogWarning($"[IsCloseToAnyWorkSpotOf] {_npc.Name} workplace is null.", _npc.GO);
+                Debug.LogWarning($"[{_npc.Name}.IsCloseToAnyWorkSpotOf] workplace is null.", _npc.GO);
             return false;
         }
 
@@ -336,47 +391,6 @@ public class NPCMovementController
         }
 
         return false;
-    }
-    #endregion
-
-    #region HAS ARRIVED METHODS
-    public bool HasArrivedAtDestinationSpot(Spot targetSpot, bool fixRotation = false)
-    {
-        // Validate agent and spot
-        if (!IsAgentValid || targetSpot == null)
-            return false;
-
-        // Must be tracking this spot as destination
-        if (!IsDestinationSpot(targetSpot))
-        {
-            if (_npc.DebugMode)
-                Debug.LogWarning($"[HasArrivedAtSpot] {_npc.Name} checking arrival at untracked spot.", _npc.GO);
-            return false;
-        }
-
-        // Check if arrived at destination
-        if (!HasArrivedAtDestination())
-            return false;
-
-        // Handle rotation if required
-        if (!fixRotation || RotateSmoothlyTowards(targetSpot.WorldDirection))
-        {
-            // Arrived - mark spot as occupied
-            targetSpot.SetOccupied(true);
-            return true;
-        }
-
-        return false;
-    }
-
-    public bool HasArrivedAtDestination()
-    {
-        return IsWithinDistanceToDestination(_npc.ArrivingDistance);
-    }
-
-    public bool HasArrivedAtPosition(Vector3 position)
-    {
-        return IsWithinDistanceToPosition(position, _npc.ArrivingDistance);
     }
     #endregion
 
@@ -456,7 +470,8 @@ public class NPCMovementController
     {
         if (spot == null)
         {
-            Debug.LogWarning($"[PlaceAtSpot] {_npc.Name} spot is null.", _npc.GO);
+            if (_npc.DebugMode)
+                Debug.LogWarning($"[{_npc.Name}.PlaceAtSpot] spot is null.", _npc.GO);
             return;
         }
 
@@ -484,7 +499,8 @@ public class NPCMovementController
         }
         catch (Exception e)
         {
-            Debug.LogWarning($"[PlaceAt] {_npc.Name} failed to enable/warp agent: {e.Message}", _npc.GO);
+            if (_npc.DebugMode)
+                Debug.LogWarning($"[{_npc.Name}.PlaceAt] exception when placing NPC: {e.Message}", _npc.GO);
         }
     }
     #endregion

@@ -32,7 +32,7 @@ public class GoToMarket_VillagerStrategy : ANPCStrategy<Villager>
         if (!TryEnsureDestination(_marketStallSpot))
             return Node.Status.Failure;
 
-        if (ShouldSwitchStallWhenClose())
+        if (ShouldSwitchStallWhenNear())
         {
             // No open stall found: failure
             if (!_npc.MovementController.TrySetDestinationStall(out _marketStallSpot, onlyOpen: true))
@@ -64,7 +64,7 @@ public class GoToMarket_VillagerStrategy : ANPCStrategy<Villager>
         return true;
     }
 
-    bool ShouldSwitchStallWhenClose()
+    bool ShouldSwitchStallWhenNear()
     {
         if (!_npc.MovementController.IsFarFromPosition(_marketStallSpot.transform.position))
             return false;
@@ -107,7 +107,6 @@ public class GoToMarket_VillagerStrategy : ANPCStrategy<Villager>
 
             _npc.MovementController.SetIfStopped(true);
             _npc.AnimationController.ChangeToIdle();
-            _npc.MarketStall.RegisterClientWaiting(_npc);
             _npc.IsWaitingForAccess = true;
         }
 
