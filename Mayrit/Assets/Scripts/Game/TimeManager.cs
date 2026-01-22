@@ -57,6 +57,7 @@ public class TimeManager : MonoBehaviour
 
     // Dependency Injection
     ProgressManager _progressManager;
+    GameManager _gameManager;
     #endregion
 
     #region LIFE CYCLE
@@ -66,6 +67,7 @@ public class TimeManager : MonoBehaviour
     {
         // Get dependencies from ServiceLocator
         _progressManager = ServiceLocator.Instance.Get<ProgressManager>();
+        _gameManager = ServiceLocator.Instance.Get<GameManager>();
 
         // Subscribe to ProgressManager event to set the wanted time when the game starts
         _progressManager.MilestoneChangedEvent += OnMilestoneChanged;
@@ -81,7 +83,7 @@ public class TimeManager : MonoBehaviour
         _isWantedTimeReached = Mathf.Abs(_currentTime - _wantedTime) < 0.1f;
 
         // If dynamic time is enabled or if the wanted time has not been reached yet
-        if (_isDynamic || !_isWantedTimeReached)
+        if (!_gameManager.IsInPauseState && (_isDynamic || !_isWantedTimeReached))
         {
             UpdateTimeOfDay();
             UpdateLighting();
