@@ -647,57 +647,64 @@ MonoBehaviour:
   _debugMode: 0
   _isExecutionPaused: 0
   _currentActionInfo: 
-  _spectatorSimSpeed: 5
-  _spectatorCamera: {fileID: 5488014350122742170}
-  _edgeScrolling: 1
-  _edgeScrollingMargin: 100
-  _moveSpeed: 300
-  _moveSpeedZoomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0.1
-      inSlope: 0.032112375
-      outSlope: 0.032112375
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.24
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0.30277285
-      outSlope: 0.30277285
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.18666667
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  _acceleration: 700
-  _deceleration: 1000
-  _sprintSpeedMultiplier: 2
-  _movementLimitsX: {x: -1000, y: 700}
-  _movementLimitsY: {x: 120, y: 400}
-  _movementLimitsZ: {x: -800, y: 800}
-  _spectatorCameraOrbitSpeed: 0.5
-  _orbitSmoothing: 5
-  _zoomSpeed: 0.1
-  _zoomSmoothing: 5
-  _selectableLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  _spectatorTargetFixingSpeed: 50
-  _orbitalSimSpeed: 1
-  _orbitalCamera: {fileID: 1263816906637668818}
-  _thirdPersonSimSpeed: 1
-  _thirdPersonCamera: {fileID: 412980351691204597}
-  _3rdPersonCameraOrbitSpeed: 1.5
-  _3rdPersonCameraFollowSpeed: 1.5
-  _bottomClamp: -30
-  _topClamp: 40
+  _spectatorCamera:
+    data:
+      simulationSpeed: 5
+      camera: {fileID: 5488014350122742170}
+      movementSpeed: 300
+      orbitSpeed: 0.5
+    acceleration: 700
+    deceleration: 1000
+    sprintSpeedMultiplier: 2
+    zoomSpeedCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    movementLimitsX: {x: -1000, y: 700}
+    movementLimitsY: {x: 120, y: 400}
+    movementLimitsZ: {x: -800, y: 800}
+    isEdgeScrolling: 1
+    edgeScrollingMargin: 100
+    orbitSmoothing: 5
+    zoomSpeed: 0.1
+    zoomSmoothing: 5
+    selectableLayer:
+      serializedVersion: 2
+      m_Bits: 8
+    tagetPositionFixSpeed: 50
+  _orbitalCamera:
+    cameraData:
+      simulationSpeed: 1
+      camera: {fileID: 1263816906637668818}
+      movementSpeed: 0
+      orbitSpeed: 0
+  _thirdPersonCamera:
+    cameraData:
+      simulationSpeed: 1
+      camera: {fileID: 412980351691204597}
+      movementSpeed: 1.5
+      orbitSpeed: 1.5
+    _orbitClamp: {x: -30, y: 40}
 --- !u!1 &4272530639498313931
 GameObject:
   m_ObjectHideFlags: 0

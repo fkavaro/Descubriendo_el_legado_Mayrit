@@ -20,6 +20,7 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     public bool ControlsVisibilityValueSet => _controlsVisibilityValueSet;
     public float MusicVolumeValueSet => _musicVolumeValueSet;
     public float SFXVolumeValueSet => _sfxVolumeValueSet;
+    public bool IsCursorOverUI => BehaviourSystem.CurrentState.IsCursorOverUI();
     #endregion
 
     #region EDITOR PROPERTIES
@@ -139,11 +140,6 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     #endregion
 
     #region PUBLIC METHODS
-    public bool IsCursorOverUI()
-    {
-        return BehaviourSystem.CurrentState.IsCursorOverUI();
-    }
-
     public void ShowContextualPanel(DataSO data, bool isCharacterData = false)
     {
         ShowContextualPanelEvent?.Invoke(data, isCharacterData);

@@ -12,10 +12,10 @@ public class ThirdPerson_CameraState : ACameraState
     #endregion
 
     #region CONSTRUCTOR
-    public ThirdPerson_CameraState(CinemachineCamera camera, float simulationSpeed)
-    : base("Third person camera", camera, simulationSpeed)
+    public ThirdPerson_CameraState(ThirdPersonCameraData thirdPersonCameraData)
+    : base("Third person camera", thirdPersonCameraData.Camera, thirdPersonCameraData.SimulationSpeed)
     {
-        _cameraController = new(_camera);
+        _cameraController = new(thirdPersonCameraData);
     }
     #endregion
 
@@ -33,7 +33,7 @@ public class ThirdPerson_CameraState : ACameraState
         if (_gameManager.IsInPauseState)
             return;
 
-        _cameraController.TargetSmoothFolow();
+        _cameraController.TargetSmoothFollow();
 
         // Only allow camera rotation if the playable character is being controlled
         if (_gameManager.PlayableCharacter.IsBeingControlled)

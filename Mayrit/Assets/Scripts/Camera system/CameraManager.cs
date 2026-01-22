@@ -4,66 +4,37 @@ using UnityEngine;
 using Unity.Cinemachine;
 
 /// <summary>
-/// Manages the camera states and data. Singleton.
+/// Manages camera states and transitions between spectator, orbital, third-person, and POI camera modes.
+/// Uses a finite state machine to handle state logic and provides methods for switching between camera perspectives.
 /// </summary>
 public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
 {
-    #region PROPERTY HELPERS
+    #region STATE PROPERTIES
+    /// <summary>Gets whether the camera is currently in spectator mode.</summary>
     public bool IsInSpectatorState => _fsm.IsCurrentState(_spectatorState);
+
+    /// <summary>Gets whether the camera is currently in orbital mode (orbiting around a selected object).</summary>
     public bool IsInOrbitalState => _fsm.IsCurrentState(_orbitalState);
+
+    /// <summary>Gets whether the camera is currently in third-person mode (following the playable character).</summary>
     public bool IsInThirdPersonState => _fsm.IsCurrentState(_thirdPersonState);
+
+    /// <summary>Gets whether the camera is currently in POI (Point of Interest) mode.</summary>
     public bool IsInPOIState => _fsm.IsCurrentState(_poiState);
-    public bool EdgeScrolling => _edgeScrolling;
     #endregion
 
     #region EDITOR PROPERTIES
-    [Header("Spectator camera")]
-    [Range(0.1f, 10f)]
-    public float _spectatorSimSpeed = 3f;
-    public CinemachineCamera _spectatorCamera;
-    [Tooltip("Wether to move camera at screen margins or not.")]
-    [SerializeField] bool _edgeScrolling = false;
-    public int _edgeScrollingMargin = 30;
-    public float _moveSpeed = 500f;
-    public AnimationCurve _moveSpeedZoomCurve = AnimationCurve.Linear(0f, 0.1f, 1f, 1f);
-    public float _acceleration = 200f;
-    public float _deceleration = 250f;
-    public float _sprintSpeedMultiplier = 2f;
-    [Tooltip("Camera limits in X axis (min, max)")]
-    public Vector2 _movementLimitsX = new(-1000, 700);
-    [Tooltip("Camera limits in Y axis (min: at which target will be positioned, max: max distance from target)")]
-    public Vector2 _movementLimitsY = new(120, 400);
-    [Tooltip("Camera limits in Z axis (min, max)")]
-    public Vector2 _movementLimitsZ = new(-800, 800);
-    [Tooltip("Mouse sensitivity for camera rotation.")]
-    public float _spectatorCameraOrbitSpeed = 0.5f;
-    public float _orbitSmoothing = 5f;
-    [Tooltip("Speed of camera zoom with scroll wheel.")]
-    public float _zoomSpeed = 0.1f;
-    public float _zoomSmoothing = 5f;
-    [Tooltip("Layer mask to define which objects are selectable.")]
-    public LayerMask _selectableLayer;
-    [Tooltip("Speed to move the spectator camera target when switching from third person camera.")]
-    public float _spectatorTargetFixingSpeed = 40f;
+    [Space] public SpectatorCameraData _spectatorCamera;
+    [Space] public OrbitalCameraData _orbitalCamera;
+    [Space] public ThirdPersonCameraData _thirdPersonCamera;
+    #endregion
 
-    [Header("Orbital camera")]
-    [Range(0.1f, 10f)]
-    public float _orbitalSimSpeed = 1f;
-    public CinemachineCamera _orbitalCamera;
-
-    [Header("Third Person Camera")]
-    [Range(0.1f, 10f)]
-    public float _thirdPersonSimSpeed = 1f;
-    public CinemachineCamera _thirdPersonCamera;
-    public float _3rdPersonCameraOrbitSpeed = 1.5f,
-        _3rdPersonCameraFollowSpeed = 1.5f,
-        _bottomClamp = -30f,
-        _topClamp = 40f;
+    #region EVENTS
+    /// <summary>Invoked whenever the camera state changes (spectator, orbital, third-person, POI).</summary>
+    public event Action CameraStateChangedEvent;
     #endregion
 
     #region INTERNAL PROPERTIES
-    public event Action CameraStateChangedEvent;
-
     // Finiste State Machine and states
     FiniteStateMachine<ACameraState> _fsm;
     Spectator_CameraState _spectatorState;
@@ -84,10 +55,10 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
         _fsm = new(this);
 
         // States initialization
-        _spectatorState = new(_spectatorCamera, _spectatorSimSpeed);
-        _orbitalState = new(_orbitalCamera, _orbitalSimSpeed);
-        _thirdPersonState = new(_thirdPersonCamera, _thirdPersonSimSpeed);
-        _poiState = new(_thirdPersonSimSpeed);
+        _spectatorState = new(_spectatorCamera);
+        _orbitalState = new(_orbitalCamera);
+        _thirdPersonState = new(_thirdPersonCamera);
+        _poiState = new(_thirdPersonCamera.SimulationSpeed);
 
         _fsm.SetInitialState(_spectatorState);
 
@@ -107,28 +78,28 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
         _soundManager = ServiceLocator.Instance.Get<SoundManager>();
 
         // Subscribe to events
+        _uiManager.EdgeScrollingToggledEvent += _spectatorCamera.OnIsEdgeScrollingToggled;
         _spectatorState.ObjectSelectedEvent += SwitchToOrbitalCamera;
         _thirdPersonState.ExitThirdPersonCameraEvent += OnExitThirdPersonCamera;
         _uiManager.OnContextualPanelHiddenEvent += OnContextualPanelHidden;
         _uiManager.PlayCharacterClickedEvent += OnPlayCharacterClicked;
-        _uiManager.EdgeScrollingToggledEvent += OnEdgeScrollingToggled;
         _tourManager.POIVisitedEvent += OnTourPOIVisited;
 
         // Set camera target at min height
-        CinemachineOrbitalFollow _orbitalFollow = _spectatorCamera.GetComponent<CinemachineOrbitalFollow>();
-        _orbitalFollow.Radius = _movementLimitsY.y;
+        CinemachineOrbitalFollow _orbitalFollow = _spectatorCamera.Camera.GetComponent<CinemachineOrbitalFollow>();
+        _orbitalFollow.Radius = _spectatorCamera.movementLimitsY.y;
 
-        if (_spectatorCamera.LookAt.position.y != _movementLimitsY.x)
+        if (_spectatorCamera.Camera.LookAt.position.y != _spectatorCamera.movementLimitsY.x)
         {
             // Fix spectator target height
-            _spectatorCamera.LookAt.position = new(
-                _spectatorCamera.LookAt.position.x,
-                _movementLimitsY.x,
-                _spectatorCamera.LookAt.position.z);
+            _spectatorCamera.Camera.LookAt.position = new(
+                _spectatorCamera.Camera.LookAt.position.x,
+                _spectatorCamera.movementLimitsY.x,
+                _spectatorCamera.Camera.LookAt.position.z);
         }
 
         // Check edge scrolling initial state
-        _edgeScrolling = _uiManager.EdgeScrollingValueSet;
+        _spectatorCamera.isEdgeScrolling = _uiManager.EdgeScrollingValueSet;
     }
 
     void OnDestroy()
@@ -142,73 +113,28 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
     }
     #endregion
 
-    #region STATE HANDLING
+    #region STATE TRANSITIONS
+    /// <summary>
+    /// Switches to spectator camera mode. Handles transitions from third-person and orbital modes.
+    /// </summary>
     public void SwitchToSpectatorCamera()
     {
         if (IsInThirdPersonState)
-        {
-            _soundManager.PlayCameraTransitionSFX();
-
-            _spectatorCamera.LookAt.position = _thirdPersonCamera.LookAt.position;
-
-            // Fix to look at target height
-            Vector3 fixedSpectatorLookAt = new(
-                _spectatorCamera.LookAt.position.x,
-                _movementLimitsY.x, // At spectator height
-                _spectatorCamera.LookAt.position.z
-            );
-
-            _fsm.SwitchState(_spectatorState);
-
-            SmoothMoveCoroutine(_spectatorCamera.LookAt, fixedSpectatorLookAt, _spectatorTargetFixingSpeed);
-
-            if (DebugMode)
-                Debug.Log("Switched to spectator camera from third person.");
-
-            CameraStateChangedEvent?.Invoke();
-        }
+            TransitionFromThirdPersonToSpectator();
         else if (IsInOrbitalState)
-        {
-            _soundManager.PlayCameraTransitionSFX();
-
-            _spectatorCamera.LookAt.position = _orbitalCamera.LookAt.position;
-
-            // Same orbit values as orbital camera
-            _spectatorCamera.GetComponent<CinemachineOrbitalFollow>().HorizontalAxis.Value =
-                _orbitalCamera.GetComponent<CinemachineOrbitalFollow>().HorizontalAxis.Value;
-            _spectatorCamera.GetComponent<CinemachineOrbitalFollow>().VerticalAxis.Value =
-                _orbitalCamera.GetComponent<CinemachineOrbitalFollow>().VerticalAxis.Value;
-
-            // Fix to look at target height
-            Vector3 fixedSpectatorLookAt = new(
-                _spectatorCamera.LookAt.position.x,
-                _movementLimitsY.x, // At spectator height
-                _spectatorCamera.LookAt.position.z
-            );
-
-            _spectatorCamera.LookAt.position = fixedSpectatorLookAt;
-
-            _fsm.SwitchState(_spectatorState);
-
-            if (DebugMode)
-                Debug.Log("Switched to spectator camera from orbital.");
-
-            CameraStateChangedEvent?.Invoke();
-        }
+            TransitionFromOrbitalToSpectator();
     }
 
+    /// <summary>
+    /// Switches to orbital camera mode around the specified object.
+    /// </summary>
+    /// <param name="selectedElement">The object to orbit around.</param>
     public void SwitchToOrbitalCamera(SelectableObject selectedElement)
     {
         _orbitalState.SelectedObject = selectedElement;
-
         _soundManager.PlayCameraTransitionSFX();
 
-        // Same orbit values as spectator camera
-        _orbitalCamera.GetComponent<CinemachineOrbitalFollow>().HorizontalAxis.Value =
-            _spectatorCamera.GetComponent<CinemachineOrbitalFollow>().HorizontalAxis.Value;
-        _orbitalCamera.GetComponent<CinemachineOrbitalFollow>().VerticalAxis.Value =
-            _spectatorCamera.GetComponent<CinemachineOrbitalFollow>().VerticalAxis.Value;
-
+        SyncOrbitalCameraWithSpectator();
         _fsm.SwitchState(_orbitalState);
 
         if (DebugMode)
@@ -217,36 +143,30 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
         CameraStateChangedEvent?.Invoke();
     }
 
+    /// <summary>
+    /// Switches to third-person camera mode, following the playable character.
+    /// </summary>
     public void SwitchToThirdPersonCamera()
     {
-        // if (_thirdPersonCamera == null)
-        // {
-        //     Debug.LogError("Cannot switch to third person camera: third person camera is missing or destroyed.");
-        //     return;
-        // }
-
-        // Update third person camera target to current playable character
-        Transform playerTranform;
-
-        if (_gameManager.PlayableCharacter != null)
-            playerTranform = _gameManager.PlayableCharacter.transform;
-        else
+        if (_gameManager.PlayableCharacter == null)
         {
             Debug.LogError("Cannot switch to third person camera: PlayableCharacter is null.");
             return;
         }
 
-        // Set camera follow and look at target
-        _thirdPersonCamera.LookAt.position = playerTranform.position;
-
+        _thirdPersonCamera.Camera.LookAt.position = _gameManager.PlayableCharacter.transform.position;
         _fsm.SwitchState(_thirdPersonState);
-
-        CameraStateChangedEvent?.Invoke();
 
         if (DebugMode)
             Debug.Log("Switched to third person camera.");
+
+        CameraStateChangedEvent?.Invoke();
     }
 
+    /// <summary>
+    /// Switches to POI (Point of Interest) camera mode.
+    /// </summary>
+    /// <param name="camera">The POI camera to switch to.</param>
     public void SwitchToPoiCamera(CinemachineCamera camera)
     {
         _soundManager.PlayCameraTransitionSFX();
@@ -256,19 +176,70 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
     }
     #endregion
 
-    #region PRIVATE METHODS
-    /// <summary>
-    /// Moves smoothly the given transform to the new position in given duration.
-    /// </summary>
+    #region PRIVATE METHODS - STATE TRANSITIONS
+    void TransitionFromThirdPersonToSpectator()
+    {
+        _soundManager.PlayCameraTransitionSFX();
+        _spectatorCamera.Camera.LookAt.position = _thirdPersonCamera.Camera.LookAt.position;
+        Vector3 spectatorLookAt = GetFixedSpectatorLookAtPosition(_spectatorCamera.Camera.LookAt.position);
+        _fsm.SwitchState(_spectatorState);
+        SmoothMoveCoroutine(_spectatorCamera.Camera.LookAt, spectatorLookAt, _spectatorCamera.targetPositionFixSpeed);
+
+        if (DebugMode)
+            Debug.Log("Switched to spectator camera from third person.");
+
+        CameraStateChangedEvent?.Invoke();
+    }
+
+    void TransitionFromOrbitalToSpectator()
+    {
+        _soundManager.PlayCameraTransitionSFX();
+        _spectatorCamera.Camera.LookAt.position = _orbitalCamera.Camera.LookAt.position;
+        SyncSpectatorCameraWithOrbital();
+        Vector3 spectatorLookAt = GetFixedSpectatorLookAtPosition(_spectatorCamera.Camera.LookAt.position);
+        _spectatorCamera.Camera.LookAt.position = spectatorLookAt;
+        _fsm.SwitchState(_spectatorState);
+
+        if (DebugMode)
+            Debug.Log("Switched to spectator camera from orbital.");
+
+        CameraStateChangedEvent?.Invoke();
+    }
+
+    Vector3 GetFixedSpectatorLookAtPosition(Vector3 currentPosition)
+    {
+        return new(
+            currentPosition.x,
+            _spectatorCamera.movementLimitsY.x,
+            currentPosition.z
+        );
+    }
+
+    void SyncSpectatorCameraWithOrbital()
+    {
+        CinemachineOrbitalFollow spectatorOrbit = _spectatorCamera.Camera.GetComponent<CinemachineOrbitalFollow>();
+        CinemachineOrbitalFollow orbitalOrbit = _orbitalCamera.Camera.GetComponent<CinemachineOrbitalFollow>();
+
+        spectatorOrbit.HorizontalAxis.Value = orbitalOrbit.HorizontalAxis.Value;
+        spectatorOrbit.VerticalAxis.Value = orbitalOrbit.VerticalAxis.Value;
+    }
+
+    void SyncOrbitalCameraWithSpectator()
+    {
+        CinemachineOrbitalFollow orbitalOrbit = _orbitalCamera.Camera.GetComponent<CinemachineOrbitalFollow>();
+        CinemachineOrbitalFollow spectatorOrbit = _spectatorCamera.Camera.GetComponent<CinemachineOrbitalFollow>();
+
+        orbitalOrbit.HorizontalAxis.Value = spectatorOrbit.HorizontalAxis.Value;
+        orbitalOrbit.VerticalAxis.Value = spectatorOrbit.VerticalAxis.Value;
+    }
+    #endregion
+
+    #region SMOOTH MOVEMENT
     void SmoothMoveCoroutine(Transform lookAt, Vector3 newPosition, float speed, Action onComplete = null)
     {
         StartCoroutine(SmoothMove(lookAt, newPosition, speed, onComplete));
     }
 
-    /// <summary>
-    /// Smoothly moves the given transform to the new position in given speed.
-    /// Only interpolates axes that actually change, allowing other axes to be modified by external input.
-    /// </summary>
     IEnumerator SmoothMove(Transform transform, Vector3 newPosition, float speed, Action onComplete)
     {
         if (transform == null)
@@ -277,6 +248,7 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
         Vector3 startPosition = transform.position;
         Vector3 endPosition = newPosition;
         float distance = Vector3.Distance(startPosition, endPosition);
+
         if (distance < 0.001f)
         {
             onComplete?.Invoke();
@@ -290,44 +262,38 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
         {
             elapsedTime += Time.unscaledDeltaTime;
             float t = Mathf.Clamp01(elapsedTime / totalTime);
-
-            Vector3 currentPos = transform.position;
-            // Only lerp axes that actually change, preserving other axes for input-based movement
-            if (Mathf.Abs(endPosition.x - startPosition.x) > 0.001f)
-                currentPos.x = Mathf.Lerp(startPosition.x, endPosition.x, t);
-            if (Mathf.Abs(endPosition.y - startPosition.y) > 0.001f)
-                currentPos.y = Mathf.Lerp(startPosition.y, endPosition.y, t);
-            if (Mathf.Abs(endPosition.z - startPosition.z) > 0.001f)
-                currentPos.z = Mathf.Lerp(startPosition.z, endPosition.z, t);
-
+            Vector3 currentPos = InterpolatePosition(transform.position, startPosition, endPosition, t);
             transform.position = currentPos;
             yield return null;
         }
 
-        Vector3 finalPos = transform.position;
-        // Ensure final position has correct values for axes that changed
-        if (Mathf.Abs(endPosition.x - startPosition.x) > 0.001f)
-            finalPos.x = endPosition.x;
-        if (Mathf.Abs(endPosition.y - startPosition.y) > 0.001f)
-            finalPos.y = endPosition.y;
-        if (Mathf.Abs(endPosition.z - startPosition.z) > 0.001f)
-            finalPos.z = endPosition.z;
-        transform.position = finalPos;
+        transform.position = endPosition;
         onComplete?.Invoke();
+    }
+
+    Vector3 InterpolatePosition(Vector3 currentPos, Vector3 startPos, Vector3 endPos, float t)
+    {
+        const float threshold = 0.001f;
+
+        if (Mathf.Abs(endPos.x - startPos.x) > threshold)
+            currentPos.x = Mathf.Lerp(startPos.x, endPos.x, t);
+        if (Mathf.Abs(endPos.y - startPos.y) > threshold)
+            currentPos.y = Mathf.Lerp(startPos.y, endPos.y, t);
+        if (Mathf.Abs(endPos.z - startPos.z) > threshold)
+            currentPos.z = Mathf.Lerp(startPos.z, endPos.z, t);
+
+        return currentPos;
     }
     #endregion
 
-    #region CALLBACK METHODS
-    void OnExitThirdPersonCamera()
-    {
-        SwitchToSpectatorCamera();
-    }
+    #region EVENT CALLBACKS
+    /// <summary>Called when exiting third-person camera mode.</summary>
+    void OnExitThirdPersonCamera() => SwitchToSpectatorCamera();
 
-    void OnPlayCharacterClicked()
-    {
-        SwitchToThirdPersonCamera();
-    }
+    /// <summary>Called when the player clicks on a playable character.</summary>
+    void OnPlayCharacterClicked() => SwitchToThirdPersonCamera();
 
+    /// <summary>Called when a contextual panel is hidden to reset camera if needed.</summary>
     void OnContextualPanelHidden()
     {
         if (IsInOrbitalState)
@@ -336,20 +302,16 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
             SwitchToThirdPersonCamera();
     }
 
+    /// <summary>Called when a tour POI is visited.</summary>
     void OnTourPOIVisited(PointOfInterest poi)
     {
-        if (poi.gameObject.activeInHierarchy == false)
+        if (!poi.gameObject.activeInHierarchy)
         {
             Debug.LogWarning($"POI '{poi.name}' is not active in hierarchy.");
             return;
         }
 
         SwitchToPoiCamera(poi.Camera);
-    }
-
-    void OnEdgeScrollingToggled(bool value)
-    {
-        _edgeScrolling = value;
     }
     #endregion
 }

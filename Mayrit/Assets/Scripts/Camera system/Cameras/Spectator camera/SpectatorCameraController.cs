@@ -8,239 +8,261 @@ using Unity.Cinemachine;
 /// </summary>
 public class SpectatorCameraController
 {
-    #region  PROPERTIES
+    #region PROPERTIES
+    // Constants
+    const float MIN_VELOCITY_THRESHOLD = 0.01f;
+    const float MIN_INPUT_THRESHOLD = 0.01f;
+
+    // Camera references
     readonly CinemachineCamera _camera;
     readonly Transform _cameraTarget;
     readonly CinemachineOrbitalFollow _orbitalFollow;
+
+    // Configuration
     readonly AnimationCurve _moveSpeedZoomCurve;
+    readonly int _edgeScrollingMargin;
+    readonly float _moveSpeed;
+    readonly float _acceleration;
+    readonly float _deceleration;
+    readonly float _sprintSpeedMultiplier;
+    readonly Vector3 _movementLimitsX;
+    readonly Vector3 _movementLimitsZ;
+    readonly float _orbitSpeed;
+    readonly float _orbitSmoothing;
+    readonly float _zoomSpeed;
+    readonly float _zoomSmoothing;
 
-    // Edge scrolling
-    bool _edgeScrolling;
-    int _edgeScrollingMargin;
+    // Runtime state - Movement
+    Vector3 _velocity = Vector3.zero;
+    float _decelerationMultiplier = 1f;
+    Vector2 _edgeScrollInput;
 
-    // Movement
-    float _moveSpeed,
-        _acceleration,
-        _deceleration,
-        _printSpeedMultiplier = 2f;
-    Vector3 _movementLimitsX
-        , _movementLimitsZ;
+    // Runtime state - Zoom
+    float _currentZoomSpeed = 0f;
 
-    // Orbit
-    float _orbitSpeed,
-        _orbitSmoothing;
+    // Input state
+    Vector2 _moveInput;
+    Vector2 _lookInput;
+    Vector2 _scrollInput;
+    bool _sprintPressed;
+    bool _middleClickPressed;
 
-    // Zoom
-    float _zoomSpeed,
-        _zoomSmoothing;
-    float ZoomLevel // value between 0 (zoomed in) and 1 (zoomed out)
+    // Computed properties
+    float ZoomLevel // Normalized zoom level: 0 (zoomed in) to 1 (zoomed out)
     {
         get
         {
-            InputAxis axis = _orbitalFollow.RadialAxis;
-
-            return Mathf.InverseLerp(axis.Range.x, axis.Range.y, axis.Value);
+            InputAxis radialAxis = _orbitalFollow.RadialAxis;
+            return Mathf.InverseLerp(radialAxis.Range.x, radialAxis.Range.y, radialAxis.Value);
         }
     }
 
-    Vector2 _edgeScrollInput;
-    float _decelerationMultiplier = 1f,
-        _currentZoomSpeed = 0f;
-    Vector3 _velocity = Vector3.zero;
-
-    // Input
-    Vector2 _moveInput, _lookInput, _scrollInput;
-    bool _sprintPressed, _middleClickPressed;
-
-    // Dependency Injection
-    readonly CameraManager _cameraManager;
+    // Dependencies
+    readonly SpectatorCameraData _spectatorCameraData;
     readonly GameManager _gameManager;
     readonly UIManager _uiManager;
     #endregion
 
     #region CONSTRUCTOR
-    public SpectatorCameraController(CinemachineCamera camera)
+    public SpectatorCameraController(SpectatorCameraData spectatorCameraData)
     {
-        _camera = camera;
-        _cameraTarget = camera.Target.TrackingTarget.transform;
-        _orbitalFollow = camera.GetComponent<CinemachineOrbitalFollow>();
+        _spectatorCameraData = spectatorCameraData;
+
+        // Initialize camera references
+        _camera = spectatorCameraData.Camera;
+        _cameraTarget = _camera.Target.TrackingTarget.transform;
+        _orbitalFollow = _camera.GetComponent<CinemachineOrbitalFollow>();
+
+        // Initialize configuration from data
+        _edgeScrollingMargin = spectatorCameraData.edgeScrollingMargin;
+        _moveSpeed = spectatorCameraData.MovementSpeed;
+        _acceleration = spectatorCameraData.acceleration;
+        _deceleration = spectatorCameraData.deceleration;
+        _sprintSpeedMultiplier = spectatorCameraData.sprintSpeedMultiplier;
+        _movementLimitsX = spectatorCameraData.movementLimitsX;
+        _movementLimitsZ = spectatorCameraData.movementLimitsZ;
+        _orbitSpeed = spectatorCameraData.OrbitSpeed;
+        _orbitSmoothing = spectatorCameraData.orbitSmoothing;
+        _zoomSpeed = spectatorCameraData.zoomSpeed;
+        _zoomSmoothing = spectatorCameraData.zoomSmoothing;
+        _moveSpeedZoomCurve = spectatorCameraData.zoomSpeedCurve;
 
         // Get dependencies from ServiceLocator
-        _cameraManager = ServiceLocator.Instance.Get<CameraManager>();
         _gameManager = ServiceLocator.Instance.Get<GameManager>();
         _uiManager = ServiceLocator.Instance.Get<UIManager>();
-
-        _moveSpeedZoomCurve = _cameraManager._moveSpeedZoomCurve;
     }
     #endregion
 
     #region LIFE CYCLE
-    public void Update()
-    {
-        _edgeScrolling = _cameraManager.EdgeScrolling;
-
-        // TODO: move to constructor when final values
-        _edgeScrollingMargin = _cameraManager._edgeScrollingMargin;
-        _moveSpeed = _cameraManager._moveSpeed;
-        _acceleration = _cameraManager._acceleration;
-        _deceleration = _cameraManager._deceleration;
-        _printSpeedMultiplier = _cameraManager._sprintSpeedMultiplier;
-        _movementLimitsX = _cameraManager._movementLimitsX;
-        _movementLimitsZ = _cameraManager._movementLimitsZ;
-        _orbitSpeed = _cameraManager._spectatorCameraOrbitSpeed;
-        _orbitSmoothing = _cameraManager._orbitSmoothing;
-        _zoomSpeed = _cameraManager._zoomSpeed;
-        _zoomSmoothing = _cameraManager._zoomSmoothing;
-    }
-
     public void LateUpdate()
     {
+        // Read input state
         _moveInput = _gameManager.InputActions.Camera.Move.ReadValue<Vector2>();
         _sprintPressed = _gameManager.InputActions.Camera.Sprint.IsPressed();
         _lookInput = _gameManager.InputActions.Camera.Look.ReadValue<Vector2>();
         _middleClickPressed = _gameManager.InputActions.Camera.Rotate.IsPressed();
 
-        // Cursor NOT over UI element
-        if (!_uiManager.IsCursorOverUI())
+        // Only read zoom input when cursor is not over UI
+        if (!_uiManager.IsCursorOverUI)
             _scrollInput = _gameManager.InputActions.Camera.Zoom.ReadValue<Vector2>();
 
-        if (_edgeScrolling)
+        // Update camera state
+        if (_spectatorCameraData.isEdgeScrolling)
             UpdateEdgeScrolling();
 
         UpdateMovement();
         UpdateZoom();
         UpdateOrbit();
-
         ClampPosition();
     }
     #endregion
 
     #region PRIVATE METHODS
+    /// <summary>
+    /// Detects when the cursor is near screen edges and generates scroll input.
+    /// </summary>
     void UpdateEdgeScrolling()
     {
         _edgeScrollInput = Vector2.zero;
 
-        // Ensure mouse is available before reading position
-        if (Mouse.current == null)
-            return;
-
-        // Return if mouse is over UI
-        if (_uiManager.IsCursorOverUI())
+        // Early exit if mouse is unavailable or over UI
+        if (Mouse.current == null || _uiManager.IsCursorOverUI)
             return;
 
         Vector2 mousePosition = Mouse.current.position.ReadValue();
 
-        // Only apply edge scrolling if mouse position is valid (not at origin on first frame)
-        if (mousePosition.x > 0 || mousePosition.y > 0)
-        {
-            if (mousePosition.x <= _edgeScrollingMargin)
-                _edgeScrollInput.x = -1f;
-            else if (mousePosition.x >= Screen.width - _edgeScrollingMargin)
-                _edgeScrollInput.x = 1f;
+        // Skip invalid positions (origin on first frame)
+        if (mousePosition.x <= 0 && mousePosition.y <= 0)
+            return;
 
-            if (mousePosition.y <= _edgeScrollingMargin)
-                _edgeScrollInput.y = -1f;
-            else if (mousePosition.y >= Screen.height - _edgeScrollingMargin)
-                _edgeScrollInput.y = 1f;
-        }
+        // Check horizontal edges
+        if (mousePosition.x <= _edgeScrollingMargin)
+            _edgeScrollInput.x = -1f;
+        else if (mousePosition.x >= Screen.width - _edgeScrollingMargin)
+            _edgeScrollInput.x = 1f;
+
+        // Check vertical edges
+        if (mousePosition.y <= _edgeScrollingMargin)
+            _edgeScrollInput.y = -1f;
+        else if (mousePosition.y >= Screen.height - _edgeScrollingMargin)
+            _edgeScrollInput.y = 1f;
     }
 
     /// <summary>
-    /// Moves the camera in its local XZ plane, but keeps its Y (height) unchanged.
+    /// Moves the camera in its local XZ plane, keeping Y (height) unchanged.
+    /// Supports WASD input, edge scrolling, sprint modifier, and zoom-based speed scaling.
     /// </summary>
     void UpdateMovement()
     {
-        Vector3 forward = _camera.transform.forward;
-        forward.y = 0f;
-        forward.Normalize();
+        // Get camera-relative movement directions (flattened to XZ plane)
+        Vector3 forward = Vector3.ProjectOnPlane(_camera.transform.forward, Vector3.up).normalized;
+        Vector3 right = Vector3.ProjectOnPlane(_camera.transform.right, Vector3.up).normalized;
 
-        Vector3 right = _camera.transform.right;
-        right.y = 0f;
-        right.Normalize();
+        // Combine keyboard and edge scroll input
+        Vector3 combinedInput = new Vector3(
+            _moveInput.x + _edgeScrollInput.x,
+            0f,
+            _moveInput.y + _edgeScrollInput.y
+        ).normalized;
 
-        Vector3 inputVector = new(_moveInput.x + _edgeScrollInput.x, 0,
-            _moveInput.y + _edgeScrollInput.y);
-        inputVector.Normalize();
+        // Scale movement speed based on zoom level (slower when zoomed in)
+        float zoomSpeedMultiplier = _moveSpeedZoomCurve.Evaluate(ZoomLevel);
+        float sprintMultiplier = _sprintPressed ? _sprintSpeedMultiplier : 1f;
+        Vector3 targetVelocity = combinedInput * _moveSpeed * zoomSpeedMultiplier * sprintMultiplier;
 
-        float zoomMultiplier = _moveSpeedZoomCurve.Evaluate(ZoomLevel);
-
-        Vector3 targetVelocity = inputVector * _moveSpeed * zoomMultiplier;
-
-        float sprintFactor = 1f;
-        if (_sprintPressed)
+        // Accelerate or decelerate based on input
+        bool hasInput = combinedInput.sqrMagnitude > MIN_INPUT_THRESHOLD;
+        if (hasInput)
         {
-            targetVelocity *= _printSpeedMultiplier;
-            sprintFactor = _printSpeedMultiplier;
-        }
+            float accelRate = _acceleration * sprintMultiplier * Time.unscaledDeltaTime;
+            _velocity = Vector3.MoveTowards(_velocity, targetVelocity, accelRate);
 
-        if (inputVector.sqrMagnitude > 0.01f)
-        {
-            _velocity = Vector3.MoveTowards(_velocity, targetVelocity, _acceleration * sprintFactor * Time.unscaledDeltaTime);
-
+            // Remember sprint state for deceleration phase
             if (_sprintPressed)
-                _decelerationMultiplier = _printSpeedMultiplier;
+                _decelerationMultiplier = _sprintSpeedMultiplier;
         }
         else
-            _velocity = Vector3.MoveTowards(_velocity, Vector3.zero, _deceleration * _decelerationMultiplier * Time.unscaledDeltaTime);
+        {
+            float decelRate = _deceleration * _decelerationMultiplier * Time.unscaledDeltaTime;
+            _velocity = Vector3.MoveTowards(_velocity, Vector3.zero, decelRate);
 
+            // Reset deceleration multiplier when stopped
+            if (_velocity.sqrMagnitude <= MIN_VELOCITY_THRESHOLD)
+                _decelerationMultiplier = 1f;
+        }
+
+        // Apply movement
         Vector3 motion = _velocity * Time.unscaledDeltaTime;
-
         _cameraTarget.position += forward * motion.z + right * motion.x;
-
-        if (_velocity.sqrMagnitude <= 0.01f)
-            _decelerationMultiplier = 1f;
     }
 
 
     /// <summary>
-    /// Handles camera rotation with the right mouse button, orbiting around the point under the mouse.
+    /// Handles camera orbital rotation when middle mouse button is held.
     /// </summary>
     void UpdateOrbit()
     {
-        Vector2 orbitInput = _lookInput * (_middleClickPressed ? 1f : 0f);
+        // Only rotate when middle mouse button is pressed
+        if (!_middleClickPressed)
+            return;
 
-        orbitInput *= _orbitSpeed;
+        Vector2 rotationDelta = _lookInput * _orbitSpeed;
 
-        InputAxis horizontalRotation = _orbitalFollow.HorizontalAxis;
-        InputAxis verticalRotation = _orbitalFollow.VerticalAxis;
+        // Get current rotation axes
+        InputAxis horizontalAxis = _orbitalFollow.HorizontalAxis;
+        InputAxis verticalAxis = _orbitalFollow.VerticalAxis;
 
-        horizontalRotation.Value = Mathf.Lerp(horizontalRotation.Value, horizontalRotation.Value + orbitInput.x, _orbitSmoothing * Time.unscaledDeltaTime);
-        verticalRotation.Value = Mathf.Lerp(verticalRotation.Value, verticalRotation.Value - orbitInput.y, _orbitSmoothing * Time.unscaledDeltaTime);
+        // Apply rotation with smoothing
+        float smoothFactor = _orbitSmoothing * Time.unscaledDeltaTime;
+        horizontalAxis.Value = Mathf.Lerp(horizontalAxis.Value, horizontalAxis.Value + rotationDelta.x, smoothFactor);
+        verticalAxis.Value = Mathf.Lerp(verticalAxis.Value, verticalAxis.Value - rotationDelta.y, smoothFactor);
 
-        verticalRotation.Value = Mathf.Clamp(verticalRotation.Value, verticalRotation.Range.x, verticalRotation.Range.y);
+        // Clamp vertical rotation to prevent flipping
+        verticalAxis.Value = Mathf.Clamp(verticalAxis.Value, verticalAxis.Range.x, verticalAxis.Range.y);
 
-        _orbitalFollow.HorizontalAxis = horizontalRotation;
-        _orbitalFollow.VerticalAxis = verticalRotation;
+        // Write back modified axes
+        _orbitalFollow.HorizontalAxis = horizontalAxis;
+        _orbitalFollow.VerticalAxis = verticalAxis;
     }
 
     /// <summary>
-    /// Handles zooming in/out with the mouse scroll wheel (moves toward/away from point under mouse).
+    /// Handles camera zoom with mouse scroll wheel, smoothly adjusting the radial distance.
     /// </summary>
     void UpdateZoom()
     {
-        InputAxis zoomValue = _orbitalFollow.RadialAxis;
+        InputAxis radialAxis = _orbitalFollow.RadialAxis;
 
-        float targetZoomSpeed = 0f;
+        // Calculate target zoom speed from scroll input
+        float targetZoomSpeed = (Mathf.Abs(_scrollInput.y) >= MIN_INPUT_THRESHOLD)
+            ? _zoomSpeed * _scrollInput.y
+            : 0f;
 
-        if (Mathf.Abs(_scrollInput.y) >= 0.01f)
-        {
-            targetZoomSpeed = _zoomSpeed * _scrollInput.y;
-        }
+        // Smooth zoom speed changes
+        _currentZoomSpeed = Mathf.Lerp(
+            _currentZoomSpeed,
+            targetZoomSpeed,
+            _zoomSmoothing * Time.unscaledDeltaTime
+        );
 
-        _currentZoomSpeed = Mathf.Lerp(_currentZoomSpeed, targetZoomSpeed, _zoomSmoothing * Time.unscaledDeltaTime);
+        // Apply zoom and clamp to valid range
+        radialAxis.Value = Mathf.Clamp(
+            radialAxis.Value - _currentZoomSpeed,
+            radialAxis.Range.x,
+            radialAxis.Range.y
+        );
 
-        zoomValue.Value -= _currentZoomSpeed;
-        zoomValue.Value = Mathf.Clamp(zoomValue.Value, zoomValue.Range.x, zoomValue.Range.y);
-
-        _orbitalFollow.RadialAxis = zoomValue;
+        _orbitalFollow.RadialAxis = radialAxis;
     }
 
+    /// <summary>
+    /// Constrains the camera target position within the configured world bounds.
+    /// </summary>
     void ClampPosition()
     {
-        Vector3 targetPos = _cameraTarget.position;
-        targetPos.x = Mathf.Clamp(targetPos.x, _movementLimitsX.x, _movementLimitsX.y);
-        targetPos.z = Mathf.Clamp(targetPos.z, _movementLimitsZ.x, _movementLimitsZ.y);
-        _cameraTarget.position = targetPos;
+        Vector3 position = _cameraTarget.position;
+        position.x = Mathf.Clamp(position.x, _movementLimitsX.x, _movementLimitsX.y);
+        position.z = Mathf.Clamp(position.z, _movementLimitsZ.x, _movementLimitsZ.y);
+        _cameraTarget.position = position;
     }
     #endregion
 }

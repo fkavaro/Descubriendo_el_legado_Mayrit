@@ -142,14 +142,6 @@ public class TownManager : MonoBehaviour
         return workplace;
     }
 
-    /// <returns>Random registered workplace with capacity for a new employee. 
-    /// Optionally excluding given workplace.
-    /// </returns>
-    public Workplace GetWorkplaceWithFreeCapacity(Workplace excludedWorkplace = null)
-    {
-        return TryGetBuildingWithFreeCapacity(_workplaces, excludedWorkplace);
-    }
-
     public Sanctuary GetNearestSanctuary(ABuilding other)
     {
         return GetNearestBuilding(other, _sanctuaries);
@@ -157,9 +149,6 @@ public class TownManager : MonoBehaviour
 
     public Market GetNearestMarket(ABuilding other)
     {
-        if (_markets == null || _markets.Count == 0)
-            Debug.LogWarning("GetNearestMarket: No markets registered in TownManager.");
-
         return GetNearestBuilding(other, _markets);
     }
     #endregion

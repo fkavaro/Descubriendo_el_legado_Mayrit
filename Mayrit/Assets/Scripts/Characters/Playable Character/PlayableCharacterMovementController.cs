@@ -36,7 +36,7 @@ public class PlayableCharacterMovementController
         _cameraManager = ServiceLocator.Instance.Get<CameraManager>();
         _gameManager = ServiceLocator.Instance.Get<GameManager>();
 
-        _cameraTarget = _cameraManager._thirdPersonCamera.LookAt;
+        _cameraTarget = _cameraManager._thirdPersonCamera.Camera.LookAt;
     }
     #endregion
 

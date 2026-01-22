@@ -179,14 +179,16 @@ public class SpectatorHUD_UIState : AHUDState
 
     void OnShowTooltip(DataSO data)
     {
-        if (!_cameraManager.IsInSpectatorState)
+        if (!_cameraManager.IsInSpectatorState || data == null)
         {
             OnHideTooltip();
             return;
         }
 
-        _tooltip.text = data.Header;
-        _tooltip.style.display = DisplayStyle.Flex;
+        if (_tooltip.text != data.Header)
+            _tooltip.text = data.Header;
+        if (_tooltip.style.display != DisplayStyle.Flex)
+            _tooltip.style.display = DisplayStyle.Flex;
 
         Vector2 _cursorScreenPos = Mouse.current.position.ReadValue();
 
@@ -198,7 +200,8 @@ public class SpectatorHUD_UIState : AHUDState
 
     void OnHideTooltip()
     {
-        _tooltip.style.display = DisplayStyle.None;
+        if (_tooltip.style.display != DisplayStyle.None)
+            _tooltip.style.display = DisplayStyle.None;
     }
     #endregion
 }

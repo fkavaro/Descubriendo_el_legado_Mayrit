@@ -2,73 +2,105 @@ using UnityEngine;
 using Unity.Cinemachine;
 
 /// <summary>
-/// Controller for the third-person camera, allowing orbiting around a target.
+/// Controls third-person camera orbiting behavior around a target with mouse input.
+/// Manages pitch (vertical) and yaw (horizontal) rotation with configurable clamping.
 /// </summary>
 public class ThirdPersonCameraController
 {
+    #region CONSTANTS
+    const float FULL_ROTATION = 360f;
+    #endregion
+
     #region PROPERTIES
     readonly Transform _cameraTarget;
-    readonly float _orbitSpeed,
-        _followSpeed,
-        _bottomClamp,
-        _topClamp;
+    readonly float _orbitSpeed;
+    readonly float _followSpeed;
+    readonly float _bottomClamp;
+    readonly float _topClamp;
 
-    float _targetPitch, // Horizontal rotation
-        _targetYaw; // Vertical rotation
+    /// <summary>Current vertical rotation angle (up/down).</summary>
+    float _targetPitch;
 
-    // Input
+    /// <summary>Current horizontal rotation angle (left/right).</summary>
+    float _targetYaw;
+
+    /// <summary>Mouse look input values.</summary>
     Vector2 _lookInput;
 
-    // Dependency Injection
-    readonly CameraManager _cameraManager;
+    /// <summary>Game manager for accessing input and player character.</summary>
     readonly GameManager _gameManager;
     #endregion
 
     #region CONSTRUCTOR
-    public ThirdPersonCameraController(CinemachineCamera camera)
+    public ThirdPersonCameraController(ThirdPersonCameraData thirdPersonCameraData)
     {
-        _cameraTarget = camera.LookAt;
+        _cameraTarget = thirdPersonCameraData.Camera.LookAt;
         _targetPitch = 0f;
         _targetYaw = 0f;
+        _orbitSpeed = thirdPersonCameraData.OrbitSpeed;
+        _followSpeed = thirdPersonCameraData.MovementSpeed;
+        _bottomClamp = thirdPersonCameraData._orbitClamp[0];
+        _topClamp = thirdPersonCameraData._orbitClamp[1];
 
-        // Get dependencies from ServiceLocator
-        _cameraManager = ServiceLocator.Instance.Get<CameraManager>();
         _gameManager = ServiceLocator.Instance.Get<GameManager>();
-
-        _orbitSpeed = _cameraManager._3rdPersonCameraOrbitSpeed;
-        _followSpeed = _cameraManager._3rdPersonCameraFollowSpeed;
-        _bottomClamp = _cameraManager._bottomClamp;
-        _topClamp = _cameraManager._topClamp;
     }
     #endregion
 
     #region PUBLIC METHODS
+    /// <summary>
+    /// Updates camera rotation based on mouse input.
+    /// Applies vertical (pitch) and horizontal (yaw) rotation to the camera target.
+    /// </summary>
     public void MouseTracking()
     {
-        // Read input
+        if (_cameraTarget == null)
+            return;
+
         _lookInput = _gameManager.InputActions.Player.Look.ReadValue<Vector2>();
 
-        // Update pitch and yaw based on input
-        _targetPitch = Mathf.Clamp(_targetPitch - _lookInput.y * _orbitSpeed * Time.deltaTime, _bottomClamp, _topClamp);
+        // Update pitch (vertical rotation) with clamping to prevent over-rotation
+        _targetPitch = Mathf.Clamp(
+            _targetPitch - _lookInput.y * _orbitSpeed * Time.deltaTime,
+            _bottomClamp,
+            _topClamp
+        );
+
+        // Update yaw (horizontal rotation)
         _targetYaw += _lookInput.x * _orbitSpeed * Time.deltaTime;
 
-        // Clamp yaw
-        if (_targetYaw > 360f) _targetYaw -= 360f;
-        if (_targetYaw < 0f) _targetYaw += 360f;
-
-        if (_cameraTarget == null) return;
+        // Wrap yaw to [0, 360] range
+        _targetYaw = NormalizeAngle(_targetYaw);
 
         // Apply rotation to camera target
         _cameraTarget.rotation = Quaternion.Euler(_targetPitch, _targetYaw, 0f);
     }
 
-    public void TargetSmoothFolow()
+    /// <summary>
+    /// Smoothly moves the camera target to follow the playable character.
+    /// Uses lerp interpolation for smooth position updates.
+    /// </summary>
+    public void TargetSmoothFollow()
     {
-        if (_cameraTarget == null) return;
+        if (_cameraTarget == null || _gameManager.PlayableCharacter == null)
+            return;
 
-        // Move smoothly camera target to follow the player
-        Transform player = _gameManager.PlayableCharacter.transform;
-        _cameraTarget.position = Vector3.Lerp(_cameraTarget.position, player.position, Time.unscaledDeltaTime * _followSpeed);
+        Transform playerTransform = _gameManager.PlayableCharacter.transform;
+        _cameraTarget.position = Vector3.Lerp(
+            _cameraTarget.position,
+            playerTransform.position,
+            Time.unscaledDeltaTime * _followSpeed
+        );
+    }
+    #endregion
+
+    #region PRIVATE METHODS
+    float NormalizeAngle(float angle)
+    {
+        while (angle >= FULL_ROTATION)
+            angle -= FULL_ROTATION;
+        while (angle < 0f)
+            angle += FULL_ROTATION;
+        return angle;
     }
     #endregion
 }

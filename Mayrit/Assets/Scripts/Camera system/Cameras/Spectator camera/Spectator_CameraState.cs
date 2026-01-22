@@ -12,11 +12,11 @@ public class Spectator_CameraState : ACameraState
     #endregion
 
     #region CONSTRUCTOR
-    public Spectator_CameraState(CinemachineCamera camera, float simulationSpeed)
-    : base("Spectator camera", camera, simulationSpeed)
+    public Spectator_CameraState(SpectatorCameraData spectatorCameraData)
+    : base("Spectator camera", spectatorCameraData.Camera, spectatorCameraData.SimulationSpeed)
     {
-        _cameraController = new(camera);
-        _cameraSelector = new();
+        _cameraController = new(spectatorCameraData);
+        _cameraSelector = new(spectatorCameraData);
     }
     #endregion
 
@@ -35,7 +35,6 @@ public class Spectator_CameraState : ACameraState
         if (_gameManager.IsInPauseState)
             return;
 
-        _cameraController.Update();
         _cameraSelector.Update();
     }
 
