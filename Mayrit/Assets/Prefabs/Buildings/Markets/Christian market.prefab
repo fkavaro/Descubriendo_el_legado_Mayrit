@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4a1371eeb0ad9b4d9e52b10d4cd9bf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProgressObject
-  _isActive: 0
+  _isActive: 1
   milestonesActivated: {x: 7, y: 7}
 --- !u!1 &3693995599017012647
 GameObject:
@@ -93,7 +93,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4a1371eeb0ad9b4d9e52b10d4cd9bf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProgressObject
-  _isActive: 0
+  _isActive: 1
   milestonesActivated: {x: 4, y: 7}
 --- !u!1 &4812022109334672846
 GameObject:
@@ -140,7 +140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4a1371eeb0ad9b4d9e52b10d4cd9bf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProgressObject
-  _isActive: 0
+  _isActive: 1
   milestonesActivated: {x: 6, y: 7}
 --- !u!1 &5893992846119969819
 GameObject:
@@ -194,7 +194,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Market
   _accessSpots: []
-  _stalls: []
+  _numberOfStalls: 0
 --- !u!1 &6635523550082820601
 GameObject:
   m_ObjectHideFlags: 0
@@ -240,7 +240,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4a1371eeb0ad9b4d9e52b10d4cd9bf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProgressObject
-  _isActive: 0
+  _isActive: 1
   milestonesActivated: {x: 5, y: 7}
 --- !u!1001 &2395406678385541572
 PrefabInstance:
@@ -390,7 +390,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7363936121116235303, guid: 515c7d15e1a5ae44a8da3f1b32a3a71d, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7633327712270286165, guid: 515c7d15e1a5ae44a8da3f1b32a3a71d, type: 3}
       propertyPath: m_VersionIndex
@@ -562,7 +562,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7363936121116235303, guid: 515c7d15e1a5ae44a8da3f1b32a3a71d, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7633327712270286165, guid: 515c7d15e1a5ae44a8da3f1b32a3a71d, type: 3}
       propertyPath: m_VersionIndex
@@ -652,7 +652,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7363936121116235303, guid: 515c7d15e1a5ae44a8da3f1b32a3a71d, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7633327712270286165, guid: 515c7d15e1a5ae44a8da3f1b32a3a71d, type: 3}
       propertyPath: m_VersionIndex
@@ -832,7 +832,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7363936121116235303, guid: 515c7d15e1a5ae44a8da3f1b32a3a71d, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7633327712270286165, guid: 515c7d15e1a5ae44a8da3f1b32a3a71d, type: 3}
       propertyPath: m_VersionIndex
@@ -922,7 +922,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7363936121116235303, guid: 515c7d15e1a5ae44a8da3f1b32a3a71d, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7633327712270286165, guid: 515c7d15e1a5ae44a8da3f1b32a3a71d, type: 3}
       propertyPath: m_VersionIndex

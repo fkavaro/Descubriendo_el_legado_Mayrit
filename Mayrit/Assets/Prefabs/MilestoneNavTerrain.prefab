@@ -83,6 +83,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TerrainNavMeshSurface
   _isActive: 0
   milestonesActivated: {x: 0, y: 0}
+  _agentsAvoidancePredictionTime: 0.5
+  _pathFindingIterationsPerFrame: 1000
   _terrains:
   - {fileID: 4260283738266331213}
   - {fileID: 6528344018162208322}

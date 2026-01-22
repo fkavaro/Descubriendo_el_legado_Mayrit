@@ -7,6 +7,9 @@ using UnityEngine.AI;
 public class MilestoneNavTerrain : MilestoneTracker
 {
     #region EDITOR PROPERTIES
+    [Header("Agents avoidance time")]
+    public float _agentsAvoidancePredictionTime = 0.5f;
+    public int _pathFindingIterationsPerFrame = 1000;
     [Header("References")]
     public List<Terrain> _terrains = new();
 
@@ -18,6 +21,12 @@ public class MilestoneNavTerrain : MilestoneTracker
     private NavMeshSurface _navMeshSurface;
     private readonly List<GameObject> _createdObjects = new();
     #endregion
+
+    void Awake()
+    {
+        NavMesh.avoidancePredictionTime = _agentsAvoidancePredictionTime;
+        NavMesh.pathfindingIterationsPerFrame = _pathFindingIterationsPerFrame;
+    }
 
     #region INHERITED METHODS
     protected override void SetChildrenActive(bool isActive)

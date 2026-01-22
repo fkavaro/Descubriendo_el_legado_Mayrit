@@ -80,8 +80,9 @@ MonoBehaviour:
   _rotationSpeed: 4
   _jumpForce: 2
   _gravityForce: 9
-  _stoppingDistance: 0.2
+  _arrivingDistance: 0.2
   _nearDistance: 2
+  _farDistance: 15
   _animator: {fileID: 1639577397424246107}
   _interactionRange: 3
   _gender: 1
