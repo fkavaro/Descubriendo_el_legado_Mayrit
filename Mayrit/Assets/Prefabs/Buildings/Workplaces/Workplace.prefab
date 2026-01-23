@@ -55,7 +55,7 @@ MonoBehaviour:
   _workSpots:
   - {fileID: 9210830510331309233}
   _isInterior: 1
-  _isOpen: 0
+  IsOpen: 0
 --- !u!1 &3481768289652466846
 GameObject:
   m_ObjectHideFlags: 0
@@ -101,8 +101,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshModifierVolume
   m_SerializedVersion: 0
-  m_Size: {x: 5, y: 4, z: 3.5}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 5, y: 6.838449, z: 3.5}
+  m_Center: {x: 0, y: -1.419225, z: 0}
   m_Area: 1
   m_AffectedAgents: ffffffff
 --- !u!1 &4957279573207151698
@@ -150,8 +150,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshModifierVolume
   m_SerializedVersion: 0
-  m_Size: {x: 9.5, y: 4, z: 5}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 9.5, y: 6.8507457, z: 5}
+  m_Center: {x: 0, y: -1.4253728, z: 0}
   m_Area: 1
   m_AffectedAgents: ffffffff
 --- !u!1001 &1125207354012884048
