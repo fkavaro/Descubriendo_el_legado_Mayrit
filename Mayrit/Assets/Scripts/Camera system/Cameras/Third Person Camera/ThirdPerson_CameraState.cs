@@ -26,6 +26,9 @@ public class ThirdPerson_CameraState : ACameraState
 
         _gameManager.InputActions.Camera.Enable();
         _gameManager.InputActions.Camera.ExitMode.performed += OnExitThirdPersonModePressed;
+
+        // Lock cursor to screen center and hide it
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public override void LateUpdateState()
@@ -38,6 +41,12 @@ public class ThirdPerson_CameraState : ACameraState
         // Only allow camera rotation if the playable character is being controlled
         if (_gameManager.PlayableCharacter.IsBeingControlled)
             _cameraController.MouseTracking();
+
+        // Ensure cursor remains locked during gameplay
+        if (_uiManager.IsInPlayerHUDState
+            && _gameManager.IsInGamePlayState
+            && Cursor.lockState != CursorLockMode.Locked)
+            Cursor.lockState = CursorLockMode.Locked;
     }
 
     public override void ExitState()
@@ -46,6 +55,9 @@ public class ThirdPerson_CameraState : ACameraState
 
         _gameManager.InputActions.Camera.Disable();
         _gameManager.InputActions.Camera.ExitMode.performed -= OnExitThirdPersonModePressed;
+
+        // Unlock cursor and make it visible
+        Cursor.lockState = CursorLockMode.None;
     }
     #endregion
 

@@ -87,6 +87,14 @@ public class PlayerHUD_UIState : AHUDState
             }
         }
     }
+
+    public override void ExitState()
+    {
+        base.ExitState();
+
+        // Unlock cursor and make it visible (has been lock in 3rd person camera state start)
+        UnityEngine.Cursor.lockState = CursorLockMode.None;
+    }
     #endregion
 
     #region HUD STATE INHERITED METHODS
