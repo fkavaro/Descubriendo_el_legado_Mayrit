@@ -1,30 +1,3 @@
-%YAML 1.1
-%TAG !u! tag:unity3d.com,2011:
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abc58fc9460fcf84eb0c46c995f89837, type: 3}
-  m_Name: 0_Vision_Milestone_InformationSO
-  m_EditorClassIdentifier: 
-  _header: "La visi\xF3n "
-  _subHeader: Entorno al 875
-  _description: "Durante esta \xE9poca, el emirato independiente de C\xF3rdoba, bajo
-    el gobierno de Muhammad I, buscaba reforzar su autoridad en la Marca Media \u2013
-    territorio fronterizo en el centro de la pen\xEDnsula \u2013 con la construcci\xF3n
-    de atalayas y fortalezas. Esto fue debido al aumento de la presencia cristiana
-    al sur del Duero, que ten\xEDa como objetivo atravesar definitivamente la cordillera
-    del Sistema Central para acercarse a Toledo, donde hab\xEDa una gran comunidad
-    moz\xE1rabe \u2013 cristianos bajo dominio musulm\xE1n. Es por esta por la que
-    la antigua capital visigoda conservaba un fuerte car\xE1cter levantisco frente
-    al gobierno isl\xE1mico. Tanto, que desde mediados de siglo protagoniz\xF3 dos
-    grandes sublevaciones: una en el 852, con el apoyo del rey Ordo\xF1o I de Asturias;
-    y otra en el 871."
-  _icon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  _image: {fileID: 0}
-  _imageCaption: 
+version https://git-lfs.github.com/spec/v1
+oid sha256:82337e773cbba91bb8d4a88f022793841dda1d0c09f78db93c3ea8283e761946
+size 1495

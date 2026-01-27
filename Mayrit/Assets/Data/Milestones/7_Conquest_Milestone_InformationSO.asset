@@ -1,22 +1,3 @@
-%YAML 1.1
-%TAG !u! tag:unity3d.com,2011:
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abc58fc9460fcf84eb0c46c995f89837, type: 3}
-  m_Name: 7_Conquest_Milestone_InformationSO
-  m_EditorClassIdentifier: 
-  _header: Conquista
-  _subHeader: 1083
-  _description: "[Sitio y toma de Mayrit por el ej\xE9rcito leon\xE9s (qui\xF1oneros
-    segovianos Fern\xE1n Garc\xEDa y D\xEDa Sanz) comandado por Alfonso VI de Le\xF3n,
-    tras lo que se incorpor\xF3 al Reino de Le\xF3n.]"
-  _icon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  _image: {fileID: 0}
-  _imageCaption: 
+version https://git-lfs.github.com/spec/v1
+oid sha256:c140d54b458248eea1c52e4e09b77e1d0bae2a7deee80edd52fa93525b804989
+size 826

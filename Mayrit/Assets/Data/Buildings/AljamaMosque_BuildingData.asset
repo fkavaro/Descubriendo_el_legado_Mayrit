@@ -1,33 +1,3 @@
-%YAML 1.1
-%TAG !u! tag:unity3d.com,2011:
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abc58fc9460fcf84eb0c46c995f89837, type: 3}
-  m_Name: AljamaMosque_BuildingData
-  m_EditorClassIdentifier: Assembly-CSharp::DataSO
-  _header: Mezquita aljama
-  _subHeader: La de los viernes
-  _description: "Era la principal, la de la oraci\xF3n del viernes, y por la que
-    la poblaci\xF3n ten\xEDa car\xE1cter de medina/ciudad. Sobre esta se levant\xF3
-    la Iglesia de Santa Mar\xEDa de la Almudena, derribada para ensanchar la calle
-    Mayor, en el entorno de las actuales calles Mayor y Bail\xE9n, en la zona que
-    hoy conocemos como Las Vistillas. Ten\xEDa cinco naves perpendiculares al muro
-    de la alquibla (el que da a la Meca), con su caracter\xEDstico mihrab u hornacina
-    decorada, donde despu\xE9s se abri\xF3 la entrada principal de la iglesia. En
-    su parte opuesta, es decir, noroeste, hab\xEDa un patio con su alminar, que dio
-    lugar despu\xE9s al campanario cristiano. Ser\xEDa una torre cuadrada con el
-    cuerpo superior retranqueado que suelen tener las mezquitas del occidente isl\xE1mico.
-    Estar\xEDa rematada por un \u0177amur. En sus conquistas, los cristianos acostumbraban
-    a consagrar sus parroquias principales bajo la titulaci\xF3n de Santa Mar\xEDa
-    como signo de protecci\xF3n cuando antes hab\xEDa sido mezquita."
-  _icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  _image: {fileID: 21300000, guid: 30e84b69ac325604a9737e73910905af, type: 3}
-  _imageCaption: "Fachada sur (calle Mayor) de la iglesia en 1869, durante los trabajos
-    de demolici\xF3n."
+version https://git-lfs.github.com/spec/v1
+oid sha256:187ceae623090fb105739977035dde84c58c67c51fc8e4896e6b8a2bc92ae4f5
+size 1873

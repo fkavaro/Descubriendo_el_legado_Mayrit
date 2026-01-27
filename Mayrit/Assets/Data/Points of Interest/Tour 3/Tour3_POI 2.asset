@@ -1,20 +1,3 @@
-%YAML 1.1
-%TAG !u! tag:unity3d.com,2011:
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abc58fc9460fcf84eb0c46c995f89837, type: 3}
-  m_Name: Tour3_POI 2
-  m_EditorClassIdentifier: Assembly-CSharp::DataSO
-  _header: Point of Interest 2
-  _subHeader: Tour 3
-  _description: Relevant information.
-  _icon: {fileID: 0}
-  _image: {fileID: 0}
-  _imageCaption: 
+version https://git-lfs.github.com/spec/v1
+oid sha256:3870e4a7b66067d6c76fd6557c24fd5f15a8054c26159d6676c4d0ba7d24e0e8
+size 594
