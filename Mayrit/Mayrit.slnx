@@ -3,6 +3,8 @@
   <Project Path="Mayrit.Behaviour.csproj" />
   <Project Path="sc.terrain.painter.runtime.csproj" />
   <Project Path="Mayrit.Utils.csproj" />
+  <Project Path="Mayrit.Data.csproj" />
   <Project Path="sc.terrain.painter.editor.csproj" />
   <Project Path="Mayrit.Editor.csproj" />
+  <Project Path="Mayrit.Input.csproj" />
 </Solution>
