@@ -61,8 +61,6 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     #region INHERITED
     public override StackFiniteStateMachine<AUIState> DefineBehaviourSystemOnAwake()
     {
-        Debug.Log($"{name}: Defining Behaviour System");
-
         _sfsm = new(this);
 
         _uiDocument = GetComponent<UIDocument>();
