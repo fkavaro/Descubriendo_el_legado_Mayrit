@@ -14,7 +14,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &5248492111490343654
 Transform:
@@ -61,7 +61,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 0
 --- !u!4 &2946508653975221245
 Transform:
@@ -412,7 +412,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &6444201308024262946
 Transform:
@@ -448,7 +448,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &4885792374291554482
 Transform:
@@ -501,7 +501,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 0
 --- !u!4 &1070656863730740665
 Transform:
@@ -850,6 +850,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stone floor (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 1763391711235905037, guid: ec6d37f5f9bf4a7458ec98a44d464c3c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7548421223475157772, guid: ec6d37f5f9bf4a7458ec98a44d464c3c, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.06
@@ -927,6 +931,10 @@ PrefabInstance:
     - target: {fileID: 1763391711235905037, guid: ec6d37f5f9bf4a7458ec98a44d464c3c, type: 3}
       propertyPath: m_Name
       value: Stone floor (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1763391711235905037, guid: ec6d37f5f9bf4a7458ec98a44d464c3c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7548421223475157772, guid: ec6d37f5f9bf4a7458ec98a44d464c3c, type: 3}
       propertyPath: m_LocalScale.x
@@ -1006,6 +1014,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stone floor
       objectReference: {fileID: 0}
+    - target: {fileID: 1763391711235905037, guid: ec6d37f5f9bf4a7458ec98a44d464c3c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7548421223475157772, guid: ec6d37f5f9bf4a7458ec98a44d464c3c, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.06
@@ -1083,6 +1095,10 @@ PrefabInstance:
     - target: {fileID: 1763391711235905037, guid: ec6d37f5f9bf4a7458ec98a44d464c3c, type: 3}
       propertyPath: m_Name
       value: Stone floor (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1763391711235905037, guid: ec6d37f5f9bf4a7458ec98a44d464c3c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7548421223475157772, guid: ec6d37f5f9bf4a7458ec98a44d464c3c, type: 3}
       propertyPath: m_LocalScale.x
@@ -1162,6 +1178,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stone floor (10)
       objectReference: {fileID: 0}
+    - target: {fileID: 1763391711235905037, guid: ec6d37f5f9bf4a7458ec98a44d464c3c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7548421223475157772, guid: ec6d37f5f9bf4a7458ec98a44d464c3c, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.034
@@ -1239,6 +1259,10 @@ PrefabInstance:
     - target: {fileID: 1763391711235905037, guid: ec6d37f5f9bf4a7458ec98a44d464c3c, type: 3}
       propertyPath: m_Name
       value: Stone floor (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1763391711235905037, guid: ec6d37f5f9bf4a7458ec98a44d464c3c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7548421223475157772, guid: ec6d37f5f9bf4a7458ec98a44d464c3c, type: 3}
       propertyPath: m_LocalScale.x
@@ -1318,6 +1342,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stone floor (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 1763391711235905037, guid: ec6d37f5f9bf4a7458ec98a44d464c3c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7548421223475157772, guid: ec6d37f5f9bf4a7458ec98a44d464c3c, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.06
@@ -1395,6 +1423,10 @@ PrefabInstance:
     - target: {fileID: 1763391711235905037, guid: ec6d37f5f9bf4a7458ec98a44d464c3c, type: 3}
       propertyPath: m_Name
       value: Stone floor (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1763391711235905037, guid: ec6d37f5f9bf4a7458ec98a44d464c3c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7548421223475157772, guid: ec6d37f5f9bf4a7458ec98a44d464c3c, type: 3}
       propertyPath: m_LocalScale.x
@@ -1474,6 +1506,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stone floor (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 1763391711235905037, guid: ec6d37f5f9bf4a7458ec98a44d464c3c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7548421223475157772, guid: ec6d37f5f9bf4a7458ec98a44d464c3c, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.034
@@ -1552,6 +1588,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stone floor (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 1763391711235905037, guid: ec6d37f5f9bf4a7458ec98a44d464c3c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7548421223475157772, guid: ec6d37f5f9bf4a7458ec98a44d464c3c, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.034
@@ -1629,6 +1669,10 @@ PrefabInstance:
     - target: {fileID: 1763391711235905037, guid: ec6d37f5f9bf4a7458ec98a44d464c3c, type: 3}
       propertyPath: m_Name
       value: Stone floor (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1763391711235905037, guid: ec6d37f5f9bf4a7458ec98a44d464c3c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7548421223475157772, guid: ec6d37f5f9bf4a7458ec98a44d464c3c, type: 3}
       propertyPath: m_LocalScale.x

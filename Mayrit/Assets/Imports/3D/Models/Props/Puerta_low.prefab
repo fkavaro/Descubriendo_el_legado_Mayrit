@@ -48,6 +48,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -5988995288937735888, guid: 974048c7860ad684581dd226321b2669, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: -2597303949790198175, guid: 974048c7860ad684581dd226321b2669, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -55,6 +59,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 974048c7860ad684581dd226321b2669, type: 3}
       propertyPath: m_Name
       value: Puerta_low
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 974048c7860ad684581dd226321b2669, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

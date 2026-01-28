@@ -48,6 +48,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -5513317507438023578, guid: 19f040db9dc1c22458bbe58d2f68666b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 113914017382422787, guid: 19f040db9dc1c22458bbe58d2f68666b, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -55,6 +59,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 19f040db9dc1c22458bbe58d2f68666b, type: 3}
       propertyPath: m_Name
       value: Jarron_low
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 19f040db9dc1c22458bbe58d2f68666b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

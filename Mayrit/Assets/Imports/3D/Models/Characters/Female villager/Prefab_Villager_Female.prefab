@@ -60,6 +60,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7656389126873345451, guid: 135406c22f6371942b17cb2175f72a4b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -5752941170992177546, guid: 135406c22f6371942b17cb2175f72a4b, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -67,6 +71,10 @@ PrefabInstance:
     - target: {fileID: -5097557480111196234, guid: 135406c22f6371942b17cb2175f72a4b, type: 3}
       propertyPath: m_Name
       value: Head
+      objectReference: {fileID: 0}
+    - target: {fileID: -5097557480111196234, guid: 135406c22f6371942b17cb2175f72a4b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3520422886364389629, guid: 135406c22f6371942b17cb2175f72a4b, type: 3}
       propertyPath: m_Name
@@ -76,9 +84,17 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -3520422886364389629, guid: 135406c22f6371942b17cb2175f72a4b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -2822261504660516999, guid: 135406c22f6371942b17cb2175f72a4b, type: 3}
       propertyPath: m_Name
       value: DownTeeth
+      objectReference: {fileID: 0}
+    - target: {fileID: -2822261504660516999, guid: 135406c22f6371942b17cb2175f72a4b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -2275973366622626249, guid: 135406c22f6371942b17cb2175f72a4b, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -87,6 +103,10 @@ PrefabInstance:
     - target: {fileID: -1473538035016684122, guid: 135406c22f6371942b17cb2175f72a4b, type: 3}
       propertyPath: m_Name
       value: Tongue
+      objectReference: {fileID: 0}
+    - target: {fileID: -1473538035016684122, guid: 135406c22f6371942b17cb2175f72a4b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -830828722604339852, guid: 135406c22f6371942b17cb2175f72a4b, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -100,6 +120,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Prefab_Villager_Female
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 135406c22f6371942b17cb2175f72a4b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1171926497200621179, guid: 135406c22f6371942b17cb2175f72a4b, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -108,13 +132,25 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hair
       objectReference: {fileID: 0}
+    - target: {fileID: 1256190629119807758, guid: 135406c22f6371942b17cb2175f72a4b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2217344171326752334, guid: 135406c22f6371942b17cb2175f72a4b, type: 3}
       propertyPath: m_Name
       value: EyeR
       objectReference: {fileID: 0}
+    - target: {fileID: 2217344171326752334, guid: 135406c22f6371942b17cb2175f72a4b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3459132771139018546, guid: 135406c22f6371942b17cb2175f72a4b, type: 3}
       propertyPath: m_Name
       value: Body
+      objectReference: {fileID: 0}
+    - target: {fileID: 3459132771139018546, guid: 135406c22f6371942b17cb2175f72a4b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 135406c22f6371942b17cb2175f72a4b, type: 3}
       propertyPath: m_Controller
@@ -124,6 +160,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UpperTeeth
       objectReference: {fileID: 0}
+    - target: {fileID: 6893838974768630641, guid: 135406c22f6371942b17cb2175f72a4b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7942939474231463392, guid: 135406c22f6371942b17cb2175f72a4b, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -131,6 +171,10 @@ PrefabInstance:
     - target: {fileID: 8133070058674859820, guid: 135406c22f6371942b17cb2175f72a4b, type: 3}
       propertyPath: m_Name
       value: EyeL
+      objectReference: {fileID: 0}
+    - target: {fileID: 8133070058674859820, guid: 135406c22f6371942b17cb2175f72a4b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
