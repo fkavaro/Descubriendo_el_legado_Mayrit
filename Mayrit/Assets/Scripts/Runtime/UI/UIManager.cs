@@ -108,6 +108,9 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
             return;
         }
 
+        // Register to Service Locator
+        ServiceLocator.Instance.Register(this);
+
         // Subscribe to scene change event
         SceneManager.sceneLoaded += OnSceneLoaded;
 

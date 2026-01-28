@@ -24,6 +24,20 @@ public class TownManager : MonoBehaviour
     #endregion
 
     #region LIFE CYCLE
+    void Awake()
+    {
+        // Only allow the registered service to initialize
+        var registered = ServiceLocator.Instance.Get<TourManager>();
+        if (registered != null && registered != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        // Register to Service Locator
+        ServiceLocator.Instance.Register(this);
+    }
+
     void Start()
     {
         // Get dependencies from ServiceLocator

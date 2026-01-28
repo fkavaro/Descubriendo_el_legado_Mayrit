@@ -55,6 +55,17 @@ public class NPCPoolManager : MonoBehaviour
         _overlapResults = new Collider[_maxOverlapResults];
         // Initialize collider->villager cache
         _colliderToVillager = new Dictionary<Collider, Villager>(_maxActiveVillagers > 0 ? _maxActiveVillagers * 2 : 32);
+
+        // Only allow the registered service to initialize
+        var registered = ServiceLocator.Instance.Get<TourManager>();
+        if (registered != null && registered != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        // Register to Service Locator
+        ServiceLocator.Instance.Register(this);
     }
 
     void Start()

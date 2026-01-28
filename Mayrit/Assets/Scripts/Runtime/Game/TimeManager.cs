@@ -61,6 +61,19 @@ public class TimeManager : MonoBehaviour
     #endregion
 
     #region LIFE CYCLE
+    void Awake()
+    {
+        // Only allow the registered service to initialize
+        var registered = ServiceLocator.Instance.Get<TourManager>();
+        if (registered != null && registered != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        // Register to Service Locator
+        ServiceLocator.Instance.Register(this);
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

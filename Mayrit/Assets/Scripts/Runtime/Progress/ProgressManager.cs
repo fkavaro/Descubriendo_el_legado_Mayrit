@@ -102,6 +102,23 @@ public class ProgressManager : ABehaviourEntity<FiniteStateMachine<MilestoneStat
         }
 #endif
     }
+
+    protected override void Awake()
+    {
+        // Only allow the registered service to initialize
+        var registered = ServiceLocator.Instance.Get<ProgressManager>();
+        if (registered != null && registered != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        // Register to Service Locator
+        ServiceLocator.Instance.Register(this);
+
+        base.Awake();
+    }
+
     #endregion
 
     #region PUBLIC METHODS

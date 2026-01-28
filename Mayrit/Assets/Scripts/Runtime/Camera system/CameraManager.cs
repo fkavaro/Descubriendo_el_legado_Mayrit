@@ -67,6 +67,22 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
     #endregion
 
     #region LIFE CYCLE
+    protected override void Awake()
+    {
+        // Only allow the registered service to initialize
+        var registered = ServiceLocator.Instance.Get<CameraManager>();
+        if (registered != null && registered != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        // Register to Service Locator
+        ServiceLocator.Instance.Register(this);
+
+        base.Awake();
+    }
+
     protected override void Start()
     {
         base.Start();

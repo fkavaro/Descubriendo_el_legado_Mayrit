@@ -118,6 +118,9 @@ public class SoundManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
+        // Register to Service Locator
+        ServiceLocator.Instance.Register(this);
     }
 
     void Start()

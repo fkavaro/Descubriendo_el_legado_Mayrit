@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
-public struct ServiceConfig<T> where T : MonoBehaviour
-{
-    [SerializeField] public T service;
-    [SerializeField] public bool dontDestroyOnLoad;
-}
+// [Serializable]
+// public struct ServiceConfig<T> where T : MonoBehaviour
+// {
+//     [SerializeField] public T service;
+//     [SerializeField] public bool dontDestroyOnLoad;
+// }
 
 /// <summary>
 /// Simple Service Locator pattern for Dependency Injection in Unity.
@@ -33,9 +33,9 @@ public class ServiceLocator
     /// <summary>
     /// Register a service instance
     /// </summary>
-    public void Register<T>(ServiceConfig<T> serviceConfig) where T : MonoBehaviour
+    public void Register<T>(T service) where T : MonoBehaviour
     {
-        if (serviceConfig.service == null)
+        if (service == null)
         {
             Debug.LogError($"Cannot register service {typeof(T).Name}: service reference is null.");
             return;
@@ -45,23 +45,20 @@ public class ServiceLocator
 
         if (_services.ContainsKey(type))
         {
-            if (serviceConfig.service.gameObject.activeInHierarchy)
-                Debug.Log($"Service {type.Name} is already registered. Destroying instance from scene: {serviceConfig.service.gameObject}.");
+            if (service.gameObject.activeInHierarchy)
+                Debug.Log($"Service {type.Name} is already registered. Destroying instance from scene: {service.gameObject}.");
 
             // Service already exists - destroy the new one trying to register
-            UnityEngine.Object.Destroy(serviceConfig.service.gameObject);
+            UnityEngine.Object.Destroy(service.gameObject);
             OnDuplicatedServiceEvent?.Invoke(Get<T>());
         }
         else
         {
             // Register new service
-            _services.Add(type, serviceConfig.service);
+            _services.Add(type, service);
 
-            if (!serviceConfig.service.gameObject.activeInHierarchy)
-                serviceConfig.service.gameObject.SetActive(true);
-
-            if (serviceConfig.dontDestroyOnLoad)
-                UnityEngine.Object.DontDestroyOnLoad(serviceConfig.service.gameObject);
+            if (!service.gameObject.activeInHierarchy)
+                service.gameObject.SetActive(true);
         }
     }
 
