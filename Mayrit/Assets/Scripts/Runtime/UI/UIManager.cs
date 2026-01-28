@@ -2,6 +2,8 @@ using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
+using System.Collections;
+using System.Diagnostics;
 
 /// <summary>
 /// Manages the user interface states and data. Singleton.
@@ -24,6 +26,11 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     #endregion
 
     #region EDITOR PROPERTIES
+    [Header("Loading Screen")]
+    [SerializeField] float _fadeInDuration = 1f;
+    [SerializeField] float _fadeOutDuration = 1f;
+
+    [Header("Other settings")]
     [SerializeField] Vector2 _tooltipOffset = new(-30, -30);
     [SerializeField] bool _edgeScrollingValueSet = true;
     [SerializeField] bool _controlsVisibilityValueSet = true;
@@ -53,6 +60,7 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     PauseMenu_UIState _pauseState;
     HeritageMenu_UIState _heritageState;
     SettingsMenu_UIState _settingsMenuState;
+    LoadingScreen_UIState _loadingScreenState;
 
     // Dependency Injection
     TourManager _tourManager;
@@ -72,6 +80,7 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
         _pauseState = new(_uiDocument);
         _heritageState = new(_uiDocument);
         _settingsMenuState = new(_uiDocument);
+        _loadingScreenState = new(_uiDocument, _fadeInDuration, _fadeOutDuration);
 
         // State AwakeState calls
         _mainMenuState.AwakeState();
@@ -80,12 +89,9 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
         _pauseState.AwakeState();
         _heritageState.AwakeState();
         _settingsMenuState.AwakeState();
+        _loadingScreenState.AwakeState();
 
-        // Set initial state based on scene name
-        if (SceneManager.GetActiveScene().name == "GameScene")
-            _sfsm.SetInitialState(_spectatorHUDState);
-        else
-            _sfsm.SetInitialState(_mainMenuState);
+        _sfsm.SetInitialState(_mainMenuState);
 
         return _sfsm;
     }
@@ -144,6 +150,11 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     public void SwitchToSettingsMenuState()
     {
         _sfsm?.SwitchState(_settingsMenuState);
+    }
+
+    public void SwitchToLoadingScreenState()
+    {
+        _sfsm?.SwitchState(_loadingScreenState);
     }
     #endregion
 
@@ -236,6 +247,17 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     void OnContextualPanelHidden()
     {
         OnContextualPanelHiddenEvent?.Invoke();
+    }
+
+    public IEnumerator FadeInLoadingScreen()
+    {
+        SwitchToLoadingScreenState();
+        yield return _loadingScreenState.FadeIn();
+    }
+
+    public IEnumerator FadeOutLoadingScreen()
+    {
+        yield return _loadingScreenState.FadeOut();
     }
     #endregion
 }

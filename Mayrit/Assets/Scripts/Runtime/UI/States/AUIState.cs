@@ -39,6 +39,12 @@ public abstract class AUIState : AState
 
         _screen = _UIDocument.rootVisualElement.Q<VisualElement>(_stateName);
 
+        if (_screen == null)
+        {
+            Debug.LogWarning($"{_stateName} UI State: No VisualElement with name '{_stateName}' found.");
+            return;
+        }
+
         ConfigureUIElementsOnAwake();
         RegisterUICallbacksOnAwake();
     }
@@ -55,8 +61,14 @@ public abstract class AUIState : AState
 
     public override void StartState()
     {
-        base.StartState();
+        if (_screen == null)
+        {
+            Debug.LogWarning($"{_stateName} UI State: _screen is null.");
+            return;
+        }
+
         _screen.style.display = DisplayStyle.Flex; // Show
+        base.StartState();
     }
 
     public override void ExitState()
