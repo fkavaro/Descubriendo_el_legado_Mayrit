@@ -6,28 +6,35 @@ using UnityEngine.SceneManagement;
 
 public class ScenesController : MonoBehaviour
 {
+    // Scenes loaded, slots unloaded
+    public event Action<Dictionary<string, string>, List<string>> SceneChangedEvent;
+    public event Action ShowLoadScreenEvent;
+
+    public string currentMenu;
+    public string currentSession;
+    public string currentMilestone;
+
     #region FIELDS
-    readonly Dictionary<string, string> _loadedBySlots = new(); // Key: Slot ID, Value: Scene Name
+    // Key: Slot ID, Value: Scene Name
+    readonly Dictionary<string, string> _loadedBySlots = new();
     static readonly WaitForSeconds _waitForSeconds0_5 = new(0.5f);
     bool _isLoading = false;
-
-    // Dependency Injection
-    UIManager _uiManager;
     #endregion
 
-    #region SINGLETON
-    public static ScenesController Instance { get; private set; }
+    #region LYFE CYCLE
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
+        // Only allow the registered ScenesController to initialize
+        var registered = ServiceLocator.Instance.Get<ScenesController>();
+        if (registered != null && registered != this)
         {
             Destroy(gameObject);
             return;
         }
-        Instance = this;
 
-        _uiManager = ServiceLocator.Instance.Get<UIManager>();
+        // Register to Service Locator
+        ServiceLocator.Instance.Register(this);
     }
     #endregion
 
@@ -55,12 +62,12 @@ public class ScenesController : MonoBehaviour
     {
         if (plan.Overlay)
         {
-            yield return _uiManager.FadeInLoadingScreen();
+            ShowLoadScreenEvent?.Invoke();
             yield return _waitForSeconds0_5;
         }
 
-        foreach (string slotKey in plan.ScenesToUnload)
-            yield return UnloadSceneRoutine(slotKey);
+        foreach (string slotKey in plan.SlotsToUnload)
+            yield return UnloadSlotRoutine(slotKey);
 
         if (plan.ClearUnusedAssets)
             yield return ClearUnusedAssetsRoutine();
@@ -68,16 +75,27 @@ public class ScenesController : MonoBehaviour
         foreach (KeyValuePair<string, string> kvp in plan.ScenesToLoad)
         {
             if (_loadedBySlots.ContainsKey(kvp.Key))
-                yield return UnloadSceneRoutine(kvp.Key);
+                yield return UnloadSlotRoutine(kvp.Key);
 
             yield return LoadAdditiveSceneRoutine(kvp.Key, kvp.Value, plan.ActiveSceneName == kvp.Value);
         }
 
-        if (plan.Overlay)
-        {
-            yield return _waitForSeconds0_5;
-            yield return _uiManager.FadeOutLoadingScreen();
-        }
+        // if (plan.Overlay)
+        // {
+        //     yield return _waitForSeconds0_5;
+        // }
+
+        currentMenu = _loadedBySlots.ContainsKey(SceneDatabase.Slot.Menu)
+                    ? _loadedBySlots[SceneDatabase.Slot.Menu]
+                    : "Slot ID not found";
+        currentSession = _loadedBySlots.ContainsKey(SceneDatabase.Slot.Session)
+                    ? _loadedBySlots[SceneDatabase.Slot.Session]
+                    : "Slot ID not found";
+        currentMilestone = _loadedBySlots.ContainsKey(SceneDatabase.Slot.Milestone)
+                    ? _loadedBySlots[SceneDatabase.Slot.Milestone]
+                    : "Slot ID not found";
+
+        SceneChangedEvent?.Invoke(plan.ScenesToLoad, plan.SlotsToUnload);
 
         _isLoading = false;
     }
@@ -111,7 +129,7 @@ public class ScenesController : MonoBehaviour
     #endregion
 
     #region UNLOAD SCENE
-    private IEnumerator UnloadSceneRoutine(string slotKey)
+    private IEnumerator UnloadSlotRoutine(string slotKey)
     {
         if (!_loadedBySlots.TryGetValue(slotKey, out string sceneName))
             yield break;

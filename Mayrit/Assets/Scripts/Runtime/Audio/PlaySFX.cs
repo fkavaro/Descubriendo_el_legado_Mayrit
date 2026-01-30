@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class PlaySFX : StateMachineBehaviour
 {
-    [SerializeField] private SFXType _enterSFXType = SFXType.None;
-    [SerializeField] private SFXType _exitSFXType = SFXType.None;
+    [SerializeField] private SoundDatabase.SFXType _enterSFXType = SoundDatabase.SFXType.None;
+    [SerializeField] private SoundDatabase.SFXType _exitSFXType = SoundDatabase.SFXType.None;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

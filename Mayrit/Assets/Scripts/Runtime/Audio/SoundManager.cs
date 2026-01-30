@@ -3,113 +3,105 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-#region ENUMS
-public enum MusicType
-{
-    None,
-    MenuMusic,
-    GameplayMusic,
-}
-
-public enum SFXType
-{
-    None,
-    UIButtonClick,
-    UITourStart,
-    UITourEnd,
-    CameraTransition
-}
-#endregion
-
-#region STRUCTS
-[Serializable]
-public struct MusicList
-{
-    [SerializeField] public MusicType _type;
-    [SerializeField] public List<AudioClip> _sounds;
-}
-
-[Serializable]
-public struct SFXlist
-{
-    [SerializeField] public SFXType _type;
-    [SerializeField] public List<AudioClip> _sounds;
-}
-#endregion
-
 /// <summary>
 /// Handles music and sound effects reproduction. 
 /// Requires two audioSource components.
 /// </summary>
+[ExecuteInEditMode]
 [RequireComponent(typeof(AudioSource))]
-public class SoundManager : MonoBehaviour
+[RequireComponent(typeof(AudioListener))]
+public class SoundManager : ABehaviourEntity<FiniteStateMachine<AMusicState>>
 {
-    #region PROPERTY HELPERS
-    public float EffectsVolume => _effectsVolume;
-    public float MusicVolume => _musicVolume;
+    #region GETTERS
+    public AudioSource EffectsSource => _effectsSource;
+    public AudioSource MusicSource => _musicSource;
+    public float MusicFadeDuration => _musicFadeDuration;
+    public float ResumeGuardSeconds => _resumeGuardSeconds;
+    public List<SoundDatabase.MusicList> MusicLists => _musicLists;
+    public List<SoundDatabase.SFXlist> SFXLists => _SFXLists;
+    public float MusicVolumeSet => _uiManager.MusicVolumeValueSet;
+    public float SFXVolumeSet => _uiManager.SFXVolumeValueSet;
     #endregion
 
     #region EDITOR PROPERTIES
     [SerializeField] private AudioSource _effectsSource;
     [SerializeField] private AudioSource _musicSource;
-    [SerializeField, Range(0, 1)] private float _effectsVolume = 1f;
-    [SerializeField, Range(0, 1)] private float _musicVolume = 1f;
+    [Range(0, 1)] public float EffectsVolume = 1f;
+    [Range(0, 1)] public float MusicVolume = 1f;
     [SerializeField, Range(0, 2)] private float _musicFadeDuration = 0.5f;
     [SerializeField, Range(0, 1)] private float _resumeGuardSeconds = 0.25f;
-    [SerializeField] private List<MusicList> _musicLists = new();
-    [SerializeField] private List<SFXlist> _SFXLists = new();
+    [SerializeField] private List<SoundDatabase.MusicList> _musicLists = new();
+    [SerializeField] private List<SoundDatabase.SFXlist> _SFXLists = new();
     [SerializeField] private bool _skipToNextTrack;
     #endregion
 
     #region INTERNAL PROPERTIES
-    // Playlist state
-    // Current active playlist type; None when stopped
-    MusicType _currentMusicType = MusicType.None;
-    // Background coroutine that watches for track end and advances
-    Coroutine _playlistCoroutine;
-    // Per-type shuffled queues used to play tracks sequentially without repeats
-    readonly Dictionary<MusicType, Queue<AudioClip>> _musicQueues = new();
-    // True while app focus is lost or app is paused; prevents unintended advancing
-    bool _suspendAutoAdvance = false;
-    // After regaining focus, ignore auto-advance checks for a brief window
-    float _ignoreAdvanceUntilTime = 0f;
-    // True while a fade transition is in progress; avoids volume overrides
-    bool _isFadingMusic = false;
+    AudioListener _audioListener;
+    SoundController _soundController;
+
+    // States
+    FiniteStateMachine<AMusicState> _fsm;
+    MainMenu_MusicState _mainMenuState;
+    GamePlay_MusicState _gamePlayState;
 
     // Dependency Injection
+    ScenesController _scenesController;
     UIManager _uiManager;
+    #endregion
+
+    #region INHERITED
+    public override FiniteStateMachine<AMusicState> DefineBehaviourSystemOnAwake()
+    {
+        _fsm = new(this);
+
+        _soundController = new(this);
+
+        // States initialization
+        _mainMenuState = new(_soundController);
+        _gamePlayState = new(_soundController);
+
+        // State AwakeState calls
+        _mainMenuState.AwakeState();
+        _gamePlayState.AwakeState();
+
+        _fsm.SetInitialState(_mainMenuState);
+
+        return _fsm;
+    }
     #endregion
 
     #region LIFE CYCLE
 #if UNITY_EDITOR
     void OnEnable()
     {
-        MusicType[] musicTypes = (MusicType[])Enum.GetValues(typeof(MusicType));
-        SFXType[] sfxTypes = (SFXType[])Enum.GetValues(typeof(SFXType));
+        SoundDatabase.MusicType[] musicTypes = (SoundDatabase.MusicType[])Enum.GetValues(typeof(SoundDatabase.MusicType));
+        SoundDatabase.SFXType[] sfxTypes = (SoundDatabase.SFXType[])Enum.GetValues(typeof(SoundDatabase.SFXType));
 
         // Ensure all music types are represented in the list
-        foreach (MusicType type in musicTypes)
+        foreach (SoundDatabase.MusicType type in musicTypes)
         {
-            if (type == MusicType.None)
+            if (type == SoundDatabase.MusicType.None)
                 continue;
             if (!_musicLists.Exists(list => list._type == type))
-                _musicLists.Add(new MusicList { _type = type, _sounds = new() });
+                _musicLists.Add(new SoundDatabase.MusicList { _type = type, _sounds = new() });
         }
 
         // Ensure all SFX types are represented in the list
-        foreach (SFXType type in sfxTypes)
+        foreach (SoundDatabase.SFXType type in sfxTypes)
         {
-            if (type == SFXType.None)
+            if (type == SoundDatabase.SFXType.None)
                 continue;
             if (!_SFXLists.Exists(list => list._type == type))
-                _SFXLists.Add(new SFXlist { _type = type, _sounds = new() });
+                _SFXLists.Add(new SoundDatabase.SFXlist { _type = type, _sounds = new() });
         }
-
     }
 #endif
 
-    protected void Awake()
+    protected override void Awake()
     {
+        if (!Application.isPlaying)
+            return;// To avoid error in editor
+
         // Only allow the registered SoundManager to initialize
         var registered = ServiceLocator.Instance.Get<SoundManager>();
         if (registered != null && registered != this)
@@ -120,10 +112,19 @@ public class SoundManager : MonoBehaviour
 
         // Register to Service Locator
         ServiceLocator.Instance.Register(this);
+
+        _audioListener = GetComponent<AudioListener>();
+
+        base.Awake();
     }
 
-    void Start()
+
+
+    protected override void Start()
     {
+        if (!Application.isPlaying)
+            return;// To avoid error in editor
+
         if (_effectsSource == null || _musicSource == null)
         {
             Debug.LogError("SoundManager: AudioSource references are missing!");
@@ -135,39 +136,20 @@ public class SoundManager : MonoBehaviour
 
         // Get dependencies from ServiceLocator
         _uiManager = ServiceLocator.Instance.Get<UIManager>();
+        _scenesController = ServiceLocator.Instance.Get<ScenesController>();
 
-        // Subscribe to uiManager events
-        _uiManager.MusicVolumeChangedEvent += UpdateMusicVolume;
-        _uiManager.SFXVolumeChangedEvent += UpdateSFXVolume;
+        // Subscribe to events
+        _scenesController.SceneChangedEvent += OnSceneChanged;
+        _uiManager.MusicVolumeChangedEvent += _soundController.UpdateMusicVolume;
+        _uiManager.SFXVolumeChangedEvent += _soundController.UpdateSFXVolume;
 
         // Set initial volumes
-        UpdateMusicVolume(_uiManager.MusicVolumeValueSet);
-        UpdateSFXVolume(_uiManager.SFXVolumeValueSet);
+        _soundController.Start();
+
+        base.Start();
     }
 
-    void OnApplicationFocus(bool hasFocus)
-    {
-        // When focus is lost in the editor/player, audio may pause.
-        // Prevents the playlist loop from advancing to the next track in that case.
-        _suspendAutoAdvance = !hasFocus;
-        if (hasFocus)
-        {
-            // Give audio a brief moment to resume before checking isPlaying
-            _ignoreAdvanceUntilTime = Time.unscaledTime + _resumeGuardSeconds;
-        }
-    }
-
-    void OnApplicationPause(bool paused)
-    {
-        // Same protection when app pauses/resumes (mobile, editor options, etc.)
-        _suspendAutoAdvance = paused;
-        if (!paused)
-        {
-            _ignoreAdvanceUntilTime = Time.unscaledTime + _resumeGuardSeconds;
-        }
-    }
-
-    void Update()
+    protected override void Update()
     {
         if (!Application.isPlaying)
             return;// To avoid error in editor
@@ -176,323 +158,59 @@ public class SoundManager : MonoBehaviour
         if (_skipToNextTrack)
         {
             _skipToNextTrack = false;
-            SkipToNextMusicTrack();
+            _soundController.SkipToNextMusicTrack();
         }
+
+        base.Update();
+    }
+
+    void OnApplicationFocus(bool hasFocus)
+    {
+        if (!Application.isPlaying)
+            return;// To avoid error in editor
+        _soundController.OnApplicationFocus(hasFocus);
+    }
+
+    void OnApplicationPause(bool paused)
+    {
+        if (!Application.isPlaying)
+            return;// To avoid error in editor
+        _soundController.OnApplicationPause(paused);
     }
     #endregion
 
-    #region MUSIC METHODS
-    /// <summary>
-    /// Starts the menu music playlist. Tracks are shuffled, then played sequentially.
-    /// </summary>
-    public void PlayMenuMusic()
-    {
-        PlayMusic(MusicType.MenuMusic);
-    }
-
-    /// <summary>
-    /// Starts the gameplay music playlist. Tracks are shuffled, then played sequentially.
-    /// </summary>
-    public void PlayGameplayMusic()
-    {
-        PlayMusic(MusicType.GameplayMusic);
-    }
-
-    /// <summary>
-    /// Starts or switches the active music playlist to <paramref name="type"/> with the target volume.
-    /// </summary>
-    private void PlayMusic(MusicType type)
-    {
-        if (type == MusicType.None) return;
-
-        // Reset if switching to a different playlist type
-        if (_currentMusicType != type)
-        {
-            _currentMusicType = type;
-            _musicSource.Stop();
-            _musicSource.clip = null;
-        }
-
-        // Start auto-advance loop if not already running
-        if (Application.isPlaying && _playlistCoroutine == null)
-        {
-            _playlistCoroutine = StartCoroutine(PlaylistLoop());
-            //Debug.Log($"SoundManager: Started {type} playlist.");
-        }
-    }
-
-    /// <summary>
-    /// Pauses the current music track. Does not change playlist state.
-    /// </summary>
-    public void PauseMusic()
-    {
-        _musicSource.Pause();
-    }
-
-    /// <summary>
-    /// Stops music playback and clears playlist state.
-    /// </summary>
-    public void StopMusic()
-    {
-        _musicSource.Stop();
-        _musicSource.clip = null;
-        _currentMusicType = MusicType.None;
-
-        if (_playlistCoroutine != null)
-        {
-            StopCoroutine(_playlistCoroutine);
-            _playlistCoroutine = null;
-        }
-    }
-
-    /// <summary>
-    /// Updates the target music volume. If a fade is in progress, the fade will reach this value.
-    /// </summary>
-    public void UpdateMusicVolume(float volume)
-    {
-        _musicVolume = volume;
-        _musicSource.volume = volume;
-    }
-    #endregion
-
-    #region PLAYLIST HELPERS
-    /// <summary>
-    /// Watches the music source and advances only when a track actually ends.
-    /// Respects focus/pause guards to avoid unintended skipping on resume.
-    /// </summary>
-    private IEnumerator PlaylistLoop()
-    {
-        while (_currentMusicType != MusicType.None)
-        {
-            // Skip if paused/unfocused or within resume guard window
-            if (!_suspendAutoAdvance && Time.unscaledTime >= _ignoreAdvanceUntilTime)
-            {
-                if (_musicSource.clip == null)
-                {
-                    PlayNextTrack();
-                }
-                // Advance only when clip truly ended (not just paused)
-                else if (_musicSource.clip != null && !_musicSource.isPlaying &&
-                    _musicSource.timeSamples >= _musicSource.clip.samples - 1)
-                {
-                    PlayNextTrack();
-                }
-            }
-            yield return null;
-        }
-
-        _playlistCoroutine = null;
-    }
-
-    /// <summary>
-    /// Dequeues and plays the next track from the current playlist. Uses fade if configured.
-    /// </summary>
-    private void PlayNextTrack()
-    {
-        if (_currentMusicType == MusicType.None) return;
-
-        var queue = EnsureQueue(_currentMusicType);
-        if (queue.Count == 0)
-        {
-            Debug.LogWarning($"No audio clips found for music type {_currentMusicType}");
-            return;
-        }
-
-        var nextClip = queue.Dequeue();
-        if (nextClip == null) return;
-
-        //Debug.Log($"SoundManager | {_currentMusicType} playlist - Advancing to next track: {nextClip.name}.");
-
-        // Direct approach
-        _musicSource.Stop();
-        _musicSource.clip = nextClip;
-        _musicSource.volume = _musicVolume;
-        _musicSource.Play();
-
-        // For crossfade transitions
-        // if (_musicFadeDuration > 0f && _musicSource.clip != null)
-        //     StartCoroutine(CrossfadeToClip(nextClip));
-    }
-
-    /// <summary>
-    /// Ensures a shuffled queue exists for the given type and refills it when empty.
-    /// </summary>
-    private Queue<AudioClip> EnsureQueue(MusicType type)
-    {
-        if (!_musicQueues.TryGetValue(type, out var queue))
-        {
-            queue = new Queue<AudioClip>();
-            _musicQueues[type] = queue;
-        }
-
-        // Refill queue when empty to loop the playlist
-        if (queue.Count == 0)
-        {
-            var clips = GetMusicClips(type);
-            if (clips.Count > 0)
-            {
-                Shuffle(clips);
-                foreach (var clip in clips)
-                {
-                    if (clip != null) queue.Enqueue(clip);
-                }
-            }
-        }
-
-        return queue;
-    }
-
-    /// <summary>
-    /// Returns the configured clips for a music type from the inspector lists.
-    /// </summary>
-    private List<AudioClip> GetMusicClips(MusicType type)
-    {
-        int idx = _musicLists.FindIndex(list => list._type == type);
-        return idx >= 0 ? _musicLists[idx]._sounds ?? new List<AudioClip>() : new List<AudioClip>();
-    }
-
-    /// <summary>
-    /// Fisher–Yates shuffle.
-    /// </summary>
-    private static void Shuffle<T>(IList<T> list)
-    {
-        for (int i = list.Count - 1; i > 0; i--)
-        {
-            int j = UnityEngine.Random.Range(0, i + 1);
-            (list[i], list[j]) = (list[j], list[i]);
-        }
-    }
-    #endregion
-
-    #region TRANSITIONS
-    /// <summary>
-    /// Performs a simple crossfade on the same AudioSource:
-    /// first fades out the current clip, swaps to the next, then fades in.
-    /// </summary>
-    private IEnumerator CrossfadeToClip(AudioClip nextClip)
-    {
-        if (nextClip == null) yield break;
-
-        _isFadingMusic = true;
-        float halfDuration = _musicFadeDuration * 0.5f;
-
-        // Fade out current track
-        float elapsed = 0f;
-        float startVol = _musicSource.volume;
-        while (elapsed < halfDuration)
-        {
-            elapsed += Time.deltaTime;
-            _musicSource.volume = Mathf.Lerp(startVol, 0f, elapsed / halfDuration);
-            yield return null;
-        }
-
-        // Switch to next track
-        _musicSource.Stop();
-        _musicSource.clip = nextClip;
-        _musicSource.volume = 0f;
-        _musicSource.Play();
-
-        // Fade in new track
-        elapsed = 0f;
-        while (elapsed < halfDuration)
-        {
-            elapsed += Time.deltaTime;
-            _musicSource.volume = Mathf.Lerp(0f, _musicVolume, elapsed / halfDuration);
-            yield return null;
-        }
-
-        _musicSource.volume = _musicVolume;
-        _isFadingMusic = false;
-    }
-
-    /// <summary>
-    /// Skips to the next track in the current playlist.
-    /// If a fade is in progress, it is cancelled before skipping.
-    /// </summary>
-    public void SkipToNextMusicTrack()
-    {
-        // Manual skip ignores guard; if fading, stop fade first
-        if (_isFadingMusic)
-            StopAllCoroutines();
-        _playlistCoroutine = StartCoroutine(PlaylistLoop());
-        PlayNextTrack();
-    }
-    #endregion
-
-    #region SOUND EFFECT METHODS
-    /// <summary>
-    /// Plays a UI button click sound effect.
-    /// </summary>
-    public void PlayButtonClickSFX()
-    {
-        PlaySFX(SFXType.UIButtonClick);
-    }
-
-    /// <summary>
-    /// Plays a tour start sound effect.
-    /// </summary>
-    public void PlayTourStartSFX()
-    {
-        PlaySFX(SFXType.UITourStart);
-    }
-
-    /// <summary>
-    /// Plays a tour end sound effect.
-    /// </summary>
-    public void PlayTourEndSFX()
-    {
-        PlaySFX(SFXType.UITourEnd);
-    }
-
-    /// <summary>
-    /// Plays a camera far transition sound effect.
-    /// </summary>
-    public void PlayCameraTransitionSFX()
-    {
-        PlaySFX(SFXType.CameraTransition);
-    }
-
-    /// <summary>
-    /// Plays a random sound of the specified SFX type using <see cref="AudioSource.PlayOneShot(AudioClip,float)"/>.
-    /// </summary>
-    public void PlaySFX(SFXType type)
-    {
-        // Return if type is none
-        if (type == SFXType.None)
-            return;
-
-        // Takes all the clips of the type
-        List<AudioClip> clips = _SFXLists.Find(list => list._type == type)._sounds;
-
-        if (clips.Count == 0)
-        {
-            Debug.LogWarning($"No audio clips found for sound type {type}");
-            return;
-        }
-
-        // Randomly selects a clip from the list
-        AudioClip randomClip = clips[UnityEngine.Random.Range(0, clips.Count)];
-
-        // Played in effectsSource
-        _effectsSource.PlayOneShot(randomClip);
-    }
+    #region PUBLIC METHODS
+    public void PlaySFX(SoundDatabase.SFXType type) => _soundController.PlaySFX(type);
+    public void PlayButtonClickSFX() => _soundController.PlaySFX(SoundDatabase.SFXType.UIButtonClick);
+    public void PlayCameraTransitionSFX() => _soundController.PlaySFX(SoundDatabase.SFXType.CameraTransition);
+    public void PlayTourStartSFX() => _soundController.PlaySFX(SoundDatabase.SFXType.UITourStart);
+    public void PlayTourEndSFX() => _soundController.PlaySFX(SoundDatabase.SFXType.UITourEnd);
 
     /// <summary>
     /// Stops any currently playing sound effect.
     /// </summary>
-    public void StopSFX()
-    {
-        _effectsSource.Stop();
-        _effectsSource.clip = null;
-    }
+    public void ResetSFX() => _soundController.ResetSFX();
 
     /// <summary>
-    /// Updates the target SFX volume immediately.
+    /// Pauses the current music track. Does not change playlist state.
     /// </summary>
-    public void UpdateSFXVolume(float volume)
+    public void PauseMusic() => _soundController.PauseMusic();
+
+    /// <summary>
+    /// Stops music playback and clears playlist state.
+    /// </summary>
+    public void ResetMusic() => _soundController.ResetMusic();
+    #endregion
+
+    #region CALLBACK METHODS
+    private void OnSceneChanged(Dictionary<string, string> loadedScenes, List<string> unloadedSlots)
     {
-        _effectsVolume = volume;
-        _effectsSource.volume = volume;
+        // Disable audio listener if GameScene has been loaded and enable if has been unloaded
+        if (loadedScenes.ContainsValue(SceneDatabase.Name.GamePlayScene))
+            _audioListener.enabled = false;
+        // TODO: else if (loadedScenes.ContainsValue(SceneDatabase.Name.MainMenuScene))
+        else if (unloadedSlots.Contains(SceneDatabase.Slot.Session))
+            _audioListener.enabled = true;
     }
     #endregion
 }

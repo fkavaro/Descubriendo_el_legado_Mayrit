@@ -5,7 +5,7 @@ using UnityEngine;
 public class SceneTransitionPlan
 {
     public Dictionary<string, string> ScenesToLoad { get; } = new();
-    public List<string> ScenesToUnload { get; } = new();
+    public List<string> SlotsToUnload { get; } = new();
     public string ActiveSceneName { get; private set; } = "";
     public bool ClearUnusedAssets { get; private set; } = false;
     public bool Overlay { get; private set; } = false;
@@ -20,7 +20,7 @@ public class SceneTransitionPlan
 
     public SceneTransitionPlan Unload(string slotKey)
     {
-        ScenesToUnload.Add(slotKey);
+        SlotsToUnload.Add(slotKey);
         return this;
     }
 
@@ -38,6 +38,7 @@ public class SceneTransitionPlan
 
     public Coroutine Perform()
     {
-        return ScenesController.Instance.ExecutePlan(this);
+        ScenesController scenesController = ServiceLocator.Instance.Get<ScenesController>();
+        return scenesController.ExecutePlan(this);
     }
 }

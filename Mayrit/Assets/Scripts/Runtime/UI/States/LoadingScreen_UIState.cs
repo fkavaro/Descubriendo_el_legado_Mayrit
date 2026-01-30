@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 using System.Collections;
+using System;
 
 public class LoadingScreen_UIState : AUIState
 {
@@ -33,29 +34,27 @@ public class LoadingScreen_UIState : AUIState
     {
         base.StartState();
 
-        FadeIn();
+        _uiManager.StartCoroutine(FadeInCoroutine());
     }
 
     public override void ExitState()
     {
         base.ExitState();
 
-        //FadeOut();
+        _uiManager.StartCoroutine(FadeOutCoroutine());
     }
 
-    #region API
-    public IEnumerator FadeIn()
+    #region COROUTINES
+    IEnumerator FadeInCoroutine()
     {
         yield return FadeToAlpha(1f, _fadeInDuration);
     }
 
-    public IEnumerator FadeOut()
+    IEnumerator FadeOutCoroutine()
     {
         yield return FadeToAlpha(0f, _fadeOutDuration);
     }
-    #endregion
 
-    #region FADE ROUTINE
     private IEnumerator FadeToAlpha(float targetAlpha, float duration)
     {
         if (_loadingScreenElement == null)

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -28,8 +29,8 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
     Pause_GameState _pauseState;
 
     // Dependency Injection
+    ScenesController _scenesController;
     ProgressManager _progressManager;
-    SoundManager _soundManager;
     #endregion
 
     #region INHERITED
@@ -47,11 +48,7 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
         _gamePlayState.AwakeState();
         _pauseState.AwakeState();
 
-        // Set initial state based on scene name
-        if (SceneManager.GetActiveScene().name == "GameScene")
-            _fsm.SetInitialState(_gamePlayState);
-        else
-            _fsm.SetInitialState(_mainMenuState);
+        _fsm.SetInitialState(_mainMenuState);
 
         return _fsm;
     }
@@ -71,10 +68,8 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
         // Register to Service Locator
         ServiceLocator.Instance.Register(this);
 
-        // Subscribe to scene change event
-        SceneManager.sceneLoaded += OnSceneLoaded;
-
-        _soundManager = ServiceLocator.Instance.Get<SoundManager>();
+        _scenesController = ServiceLocator.Instance.Get<ScenesController>();
+        _scenesController.SceneChangedEvent += OnSceneChanged;
 
         _inputActions = new();
 
@@ -84,7 +79,7 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
     void OnDestroy()
     {
         // Unsubscribe from scene change event
-        SceneManager.sceneLoaded -= OnSceneLoaded;
+        _scenesController.SceneChangedEvent -= OnSceneChanged;
 
         _inputActions = null;
     }
@@ -94,10 +89,26 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
     public void SwitchToMainMenuState()
     {
         _fsm.SwitchState(_mainMenuState);
+
+        // Unload Game Scene
+        _scenesController.NewTransitionPlan()
+            .Unload(SceneDatabase.Slot.Session)
+            .Unload(SceneDatabase.Slot.Milestone)
+            .WithOverlay()
+            .ClearAssets()
+            .Perform();
     }
 
     public void SwitchToGamePlayState()
     {
+        // Load Game Scene
+        _scenesController.NewTransitionPlan()
+            .Load(SceneDatabase.Slot.Session, SceneDatabase.Name.GamePlayScene)
+            .Load(SceneDatabase.Slot.Milestone, SceneDatabase.Name.Milestone, setActive: true)
+            .WithOverlay()
+            .ClearAssets()
+            .Perform();
+
         _fsm.SwitchState(_gamePlayState);
     }
 
@@ -110,27 +121,14 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
     #region CALLBACK METHODS
     void OnMilestoneChanged(MilestoneMapping milestoneMapping)
     {
-        _playableCharacter = milestoneMapping.PlayableCharacter;
+        _playableCharacter = milestoneMapping.PlayableCharacter; // TODO player will register itself in service locator
     }
 
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    void OnSceneChanged(Dictionary<string, string> loadedScenes, List<string> unloadedSlots)
     {
-        if (_soundManager == null)
-            _soundManager = ServiceLocator.Instance.Get<SoundManager>();
-
-        // In main menu scene
-        if (SceneManager.GetActiveScene().name == "MainMenuScene")
-        {
-            // Play menu music
-            _soundManager.PlayMenuMusic();
-            return;
-        }
         // In game play scene
-        else if (SceneManager.GetActiveScene().name == "GameScene")
+        if (loadedScenes.ContainsValue(SceneDatabase.Name.GamePlayScene))
         {
-            // Play gameplay music
-            _soundManager.PlayGameplayMusic();
-
             // Get dependencies from ServiceLocator
             _progressManager = ServiceLocator.Instance.Get<ProgressManager>();
 

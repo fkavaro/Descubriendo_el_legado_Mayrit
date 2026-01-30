@@ -13,7 +13,7 @@ public static class SceneDatabase
     {
         public const string CoreScene = "CoreScene";
         public const string GamePlayScene = "GameScene";
-        public const string Milestone = "MilestoneScene";
+        public const string Milestone = "Milestone";
         public const string Milestone1 = "Milestone1";
         public const string Milestone2 = "Milestone2";
         public const string Milestone3 = "Milestone3";

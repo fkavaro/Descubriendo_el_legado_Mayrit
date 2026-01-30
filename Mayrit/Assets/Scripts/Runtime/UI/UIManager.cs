@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
 using System.Collections;
-using System.Diagnostics;
+using System.Collections.Generic;
 
 /// <summary>
 /// Manages the user interface states and data. Singleton.
@@ -63,6 +63,7 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     LoadingScreen_UIState _loadingScreenState;
 
     // Dependency Injection
+    ScenesController _scenesController;
     TourManager _tourManager;
     #endregion
 
@@ -111,16 +112,18 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
         // Register to Service Locator
         ServiceLocator.Instance.Register(this);
 
-        // Subscribe to scene change event
-        SceneManager.sceneLoaded += OnSceneLoaded;
+        // Get dependencies from ServiceLocator
+        _scenesController = ServiceLocator.Instance.Get<ScenesController>();
+        _scenesController.SceneChangedEvent += OnSceneChanged;
+        _scenesController.ShowLoadScreenEvent += SwitchToLoadingScreenState;
 
         base.Awake();
     }
 
     void OnDestroy()
     {
-        // Unsubscribe from scene change event
-        SceneManager.sceneLoaded -= OnSceneLoaded;
+        // Unsubscribe from events
+        _scenesController.SceneChangedEvent -= OnSceneChanged;
     }
     #endregion
 
@@ -197,12 +200,24 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     {
         SFXVolumeChangedEvent?.Invoke(newValue);
     }
+
+    // TODO remove
+    // public IEnumerator FadeInLoadingScreen()
+    // {
+    //     SwitchToLoadingScreenState();
+    //     yield return _loadingScreenState.FadeInCoroutine();
+    // }
+
+    // public IEnumerator FadeOutLoadingScreen()
+    // {
+    //     yield return _loadingScreenState.FadeOutCoroutine();
+    // }
     #endregion
 
     #region CALLBACK METHODS
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    void OnSceneChanged(Dictionary<string, string> loadedScenes, List<string> unloadedSlots)
     {
-        if (SceneManager.GetActiveScene().name == "GameScene")
+        if (loadedScenes.ContainsValue(SceneDatabase.Name.GamePlayScene))
         {
             SwitchToSpectatorHUDState();
 
@@ -216,7 +231,7 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
             _spectatorHUDState.OnModernSuperpositionEvent += OnModernSuperpositionToggled;
             _tourManager.POIVisitedEvent += OnTourPOIVisited;
         }
-        else if (SceneManager.GetActiveScene().name == "MainMenuScene")
+        else if (unloadedSlots.Contains(SceneDatabase.Slot.Session))
         {
             SwitchToMainMenuState();
 
@@ -250,17 +265,6 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     void OnContextualPanelHidden()
     {
         OnContextualPanelHiddenEvent?.Invoke();
-    }
-
-    public IEnumerator FadeInLoadingScreen()
-    {
-        SwitchToLoadingScreenState();
-        yield return _loadingScreenState.FadeIn();
-    }
-
-    public IEnumerator FadeOutLoadingScreen()
-    {
-        yield return _loadingScreenState.FadeOut();
     }
     #endregion
 }

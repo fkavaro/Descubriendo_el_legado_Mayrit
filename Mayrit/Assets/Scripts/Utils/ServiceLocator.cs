@@ -2,13 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-// [Serializable]
-// public struct ServiceConfig<T> where T : MonoBehaviour
-// {
-//     [SerializeField] public T service;
-//     [SerializeField] public bool dontDestroyOnLoad;
-// }
-
 /// <summary>
 /// Simple Service Locator pattern for Dependency Injection in Unity.
 /// This provides a centralized registry for services without using Singletons.
