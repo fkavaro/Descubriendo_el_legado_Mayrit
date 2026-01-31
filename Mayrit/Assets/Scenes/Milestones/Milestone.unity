@@ -12643,6 +12643,11 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
+--- !u!1 &506667934 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5927973518140181291, guid: ee243dbf0ad7b5c4b98defffeb28ea46, type: 3}
+  m_PrefabInstance: {fileID: 6421781997497569135}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &513957372
 Mesh:
   m_ObjectHideFlags: 0
@@ -64315,6 +64320,55 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
+--- !u!1 &2066309887
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2066309888}
+  - component: {fileID: 2066309889}
+  m_Layer: 0
+  m_Name: MilestoneMapping
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2066309888
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2066309887}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2066309889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2066309887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97b1421d2c3932944b95e54494cf29bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Mayrit::MilestoneMapping
+  _milestoneData: {fileID: 11400000, guid: c2541da2a3af8a246b55a5e4b79c1812, type: 2}
+  _playableCharacter: {fileID: 506667934}
+  _tour: {fileID: 179886216}
+  _wantedTime: 9
+  Index: 0
 --- !u!43 &2079796773
 Mesh:
   m_ObjectHideFlags: 0
@@ -66821,6 +66875,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 747501121}
   - {fileID: 2026771390}
+  - {fileID: 2066309888}
   - {fileID: 6421781997497569135}
   - {fileID: 179886218}
   - {fileID: 1265395704}

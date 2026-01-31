@@ -1,10 +1,10 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-public static class SceneDatabase
+public class SceneDatabase
 {
     public class Slot
     {
-        public const string Menu = "Menu";
         public const string Session = "Session";
         public const string Milestone = "Milestone";
     }
@@ -12,7 +12,8 @@ public static class SceneDatabase
     public class Name
     {
         public const string CoreScene = "CoreScene";
-        public const string GamePlayScene = "GameScene";
+        public const string MainMenuScene = "MainMenuScene";
+        public const string GamePlayScene = "GamePlayScene";
         public const string Milestone = "Milestone";
         public const string Milestone1 = "Milestone1";
         public const string Milestone2 = "Milestone2";
@@ -23,4 +24,16 @@ public static class SceneDatabase
         public const string Milestone7 = "Milestone7";
         public const string Milestone8 = "Milestone8";
     }
+
+    public static readonly List<string> MilestoneScenes = new()
+    {
+        Name.Milestone1,
+        Name.Milestone2,
+        Name.Milestone3,
+        Name.Milestone4,
+        Name.Milestone5,
+        Name.Milestone6,
+        Name.Milestone7,
+        Name.Milestone8
+    };
 }

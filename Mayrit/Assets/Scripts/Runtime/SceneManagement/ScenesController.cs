@@ -10,7 +10,6 @@ public class ScenesController : MonoBehaviour
     public event Action<Dictionary<string, string>, List<string>> SceneChangedEvent;
     public event Action ShowLoadScreenEvent;
 
-    public string currentMenu;
     public string currentSession;
     public string currentMilestone;
 
@@ -85,9 +84,6 @@ public class ScenesController : MonoBehaviour
         //     yield return _waitForSeconds0_5;
         // }
 
-        currentMenu = _loadedBySlots.ContainsKey(SceneDatabase.Slot.Menu)
-                    ? _loadedBySlots[SceneDatabase.Slot.Menu]
-                    : "Slot ID not found";
         currentSession = _loadedBySlots.ContainsKey(SceneDatabase.Slot.Session)
                     ? _loadedBySlots[SceneDatabase.Slot.Session]
                     : "Slot ID not found";
