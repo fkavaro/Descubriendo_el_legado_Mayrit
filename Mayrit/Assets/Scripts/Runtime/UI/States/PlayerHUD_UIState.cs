@@ -126,7 +126,7 @@ public class PlayerHUD_UIState : AHUDState
     }
 
     #region CALLBACK METHODS
-    void OnMilestoneChanged(MilestoneMapping mapping)
+    void OnMilestoneChanged(Milestone_DataSO mapping)
     {
         _currentTour = _tourManager.CurrentTour;
         UpdateTourInfo();

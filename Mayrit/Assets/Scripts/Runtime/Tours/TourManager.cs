@@ -40,20 +40,12 @@ public class TourManager : MonoBehaviour
     UIManager _uiManager;
     GameManager _gameManager;
     SoundManager _soundManager;
+    PlayableCharacter _playableCharacter;
     #endregion
 
     #region LIFE CYCLE
     void Awake()
     {
-        // Only allow the registered service to initialize
-        var registered = ServiceLocator.Instance.Get<TourManager>();
-        if (registered != null && registered != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        // Register to Service Locator
         ServiceLocator.Instance.Register(this);
     }
 
@@ -83,8 +75,8 @@ public class TourManager : MonoBehaviour
 
     void Update()
     {
-        if (_gameManager.PlayableCharacter != null &&
-            _gameManager.PlayableCharacter.IsBeingControlled &&
+        if (_playableCharacter != null &&
+            _playableCharacter.IsBeingControlled &&
             _currentTour != null && !_currentTour.IsCompleted)
         {
             _pathVisualizer.UpdatePath();
@@ -106,6 +98,8 @@ public class TourManager : MonoBehaviour
         _uiManager.PlayCharacterClickedEvent -= OnPlayCharacterClicked;
 
         DetachFromCurrentTour();
+
+        ServiceLocator.Instance.Unregister(this);
     }
     #endregion
 
@@ -137,9 +131,9 @@ public class TourManager : MonoBehaviour
     #endregion
 
     #region CALLBACK METHODS
-    void OnMilestoneChanged(MilestoneMapping milestoneMapping)
+    void OnMilestoneChanged(Milestone_DataSO milestoneMapping)
     {
-        AttachToTour(milestoneMapping?.Tour);
+        AttachToTour(ServiceLocator.Instance.Get<Tour>());
     }
 
     void OnTourPOIVisited(PointOfInterest poi)
@@ -171,6 +165,8 @@ public class TourManager : MonoBehaviour
             _currentTour.StartTour();
             _soundManager.PlayTourStartSFX();
         }
+
+        _playableCharacter = ServiceLocator.Instance.Get<PlayableCharacter>();
     }
     #endregion
 }

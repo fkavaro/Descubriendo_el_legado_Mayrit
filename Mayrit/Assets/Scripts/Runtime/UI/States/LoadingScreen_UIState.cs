@@ -5,10 +5,13 @@ using System;
 
 public class LoadingScreen_UIState : AUIState
 {
+    #region PROPERTIES
     VisualElement _loadingScreenElement;
     readonly float _fadeInDuration;
     readonly float _fadeOutDuration;
+    #endregion
 
+    #region CONSTRUCTOR
     public LoadingScreen_UIState(UIDocument uiDocument,
     float fadeInDuration = 0.5f,
     float fadeOutDuration = 0.5f)
@@ -17,7 +20,9 @@ public class LoadingScreen_UIState : AUIState
         _fadeInDuration = fadeInDuration;
         _fadeOutDuration = fadeOutDuration;
     }
+    #endregion
 
+    #region INHERITED METHODS
     protected override void ConfigureUIElementsOnAwake()
     {
         _loadingScreenElement = _UIDocument.rootVisualElement.Q<VisualElement>("LoadingScreen");
@@ -29,33 +34,20 @@ public class LoadingScreen_UIState : AUIState
     {
 
     }
-
-    public override void StartState()
-    {
-        base.StartState();
-
-        _uiManager.StartCoroutine(FadeInCoroutine());
-    }
-
-    public override void ExitState()
-    {
-        base.ExitState();
-
-        _uiManager.StartCoroutine(FadeOutCoroutine());
-    }
+    #endregion
 
     #region COROUTINES
-    IEnumerator FadeInCoroutine()
+    public IEnumerator FadeInCoroutine()
     {
         yield return FadeToAlpha(1f, _fadeInDuration);
     }
 
-    IEnumerator FadeOutCoroutine()
+    public IEnumerator FadeOutCoroutine()
     {
         yield return FadeToAlpha(0f, _fadeOutDuration);
     }
 
-    private IEnumerator FadeToAlpha(float targetAlpha, float duration)
+    IEnumerator FadeToAlpha(float targetAlpha, float duration)
     {
         if (_loadingScreenElement == null)
         {
@@ -74,8 +66,6 @@ public class LoadingScreen_UIState : AUIState
             yield return null;
         }
         _loadingScreenElement.style.opacity = targetAlpha;
-
-
     }
     #endregion
 

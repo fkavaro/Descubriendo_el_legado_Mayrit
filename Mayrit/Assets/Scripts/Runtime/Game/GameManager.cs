@@ -4,21 +4,15 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /// <summary>
-/// Manages the game states and data. Singleton.
+/// Manages the game states and data.
 /// </summary>
 public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
 {
     #region PROPERTY HELPERS
-    public PlayableCharacter PlayableCharacter => _playableCharacter;
     public GameInputActions InputActions => _inputActions;
     public bool IsInMainMenuState => _fsm.IsCurrentState(_mainMenuState);
     public bool IsInGamePlayState => _fsm.IsCurrentState(_gamePlayState);
     public bool IsInPauseState => _fsm.IsCurrentState(_pauseState);
-    #endregion
-
-    #region EDITOR PROPERTIES
-    [Header("Player")]
-    [SerializeField] PlayableCharacter _playableCharacter;
     #endregion
 
     #region INTERNAL PROPERTIES
@@ -30,7 +24,6 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
 
     // Dependency Injection
     ScenesController _scenesController;
-    ProgressManager _progressManager;
     #endregion
 
     #region INHERITED
@@ -50,6 +43,11 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
 
         _fsm.SetInitialState(_mainMenuState);
 
+        // Load main menu scene
+        _scenesController.NewTransitionPlan()
+            .Load(SceneDatabase.Slot.Session, SceneDatabase.SceneName.MainMenuScene, setActive: true)
+            .Perform();
+
         return _fsm;
     }
     #endregion
@@ -57,30 +55,23 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
     #region LIFE CYCLE
     protected override void Awake()
     {
-        // Only allow the registered GameManager to initialize
-        var registered = ServiceLocator.Instance.Get<GameManager>();
-        if (registered != null && registered != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        // Register to Service Locator
         ServiceLocator.Instance.Register(this);
 
         _scenesController = ServiceLocator.Instance.Get<ScenesController>();
-        _scenesController.SceneChangedEvent += OnSceneChanged;
 
         _inputActions = new();
 
         base.Awake();
     }
 
+    // TODO: this should be handled in superior abstract class
+    void OnDisable()
+    {
+        ServiceLocator.Instance.Unregister(this);
+    }
+
     void OnDestroy()
     {
-        // Unsubscribe from scene change event
-        _scenesController.SceneChangedEvent -= OnSceneChanged;
-
         _inputActions = null;
     }
     #endregion
@@ -90,24 +81,23 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
     {
         _fsm.SwitchState(_mainMenuState);
 
-        // Unload Game Scene
+        // Load main menu scene
         _scenesController.NewTransitionPlan()
-            .Unload(SceneDatabase.Slot.Session)
+            .Load(SceneDatabase.Slot.Session, SceneDatabase.SceneName.MainMenuScene, setActive: true)
             .Unload(SceneDatabase.Slot.Milestone)
-            .WithOverlay()
             .ClearAssets()
             .Perform();
     }
 
     public void SwitchToGamePlayState()
     {
-        // Load Game Scene
-        _scenesController.NewTransitionPlan()
-            .Load(SceneDatabase.Slot.Session, SceneDatabase.Name.GamePlayScene)
-            .Load(SceneDatabase.Slot.Milestone, SceneDatabase.Name.Milestone, setActive: true)
-            .WithOverlay()
-            .ClearAssets()
-            .Perform();
+        // Load Game Scene, if not already loaded
+        if (!SceneManager.GetSceneByName(SceneDatabase.SceneName.GameplayScene.ToString()).isLoaded)
+            _scenesController.NewTransitionPlan()
+                .Load(SceneDatabase.Slot.Session, SceneDatabase.SceneName.GameplayScene, setActive: true)
+                .WithOverlay()
+                .ClearAssets()
+                .Perform();
 
         _fsm.SwitchState(_gamePlayState);
     }
@@ -115,26 +105,6 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
     public void SwitchToPauseState()
     {
         _fsm.SwitchState(_pauseState);
-    }
-    #endregion
-
-    #region CALLBACK METHODS
-    void OnMilestoneChanged(MilestoneMapping milestoneMapping)
-    {
-        _playableCharacter = milestoneMapping.PlayableCharacter; // TODO player will register itself in service locator
-    }
-
-    void OnSceneChanged(Dictionary<string, string> loadedScenes, List<string> unloadedSlots)
-    {
-        // In game play scene
-        if (loadedScenes.ContainsValue(SceneDatabase.Name.GamePlayScene))
-        {
-            // Get dependencies from ServiceLocator
-            _progressManager = ServiceLocator.Instance.Get<ProgressManager>();
-
-            // Subscribe to events
-            _progressManager.MilestoneChangedEvent += OnMilestoneChanged;
-        }
     }
     #endregion
 }

@@ -57,7 +57,7 @@ public class MilestoneTracker : MonoBehaviour
         if (progressManager != null)
         {
             progressManager.MilestoneChangedEvent += OnMilestoneChanged;
-            progressManager.OnEditorUpdateChangedEvent += OnEditorUpdateChanged;
+            //progressManager.OnEditorUpdateChangedEvent += OnEditorUpdateChanged;
         }
     }
 
@@ -68,13 +68,13 @@ public class MilestoneTracker : MonoBehaviour
         if (progressManager != null)
         {
             progressManager.MilestoneChangedEvent -= OnMilestoneChanged;
-            progressManager.OnEditorUpdateChangedEvent -= OnEditorUpdateChanged;
+            //progressManager.OnEditorUpdateChangedEvent -= OnEditorUpdateChanged;
         }
     }
     #endregion
 
     #region EVENTS METHODS
-    void OnMilestoneChanged(MilestoneMapping milestoneMapping)
+    void OnMilestoneChanged(Milestone_DataSO milestoneMapping)
     {
         int milestoneIndex = milestoneMapping.Index;
 
@@ -85,28 +85,28 @@ public class MilestoneTracker : MonoBehaviour
         SetChildrenActive(milestoneIndex >= min && milestoneIndex <= max);
     }
 
-    protected virtual void OnEditorUpdateChanged(bool updateInEditor)
-    {
-#if UNITY_EDITOR
-        if (Application.isPlaying)
-            return;
+    //     protected virtual void OnEditorUpdateChanged(bool updateInEditor)
+    //     {
+    // #if UNITY_EDITOR
+    //         if (Application.isPlaying)
+    //             return;
 
-        if (this == null) return;
-        if (!updateInEditor)
-        {
-            SetChildrenActive(true);
-            return;
-        }
+    //         if (this == null) return;
+    //         if (!updateInEditor)
+    //         {
+    //             SetChildrenActive(true);
+    //             return;
+    //         }
 
-        var progressManager = FindAnyObjectByType<ProgressManager>();
-        if (progressManager == null) return;
-        int milestone = progressManager.CurrentMilestoneIndex;
+    //         var progressManager = FindAnyObjectByType<ProgressManager>();
+    //         if (progressManager == null) return;
+    //         int milestone = progressManager.CurrentMilestoneIndex;
 
-        int min = Mathf.Min((int)milestonesActivated.x, (int)milestonesActivated.y);
-        int max = Mathf.Max((int)milestonesActivated.x, (int)milestonesActivated.y);
-        SetChildrenActive(milestone >= min && milestone <= max);
-#endif
-    }
+    //         int min = Mathf.Min((int)milestonesActivated.x, (int)milestonesActivated.y);
+    //         int max = Mathf.Max((int)milestonesActivated.x, (int)milestonesActivated.y);
+    //         SetChildrenActive(milestone >= min && milestone <= max);
+    // #endif
+    //     }
 }
 #endregion
 

@@ -6,34 +6,31 @@ using UnityEngine.SceneManagement;
 
 public class ScenesController : MonoBehaviour
 {
-    // Scenes loaded, slots unloaded
-    public event Action<Dictionary<string, string>, List<string>> SceneChangedEvent;
-    public event Action ShowLoadScreenEvent;
+    #region PROPERTIES
+    public event Action<Dictionary<SceneDatabase.Slot, SceneDatabase.SceneName>, List<SceneDatabase.Slot>> ScenesLoadedPartiallyEvent;
+    public event Action<Dictionary<SceneDatabase.Slot, SceneDatabase.SceneName>, List<SceneDatabase.Slot>> ScenesLoadedFullyEvent;
 
     public string currentSession;
     public string currentMilestone;
 
-    #region FIELDS
     // Key: Slot ID, Value: Scene Name
-    readonly Dictionary<string, string> _loadedBySlots = new();
+    readonly Dictionary<SceneDatabase.Slot, SceneDatabase.SceneName> _loadedBySlots = new();
     static readonly WaitForSeconds _waitForSeconds0_5 = new(0.5f);
-    bool _isLoading = false;
+    public bool IsLoading { get; private set; } = false;
+
+    UIManager _uiManager;
     #endregion
 
     #region LYFE CYCLE
 
     private void Awake()
     {
-        // Only allow the registered ScenesController to initialize
-        var registered = ServiceLocator.Instance.Get<ScenesController>();
-        if (registered != null && registered != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        // Register to Service Locator
         ServiceLocator.Instance.Register(this);
+    }
+
+    void Start()
+    {
+        _uiManager = ServiceLocator.Instance.Get<UIManager>();
     }
     #endregion
 
@@ -45,13 +42,12 @@ public class ScenesController : MonoBehaviour
 
     public Coroutine ExecutePlan(SceneTransitionPlan plan)
     {
-        if (_isLoading)
+        if (IsLoading)
         {
             Debug.LogWarning("A scene transition is already in progress.");
             return null;
         }
 
-        _isLoading = true;
         return StartCoroutine(ChangeSceneRoutine(plan));
     }
     #endregion
@@ -59,48 +55,55 @@ public class ScenesController : MonoBehaviour
     #region CHANGE SCENES
     private IEnumerator ChangeSceneRoutine(SceneTransitionPlan plan)
     {
+        IsLoading = true;
         if (plan.Overlay)
         {
-            ShowLoadScreenEvent?.Invoke();
+            yield return _uiManager.FadeInLoadingScreenCoroutine();
             yield return _waitForSeconds0_5;
         }
 
-        foreach (string slotKey in plan.SlotsToUnload)
+        foreach (SceneDatabase.Slot slotKey in plan.SlotsToUnload)
             yield return UnloadSlotRoutine(slotKey);
 
         if (plan.ClearUnusedAssets)
             yield return ClearUnusedAssetsRoutine();
 
-        foreach (KeyValuePair<string, string> kvp in plan.ScenesToLoad)
+        foreach (KeyValuePair<SceneDatabase.Slot, SceneDatabase.SceneName> kvp in plan.ScenesToLoad)
         {
+            Debug.Log($"ScenesController: Loading scene '{kvp.Value}' into slot '{kvp.Key}'.");
             if (_loadedBySlots.ContainsKey(kvp.Key))
                 yield return UnloadSlotRoutine(kvp.Key);
 
             yield return LoadAdditiveSceneRoutine(kvp.Key, kvp.Value, plan.ActiveSceneName == kvp.Value);
         }
 
-        // if (plan.Overlay)
-        // {
-        //     yield return _waitForSeconds0_5;
-        // }
+        ScenesLoadedPartiallyEvent?.Invoke(plan.ScenesToLoad, plan.SlotsToUnload);
 
+        // Only after all scenes are loaded, update slots and fire events
         currentSession = _loadedBySlots.ContainsKey(SceneDatabase.Slot.Session)
-                    ? _loadedBySlots[SceneDatabase.Slot.Session]
+                    ? _loadedBySlots[SceneDatabase.Slot.Session].ToString()
                     : "Slot ID not found";
         currentMilestone = _loadedBySlots.ContainsKey(SceneDatabase.Slot.Milestone)
-                    ? _loadedBySlots[SceneDatabase.Slot.Milestone]
+                    ? _loadedBySlots[SceneDatabase.Slot.Milestone].ToString()
                     : "Slot ID not found";
 
-        SceneChangedEvent?.Invoke(plan.ScenesToLoad, plan.SlotsToUnload);
+        if (plan.Overlay)
+        {
+            yield return _waitForSeconds0_5;
+            yield return _uiManager.FadeOutLoadingScreenCoroutine();
+            Debug.Log("ScenesController: Finished scene transition with overlay.");
+        }
 
-        _isLoading = false;
+        ScenesLoadedFullyEvent?.Invoke(plan.ScenesToLoad, plan.SlotsToUnload);
+
+        IsLoading = false;
     }
     #endregion
 
     #region LOAD SCENE
-    private IEnumerator LoadAdditiveSceneRoutine(string slotKey, string sceneName, bool setActive)
+    private IEnumerator LoadAdditiveSceneRoutine(SceneDatabase.Slot slotKey, SceneDatabase.SceneName sceneName, bool setActive)
     {
-        AsyncOperation loadOp = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+        AsyncOperation loadOp = SceneManager.LoadSceneAsync(sceneName.ToString(), LoadSceneMode.Additive);
         if (loadOp == null) yield break;
 
         loadOp.allowSceneActivation = false;
@@ -115,7 +118,7 @@ public class ScenesController : MonoBehaviour
 
         if (setActive)
         {
-            Scene loadedScene = SceneManager.GetSceneByName(sceneName);
+            Scene loadedScene = SceneManager.GetSceneByName(sceneName.ToString());
             if (loadedScene.IsValid() && loadedScene.isLoaded)
                 SceneManager.SetActiveScene(loadedScene);
         }
@@ -125,15 +128,12 @@ public class ScenesController : MonoBehaviour
     #endregion
 
     #region UNLOAD SCENE
-    private IEnumerator UnloadSlotRoutine(string slotKey)
+    private IEnumerator UnloadSlotRoutine(SceneDatabase.Slot slotKey)
     {
-        if (!_loadedBySlots.TryGetValue(slotKey, out string sceneName))
+        if (!_loadedBySlots.TryGetValue(slotKey, out SceneDatabase.SceneName sceneName))
             yield break;
 
-        if (string.IsNullOrEmpty(sceneName))
-            yield break;
-
-        AsyncOperation unloadOp = SceneManager.UnloadSceneAsync(sceneName);
+        AsyncOperation unloadOp = SceneManager.UnloadSceneAsync(sceneName.ToString());
 
         if (unloadOp != null)
         {

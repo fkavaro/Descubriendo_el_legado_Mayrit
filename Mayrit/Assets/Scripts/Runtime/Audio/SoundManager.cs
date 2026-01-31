@@ -2,12 +2,12 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Handles music and sound effects reproduction. 
 /// Requires two audioSource components.
 /// </summary>
-[ExecuteInEditMode]
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(AudioListener))]
 public class SoundManager : ABehaviourEntity<FiniteStateMachine<AMusicState>>
@@ -99,18 +99,6 @@ public class SoundManager : ABehaviourEntity<FiniteStateMachine<AMusicState>>
 
     protected override void Awake()
     {
-        if (!Application.isPlaying)
-            return;// To avoid error in editor
-
-        // Only allow the registered SoundManager to initialize
-        var registered = ServiceLocator.Instance.Get<SoundManager>();
-        if (registered != null && registered != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        // Register to Service Locator
         ServiceLocator.Instance.Register(this);
 
         _audioListener = GetComponent<AudioListener>();
@@ -122,9 +110,6 @@ public class SoundManager : ABehaviourEntity<FiniteStateMachine<AMusicState>>
 
     protected override void Start()
     {
-        if (!Application.isPlaying)
-            return;// To avoid error in editor
-
         if (_effectsSource == null || _musicSource == null)
         {
             Debug.LogError("SoundManager: AudioSource references are missing!");
@@ -139,9 +124,10 @@ public class SoundManager : ABehaviourEntity<FiniteStateMachine<AMusicState>>
         _scenesController = ServiceLocator.Instance.Get<ScenesController>();
 
         // Subscribe to events
-        _scenesController.SceneChangedEvent += OnSceneChanged;
         _uiManager.MusicVolumeChangedEvent += _soundController.UpdateMusicVolume;
         _uiManager.SFXVolumeChangedEvent += _soundController.UpdateSFXVolume;
+        _scenesController.ScenesLoadedPartiallyEvent += OnScenesLoadedPartially;
+        _scenesController.ScenesLoadedFullyEvent += OnScenesLoadedFully;
 
         // Set initial volumes
         _soundController.Start();
@@ -151,9 +137,6 @@ public class SoundManager : ABehaviourEntity<FiniteStateMachine<AMusicState>>
 
     protected override void Update()
     {
-        if (!Application.isPlaying)
-            return;// To avoid error in editor
-
         // TODO remove or implement in game
         if (_skipToNextTrack)
         {
@@ -166,15 +149,11 @@ public class SoundManager : ABehaviourEntity<FiniteStateMachine<AMusicState>>
 
     void OnApplicationFocus(bool hasFocus)
     {
-        if (!Application.isPlaying)
-            return;// To avoid error in editor
         _soundController.OnApplicationFocus(hasFocus);
     }
 
     void OnApplicationPause(bool paused)
     {
-        if (!Application.isPlaying)
-            return;// To avoid error in editor
         _soundController.OnApplicationPause(paused);
     }
     #endregion
@@ -185,32 +164,26 @@ public class SoundManager : ABehaviourEntity<FiniteStateMachine<AMusicState>>
     public void PlayCameraTransitionSFX() => _soundController.PlaySFX(SoundDatabase.SFXType.CameraTransition);
     public void PlayTourStartSFX() => _soundController.PlaySFX(SoundDatabase.SFXType.UITourStart);
     public void PlayTourEndSFX() => _soundController.PlaySFX(SoundDatabase.SFXType.UITourEnd);
-
-    /// <summary>
-    /// Stops any currently playing sound effect.
-    /// </summary>
     public void ResetSFX() => _soundController.ResetSFX();
-
-    /// <summary>
-    /// Pauses the current music track. Does not change playlist state.
-    /// </summary>
     public void PauseMusic() => _soundController.PauseMusic();
-
-    /// <summary>
-    /// Stops music playback and clears playlist state.
-    /// </summary>
     public void ResetMusic() => _soundController.ResetMusic();
     #endregion
 
     #region CALLBACK METHODS
-    private void OnSceneChanged(Dictionary<string, string> loadedScenes, List<string> unloadedSlots)
+    void OnScenesLoadedPartially(Dictionary<SceneDatabase.Slot, SceneDatabase.SceneName> loadedScenes, List<SceneDatabase.Slot> unloadedSlots)
     {
-        // Disable audio listener if GameScene has been loaded and enable if has been unloaded
-        if (loadedScenes.ContainsValue(SceneDatabase.Name.GamePlayScene))
-            _audioListener.enabled = false;
-        // TODO: else if (loadedScenes.ContainsValue(SceneDatabase.Name.MainMenuScene))
-        else if (unloadedSlots.Contains(SceneDatabase.Slot.Session))
+        if (loadedScenes.ContainsValue(SceneDatabase.SceneName.MainMenuScene))
             _audioListener.enabled = true;
+        else if (loadedScenes.ContainsValue(SceneDatabase.SceneName.GameplayScene))
+            _audioListener.enabled = false;
+    }
+
+    void OnScenesLoadedFully(Dictionary<SceneDatabase.Slot, SceneDatabase.SceneName> loadedScenes, List<SceneDatabase.Slot> unloadedSlots)
+    {
+        if (loadedScenes.ContainsValue(SceneDatabase.SceneName.MainMenuScene))
+            _fsm.SwitchState(_mainMenuState);
+        else if (loadedScenes.ContainsValue(SceneDatabase.SceneName.GameplayScene))
+            _fsm.SwitchState(_gamePlayState);
     }
     #endregion
 }

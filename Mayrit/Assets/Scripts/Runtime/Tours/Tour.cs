@@ -29,26 +29,29 @@ public class Tour : MonoBehaviour
     public event Action<PointOfInterest> OnVisitedPOIEvent;
     public event Action<PointOfInterest> OnNextPOIChangeEvent;
 
-    ProgressManager _progressManager;
+    //ProgressManager _progressManager;
     #endregion
 
     #region LIFE CYCLE
     void OnEnable()
     {
-        SubscribeToRuntimeEvents();
+        //SubscribeToRuntimeEvents();
+
+        ServiceLocator.Instance.Register(this);
     }
 
-    void OnValidate()
-    {
-#if UNITY_EDITOR
-        if (!Application.isPlaying)
-            SubscribeToRuntimeEvents();
-#endif
-    }
+    //     void OnValidate()
+    //     {
+    // #if UNITY_EDITOR
+    //         if (!Application.isPlaying)
+    //             SubscribeToRuntimeEvents();
+    // #endif
+    //     }
 
-    void OnDestroy()
+    void OnDisable()
     {
-        UnsubscribeFromRuntimeEvents();
+        //UnsubscribeFromRuntimeEvents();
+        ServiceLocator.Instance.Unregister(this);
     }
     #endregion
 
@@ -156,61 +159,61 @@ public class Tour : MonoBehaviour
         OnVisitedPOIEvent?.Invoke(poi);
         UpdateNextPOI();
     }
+
+    // void OnMilestoneChanged(Milestone_DataSO milestoneMapping)
+    // {
+    //     if (milestoneMapping.Tour == this)
+    //         Activate();
+    //     else
+    //         Deactivate();
+    // }
     #endregion
 
     #region EDITOR UPDATES
-    void SubscribeToRuntimeEvents()
-    {
-        _progressManager = FindAnyObjectByType<ProgressManager>();
+    // void SubscribeToRuntimeEvents()
+    // {
+    //     _progressManager = FindAnyObjectByType<ProgressManager>();
 
-        if (_progressManager != null)
-        {
-            _progressManager.MilestoneChangedEvent += OnMilestoneChanged;
-            _progressManager.OnEditorUpdateChangedEvent += OnEditorUpdateChanged;
-        }
-    }
+    //     if (_progressManager != null)
+    //     {
+    //         _progressManager.MilestoneChangedEvent += OnMilestoneChanged;
+    //         //_progressManager.OnEditorUpdateChangedEvent += OnEditorUpdateChanged;
+    //     }
+    // }
 
-    void UnsubscribeFromRuntimeEvents()
-    {
-        _progressManager = FindAnyObjectByType<ProgressManager>();
+    // void UnsubscribeFromRuntimeEvents()
+    // {
+    //     _progressManager = FindAnyObjectByType<ProgressManager>();
 
-        if (_progressManager != null)
-        {
-            _progressManager.MilestoneChangedEvent -= OnMilestoneChanged;
-            _progressManager.OnEditorUpdateChangedEvent -= OnEditorUpdateChanged;
-        }
-    }
+    //     if (_progressManager != null)
+    //     {
+    //         _progressManager.MilestoneChangedEvent -= OnMilestoneChanged;
+    //         //_progressManager.OnEditorUpdateChangedEvent -= OnEditorUpdateChanged;
+    //     }
+    // }
 
-    void OnMilestoneChanged(MilestoneMapping milestoneMapping)
-    {
-        if (milestoneMapping.Tour == this)
-            Activate();
-        else
-            Deactivate();
-    }
+    //     void OnEditorUpdateChanged(bool updateInEditor)
+    //     {
+    // #if UNITY_EDITOR
+    //         if (Application.isPlaying)
+    //             return;
 
-    void OnEditorUpdateChanged(bool updateInEditor)
-    {
-#if UNITY_EDITOR
-        if (Application.isPlaying)
-            return;
+    //         if (this == null) return;
 
-        if (this == null) return;
-
-        // Not updated through editor
-        if (!updateInEditor)
-            // All tours active
-            Activate();
-        else
-        {
-            // Only active if corresponding to current milestone
-            if (_progressManager.CurrentMilestoneMapping.Tour == this)
-                Activate();
-            else
-                Deactivate();
-        }
-#endif
-    }
+    //         // Not updated through editor
+    //         if (!updateInEditor)
+    //             // All tours active
+    //             Activate();
+    //         else
+    //         {
+    //             // Only active if corresponding to current milestone
+    //             if (ServiceLocator.Instance.Get<Tour>() == this)
+    //                 Activate();
+    //             else
+    //                 Deactivate();
+    //         }
+    // #endif
+    //     }
     #endregion
 }
 

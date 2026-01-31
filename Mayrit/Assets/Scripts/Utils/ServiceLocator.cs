@@ -88,7 +88,7 @@ public class ServiceLocator
     /// <summary>
     /// Unregister a service
     /// </summary>
-    public void Unregister<T>() where T : class
+    public void Unregister<T>(T service) where T : class
     {
         var type = typeof(T);
         if (_services.ContainsKey(type))

@@ -26,7 +26,7 @@ public class Spectator_CameraState : ACameraState
         base.StartState();
 
         _gameManager.InputActions.Camera.Enable();
-        _uiManager.SwitchToSpectatorHUDState();
+        //_uiManager.SwitchToSpectatorHUDState(); // TODO CHECK
         _cameraSelector.ObjectSelectedEvent += OnObjectSelected;
     }
 

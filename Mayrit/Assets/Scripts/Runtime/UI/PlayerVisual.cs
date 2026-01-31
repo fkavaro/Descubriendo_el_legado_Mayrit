@@ -7,11 +7,10 @@ public class PlayerVisual : Billboard
 {
     UIDocument _uiDocument;
     Button _playerButton;
-    PlayableCharacter _playableCharacter;
+    public PlayableCharacter _playableCharacter;
 
     // Dependency Injectionq
     ProgressManager _progressManager;
-    UIManager _uiManager;
     CameraManager _cameraManager;
     SoundManager _soundManager;
 
@@ -33,7 +32,6 @@ public class PlayerVisual : Billboard
 
         // Get dependencies from Service Locator
         _progressManager = ServiceLocator.Instance.Get<ProgressManager>();
-        _uiManager = ServiceLocator.Instance.Get<UIManager>();
         _cameraManager = ServiceLocator.Instance.Get<CameraManager>();
         _soundManager = ServiceLocator.Instance.Get<SoundManager>();
 
@@ -53,10 +51,9 @@ public class PlayerVisual : Billboard
     #endregion
 
     #region CALLBACK METHODS
-    void OnMilestoneChanged(MilestoneMapping milestoneMapping)
+    void OnMilestoneChanged(Milestone_DataSO milestoneMapping)
     {
-        // Update current playable character
-        _playableCharacter = milestoneMapping.PlayableCharacter;
+        _playableCharacter = ServiceLocator.Instance.Get<PlayableCharacter>();
 
         UpdateTransformPosition();
         OnCameraStateChanged();

@@ -6,7 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 /// <summary>
-/// Manages the user interface states and data. Singleton.
+/// Manages the user interface states and data.
 /// </summary>
 [RequireComponent(typeof(UIDocument))]
 public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
@@ -27,7 +27,7 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
 
     #region EDITOR PROPERTIES
     [Header("Loading Screen")]
-    [SerializeField] float _fadeInDuration = 1f;
+    [SerializeField] float _fadeInDuration = 5f;
     [SerializeField] float _fadeOutDuration = 1f;
 
     [Header("Other settings")]
@@ -101,29 +101,21 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     #region LIFE CYCLE
     protected override void Awake()
     {
-        // Only allow the registered UIManager to initialize
-        var registered = ServiceLocator.Instance.Get<UIManager>();
-        if (registered != null && registered != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        // Register to Service Locator
         ServiceLocator.Instance.Register(this);
 
-        // Get dependencies from ServiceLocator
-        _scenesController = ServiceLocator.Instance.Get<ScenesController>();
-        _scenesController.SceneChangedEvent += OnSceneChanged;
-        _scenesController.ShowLoadScreenEvent += SwitchToLoadingScreenState;
+
 
         base.Awake();
     }
 
-    void OnDestroy()
+    protected override void Start()
     {
-        // Unsubscribe from events
-        _scenesController.SceneChangedEvent -= OnSceneChanged;
+        // Get dependencies from ServiceLocator
+        _scenesController = ServiceLocator.Instance.Get<ScenesController>();
+        _scenesController.ScenesLoadedPartiallyEvent += OnScenesLoadedPartially;
+        _scenesController.ScenesLoadedFullyEvent += OnScenesLoadedFully;
+
+        base.Start();
     }
     #endregion
 
@@ -200,24 +192,34 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     {
         SFXVolumeChangedEvent?.Invoke(newValue);
     }
-
-    // TODO remove
-    // public IEnumerator FadeInLoadingScreen()
-    // {
-    //     SwitchToLoadingScreenState();
-    //     yield return _loadingScreenState.FadeInCoroutine();
-    // }
-
-    // public IEnumerator FadeOutLoadingScreen()
-    // {
-    //     yield return _loadingScreenState.FadeOutCoroutine();
-    // }
     #endregion
 
     #region CALLBACK METHODS
-    void OnSceneChanged(Dictionary<string, string> loadedScenes, List<string> unloadedSlots)
+    void OnScenesLoadedPartially(Dictionary<SceneDatabase.Slot, SceneDatabase.SceneName> loadedScenes, List<SceneDatabase.Slot> unloadedSlots)
     {
-        if (loadedScenes.ContainsValue(SceneDatabase.Name.GamePlayScene))
+
+    }
+
+    void OnScenesLoadedFully(Dictionary<SceneDatabase.Slot, SceneDatabase.SceneName> loadedScenes, List<SceneDatabase.Slot> unloadedSlots)
+    {
+        if (loadedScenes.ContainsValue(SceneDatabase.SceneName.MainMenuScene))
+        {
+            SwitchToMainMenuState();
+
+            // Unsubscribe from events
+            if (_tourManager != null)
+            {
+                _tourManager.POIVisitedEvent -= OnTourPOIVisited;
+                _tourManager = null;
+            }
+
+            _playerHUDState.ContextualPanelHiddenEvent -= OnContextualPanelHidden;
+            _spectatorHUDState.ContextualPanelHiddenEvent -= OnContextualPanelHidden;
+            _spectatorHUDState.PlayCharacterEvent -= OnPlayCharacterClicked;
+            _spectatorHUDState.OnModernSuperpositionEvent -= OnModernSuperpositionToggled;
+        }
+        // In gameplay scene
+        else if (loadedScenes.ContainsValue(SceneDatabase.SceneName.GameplayScene))
         {
             SwitchToSpectatorHUDState();
 
@@ -230,19 +232,6 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
             _spectatorHUDState.PlayCharacterEvent += OnPlayCharacterClicked;
             _spectatorHUDState.OnModernSuperpositionEvent += OnModernSuperpositionToggled;
             _tourManager.POIVisitedEvent += OnTourPOIVisited;
-        }
-        else if (unloadedSlots.Contains(SceneDatabase.Slot.Session))
-        {
-            SwitchToMainMenuState();
-
-            // Unsubscribe from events
-            if (_tourManager != null)
-                _tourManager.POIVisitedEvent -= OnTourPOIVisited;
-
-            _playerHUDState.ContextualPanelHiddenEvent -= OnContextualPanelHidden;
-            _spectatorHUDState.ContextualPanelHiddenEvent -= OnContextualPanelHidden;
-            _spectatorHUDState.PlayCharacterEvent -= OnPlayCharacterClicked;
-            _spectatorHUDState.OnModernSuperpositionEvent -= OnModernSuperpositionToggled;
         }
     }
 
@@ -265,6 +254,19 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     void OnContextualPanelHidden()
     {
         OnContextualPanelHiddenEvent?.Invoke();
+    }
+    #endregion
+
+    #region CORIOUTINES
+    public IEnumerator FadeInLoadingScreenCoroutine()
+    {
+        SwitchToLoadingScreenState();
+        yield return _loadingScreenState.FadeInCoroutine();
+    }
+
+    public IEnumerator FadeOutLoadingScreenCoroutine()
+    {
+        yield return _loadingScreenState.FadeOutCoroutine();
     }
     #endregion
 }

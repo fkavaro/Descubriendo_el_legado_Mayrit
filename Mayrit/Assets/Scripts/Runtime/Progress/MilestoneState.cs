@@ -3,12 +3,25 @@ using UnityEngine;
 
 public class MilestoneState : AState
 {
-    readonly MilestoneMapping _milestoneMapping;
-    public MilestoneMapping MilestoneMapping => _milestoneMapping;
+    public Milestone_DataSO Data => _milestoneData;
+    readonly Milestone_DataSO _milestoneData;
 
-    public MilestoneState(MilestoneMapping milestoneMapping)
-    : base(milestoneMapping.Data.Header)
+    public MilestoneState(Milestone_DataSO milestoneData)
+    : base(milestoneData.Header)
     {
-        _milestoneMapping = milestoneMapping;
+        _milestoneData = milestoneData;
     }
+
+    // public override void StartState()
+    // {
+    //     Debug.Log($"Trying to start milestone state: {_milestoneData.Header}");
+
+    //     // Load milestone scene
+    //     ServiceLocator.Instance.Get<ScenesController>().NewTransitionPlan()
+    //         .Load(SceneDatabase.Slot.Milestone, _milestoneData.SceneName, setActive: true)
+    //         .ClearAssets()
+    //         .Perform();
+
+    //     base.StartState();
+    // }
 }

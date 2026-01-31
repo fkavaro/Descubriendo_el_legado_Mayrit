@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 [CreateAssetMenu(fileName = "Milestone_DataSO", menuName = "Scriptable Objects/MilestoneData")]
 public class Milestone_DataSO : DataSO

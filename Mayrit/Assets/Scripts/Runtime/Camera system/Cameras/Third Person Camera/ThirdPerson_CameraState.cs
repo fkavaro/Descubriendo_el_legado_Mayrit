@@ -39,7 +39,7 @@ public class ThirdPerson_CameraState : ACameraState
         _cameraController.TargetSmoothFollow();
 
         // Only allow camera rotation if the playable character is being controlled
-        if (_gameManager.PlayableCharacter.IsBeingControlled)
+        if (_cameraManager.PlayableCharacter.IsBeingControlled)
             _cameraController.MouseTracking();
 
         // Ensure cursor remains locked during gameplay

@@ -47,27 +47,27 @@ public class MilestoneNavTerrain : MilestoneTracker
         }
     }
 
-    protected override void OnEditorUpdateChanged(bool updateInEditor)
-    {
-#if UNITY_EDITOR
-        if (Application.isPlaying || this == null) return;
+    //     protected override void OnEditorUpdateChanged(bool updateInEditor)
+    //     {
+    // #if UNITY_EDITOR
+    //         if (Application.isPlaying || this == null) return;
 
-        if (!updateInEditor)
-        {
-            // Only active if last milestone
-            SetChildrenActive((int)milestonesActivated.x == 7 && (int)milestonesActivated.y == 7);
-            return;
-        }
+    //         if (!updateInEditor)
+    //         {
+    //             // Only active if last milestone
+    //             SetChildrenActive((int)milestonesActivated.x == 7 && (int)milestonesActivated.y == 7);
+    //             return;
+    //         }
 
-        var progressManager = FindAnyObjectByType<ProgressManager>();
-        if (progressManager == null) return;
+    //         var progressManager = FindAnyObjectByType<ProgressManager>();
+    //         if (progressManager == null) return;
 
-        int milestone = progressManager.CurrentMilestoneIndex;
-        int min = Mathf.Min((int)milestonesActivated.x, (int)milestonesActivated.y);
-        int max = Mathf.Max((int)milestonesActivated.x, (int)milestonesActivated.y);
-        SetChildrenActive(milestone >= min && milestone <= max);
-#endif
-    }
+    //         int milestone = progressManager.CurrentMilestoneIndex;
+    //         int min = Mathf.Min((int)milestonesActivated.x, (int)milestonesActivated.y);
+    //         int max = Mathf.Max((int)milestonesActivated.x, (int)milestonesActivated.y);
+    //         SetChildrenActive(milestone >= min && milestone <= max);
+    // #endif
+    //     }
     #endregion
 
     #region PUBLIC METHODS

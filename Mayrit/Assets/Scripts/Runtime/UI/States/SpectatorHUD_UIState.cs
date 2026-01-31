@@ -103,7 +103,7 @@ public class SpectatorHUD_UIState : AHUDState
         else
             _milestoneArea.style.display = DisplayStyle.Flex;
 
-        _nextMilestoneButton.SetEnabled(_progressManager.IsNextMilestoneAvailable);
+        _nextMilestoneButton.SetEnabled(_progressManager.IsNextMilestoneAvailable());
     }
 
     protected override void UnsubscribeToServicesEventsOnExit()
@@ -137,7 +137,7 @@ public class SpectatorHUD_UIState : AHUDState
 
     void OnMilestoneClicked(ClickEvent evt)
     {
-        ShowContextualPanel(_progressManager.CurrentMilestoneMapping.Data);
+        ShowContextualPanel(_progressManager.CurrentMilestoneMapping);
         _soundManager.PlayButtonClickSFX();
     }
 
@@ -159,13 +159,13 @@ public class SpectatorHUD_UIState : AHUDState
         _soundManager.PlayButtonClickSFX();
     }
 
-    void OnMilestoneChanged(MilestoneMapping mapping)
+    void OnMilestoneChanged(Milestone_DataSO mapping)
     {
         // Overwrite milestone area
-        _milestoneName.text = mapping.Data.Header;
-        _milestoneDate.text = mapping.Data.SubHeader;
+        _milestoneName.text = mapping.Header;
+        _milestoneDate.text = mapping.SubHeader;
 
-        _nextMilestoneButton.SetEnabled(_progressManager.IsNextMilestoneAvailable);
+        _nextMilestoneButton.SetEnabled(_progressManager.IsNextMilestoneAvailable());
 
         // First milestone
         if (_progressManager.AtFirstMilestone())
@@ -174,7 +174,7 @@ public class SpectatorHUD_UIState : AHUDState
         else
             _previousMilestoneButton.SetEnabled(true);
 
-        ShowContextualPanel(mapping.Data);
+        ShowContextualPanel(mapping);
     }
 
     void OnShowTooltip(DataSO data)

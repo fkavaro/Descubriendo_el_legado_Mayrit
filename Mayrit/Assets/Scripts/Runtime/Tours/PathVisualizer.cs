@@ -270,9 +270,9 @@ public class PathVisualizer
     #endregion
 
     #region EVENT METHODS
-    void OnMilestoneChanged(MilestoneMapping milestoneMapping)
+    void OnMilestoneChanged(Milestone_DataSO milestoneMapping)
     {
-        _player = milestoneMapping.PlayableCharacter.transform;
+        _player = ServiceLocator.Instance.Get<PlayableCharacter>().transform;
     }
 
     void OnNextPOIChange(PointOfInterest poi)

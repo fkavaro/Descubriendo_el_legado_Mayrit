@@ -9,18 +9,16 @@ using Unity.Cinemachine;
 /// </summary>
 public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
 {
-    #region STATE PROPERTIES
-    /// <summary>Gets whether the camera is currently in spectator mode.</summary>
+    #region GETTERS
     public bool IsInSpectatorState => _fsm.IsCurrentState(_spectatorState);
 
-    /// <summary>Gets whether the camera is currently in orbital mode (orbiting around a selected object).</summary>
     public bool IsInOrbitalState => _fsm.IsCurrentState(_orbitalState);
 
-    /// <summary>Gets whether the camera is currently in third-person mode (following the playable character).</summary>
     public bool IsInThirdPersonState => _fsm.IsCurrentState(_thirdPersonState);
 
-    /// <summary>Gets whether the camera is currently in POI (Point of Interest) mode.</summary>
     public bool IsInPOIState => _fsm.IsCurrentState(_poiState);
+
+    public PlayableCharacter PlayableCharacter => _playableCharacter;
     #endregion
 
     #region EDITOR PROPERTIES
@@ -47,6 +45,7 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
     TourManager _tourManager;
     GameManager _gameManager;
     SoundManager _soundManager;
+    PlayableCharacter _playableCharacter;
     #endregion
 
     #region INHERITED
@@ -69,15 +68,6 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
     #region LIFE CYCLE
     protected override void Awake()
     {
-        // Only allow the registered service to initialize
-        var registered = ServiceLocator.Instance.Get<CameraManager>();
-        if (registered != null && registered != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        // Register to Service Locator
         ServiceLocator.Instance.Register(this);
 
         base.Awake();
@@ -118,7 +108,7 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
         _spectatorCamera.isEdgeScrolling = _uiManager.EdgeScrollingValueSet;
     }
 
-    void OnDestroy()
+    void OnDisable()
     {
         // Unsubscribe from events
         _spectatorState.ObjectSelectedEvent -= SwitchToOrbitalCamera;
@@ -126,6 +116,8 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
         _uiManager.OnContextualPanelHiddenEvent -= OnContextualPanelHidden;
         _uiManager.PlayCharacterClickedEvent -= OnPlayCharacterClicked;
         _tourManager.POIVisitedEvent -= OnTourPOIVisited;
+
+        ServiceLocator.Instance.Unregister(this);
     }
     #endregion
 
@@ -164,13 +156,15 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
     /// </summary>
     public void SwitchToThirdPersonCamera()
     {
-        if (_gameManager.PlayableCharacter == null)
+        _playableCharacter = ServiceLocator.Instance.Get<PlayableCharacter>();
+
+        if (_playableCharacter == null)
         {
             Debug.LogError("Cannot switch to third person camera: PlayableCharacter is null.");
             return;
         }
 
-        _thirdPersonCamera.Camera.LookAt.position = _gameManager.PlayableCharacter.transform.position;
+        _thirdPersonCamera.Camera.LookAt.position = _playableCharacter.transform.position;
         _fsm.SwitchState(_thirdPersonState);
 
         if (DebugMode)
@@ -312,7 +306,6 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
             SwitchToThirdPersonCamera();
     }
 
-    /// <summary>Called when a tour POI is visited.</summary>
     void OnTourPOIVisited(PointOfInterest poi)
     {
         if (!poi.gameObject.activeInHierarchy)
