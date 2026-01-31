@@ -37,6 +37,7 @@ public class ProgressManager : ABehaviourEntity<FiniteStateMachine<MilestoneStat
 
     FiniteStateMachine<MilestoneState> _fsm;
 
+    ScenesController _scenesController;
     TourManager _tourManager;
     #endregion
 
@@ -96,9 +97,10 @@ public class ProgressManager : ABehaviourEntity<FiniteStateMachine<MilestoneStat
 
     protected override void Start()
     {
+        _scenesController = ServiceLocator.Instance.Get<ScenesController>();
         _tourManager = ServiceLocator.Instance.Get<TourManager>();
 
-        base.Start();
+        _scenesController.ScenesLoadedFullyEvent += OnScenesLoadedFully;
     }
 
     // TODO: this should be handled in superior abstract class
@@ -159,6 +161,11 @@ public class ProgressManager : ABehaviourEntity<FiniteStateMachine<MilestoneStat
     #endregion
 
     #region CALLBACK METHODS
+    void OnScenesLoadedFully(Dictionary<SceneDatabase.Slot, SceneDatabase.SceneName> scenesLoaded, List<SceneDatabase.Slot> slotUnloaded)
+    {
+        base.Start();
+    }
+
     void OnStateSwitch()
     {
         if (!SceneManager.GetSceneByName(_fsm.CurrentState.Data.SceneName.ToString()).isLoaded)

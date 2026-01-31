@@ -112,7 +112,7 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     {
         // Get dependencies from ServiceLocator
         _scenesController = ServiceLocator.Instance.Get<ScenesController>();
-        _scenesController.ScenesLoadedPartiallyEvent += OnScenesLoadedPartially;
+        _scenesController.SceneLoadedPartiallyEvent += OnSceneLoadedPartially;
         _scenesController.ScenesLoadedFullyEvent += OnScenesLoadedFully;
 
         base.Start();
@@ -195,7 +195,7 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     #endregion
 
     #region CALLBACK METHODS
-    void OnScenesLoadedPartially(Dictionary<SceneDatabase.Slot, SceneDatabase.SceneName> loadedScenes, List<SceneDatabase.Slot> unloadedSlots)
+    void OnSceneLoadedPartially(SceneDatabase.SceneName loadedScene)
     {
 
     }

@@ -22380,7 +22380,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TerrainNavMeshSurface
   _isActive: 1
-  milestonesActivated: {x: 7, y: 7}
+  milestonesActivated: {x: 6, y: 6}
   _agentsAvoidancePredictionTime: 0.5
   _pathFindingIterationsPerFrame: 1000
   _terrains:

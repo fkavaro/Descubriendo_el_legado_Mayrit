@@ -95,6 +95,7 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
         if (!SceneManager.GetSceneByName(SceneDatabase.SceneName.GameplayScene.ToString()).isLoaded)
             _scenesController.NewTransitionPlan()
                 .Load(SceneDatabase.Slot.Session, SceneDatabase.SceneName.GameplayScene, setActive: true)
+                .Load(SceneDatabase.Slot.Milestone, SceneDatabase.SceneName.Milestone) // TODO: load restored milestone from local memory
                 .WithOverlay()
                 .ClearAssets()
                 .Perform();

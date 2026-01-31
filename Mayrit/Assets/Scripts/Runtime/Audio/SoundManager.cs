@@ -126,7 +126,7 @@ public class SoundManager : ABehaviourEntity<FiniteStateMachine<AMusicState>>
         // Subscribe to events
         _uiManager.MusicVolumeChangedEvent += _soundController.UpdateMusicVolume;
         _uiManager.SFXVolumeChangedEvent += _soundController.UpdateSFXVolume;
-        _scenesController.ScenesLoadedPartiallyEvent += OnScenesLoadedPartially;
+        _scenesController.SceneLoadedPartiallyEvent += OnSceneLoadedPartially;
         _scenesController.ScenesLoadedFullyEvent += OnScenesLoadedFully;
 
         // Set initial volumes
@@ -170,11 +170,11 @@ public class SoundManager : ABehaviourEntity<FiniteStateMachine<AMusicState>>
     #endregion
 
     #region CALLBACK METHODS
-    void OnScenesLoadedPartially(Dictionary<SceneDatabase.Slot, SceneDatabase.SceneName> loadedScenes, List<SceneDatabase.Slot> unloadedSlots)
+    void OnSceneLoadedPartially(SceneDatabase.SceneName loadedScene)
     {
-        if (loadedScenes.ContainsValue(SceneDatabase.SceneName.MainMenuScene))
+        if (loadedScene == SceneDatabase.SceneName.MainMenuScene)
             _audioListener.enabled = true;
-        else if (loadedScenes.ContainsValue(SceneDatabase.SceneName.GameplayScene))
+        else if (loadedScene == SceneDatabase.SceneName.GameplayScene)
             _audioListener.enabled = false;
     }
 

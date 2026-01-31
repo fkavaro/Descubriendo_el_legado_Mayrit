@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Unity.Cinemachine;
 
@@ -41,9 +42,9 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
     POI_CameraState _poiState;
 
     // Dependency Injection
+    ScenesController _scenesController;
     UIManager _uiManager;
     TourManager _tourManager;
-    GameManager _gameManager;
     SoundManager _soundManager;
     PlayableCharacter _playableCharacter;
     #endregion
@@ -75,15 +76,14 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
 
     protected override void Start()
     {
-        base.Start();
-
         // Get dependencies from ServiceLocator
+        _scenesController = ServiceLocator.Instance.Get<ScenesController>();
         _uiManager = ServiceLocator.Instance.Get<UIManager>();
         _tourManager = ServiceLocator.Instance.Get<TourManager>();
-        _gameManager = ServiceLocator.Instance.Get<GameManager>();
         _soundManager = ServiceLocator.Instance.Get<SoundManager>();
 
         // Subscribe to events
+        _scenesController.ScenesLoadedFullyEvent += OnScenesLoadedFully;
         _uiManager.EdgeScrollingToggledEvent += _spectatorCamera.OnIsEdgeScrollingToggled;
         _spectatorState.ObjectSelectedEvent += SwitchToOrbitalCamera;
         _thirdPersonState.ExitThirdPersonCameraEvent += OnExitThirdPersonCamera;
@@ -291,6 +291,11 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
     #endregion
 
     #region EVENT CALLBACKS
+    void OnScenesLoadedFully(Dictionary<SceneDatabase.Slot, SceneDatabase.SceneName> scenesLoaded, List<SceneDatabase.Slot> slotUnloaded)
+    {
+        base.Start();
+    }
+
     /// <summary>Called when exiting third-person camera mode.</summary>
     void OnExitThirdPersonCamera() => SwitchToSpectatorCamera();
 

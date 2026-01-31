@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class ScenesController : MonoBehaviour
 {
     #region PROPERTIES
-    public event Action<Dictionary<SceneDatabase.Slot, SceneDatabase.SceneName>, List<SceneDatabase.Slot>> ScenesLoadedPartiallyEvent;
+    public event Action<SceneDatabase.SceneName> SceneLoadedPartiallyEvent;
     public event Action<Dictionary<SceneDatabase.Slot, SceneDatabase.SceneName>, List<SceneDatabase.Slot>> ScenesLoadedFullyEvent;
 
     public string currentSession;
@@ -70,14 +70,14 @@ public class ScenesController : MonoBehaviour
 
         foreach (KeyValuePair<SceneDatabase.Slot, SceneDatabase.SceneName> kvp in plan.ScenesToLoad)
         {
-            Debug.Log($"ScenesController: Loading scene '{kvp.Value}' into slot '{kvp.Key}'.");
             if (_loadedBySlots.ContainsKey(kvp.Key))
                 yield return UnloadSlotRoutine(kvp.Key);
 
             yield return LoadAdditiveSceneRoutine(kvp.Key, kvp.Value, plan.ActiveSceneName == kvp.Value);
-        }
 
-        ScenesLoadedPartiallyEvent?.Invoke(plan.ScenesToLoad, plan.SlotsToUnload);
+            Debug.Log($"ScenesController: Scene '{kvp.Value}' loaded into slot '{kvp.Key}'.");
+            SceneLoadedPartiallyEvent?.Invoke(kvp.Value);
+        }
 
         // Only after all scenes are loaded, update slots and fire events
         currentSession = _loadedBySlots.ContainsKey(SceneDatabase.Slot.Session)
@@ -91,7 +91,6 @@ public class ScenesController : MonoBehaviour
         {
             yield return _waitForSeconds0_5;
             yield return _uiManager.FadeOutLoadingScreenCoroutine();
-            Debug.Log("ScenesController: Finished scene transition with overlay.");
         }
 
         ScenesLoadedFullyEvent?.Invoke(plan.ScenesToLoad, plan.SlotsToUnload);
