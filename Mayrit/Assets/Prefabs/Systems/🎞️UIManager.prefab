@@ -48,7 +48,7 @@ MonoBehaviour:
   m_PanelSettings: {fileID: 11400000, guid: a0c3f42e8d0c8a746b1a3e08d5c1525e, type: 2}
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: 8903c9c5bb1957146a04ae060bcdcbaf, type: 3}
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_Position: 0
   m_WorldSpaceSizeMode: 1
   m_WorldSpaceWidth: 1920
@@ -71,5 +71,10 @@ MonoBehaviour:
   _debugMode: 0
   _isExecutionPaused: 0
   _currentActionInfo: 
+  _fadeInDuration: 5
+  _fadeOutDuration: 1
   _tooltipOffset: {x: -30, y: -30}
-  _uiDocument: {fileID: 0}
+  _edgeScrollingValueSet: 1
+  _controlsVisibilityValueSet: 1
+  _musicVolumeValueSet: 1
+  _sfxVolumeValueSet: 1

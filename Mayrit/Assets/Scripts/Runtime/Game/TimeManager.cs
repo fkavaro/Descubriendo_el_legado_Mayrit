@@ -63,15 +63,6 @@ public class TimeManager : MonoBehaviour
     #region LIFE CYCLE
     void Awake()
     {
-        // Only allow the registered service to initialize
-        var registered = ServiceLocator.Instance.Get<TourManager>();
-        if (registered != null && registered != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        // Register to Service Locator
         ServiceLocator.Instance.Register(this);
     }
 
@@ -81,11 +72,11 @@ public class TimeManager : MonoBehaviour
         // Get dependencies from ServiceLocator
         _progressManager = ServiceLocator.Instance.Get<ProgressManager>();
         _gameManager = ServiceLocator.Instance.Get<GameManager>();
+        _currentTime = _progressManager.CurrentMilestoneMapping.WantedTime;
 
         // Subscribe to ProgressManager event to set the wanted time when the game starts
         _progressManager.MilestoneChangedEvent += OnMilestoneChanged;
 
-        _currentTime = _progressManager.CurrentMilestoneMapping.WantedTime;
         UpdateLighting();
     }
 
@@ -114,6 +105,11 @@ public class TimeManager : MonoBehaviour
     {
         UpdateLighting();
         CheckActiveLightSource();
+    }
+
+    void OnDisable()
+    {
+        _progressManager.MilestoneChangedEvent -= OnMilestoneChanged;
     }
     #endregion
 
@@ -220,7 +216,7 @@ public class TimeManager : MonoBehaviour
     #endregion
 
     #region EVENT METHODS
-    void OnMilestoneChanged(MilestoneMapping mapping)
+    void OnMilestoneChanged(Milestone_DataSO mapping)
     {
         if (mapping != null)
             _wantedTime = mapping.WantedTime;

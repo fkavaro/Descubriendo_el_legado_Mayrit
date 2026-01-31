@@ -14,7 +14,7 @@ public class UIDebugOverlay : MonoBehaviour
     TimeManager _timeManager;
     TownManager _townManager;
     NPCPoolManager _npcPoolManager;
-
+    PlayableCharacter _playableCharacter;
 
     void OnGUI()
     {
@@ -57,6 +57,7 @@ public class UIDebugOverlay : MonoBehaviour
         _timeManager = ServiceLocator.Instance.Get<TimeManager>();
         _townManager = ServiceLocator.Instance.Get<TownManager>();
         _npcPoolManager = ServiceLocator.Instance.Get<NPCPoolManager>();
+        _playableCharacter = ServiceLocator.Instance.Get<PlayableCharacter>();
 
         // Display states of various managers
         if (_uiManager != null && _uiManager.BehaviourSystem != null)
@@ -79,8 +80,8 @@ public class UIDebugOverlay : MonoBehaviour
         else
             GUILayout.Label("CameraManager: <null>");
 
-        if (_gameManager != null && _gameManager.PlayableCharacter != null)
-            GUILayout.Label($"PlayableCharacter state: {_gameManager.PlayableCharacter.BehaviourSystem.CurrentState.StateName}");
+        if (_playableCharacter != null && _playableCharacter.BehaviourSystem != null)
+            GUILayout.Label($"PlayableCharacter state: {_playableCharacter.BehaviourSystem.CurrentState.StateName}");
         else
             GUILayout.Label("PlayableCharacter: <null>");
 

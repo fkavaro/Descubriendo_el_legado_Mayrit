@@ -4359,6 +4359,7 @@ MonoBehaviour:
   disappearWhenFar: 0
   scaleRange: {x: 5, y: 30}
   distanceRange: {x: 50, y: 500}
+  _playableCharacter: {fileID: 0}
 --- !u!114 &703372794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13318,70 +13319,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1524226024950362450, guid: f2ef195e03d1d9f42b446ab9d417ae05, type: 3}
-      propertyPath: _milestoneMappings.Array.data[0]._tour
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1524226024950362450, guid: f2ef195e03d1d9f42b446ab9d417ae05, type: 3}
-      propertyPath: _milestoneMappings.Array.data[1]._tour
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1524226024950362450, guid: f2ef195e03d1d9f42b446ab9d417ae05, type: 3}
-      propertyPath: _milestoneMappings.Array.data[2]._tour
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1524226024950362450, guid: f2ef195e03d1d9f42b446ab9d417ae05, type: 3}
-      propertyPath: _milestoneMappings.Array.data[3]._tour
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1524226024950362450, guid: f2ef195e03d1d9f42b446ab9d417ae05, type: 3}
-      propertyPath: _milestoneMappings.Array.data[4]._tour
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1524226024950362450, guid: f2ef195e03d1d9f42b446ab9d417ae05, type: 3}
-      propertyPath: _milestoneMappings.Array.data[5]._tour
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1524226024950362450, guid: f2ef195e03d1d9f42b446ab9d417ae05, type: 3}
-      propertyPath: _milestoneMappings.Array.data[6]._tour
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1524226024950362450, guid: f2ef195e03d1d9f42b446ab9d417ae05, type: 3}
-      propertyPath: _milestoneMappings.Array.data[7]._tour
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1524226024950362450, guid: f2ef195e03d1d9f42b446ab9d417ae05, type: 3}
-      propertyPath: _milestoneMappings.Array.data[0]._playableCharacter
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1524226024950362450, guid: f2ef195e03d1d9f42b446ab9d417ae05, type: 3}
-      propertyPath: _milestoneMappings.Array.data[1]._playableCharacter
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1524226024950362450, guid: f2ef195e03d1d9f42b446ab9d417ae05, type: 3}
-      propertyPath: _milestoneMappings.Array.data[2]._playableCharacter
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1524226024950362450, guid: f2ef195e03d1d9f42b446ab9d417ae05, type: 3}
-      propertyPath: _milestoneMappings.Array.data[3]._playableCharacter
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1524226024950362450, guid: f2ef195e03d1d9f42b446ab9d417ae05, type: 3}
-      propertyPath: _milestoneMappings.Array.data[4]._playableCharacter
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1524226024950362450, guid: f2ef195e03d1d9f42b446ab9d417ae05, type: 3}
-      propertyPath: _milestoneMappings.Array.data[5]._playableCharacter
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1524226024950362450, guid: f2ef195e03d1d9f42b446ab9d417ae05, type: 3}
-      propertyPath: _milestoneMappings.Array.data[6]._playableCharacter
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1524226024950362450, guid: f2ef195e03d1d9f42b446ab9d417ae05, type: 3}
-      propertyPath: _milestoneMappings.Array.data[7]._playableCharacter
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 2738208781067544222, guid: f2ef195e03d1d9f42b446ab9d417ae05, type: 3}
       propertyPath: m_Name
       value: "\u2197\uFE0FProgressManager"

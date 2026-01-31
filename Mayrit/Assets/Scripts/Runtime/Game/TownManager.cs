@@ -26,15 +26,6 @@ public class TownManager : MonoBehaviour
     #region LIFE CYCLE
     void Awake()
     {
-        // Only allow the registered service to initialize
-        var registered = ServiceLocator.Instance.Get<TourManager>();
-        if (registered != null && registered != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        // Register to Service Locator
         ServiceLocator.Instance.Register(this);
     }
 
@@ -48,10 +39,12 @@ public class TownManager : MonoBehaviour
         _progressManager.MilestoneChangedEvent += OnMilestoneChanged;
     }
 
-    void OnDestroy()
+    void OnDisable()
     {
         // Unsubscribe from milestone changes
         _progressManager.MilestoneChangedEvent -= OnMilestoneChanged;
+
+        ServiceLocator.Instance.Unregister(this);
     }
     #endregion
 
@@ -202,7 +195,7 @@ public class TownManager : MonoBehaviour
     #endregion
 
     #region PRIVATE METHODS
-    void OnMilestoneChanged(MilestoneMapping milestoneMapping)
+    void OnMilestoneChanged(Milestone_DataSO milestoneMapping)
     {
         OnPopulationChanged?.Invoke(_population);
     }

@@ -14,7 +14,7 @@ where StateType : AState
     protected StateType _currentState, _initialState;
     protected List<StateType> _statesSequence = new();
 
-    public event Action OnStateSwitchEvent;
+    public event Action SwitchedStateEvent;
     #endregion
 
     #region CONSTRUCTOR
@@ -25,7 +25,7 @@ where StateType : AState
     #region TO BE IMPLEMENTED METHODS
     public virtual void SwitchState(StateType newState)
     {
-        OnStateSwitchEvent?.Invoke();
+        SwitchedStateEvent?.Invoke();
     }
     #endregion
 

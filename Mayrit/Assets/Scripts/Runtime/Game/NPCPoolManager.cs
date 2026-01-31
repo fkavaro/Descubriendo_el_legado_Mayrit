@@ -56,15 +56,6 @@ public class NPCPoolManager : MonoBehaviour
         // Initialize collider->villager cache
         _colliderToVillager = new Dictionary<Collider, Villager>(_maxActiveVillagers > 0 ? _maxActiveVillagers * 2 : 32);
 
-        // Only allow the registered service to initialize
-        var registered = ServiceLocator.Instance.Get<TourManager>();
-        if (registered != null && registered != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        // Register to Service Locator
         ServiceLocator.Instance.Register(this);
     }
 
@@ -95,10 +86,12 @@ public class NPCPoolManager : MonoBehaviour
         }
     }
 
-    void OnDestroy()
+    void OnDisable()
     {
         // Unsubscribe from town population changes (guarded to avoid NullReferenceException during teardown)
         _townManager.OnPopulationChanged -= OnTownPopulationChanged;
+
+        ServiceLocator.Instance.Unregister(this);
     }
     #endregion
 

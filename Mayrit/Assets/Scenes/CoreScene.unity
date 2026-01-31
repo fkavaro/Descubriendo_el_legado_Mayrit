@@ -281,10 +281,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6354518598366967083, guid: f159fddb4a5e56746916cbd293b0859e, type: 3}
-      propertyPath: m_SortingOrder
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 8119952740670593480, guid: f159fddb4a5e56746916cbd293b0859e, type: 3}
       propertyPath: m_Name
       value: "\U0001F39E\uFE0FUIManager"
@@ -338,6 +334,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cad7e743cfecf564a840d4a068241b9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Mayrit::SceneController
+  currentSession: 
+  currentMilestone: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

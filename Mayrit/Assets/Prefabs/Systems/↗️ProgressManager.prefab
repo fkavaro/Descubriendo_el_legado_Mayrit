@@ -48,52 +48,14 @@ MonoBehaviour:
   _isExecutionPaused: 0
   _currentActionInfo: 
   _canSkipTours: 1
-  _changesInEditor: 0
   _currentMilestoneIndex: 0
-  _currentMilestoneMapping:
-    _milestoneData: {fileID: 0}
-    _playableCharacter: {fileID: 0}
-    _tour: {fileID: 0}
-    _wantedTime: 0
-    _milestoneIndex: 0
+  _currentMilestoneMapping: {fileID: 0}
   _milestoneMappings:
-  - _milestoneData: {fileID: 11400000, guid: c2541da2a3af8a246b55a5e4b79c1812, type: 2}
-    _playableCharacter: {fileID: 0}
-    _tour: {fileID: 0}
-    _wantedTime: 8
-    _milestoneIndex: 0
-  - _milestoneData: {fileID: 11400000, guid: 9276c034d53293a459586c7287b06553, type: 2}
-    _playableCharacter: {fileID: 0}
-    _tour: {fileID: 0}
-    _wantedTime: 9
-    _milestoneIndex: 1
-  - _milestoneData: {fileID: 11400000, guid: faca3230df511b44388c375fd203fc3b, type: 2}
-    _playableCharacter: {fileID: 0}
-    _tour: {fileID: 0}
-    _wantedTime: 10
-    _milestoneIndex: 2
-  - _milestoneData: {fileID: 11400000, guid: e36c1b1b22173084fb54fb5770e29a42, type: 2}
-    _playableCharacter: {fileID: 0}
-    _tour: {fileID: 0}
-    _wantedTime: 12
-    _milestoneIndex: 3
-  - _milestoneData: {fileID: 11400000, guid: 570459c56f0eb0c4d9c7786152646e4f, type: 2}
-    _playableCharacter: {fileID: 0}
-    _tour: {fileID: 0}
-    _wantedTime: 13
-    _milestoneIndex: 4
-  - _milestoneData: {fileID: 11400000, guid: ba545476b83664246b41f5a21c2e31f6, type: 2}
-    _playableCharacter: {fileID: 0}
-    _tour: {fileID: 0}
-    _wantedTime: 15
-    _milestoneIndex: 5
-  - _milestoneData: {fileID: 11400000, guid: 2835fd8344d0dd54aa0a4199aad67e1d, type: 2}
-    _playableCharacter: {fileID: 0}
-    _tour: {fileID: 0}
-    _wantedTime: 16
-    _milestoneIndex: 6
-  - _milestoneData: {fileID: 11400000, guid: 7433d4c770832014cbfe261209c7ac25, type: 2}
-    _playableCharacter: {fileID: 0}
-    _tour: {fileID: 0}
-    _wantedTime: 17
-    _milestoneIndex: 7
+  - {fileID: 11400000, guid: f2bb9dbbbd8680e49951173cf8421d33, type: 2}
+  - {fileID: 11400000, guid: ac7fb0edc51022647a07584a227848be, type: 2}
+  - {fileID: 11400000, guid: faca3230df511b44388c375fd203fc3b, type: 2}
+  - {fileID: 11400000, guid: e36c1b1b22173084fb54fb5770e29a42, type: 2}
+  - {fileID: 11400000, guid: 570459c56f0eb0c4d9c7786152646e4f, type: 2}
+  - {fileID: 11400000, guid: ba545476b83664246b41f5a21c2e31f6, type: 2}
+  - {fileID: 11400000, guid: 2835fd8344d0dd54aa0a4199aad67e1d, type: 2}
+  - {fileID: 11400000, guid: 7433d4c770832014cbfe261209c7ac25, type: 2}
