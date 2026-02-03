@@ -79,14 +79,14 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
     #region PUBLIC METHODS
     public void SwitchToMainMenuState()
     {
-        _fsm.SwitchState(_mainMenuState);
-
         // Load main menu scene
         _scenesController.NewTransitionPlan()
             .Load(SceneDatabase.Slot.Session, SceneDatabase.SceneName.MainMenuScene, setActive: true)
             .Unload(SceneDatabase.Slot.Milestone)
             .ClearAssets()
             .Perform();
+
+        _fsm?.SwitchState(_mainMenuState);
     }
 
     public void SwitchToGamePlayState()
@@ -100,12 +100,9 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
                 .ClearAssets()
                 .Perform();
 
-        _fsm.SwitchState(_gamePlayState);
+        _fsm?.SwitchState(_gamePlayState);
     }
 
-    public void SwitchToPauseState()
-    {
-        _fsm.SwitchState(_pauseState);
-    }
+    public void SwitchToPauseState() => _fsm?.SwitchState(_pauseState);
     #endregion
 }

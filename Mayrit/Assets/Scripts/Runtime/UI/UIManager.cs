@@ -65,6 +65,7 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     // Dependency Injection
     ScenesController _scenesController;
     TourManager _tourManager;
+    CameraManager _cameraManager;
     #endregion
 
     #region INHERITED
@@ -118,40 +119,19 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     #endregion
 
     #region STATE HANDLING
-    public void SwitchToMainMenuState()
-    {
-        _sfsm?.SwitchState(_mainMenuState);
-    }
+    public void SwitchToMainMenuState() => _sfsm?.SwitchState(_mainMenuState);
 
-    public void SwitchToSpectatorHUDState()
-    {
-        _sfsm?.SwitchState(_spectatorHUDState);
-    }
+    public void SwitchToSpectatorHUDState() => _sfsm?.SwitchState(_spectatorHUDState);
 
-    public void SwitchToPlayerHUDState()
-    {
-        _sfsm?.SwitchState(_playerHUDState);
-    }
+    public void SwitchToPlayerHUDState() => _sfsm?.SwitchState(_playerHUDState);
 
-    public void SwitchToPauseState()
-    {
-        _sfsm?.SwitchState(_pauseState);
-    }
+    public void SwitchToPauseState() => _sfsm?.SwitchState(_pauseState);
 
-    public void SwitchToHeritageState()
-    {
-        _sfsm?.SwitchState(_heritageState);
-    }
+    public void SwitchToHeritageState() => _sfsm?.SwitchState(_heritageState);
 
-    public void SwitchToSettingsMenuState()
-    {
-        _sfsm?.SwitchState(_settingsMenuState);
-    }
+    public void SwitchToSettingsMenuState() => _sfsm?.SwitchState(_settingsMenuState);
 
-    public void SwitchToLoadingScreenState()
-    {
-        _sfsm?.SwitchState(_loadingScreenState);
-    }
+    public void SwitchToLoadingScreenState() => _sfsm?.SwitchState(_loadingScreenState);
     #endregion
 
     #region PUBLIC METHODS
@@ -211,6 +191,12 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
                 _tourManager = null;
             }
 
+            if (_cameraManager != null)
+            {
+                _cameraManager.CameraStateChangedEvent -= OnCameraStateChanged;
+                _cameraManager = null;
+            }
+
             _playerHUDState.ContextualPanelHiddenEvent -= OnContextualPanelHidden;
             _spectatorHUDState.ContextualPanelHiddenEvent -= OnContextualPanelHidden;
             _spectatorHUDState.PlayCharacterEvent -= OnPlayCharacterClicked;
@@ -223,6 +209,7 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
 
             // Get dependencies from ServiceLocator
             _tourManager = ServiceLocator.Instance.Get<TourManager>();
+            _cameraManager = ServiceLocator.Instance.Get<CameraManager>();
 
             // Subscribe to events
             _playerHUDState.ContextualPanelHiddenEvent += OnContextualPanelHidden;
@@ -230,7 +217,16 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
             _spectatorHUDState.PlayCharacterEvent += OnPlayCharacterClicked;
             _spectatorHUDState.OnModernSuperpositionEvent += OnModernSuperpositionToggled;
             _tourManager.POIVisitedEvent += OnTourPOIVisited;
+            _cameraManager.CameraStateChangedEvent += OnCameraStateChanged;
         }
+    }
+
+    private void OnCameraStateChanged()
+    {
+        if (_cameraManager.IsInSpectatorState || _cameraManager.IsInOrbitalState)
+            SwitchToSpectatorHUDState();
+        else
+            SwitchToPlayerHUDState();
     }
 
     void OnPlayCharacterClicked()
