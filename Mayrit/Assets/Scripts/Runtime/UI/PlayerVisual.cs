@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -12,6 +13,7 @@ public class PlayerVisual : Billboard
     Button _playerButton;
 
     // Dependency Injection
+    ScenesController _scenesController;
     ProgressManager _progressManager;
     CameraManager _cameraManager;
     SoundManager _soundManager;
@@ -34,20 +36,19 @@ public class PlayerVisual : Billboard
         _playerButton.visible = false;
 
         // Get dependencies from Service Locator
+        _scenesController = ServiceLocator.Instance.Get<ScenesController>();
         _progressManager = ServiceLocator.Instance.Get<ProgressManager>();
         _cameraManager = ServiceLocator.Instance.Get<CameraManager>();
         _soundManager = ServiceLocator.Instance.Get<SoundManager>();
 
         // Subscribe to events and callbacks
+        _scenesController.ScenesLoadedFullyEvent += OnSceneLoadedFully;
         _progressManager.MilestoneChangedEvent += OnMilestoneChanged;
         _cameraManager.CameraStateChangedEvent += OnCameraStateChanged;
         _playerButton.RegisterCallback<ClickEvent>(OnPlayerButtonClick);
     }
 
-    void Start()
-    {
-        GetPlayableCharacter();
-    }
+
     #endregion
 
     #region PRIVATE METHODS
@@ -66,6 +67,14 @@ public class PlayerVisual : Billboard
     #endregion
 
     #region CALLBACK METHODS
+    void OnSceneLoadedFully(Dictionary<SceneDatabase.Slot, SceneDatabase.SceneName> dictionary, List<SceneDatabase.Slot> list)
+    {
+        if (dictionary.ContainsValue(SceneDatabase.SceneName.GameplayScene))
+        {
+            GetPlayableCharacter();
+        }
+    }
+
     void OnMilestoneChanged(Milestone_DataSO milestoneMapping)
     {
         GetPlayableCharacter();
