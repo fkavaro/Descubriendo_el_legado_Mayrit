@@ -13,7 +13,7 @@ public class MilestoneTracker : MonoBehaviour
     public bool _isActive = true;
 
     [Tooltip("Range of milestones where this object is active")]
-    public Vector2 milestonesActivated;
+    [SerializeField] protected Vector2 milestonesActivated;
 
     #region LIFE CYCLE
     void OnEnable()
@@ -34,6 +34,19 @@ public class MilestoneTracker : MonoBehaviour
 #endif
     }
     #endregion
+
+    public void SetChildrenActiveGivenIndex(int milestoneIdx)
+    {
+        if (milestoneIdx < 0)
+        {
+            SetChildrenActive(true);
+            return;
+        }
+
+        int min = Mathf.Min((int)milestonesActivated.x, (int)milestonesActivated.y);
+        int max = Mathf.Max((int)milestonesActivated.x, (int)milestonesActivated.y);
+        SetChildrenActive(milestoneIdx >= min && milestoneIdx <= max);
+    }
 
     #region PRIVATE METHODS
     protected virtual void SetChildrenActive(bool isActive)
@@ -76,13 +89,7 @@ public class MilestoneTracker : MonoBehaviour
     #region CALLBACK METHODS
     void OnMilestoneChanged(Milestone_DataSO milestoneMapping)
     {
-        int milestoneIndex = milestoneMapping.Index;
-
-        if (this == null) return;
-
-        int min = Mathf.Min((int)milestonesActivated.x, (int)milestonesActivated.y);
-        int max = Mathf.Max((int)milestonesActivated.x, (int)milestonesActivated.y);
-        SetChildrenActive(milestoneIndex >= min && milestoneIndex <= max);
+        SetChildrenActiveGivenIndex(milestoneMapping.Index);
     }
 
     protected virtual void OnEditorUpdateChanged(bool updateInEditor)
@@ -101,10 +108,6 @@ public class MilestoneTracker : MonoBehaviour
         var progressManager = FindAnyObjectByType<ProgressManager>();
         if (progressManager == null) return;
         int milestone = progressManager.CurrentMilestoneIndex;
-
-        int min = Mathf.Min((int)milestonesActivated.x, (int)milestonesActivated.y);
-        int max = Mathf.Max((int)milestonesActivated.x, (int)milestonesActivated.y);
-        SetChildrenActive(milestone >= min && milestone <= max);
 #endif
     }
 }
