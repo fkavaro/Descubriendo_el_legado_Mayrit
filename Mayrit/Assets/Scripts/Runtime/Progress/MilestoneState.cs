@@ -19,6 +19,7 @@ public class MilestoneState : AState
         if (!SceneManager.GetSceneByName(_milestoneData.SceneName.ToString()).isLoaded)
             ServiceLocator.Instance.Get<ScenesController>().NewTransitionPlan()
                 .Load(SceneDatabase.Slot.Milestone, _milestoneData.SceneName, setActive: true)
+                .WithOverlay()
                 .ClearAssets()
                 .Perform();
 

@@ -205,8 +205,6 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
         // In gameplay scene
         else if (loadedScenes.ContainsValue(SceneDatabase.SceneName.GameplayScene))
         {
-            SwitchToSpectatorHUDState();
-
             // Get dependencies from ServiceLocator
             _tourManager = ServiceLocator.Instance.Get<TourManager>();
             _cameraManager = ServiceLocator.Instance.Get<CameraManager>();
@@ -218,6 +216,12 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
             _spectatorHUDState.OnModernSuperpositionEvent += OnModernSuperpositionToggled;
             _tourManager.POIVisitedEvent += OnTourPOIVisited;
             _cameraManager.CameraStateChangedEvent += OnCameraStateChanged;
+        }
+
+        // A milestone scene loaded
+        if (loadedScenes.TryGetValue(SceneDatabase.Slot.Milestone, out var milestoneScene))
+        {
+            SwitchToSpectatorHUDState();
         }
     }
 

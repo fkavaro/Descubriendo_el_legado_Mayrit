@@ -28,7 +28,9 @@ public class MilestoneSetting : MonoBehaviour
         if (_milestonePreview != _lastMilestone)
         {
             _lastMilestone = _milestonePreview;
-            UpdateAllChildTrackers();
+
+            // Defer the update to avoid SendMessage errors during OnValidate
+            EditorApplication.delayCall += UpdateAllChildTrackers;
         }
     }
 
@@ -37,6 +39,9 @@ public class MilestoneSetting : MonoBehaviour
     /// </summary>
     private void UpdateAllChildTrackers()
     {
+        // Safety check: component might have been destroyed before delayCall executes
+        if (this == null) return;
+
         // Get all MilestoneTracker components in children (including inactive ones)
         MilestoneTracker[] trackers = GetComponentsInChildren<MilestoneTracker>(true);
 

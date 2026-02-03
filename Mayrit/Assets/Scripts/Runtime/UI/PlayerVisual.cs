@@ -34,7 +34,11 @@ public class PlayerVisual : Billboard
         }
 
         _playerButton.visible = false;
+        _playerButton.RegisterCallback<ClickEvent>(OnPlayerButtonClick);
+    }
 
+    void Start()
+    {
         // Get dependencies from Service Locator
         _scenesController = ServiceLocator.Instance.Get<ScenesController>();
         _progressManager = ServiceLocator.Instance.Get<ProgressManager>();
@@ -45,50 +49,40 @@ public class PlayerVisual : Billboard
         _scenesController.ScenesLoadedFullyEvent += OnSceneLoadedFully;
         _progressManager.MilestoneChangedEvent += OnMilestoneChanged;
         _cameraManager.CameraStateChangedEvent += OnCameraStateChanged;
-        _playerButton.RegisterCallback<ClickEvent>(OnPlayerButtonClick);
     }
-
-
     #endregion
 
     #region PRIVATE METHODS
-    void GetPlayableCharacter()
+    void LocateOverPlayer()
     {
         _playableCharacter = ServiceLocator.Instance.Get<PlayableCharacter>();
 
-        UpdateTransformPosition();
-        OnCameraStateChanged();
-    }
-    void UpdateTransformPosition()
-    {
-        if (_playableCharacter != null)
-            transform.position = _playableCharacter.transform.position + 10 * Vector3.up;
+        if (!_cameraManager.IsInSpectatorState || _playableCharacter == null)
+        {
+            _playerButton.visible = false;
+            return;
+        }
+
+        _playerButton.visible = true;
+        transform.position = _playableCharacter.transform.position + 10 * Vector3.up;
     }
     #endregion
 
     #region CALLBACK METHODS
     void OnSceneLoadedFully(Dictionary<SceneDatabase.Slot, SceneDatabase.SceneName> dictionary, List<SceneDatabase.Slot> list)
     {
-        if (dictionary.ContainsValue(SceneDatabase.SceneName.GameplayScene))
-        {
-            GetPlayableCharacter();
-        }
+        if (dictionary.TryGetValue(SceneDatabase.Slot.Milestone, out var milestone))
+            LocateOverPlayer();
     }
 
     void OnMilestoneChanged(Milestone_DataSO milestoneMapping)
     {
-        GetPlayableCharacter();
+        LocateOverPlayer();
     }
 
     void OnCameraStateChanged()
     {
-        if (_cameraManager.IsInSpectatorState)
-        {
-            UpdateTransformPosition();
-            _playerButton.visible = true;
-        }
-        else
-            _playerButton.visible = false;
+        LocateOverPlayer();
     }
 
     void OnPlayerButtonClick(ClickEvent evt)
