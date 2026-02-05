@@ -59,7 +59,6 @@ public class TourManager : MonoBehaviour
 
         // Subscribe to events
         _scenesController.SceneLoadedPartiallyEvent += OnSceneLoadedPartially;
-        _uiManager.OnContextualPanelHiddenEvent += OnContextualPanelHidden;
         _uiManager.PlayCharacterClickedEvent += OnPlayCharacterClicked;
 
         _pathVisualizer = new PathVisualizer(
@@ -91,7 +90,7 @@ public class TourManager : MonoBehaviour
 
         // Unsubscribe from events
         _scenesController.SceneLoadedPartiallyEvent -= OnSceneLoadedPartially;
-        _uiManager.OnContextualPanelHiddenEvent -= OnContextualPanelHidden;
+
         _uiManager.PlayCharacterClickedEvent -= OnPlayCharacterClicked;
 
         DetachFromCurrentTour();
@@ -133,7 +132,10 @@ public class TourManager : MonoBehaviour
     {
         // Milestone loaded: attach to its tour
         if (type == SceneDatabase.SceneType.Milestone)
+        {
             AttachToTour(ServiceLocator.Instance.Get<Tour>());
+            _uiManager.OnContextualPanelHiddenEvent += OnContextualPanelHidden;
+        }
     }
 
     void OnTourPOIVisited(PointOfInterest poi)
@@ -155,6 +157,7 @@ public class TourManager : MonoBehaviour
             TourCompletedEvent?.Invoke(_currentTour);
             _soundManager.PlayTourEndSFX();
             DetachFromCurrentTour();
+            _uiManager.OnContextualPanelHiddenEvent -= OnContextualPanelHidden;
         }
     }
 
