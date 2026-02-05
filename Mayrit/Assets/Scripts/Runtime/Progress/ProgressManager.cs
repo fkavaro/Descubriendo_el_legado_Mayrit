@@ -137,7 +137,12 @@ public class ProgressManager : ABehaviourEntity<FiniteStateMachine<MilestoneStat
     public bool IsNextMilestoneAvailable()
     {
         if (_tourManager.CurrentTour == null)
+        {
+            if (DebugMode)
+                Debug.LogWarning("ProgressManager: No current tour found. Next milestone availability will always return false.");
             return false;
+        }
+
 
         bool canSkipInRuntime = _canSkipTours; //Application.isPlaying && Application.isEditor // TODO: full line when gold release
         bool tourCompleted = _tourManager.CurrentTour.IsCompleted;
@@ -148,7 +153,7 @@ public class ProgressManager : ABehaviourEntity<FiniteStateMachine<MilestoneStat
     #endregion
 
     #region CALLBACK METHODS
-    void OnScenesLoadedFully(Dictionary<SceneDatabase.Slot, SceneDatabase.SceneName> loadedScenes, List<SceneDatabase.Slot> unloadedSlots)
+    void OnScenesLoadedFully(Dictionary<SceneDatabase.SceneType, SceneDatabase.SceneName> loadedScenes, List<SceneDatabase.SceneType> unloadedTypes)
     {
         if (loadedScenes.ContainsValue(SceneDatabase.SceneName.GameplayScene))
             base.Start(); // Start behaviour system after scene is fully loaded

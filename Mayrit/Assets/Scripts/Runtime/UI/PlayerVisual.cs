@@ -1,6 +1,7 @@
-using System;
-using System.Collections.Generic;
 using UnityEngine;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UIElements;
 
 [RequireComponent(typeof(UIDocument))]
@@ -46,9 +47,17 @@ public class PlayerVisual : Billboard
         _soundManager = ServiceLocator.Instance.Get<SoundManager>();
 
         // Subscribe to events and callbacks
-        _scenesController.ScenesLoadedFullyEvent += OnSceneLoadedFully;
+        _scenesController.SceneLoadedPartiallyEvent += OnSceneLoadedPartially;
         _progressManager.MilestoneChangedEvent += OnMilestoneChanged;
         _cameraManager.CameraStateChangedEvent += OnCameraStateChanged;
+    }
+
+    void OnDisable()
+    {
+        // Unsubscribe from events and callbacks
+        _scenesController.SceneLoadedPartiallyEvent -= OnSceneLoadedPartially;
+        _progressManager.MilestoneChangedEvent -= OnMilestoneChanged;
+        _cameraManager.CameraStateChangedEvent -= OnCameraStateChanged;
     }
     #endregion
 
@@ -69,9 +78,10 @@ public class PlayerVisual : Billboard
     #endregion
 
     #region CALLBACK METHODS
-    void OnSceneLoadedFully(Dictionary<SceneDatabase.Slot, SceneDatabase.SceneName> dictionary, List<SceneDatabase.Slot> list)
+    void OnSceneLoadedPartially(SceneDatabase.SceneType type, SceneDatabase.SceneName name)
     {
-        if (dictionary.TryGetValue(SceneDatabase.Slot.Milestone, out var milestone))
+        // Milestone loaded: locate over player
+        if (type == SceneDatabase.SceneType.Milestone)
             LocateOverPlayer();
     }
 

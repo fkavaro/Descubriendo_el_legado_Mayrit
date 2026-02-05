@@ -38,7 +38,7 @@ public class TourManager : MonoBehaviour
     PathVisualizer _pathVisualizer;
 
     // Dependency Injection
-    ProgressManager _progressManager;
+    ScenesController _scenesController;
     UIManager _uiManager;
     SoundManager _soundManager;
     PlayableCharacter _playableCharacter;
@@ -53,12 +53,12 @@ public class TourManager : MonoBehaviour
     void Start()
     {
         // Get dependencies from Service Locator
-        _progressManager = ServiceLocator.Instance.Get<ProgressManager>();
+        _scenesController = ServiceLocator.Instance.Get<ScenesController>();
         _uiManager = ServiceLocator.Instance.Get<UIManager>();
         _soundManager = ServiceLocator.Instance.Get<SoundManager>();
 
         // Subscribe to events
-        _progressManager.MilestoneChangedEvent += OnMilestoneChanged;
+        _scenesController.SceneLoadedPartiallyEvent += OnSceneLoadedPartially;
         _uiManager.OnContextualPanelHiddenEvent += OnContextualPanelHidden;
         _uiManager.PlayCharacterClickedEvent += OnPlayCharacterClicked;
 
@@ -77,16 +77,11 @@ public class TourManager : MonoBehaviour
 
     void Update()
     {
-        if (_playableCharacter != null &&
-            _playableCharacter.IsBeingControlled &&
+        if (_playableCharacter != null && _playableCharacter.IsBeingControlled &&
             _currentTour != null && !_currentTour.IsCompleted)
-        {
-            _pathVisualizer.UpdatePath();
-        }
+            _pathVisualizer.UpdatePath(_playableCharacter.transform);
         else
-        {
             _pathVisualizer.Clear();
-        }
     }
 
     void OnDisable()
@@ -95,7 +90,7 @@ public class TourManager : MonoBehaviour
         _pathVisualizer.Deinitialize();
 
         // Unsubscribe from events
-        _progressManager.MilestoneChangedEvent -= OnMilestoneChanged;
+        _scenesController.SceneLoadedPartiallyEvent -= OnSceneLoadedPartially;
         _uiManager.OnContextualPanelHiddenEvent -= OnContextualPanelHidden;
         _uiManager.PlayCharacterClickedEvent -= OnPlayCharacterClicked;
 
@@ -133,9 +128,12 @@ public class TourManager : MonoBehaviour
     #endregion
 
     #region CALLBACK METHODS
-    void OnMilestoneChanged(Milestone_DataSO milestoneMapping)
+
+    void OnSceneLoadedPartially(SceneDatabase.SceneType type, SceneDatabase.SceneName name)
     {
-        AttachToTour(ServiceLocator.Instance.Get<Tour>());
+        // Milestone loaded: attach to its tour
+        if (type == SceneDatabase.SceneType.Milestone)
+            AttachToTour(ServiceLocator.Instance.Get<Tour>());
     }
 
     void OnTourPOIVisited(PointOfInterest poi)

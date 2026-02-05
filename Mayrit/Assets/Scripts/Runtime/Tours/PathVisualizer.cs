@@ -19,11 +19,9 @@ public class PathVisualizer
     readonly float _maxTrailLength;         // Maximum distance from start to render (trail cutoff)
 
     // Runtime state
-    Transform _player;
     Transform _nextPOI;
 
     // Dependency Injection
-    readonly ProgressManager _progressManager;
     readonly TourManager _tourManager;
     #endregion
 
@@ -46,7 +44,6 @@ public class PathVisualizer
         _maxTrailLength = Mathf.Max(1f, maxTrailLength);
 
         // Get dependencies from Service Locator
-        _progressManager = ServiceLocator.Instance.Get<ProgressManager>();
         _tourManager = ServiceLocator.Instance.Get<TourManager>();
     }
     #endregion
@@ -57,7 +54,6 @@ public class PathVisualizer
     /// </summary>
     public void Initialize()
     {
-        _progressManager.MilestoneChangedEvent += OnMilestoneChanged;
         _tourManager.NextPOIChangeEvent += OnNextPOIChange;
 
         if (_lineRenderer == null)
@@ -73,7 +69,6 @@ public class PathVisualizer
     /// </summary>
     public void Deinitialize()
     {
-        _progressManager.MilestoneChangedEvent -= OnMilestoneChanged;
         _tourManager.NextPOIChangeEvent -= OnNextPOIChange;
     }
 
@@ -82,7 +77,7 @@ public class PathVisualizer
     /// </summary>
     public void Clear()
     {
-        if (_lineRenderer == null)
+        if (_lineRenderer == null || !_lineRenderer.enabled)
             return;
 
         _lineRenderer.positionCount = 0;
@@ -92,9 +87,9 @@ public class PathVisualizer
     /// <summary>
     /// Update the visualized path between player and next POI (if available).
     /// </summary>
-    public void UpdatePath()
+    public void UpdatePath(Transform player)
     {
-        if (_nextPOI == null || _player == null)
+        if (_nextPOI == null || player == null)
         {
             if (_lineRenderer != null && _lineRenderer.enabled)
             {
@@ -104,12 +99,14 @@ public class PathVisualizer
                     Debug.LogWarning("PathVisualizer: Clear path - no playable character");
             }
 
+            Debug.LogWarning("  [PathVisualizer] No next POI or player transform available, clearing path.");
+
             Clear();
             return;
         }
 
         // Draw path from player to next POI
-        DrawPath(_player.position, _nextPOI.position);
+        DrawPath(player.position, _nextPOI.position);
     }
     #endregion
 
@@ -270,13 +267,6 @@ public class PathVisualizer
     #endregion
 
     #region EVENT METHODS
-    void OnMilestoneChanged(Milestone_DataSO milestoneMapping)
-    {
-        PlayableCharacter player = ServiceLocator.Instance.Get<PlayableCharacter>();
-
-        _player = player != null ? player.transform : null;
-    }
-
     void OnNextPOIChange(PointOfInterest poi)
     {
         _nextPOI = poi.transform;
