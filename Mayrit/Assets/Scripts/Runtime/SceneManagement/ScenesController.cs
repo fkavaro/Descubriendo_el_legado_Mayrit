@@ -84,10 +84,10 @@ public class ScenesController : MonoBehaviour
         // Only after all scenes are loaded, update types and fire events
         currentSession = _loadedByType.ContainsKey(SceneDatabase.SceneType.Session)
                     ? _loadedByType[SceneDatabase.SceneType.Session].ToString()
-                    : "Type ID not found";
+                    : "None";
         currentMilestone = _loadedByType.ContainsKey(SceneDatabase.SceneType.Milestone)
                     ? _loadedByType[SceneDatabase.SceneType.Milestone].ToString()
-                    : "Type ID not found";
+                    : "None";
 
         if (plan.Overlay)
         {
