@@ -4,23 +4,23 @@ using UnityEngine;
 
 public class SceneTransitionPlan
 {
-    public Dictionary<SceneDatabase.Slot, SceneDatabase.SceneName> ScenesToLoad { get; } = new();
-    public List<SceneDatabase.Slot> SlotsToUnload { get; } = new();
+    public Dictionary<SceneDatabase.SceneType, SceneDatabase.SceneName> ScenesToLoad { get; } = new();
+    public List<SceneDatabase.SceneType> TypesToUnload { get; } = new();
     public SceneDatabase.SceneName ActiveSceneName { get; private set; }
     public bool ClearUnusedAssets { get; private set; } = false;
     public bool Overlay { get; private set; } = false;
 
-    public SceneTransitionPlan Load(SceneDatabase.Slot slotId, SceneDatabase.SceneName sceneName, bool setActive = false)
+    public SceneTransitionPlan Load(SceneDatabase.SceneType type, SceneDatabase.SceneName sceneName, bool setActive = false)
     {
-        ScenesToLoad[slotId] = sceneName;
+        ScenesToLoad[type] = sceneName;
         if (setActive)
             ActiveSceneName = sceneName;
         return this;
     }
 
-    public SceneTransitionPlan Unload(SceneDatabase.Slot slotKey)
+    public SceneTransitionPlan Unload(SceneDatabase.SceneType type)
     {
-        SlotsToUnload.Add(slotKey);
+        TypesToUnload.Add(type);
         return this;
     }
 

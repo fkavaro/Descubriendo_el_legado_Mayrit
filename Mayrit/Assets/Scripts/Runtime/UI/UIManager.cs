@@ -168,7 +168,7 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
 
     #region CALLBACK METHODS
 
-    void OnScenesLoadedFully(Dictionary<SceneDatabase.Slot, SceneDatabase.SceneName> loadedScenes, List<SceneDatabase.Slot> unloadedSlots)
+    void OnScenesLoadedFully(Dictionary<SceneDatabase.SceneType, SceneDatabase.SceneName> loadedScenes, List<SceneDatabase.SceneType> unloadedTypes)
     {
         if (loadedScenes.ContainsValue(SceneDatabase.SceneName.MainMenuScene))
         {
@@ -209,7 +209,7 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
         }
 
         // A milestone scene loaded
-        if (loadedScenes.TryGetValue(SceneDatabase.Slot.Milestone, out var milestoneScene))
+        if (loadedScenes.TryGetValue(SceneDatabase.SceneType.Milestone, out var milestoneScene))
         {
             SwitchToSpectatorHUDState();
         }

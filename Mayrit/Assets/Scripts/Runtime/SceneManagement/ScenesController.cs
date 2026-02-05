@@ -7,14 +7,14 @@ using UnityEngine.SceneManagement;
 public class ScenesController : MonoBehaviour
 {
     #region PROPERTIES
-    public event Action<SceneDatabase.SceneName> SceneLoadedPartiallyEvent;
-    public event Action<Dictionary<SceneDatabase.Slot, SceneDatabase.SceneName>, List<SceneDatabase.Slot>> ScenesLoadedFullyEvent;
+    public event Action<SceneDatabase.SceneType, SceneDatabase.SceneName> SceneLoadedPartiallyEvent;
+    public event Action<Dictionary<SceneDatabase.SceneType, SceneDatabase.SceneName>, List<SceneDatabase.SceneType>> ScenesLoadedFullyEvent;
 
     public string currentSession;
     public string currentMilestone;
 
-    // Key: Slot ID, Value: Scene Name
-    readonly Dictionary<SceneDatabase.Slot, SceneDatabase.SceneName> _loadedBySlots = new();
+    // Key: Scene Type, Value: Scene Name
+    readonly Dictionary<SceneDatabase.SceneType, SceneDatabase.SceneName> _loadedByType = new();
     static readonly WaitForSeconds _waitForSeconds0_5 = new(0.5f);
     public bool _isLoading;
     public bool IsLoading { get; private set; } = false;
@@ -64,30 +64,30 @@ public class ScenesController : MonoBehaviour
             yield return _waitForSeconds0_5;
         }
 
-        foreach (SceneDatabase.Slot slotKey in plan.SlotsToUnload)
-            yield return UnloadSlotRoutine(slotKey);
+        foreach (SceneDatabase.SceneType type in plan.TypesToUnload)
+            yield return UnloadTypeRoutine(type);
 
         if (plan.ClearUnusedAssets)
             yield return ClearUnusedAssetsRoutine();
 
-        foreach (KeyValuePair<SceneDatabase.Slot, SceneDatabase.SceneName> kvp in plan.ScenesToLoad)
+        foreach (KeyValuePair<SceneDatabase.SceneType, SceneDatabase.SceneName> kvp in plan.ScenesToLoad)
         {
-            if (_loadedBySlots.ContainsKey(kvp.Key))
-                yield return UnloadSlotRoutine(kvp.Key);
+            if (_loadedByType.ContainsKey(kvp.Key))
+                yield return UnloadTypeRoutine(kvp.Key);
 
             yield return LoadAdditiveSceneRoutine(kvp.Key, kvp.Value, plan.ActiveSceneName == kvp.Value);
 
-            Debug.Log($"ScenesController: Scene '{kvp.Value}' loaded into slot '{kvp.Key}'.");
-            SceneLoadedPartiallyEvent?.Invoke(kvp.Value);
+            Debug.Log($"ScenesController: Scene '{kvp.Value}' loaded into type '{kvp.Key}'.");
+            SceneLoadedPartiallyEvent?.Invoke(kvp.Key, kvp.Value);
         }
 
-        // Only after all scenes are loaded, update slots and fire events
-        currentSession = _loadedBySlots.ContainsKey(SceneDatabase.Slot.Session)
-                    ? _loadedBySlots[SceneDatabase.Slot.Session].ToString()
-                    : "Slot ID not found";
-        currentMilestone = _loadedBySlots.ContainsKey(SceneDatabase.Slot.Milestone)
-                    ? _loadedBySlots[SceneDatabase.Slot.Milestone].ToString()
-                    : "Slot ID not found";
+        // Only after all scenes are loaded, update types and fire events
+        currentSession = _loadedByType.ContainsKey(SceneDatabase.SceneType.Session)
+                    ? _loadedByType[SceneDatabase.SceneType.Session].ToString()
+                    : "Type ID not found";
+        currentMilestone = _loadedByType.ContainsKey(SceneDatabase.SceneType.Milestone)
+                    ? _loadedByType[SceneDatabase.SceneType.Milestone].ToString()
+                    : "Type ID not found";
 
         if (plan.Overlay)
         {
@@ -95,7 +95,7 @@ public class ScenesController : MonoBehaviour
             yield return _uiManager.FadeOutLoadingScreenCoroutine();
         }
 
-        ScenesLoadedFullyEvent?.Invoke(plan.ScenesToLoad, plan.SlotsToUnload);
+        ScenesLoadedFullyEvent?.Invoke(plan.ScenesToLoad, plan.TypesToUnload);
 
         IsLoading = false;
         _isLoading = false;
@@ -103,7 +103,7 @@ public class ScenesController : MonoBehaviour
     #endregion
 
     #region LOAD SCENE
-    private IEnumerator LoadAdditiveSceneRoutine(SceneDatabase.Slot slotKey, SceneDatabase.SceneName sceneName, bool setActive)
+    private IEnumerator LoadAdditiveSceneRoutine(SceneDatabase.SceneType type, SceneDatabase.SceneName sceneName, bool setActive)
     {
         AsyncOperation loadOp = SceneManager.LoadSceneAsync(sceneName.ToString(), LoadSceneMode.Additive);
         if (loadOp == null) yield break;
@@ -125,25 +125,23 @@ public class ScenesController : MonoBehaviour
                 SceneManager.SetActiveScene(loadedScene);
         }
 
-        _loadedBySlots[slotKey] = sceneName;
+        _loadedByType[type] = sceneName;
     }
     #endregion
 
     #region UNLOAD SCENE
-    private IEnumerator UnloadSlotRoutine(SceneDatabase.Slot slotKey)
+    private IEnumerator UnloadTypeRoutine(SceneDatabase.SceneType type)
     {
-        if (!_loadedBySlots.TryGetValue(slotKey, out SceneDatabase.SceneName sceneName))
+        if (!_loadedByType.TryGetValue(type, out SceneDatabase.SceneName sceneName))
             yield break;
 
         AsyncOperation unloadOp = SceneManager.UnloadSceneAsync(sceneName.ToString());
 
         if (unloadOp != null)
-        {
             while (!unloadOp.isDone)
                 yield return null;
-        }
 
-        _loadedBySlots.Remove(slotKey);
+        _loadedByType.Remove(type);
     }
     #endregion
 

@@ -44,7 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e672415c697c274bbc4e2a4b7a6746b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NPCPool
-  _dontDestroyOnLoad: 0
   _namesDatabase: {fileID: 11400000, guid: af6943466f74fe945ba6cdf9206e5a26, type: 2}
   _femaleVillagerPrefabs:
   - {fileID: 3715606356981372341, guid: 803e6ba6af4ae8243afaff1d48541509, type: 3}

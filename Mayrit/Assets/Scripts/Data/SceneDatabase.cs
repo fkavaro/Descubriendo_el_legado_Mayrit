@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SceneDatabase
 {
-    public enum Slot
+    public enum SceneType
     {
         Session,
         Milestone

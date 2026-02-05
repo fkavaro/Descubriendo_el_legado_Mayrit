@@ -15,8 +15,8 @@ public class MainMenu_GameState : AGameState
         // Load Main Menu Scene, if not already loaded
         if (!SceneManager.GetSceneByName(SceneDatabase.SceneName.MainMenuScene.ToString()).isLoaded)
             _scenesController.NewTransitionPlan()
-                .Load(SceneDatabase.Slot.Session, SceneDatabase.SceneName.MainMenuScene, setActive: true)
-                .Unload(SceneDatabase.Slot.Milestone) // Unload Milestone scene if it was loaded in a previous session
+                .Load(SceneDatabase.SceneType.Session, SceneDatabase.SceneName.MainMenuScene, setActive: true)
+                .Unload(SceneDatabase.SceneType.Milestone) // Unload Milestone scene if it was loaded in a previous session
                 .WithOverlay()
                 .ClearAssets()
                 .Perform();

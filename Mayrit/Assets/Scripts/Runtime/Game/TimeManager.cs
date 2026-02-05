@@ -98,7 +98,6 @@ public class TimeManager : MonoBehaviour
         }
     }
 
-    // Called when the script is loaded or a value is changed in the inspector
     void OnValidate()
     {
         UpdateLighting();

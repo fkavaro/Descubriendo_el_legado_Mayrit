@@ -44,7 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9c6bc0ba8683d64d8b7252de4fcaaf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TownManager
-  _dontDestroyOnLoad: 0
   _population: 0
   _houses: []
   _workplaces: []

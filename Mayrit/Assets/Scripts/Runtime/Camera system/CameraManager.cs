@@ -41,7 +41,7 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
     UIManager _uiManager;
     TourManager _tourManager;
     SoundManager _soundManager;
-    public PlayableCharacter _playableCharacter;
+    PlayableCharacter _playableCharacter;
     #endregion
 
     #region INHERITED

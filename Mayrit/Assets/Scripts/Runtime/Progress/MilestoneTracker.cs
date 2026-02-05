@@ -10,6 +10,7 @@ public class MilestoneTracker : MonoBehaviour
     [Tooltip("Range of milestones where this object is active")]
     [SerializeField] protected Vector2 milestonesActivated;
 
+    // TODO: remove eventually
     //     #region LIFE CYCLE
     //     void OnEnable()
     //     {
@@ -58,6 +59,7 @@ public class MilestoneTracker : MonoBehaviour
         }
     }
 
+    // TODO: remove eventually  
     // void SubscribeToRuntimeEvents()
     // {
     //     ProgressManager progressManager = FindAnyObjectByType<ProgressManager>();

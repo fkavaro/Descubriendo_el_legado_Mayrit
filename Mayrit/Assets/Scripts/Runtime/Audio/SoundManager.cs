@@ -170,7 +170,7 @@ public class SoundManager : ABehaviourEntity<FiniteStateMachine<AMusicState>>
     #endregion
 
     #region CALLBACK METHODS
-    void OnSceneLoadedPartially(SceneDatabase.SceneName loadedScene)
+    void OnSceneLoadedPartially(SceneDatabase.SceneType sceneType, SceneDatabase.SceneName loadedScene)
     {
         if (loadedScene == SceneDatabase.SceneName.MainMenuScene)
             _audioListener.enabled = true;
@@ -178,7 +178,7 @@ public class SoundManager : ABehaviourEntity<FiniteStateMachine<AMusicState>>
             _audioListener.enabled = false;
     }
 
-    void OnScenesLoadedFully(Dictionary<SceneDatabase.Slot, SceneDatabase.SceneName> loadedScenes, List<SceneDatabase.Slot> unloadedSlots)
+    void OnScenesLoadedFully(Dictionary<SceneDatabase.SceneType, SceneDatabase.SceneName> loadedScenes, List<SceneDatabase.SceneType> unloadedTypes)
     {
         if (loadedScenes.ContainsValue(SceneDatabase.SceneName.MainMenuScene))
             _fsm.SwitchState(_mainMenuState);
