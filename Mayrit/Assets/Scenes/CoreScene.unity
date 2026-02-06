@@ -337,7 +337,7 @@ MonoBehaviour:
   currentSession: 
   currentMilestone: 
   _isLoading: 0
-  _debugMode: 1
+  _debugMode: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -10,10 +10,10 @@ public class ScenesController : MonoBehaviour
     public event Action<SceneDatabase.SceneType, SceneDatabase.SceneName> SceneLoadedPartiallyEvent;
     public event Action<Dictionary<SceneDatabase.SceneType, SceneDatabase.SceneName>, List<SceneDatabase.SceneType>> ScenesLoadedFullyEvent;
 
+    [SerializeField] bool _debugMode = false;
     [SerializeField] string currentSession;
     [SerializeField] string currentMilestone;
     [SerializeField] bool _isLoading = false;
-    [SerializeField] bool _debugMode = false;
 
     // Key: Scene Type, Value: Scene Name
     readonly Dictionary<SceneDatabase.SceneType, SceneDatabase.SceneName> _loadedByType = new();

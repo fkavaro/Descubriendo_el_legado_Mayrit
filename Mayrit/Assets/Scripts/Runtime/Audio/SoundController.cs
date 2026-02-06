@@ -74,7 +74,7 @@ public class SoundController
 
         if (clips.Count == 0)
         {
-            Debug.LogWarning($"No audio clips found for sound type {type}");
+            Debug.LogWarning($"[SoundController] No audio clips found for sound type {type}");
             return;
         }
 
@@ -124,7 +124,8 @@ public class SoundController
         if (Application.isPlaying && _playlistCoroutine == null)
         {
             _playlistCoroutine = _soundManager.StartCoroutine(PlaylistLoop());
-            //Debug.Log($"SoundManager: Started {type} playlist.");
+            if (_soundManager.DebugMode)
+                Debug.Log($"[SoundController] Started {type} playlist.");
         }
     }
 
@@ -174,16 +175,8 @@ public class SoundController
             // Skip if paused/unfocused or within resume guard window
             if (!_suspendAutoAdvance && Time.unscaledTime >= _ignoreAdvanceUntilTime)
             {
-                if (MusicSource.clip == null)
-                {
+                if (MusicSource.clip == null || (MusicSource.clip != null && !MusicSource.isPlaying))
                     PlayNextTrack();
-                }
-                // Advance only when clip truly ended (not just paused)
-                else if (MusicSource.clip != null && !MusicSource.isPlaying &&
-                    MusicSource.timeSamples >= MusicSource.clip.samples - 1)
-                {
-                    PlayNextTrack();
-                }
             }
             yield return null;
         }
@@ -201,14 +194,15 @@ public class SoundController
         var queue = EnsureQueue(_currentMusicType);
         if (queue.Count == 0)
         {
-            Debug.LogWarning($"No audio clips found for music type {_currentMusicType}");
+            Debug.LogWarning($"[SoundController] No audio clips found for music type {_currentMusicType}");
             return;
         }
 
         var nextClip = queue.Dequeue();
         if (nextClip == null) return;
 
-        //Debug.Log($"SoundManager | {_currentMusicType} playlist - Advancing to next track: {nextClip.name}.");
+        if (_soundManager.DebugMode)
+            Debug.Log($"[SoundController] {_currentMusicType} playlist - Advancing to next track: {nextClip.name}.");
 
         // Direct approach
         MusicSource.Stop();
