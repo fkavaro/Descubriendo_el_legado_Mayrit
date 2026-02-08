@@ -69138,6 +69138,10 @@ PrefabInstance:
       value: 5000
       objectReference: {fileID: 0}
     - target: {fileID: 6140753126493250301, guid: d1278883f5417154f9e8a819729e476b, type: 3}
+      propertyPath: m_ShadowCastingMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6140753126493250301, guid: d1278883f5417154f9e8a819729e476b, type: 3}
       propertyPath: m_DetailObjectDensity
       value: 1
       objectReference: {fileID: 0}
@@ -69148,6 +69152,10 @@ PrefabInstance:
     - target: {fileID: 6140753126493250301, guid: d1278883f5417154f9e8a819729e476b, type: 3}
       propertyPath: m_DetailObjectDistance
       value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 6140753126493250301, guid: d1278883f5417154f9e8a819729e476b, type: 3}
+      propertyPath: m_PreserveTreePrototypeLayers
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6236179971690792800, guid: d1278883f5417154f9e8a819729e476b, type: 3}
       propertyPath: m_Mesh
