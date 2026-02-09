@@ -16,7 +16,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &2811216079245053655
 Transform:
@@ -105,7 +105,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &6618603885870759573
 Transform:
@@ -162,7 +162,7 @@ LODGroup:
     - renderer: {fileID: 105137711910865242}
     - renderer: {fileID: 7555111560434670833}
     - renderer: {fileID: 6767060350274880348}
-  - screenRelativeHeight: 0.01
+  - screenRelativeHeight: 0.015
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 1322672966334616228}
@@ -175,6 +175,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6618603885870759573}
     m_Modifications:
+    - target: {fileID: 670470466575261397, guid: 620bbd58089cc524d87ebdf951a4c96d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 1068939200130059395, guid: 620bbd58089cc524d87ebdf951a4c96d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2722981378443011416, guid: 620bbd58089cc524d87ebdf951a4c96d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3040337906970158555, guid: 620bbd58089cc524d87ebdf951a4c96d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3173678428672778085, guid: 620bbd58089cc524d87ebdf951a4c96d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3241975800579615756, guid: 620bbd58089cc524d87ebdf951a4c96d, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -230,6 +250,42 @@ PrefabInstance:
     - target: {fileID: 3416579149820165379, guid: 620bbd58089cc524d87ebdf951a4c96d, type: 3}
       propertyPath: m_Name
       value: Birch 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3416579149820165379, guid: 620bbd58089cc524d87ebdf951a4c96d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3873603992681967161, guid: 620bbd58089cc524d87ebdf951a4c96d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4691982893928258014, guid: 620bbd58089cc524d87ebdf951a4c96d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4957551721345269326, guid: 620bbd58089cc524d87ebdf951a4c96d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 5569035006485691761, guid: 620bbd58089cc524d87ebdf951a4c96d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6871333156484809428, guid: 620bbd58089cc524d87ebdf951a4c96d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7490794377465113540, guid: 620bbd58089cc524d87ebdf951a4c96d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8627563773272127452, guid: 620bbd58089cc524d87ebdf951a4c96d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8885022435469508101, guid: 620bbd58089cc524d87ebdf951a4c96d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7346422575282061744, guid: 620bbd58089cc524d87ebdf951a4c96d, type: 3}

@@ -15,7 +15,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &4622190171991434648
 Transform:
@@ -72,7 +72,7 @@ LODGroup:
     - renderer: {fileID: 3655244532249109874}
     - renderer: {fileID: 8847707681765401241}
     - renderer: {fileID: 1660719742316339598}
-  - screenRelativeHeight: 0.01
+  - screenRelativeHeight: 0.015
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 2645945392204488932}
@@ -93,7 +93,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &6850626638826912401
 Transform:
@@ -175,13 +175,57 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4622190171991434648}
     m_Modifications:
+    - target: {fileID: 301968338136722941, guid: 366edcb6f8acaa24a959e7f443a4f60e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 1069606530378723636, guid: 366edcb6f8acaa24a959e7f443a4f60e, type: 3}
       propertyPath: m_CastShadows
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1178867084883361639, guid: 366edcb6f8acaa24a959e7f443a4f60e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 1219334102463877962, guid: 366edcb6f8acaa24a959e7f443a4f60e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941084103957303372, guid: 366edcb6f8acaa24a959e7f443a4f60e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2175867283220467945, guid: 366edcb6f8acaa24a959e7f443a4f60e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2366933834084847434, guid: 366edcb6f8acaa24a959e7f443a4f60e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3129446759364998600, guid: 366edcb6f8acaa24a959e7f443a4f60e, type: 3}
       propertyPath: m_CastShadows
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3676853692332282016, guid: 366edcb6f8acaa24a959e7f443a4f60e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4183161018449220217, guid: 366edcb6f8acaa24a959e7f443a4f60e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4637836208677652890, guid: 366edcb6f8acaa24a959e7f443a4f60e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 5442487343048030032, guid: 366edcb6f8acaa24a959e7f443a4f60e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 5613646924122712485, guid: 366edcb6f8acaa24a959e7f443a4f60e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 5780545108056687457, guid: 366edcb6f8acaa24a959e7f443a4f60e, type: 3}
       propertyPath: m_LocalScale.x
@@ -235,13 +279,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6235932216093163642, guid: 366edcb6f8acaa24a959e7f443a4f60e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7141954692703597091, guid: 366edcb6f8acaa24a959e7f443a4f60e, type: 3}
       propertyPath: m_CastShadows
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7897256902330513022, guid: 366edcb6f8acaa24a959e7f443a4f60e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 8185793832496569501, guid: 366edcb6f8acaa24a959e7f443a4f60e, type: 3}
       propertyPath: m_Name
       value: The Great Ash Tree
+      objectReference: {fileID: 0}
+    - target: {fileID: 8185793832496569501, guid: 366edcb6f8acaa24a959e7f443a4f60e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3925614386512889211, guid: 366edcb6f8acaa24a959e7f443a4f60e, type: 3}

@@ -15,7 +15,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &246471168586505472
 Transform:
@@ -72,7 +72,7 @@ LODGroup:
     - renderer: {fileID: 588385324799413123}
     - renderer: {fileID: 2578291571543556430}
     - renderer: {fileID: 7788152642591692033}
-  - screenRelativeHeight: 0.01
+  - screenRelativeHeight: 0.015
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 7745172464696746971}
@@ -93,7 +93,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &5694819278354280614
 Transform:
@@ -175,6 +175,38 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 246471168586505472}
     m_Modifications:
+    - target: {fileID: 403154982856919126, guid: 4da729d2d8eb9f54d8c32912c8b76df0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 910587315400734693, guid: 4da729d2d8eb9f54d8c32912c8b76df0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 1391520340419162847, guid: 4da729d2d8eb9f54d8c32912c8b76df0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 1661805324952822295, guid: 4da729d2d8eb9f54d8c32912c8b76df0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 1944712973759503934, guid: 4da729d2d8eb9f54d8c32912c8b76df0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2515047884240090096, guid: 4da729d2d8eb9f54d8c32912c8b76df0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2570353835627053982, guid: 4da729d2d8eb9f54d8c32912c8b76df0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2823456759497463317, guid: 4da729d2d8eb9f54d8c32912c8b76df0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3241975800579615756, guid: 4da729d2d8eb9f54d8c32912c8b76df0, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -230,6 +262,30 @@ PrefabInstance:
     - target: {fileID: 3416579149820165379, guid: 4da729d2d8eb9f54d8c32912c8b76df0, type: 3}
       propertyPath: m_Name
       value: Birch 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3416579149820165379, guid: 4da729d2d8eb9f54d8c32912c8b76df0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4016400427169166235, guid: 4da729d2d8eb9f54d8c32912c8b76df0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4179253244488843864, guid: 4da729d2d8eb9f54d8c32912c8b76df0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6275454719461122528, guid: 4da729d2d8eb9f54d8c32912c8b76df0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6960017994001686053, guid: 4da729d2d8eb9f54d8c32912c8b76df0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7679218373346200990, guid: 4da729d2d8eb9f54d8c32912c8b76df0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8511578630582951759, guid: 4da729d2d8eb9f54d8c32912c8b76df0, type: 3}

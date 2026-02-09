@@ -69145,6 +69145,10 @@ PrefabInstance:
       propertyPath: m_VersionIndex
       value: 2956
       objectReference: {fileID: 0}
+    - target: {fileID: 8580952995821221626, guid: d1278883f5417154f9e8a819729e476b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8652605997296853410, guid: d1278883f5417154f9e8a819729e476b, type: 3}
       propertyPath: m_Mesh
       value: 

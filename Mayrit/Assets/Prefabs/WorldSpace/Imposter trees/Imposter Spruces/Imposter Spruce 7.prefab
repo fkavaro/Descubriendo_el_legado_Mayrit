@@ -16,7 +16,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &8110499601957145508
 Transform:
@@ -105,7 +105,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &7083359753514087440
 Transform:
@@ -162,7 +162,7 @@ LODGroup:
     - renderer: {fileID: 5865473597766626753}
     - renderer: {fileID: 5915031884014329169}
     - renderer: {fileID: 425693418577091373}
-  - screenRelativeHeight: 0.01
+  - screenRelativeHeight: 0.015
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 1276057404933261707}
@@ -227,9 +227,37 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 853224641148017763, guid: bea7820cec2a1a744b0b353f5c0562e1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 1266942190533270105, guid: bea7820cec2a1a744b0b353f5c0562e1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 1569502648863968176, guid: bea7820cec2a1a744b0b353f5c0562e1, type: 3}
       propertyPath: m_CastShadows
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1958206453441457544, guid: bea7820cec2a1a744b0b353f5c0562e1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2141990809141354090, guid: bea7820cec2a1a744b0b353f5c0562e1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3072178751906119241, guid: bea7820cec2a1a744b0b353f5c0562e1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3116702321959107929, guid: bea7820cec2a1a744b0b353f5c0562e1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4628577200065686810, guid: bea7820cec2a1a744b0b353f5c0562e1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4704566809198591324, guid: bea7820cec2a1a744b0b353f5c0562e1, type: 3}
       propertyPath: m_CastShadows
@@ -242,6 +270,34 @@ PrefabInstance:
     - target: {fileID: 5503166992987660084, guid: bea7820cec2a1a744b0b353f5c0562e1, type: 3}
       propertyPath: m_Name
       value: Spruce 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5503166992987660084, guid: bea7820cec2a1a744b0b353f5c0562e1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 5590901680644712382, guid: bea7820cec2a1a744b0b353f5c0562e1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6331088479792054531, guid: bea7820cec2a1a744b0b353f5c0562e1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7529972720152565807, guid: bea7820cec2a1a744b0b353f5c0562e1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7593878679556141796, guid: bea7820cec2a1a744b0b353f5c0562e1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7840149909537080176, guid: bea7820cec2a1a744b0b353f5c0562e1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7991047962543572030, guid: bea7820cec2a1a744b0b353f5c0562e1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2360243080874578468, guid: bea7820cec2a1a744b0b353f5c0562e1, type: 3}

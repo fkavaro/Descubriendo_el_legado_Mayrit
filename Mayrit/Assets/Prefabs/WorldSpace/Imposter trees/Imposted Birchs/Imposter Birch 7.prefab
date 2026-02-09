@@ -15,7 +15,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1021538339420162080
 Transform:
@@ -68,7 +68,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 2900284427091453367}
     - renderer: {fileID: 8550597812349214365}
-  - screenRelativeHeight: 0.01
+  - screenRelativeHeight: 0.015
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 7134970398663262606}
@@ -89,7 +89,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &847088722516657164
 Transform:
@@ -171,6 +171,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1021538339420162080}
     m_Modifications:
+    - target: {fileID: 1062867903810891916, guid: 02ee852280231ad40857931e325cff7d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2130029902827443821, guid: 02ee852280231ad40857931e325cff7d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3094112980038921097, guid: 02ee852280231ad40857931e325cff7d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3170300415972409654, guid: 02ee852280231ad40857931e325cff7d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3241975800579615756, guid: 02ee852280231ad40857931e325cff7d, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -223,9 +239,33 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3375585039393048957, guid: 02ee852280231ad40857931e325cff7d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3399600226216271584, guid: 02ee852280231ad40857931e325cff7d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3416579149820165379, guid: 02ee852280231ad40857931e325cff7d, type: 3}
       propertyPath: m_Name
       value: Birch 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3416579149820165379, guid: 02ee852280231ad40857931e325cff7d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6178423520742734324, guid: 02ee852280231ad40857931e325cff7d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7527156842140720884, guid: 02ee852280231ad40857931e325cff7d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8608068196427837765, guid: 02ee852280231ad40857931e325cff7d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7648051423421457697, guid: 02ee852280231ad40857931e325cff7d, type: 3}

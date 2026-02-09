@@ -15,7 +15,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &88482291327186542
 Transform:
@@ -72,7 +72,7 @@ LODGroup:
     - renderer: {fileID: 8270952140103166874}
     - renderer: {fileID: 2866878356545241875}
     - renderer: {fileID: 7962356017561492162}
-  - screenRelativeHeight: 0.01
+  - screenRelativeHeight: 0.015
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 1090112776257017074}
@@ -93,7 +93,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &3700992696644287007
 Transform:
@@ -227,21 +227,77 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 624527122160530072, guid: 92ffb0927ddfa4a47b5d13cc9d48018c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 1940426595529570975, guid: 92ffb0927ddfa4a47b5d13cc9d48018c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2059803501715241971, guid: 92ffb0927ddfa4a47b5d13cc9d48018c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2159115528894623103, guid: 92ffb0927ddfa4a47b5d13cc9d48018c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2450159317207653758, guid: 92ffb0927ddfa4a47b5d13cc9d48018c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3299421869084528735, guid: 92ffb0927ddfa4a47b5d13cc9d48018c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3701508415369553883, guid: 92ffb0927ddfa4a47b5d13cc9d48018c, type: 3}
       propertyPath: m_CastShadows
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4057590381404489666, guid: 92ffb0927ddfa4a47b5d13cc9d48018c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4406520158428462312, guid: 92ffb0927ddfa4a47b5d13cc9d48018c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4559086706836042430, guid: 92ffb0927ddfa4a47b5d13cc9d48018c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 5503166992987660084, guid: 92ffb0927ddfa4a47b5d13cc9d48018c, type: 3}
       propertyPath: m_Name
       value: Spruce 8
       objectReference: {fileID: 0}
+    - target: {fileID: 5503166992987660084, guid: 92ffb0927ddfa4a47b5d13cc9d48018c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 5676469911681635402, guid: 92ffb0927ddfa4a47b5d13cc9d48018c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6906925812974736570, guid: 92ffb0927ddfa4a47b5d13cc9d48018c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 7376623243219767122, guid: 92ffb0927ddfa4a47b5d13cc9d48018c, type: 3}
       propertyPath: m_CastShadows
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7780361569925431775, guid: 92ffb0927ddfa4a47b5d13cc9d48018c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 8856518312828894730, guid: 92ffb0927ddfa4a47b5d13cc9d48018c, type: 3}
       propertyPath: m_CastShadows
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8860535927675537900, guid: 92ffb0927ddfa4a47b5d13cc9d48018c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5330155379407626238, guid: 92ffb0927ddfa4a47b5d13cc9d48018c, type: 3}

@@ -15,7 +15,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &2682523370606660891
 Transform:
@@ -68,7 +68,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 4121210769918679258}
     - renderer: {fileID: 9065601152549528160}
-  - screenRelativeHeight: 0.01
+  - screenRelativeHeight: 0.015
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 4898522426024485933}
@@ -89,7 +89,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &8788880804606635685
 Transform:
@@ -175,6 +175,10 @@ PrefabInstance:
       propertyPath: m_CastShadows
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1974747362097763344, guid: 9bae0067de92b6d44b82e8c16026ddba, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 2625952173410231607, guid: 9bae0067de92b6d44b82e8c16026ddba, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -215,6 +219,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3845524734777551865, guid: 9bae0067de92b6d44b82e8c16026ddba, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 5060741762639827079, guid: 9bae0067de92b6d44b82e8c16026ddba, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 5646841848698181153, guid: 9bae0067de92b6d44b82e8c16026ddba, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 5947305183350548067, guid: 9bae0067de92b6d44b82e8c16026ddba, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 6194597255984804627, guid: 9bae0067de92b6d44b82e8c16026ddba, type: 3}
       propertyPath: m_CastShadows
       value: 1
@@ -222,6 +242,26 @@ PrefabInstance:
     - target: {fileID: 6313178463543892440, guid: 9bae0067de92b6d44b82e8c16026ddba, type: 3}
       propertyPath: m_Name
       value: Weeping_Willow 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6313178463543892440, guid: 9bae0067de92b6d44b82e8c16026ddba, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6916570353654624704, guid: 9bae0067de92b6d44b82e8c16026ddba, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7441686951348398315, guid: 9bae0067de92b6d44b82e8c16026ddba, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7617121001581319159, guid: 9bae0067de92b6d44b82e8c16026ddba, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8870290265569917824, guid: 9bae0067de92b6d44b82e8c16026ddba, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8883807892071858196, guid: 9bae0067de92b6d44b82e8c16026ddba, type: 3}

@@ -15,7 +15,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1583427639899521033
 Transform:
@@ -72,7 +72,7 @@ LODGroup:
     - renderer: {fileID: 9023199340500460734}
     - renderer: {fileID: 4630149643037765040}
     - renderer: {fileID: 280609382588316506}
-  - screenRelativeHeight: 0.01
+  - screenRelativeHeight: 0.015
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 1008186063902331224}
@@ -93,7 +93,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &2203335134147156021
 Transform:
@@ -175,6 +175,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1583427639899521033}
     m_Modifications:
+    - target: {fileID: 772011119223903190, guid: e9c1cbb9bd37c5243be27654163ec2b0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 1862579495833401895, guid: e9c1cbb9bd37c5243be27654163ec2b0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2873444917275935233, guid: e9c1cbb9bd37c5243be27654163ec2b0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 2889049789788761487, guid: e9c1cbb9bd37c5243be27654163ec2b0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3241975800579615756, guid: e9c1cbb9bd37c5243be27654163ec2b0, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -230,6 +246,46 @@ PrefabInstance:
     - target: {fileID: 3416579149820165379, guid: e9c1cbb9bd37c5243be27654163ec2b0, type: 3}
       propertyPath: m_Name
       value: Birch 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3416579149820165379, guid: e9c1cbb9bd37c5243be27654163ec2b0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3703809402047054673, guid: e9c1cbb9bd37c5243be27654163ec2b0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3736925646267214565, guid: e9c1cbb9bd37c5243be27654163ec2b0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4204308992249268816, guid: e9c1cbb9bd37c5243be27654163ec2b0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6252980230018508974, guid: e9c1cbb9bd37c5243be27654163ec2b0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6886090617677072694, guid: e9c1cbb9bd37c5243be27654163ec2b0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7446291456710720806, guid: e9c1cbb9bd37c5243be27654163ec2b0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7459897353924671817, guid: e9c1cbb9bd37c5243be27654163ec2b0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8007413261464727889, guid: e9c1cbb9bd37c5243be27654163ec2b0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 8482205379477698689, guid: e9c1cbb9bd37c5243be27654163ec2b0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2099524439498314678, guid: e9c1cbb9bd37c5243be27654163ec2b0, type: 3}
