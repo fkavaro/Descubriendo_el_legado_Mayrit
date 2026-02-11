@@ -156,6 +156,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8846523006556480935}
     - target: {fileID: 5961391977125746939, guid: 20122a36d24c42945ad2861e326b4edc, type: 3}
+      propertyPath: _orbitalStateSetting.Target
+      value: 
+      objectReference: {fileID: 8846523006556480935}
+    - target: {fileID: 5961391977125746939, guid: 20122a36d24c42945ad2861e326b4edc, type: 3}
       propertyPath: _orbitalCameraValues.DataToShow
       value: 
       objectReference: {fileID: 11400000, guid: a51fb701a39b9a048bdc427789b2ebd5, type: 2}
@@ -163,6 +167,10 @@ PrefabInstance:
       propertyPath: _orbitalCameraValues._zoomValue
       value: 70
       objectReference: {fileID: 0}
+    - target: {fileID: 5961391977125746939, guid: 20122a36d24c42945ad2861e326b4edc, type: 3}
+      propertyPath: _orbitalStateSetting.DataToShow
+      value: 
+      objectReference: {fileID: 11400000, guid: a51fb701a39b9a048bdc427789b2ebd5, type: 2}
     - target: {fileID: 5961391977125746939, guid: 20122a36d24c42945ad2861e326b4edc, type: 3}
       propertyPath: _orbitalCameraValues._dataToShow
       value: 

@@ -77,7 +77,7 @@ MonoBehaviour:
     IsForCharacter: 0
     DataToShow: {fileID: 0}
     Target: {fileID: 0}
-    _orbitSpeed: 10
+    _orbitSpeed: 5
     _zoomValue: 70
     _horizontalOffset: 20
   _fixHeight: 0

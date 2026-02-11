@@ -3138,6 +3138,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 5185539828508466289}
     - target: {fileID: 5961391977125746939, guid: 20122a36d24c42945ad2861e326b4edc, type: 3}
+      propertyPath: _orbitalStateSetting.Target
+      value: 
+      objectReference: {fileID: 5185539828508466289}
+    - target: {fileID: 5961391977125746939, guid: 20122a36d24c42945ad2861e326b4edc, type: 3}
       propertyPath: _orbitalCameraValues.DataToShow
       value: 
       objectReference: {fileID: 11400000, guid: e69170f7e85dd43419c2f648f1090b3a, type: 2}
@@ -3145,6 +3149,10 @@ PrefabInstance:
       propertyPath: _orbitalCameraValues._zoomValue
       value: 50
       objectReference: {fileID: 0}
+    - target: {fileID: 5961391977125746939, guid: 20122a36d24c42945ad2861e326b4edc, type: 3}
+      propertyPath: _orbitalStateSetting.DataToShow
+      value: 
+      objectReference: {fileID: 11400000, guid: e69170f7e85dd43419c2f648f1090b3a, type: 2}
     - target: {fileID: 5961391977125746939, guid: 20122a36d24c42945ad2861e326b4edc, type: 3}
       propertyPath: _orbitalCameraValues._horizontalOffset
       value: 10
