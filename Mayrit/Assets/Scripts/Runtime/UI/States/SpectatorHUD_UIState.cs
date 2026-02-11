@@ -12,7 +12,6 @@ public class SpectatorHUD_UIState : AHUDState
         _milestoneName,
         _milestoneDate;
     Button _pauseButton,
-        _heritageButton,
         _milestoneInfoButton,
         _nextMilestoneButton,
         _previousMilestoneButton,
@@ -35,7 +34,6 @@ public class SpectatorHUD_UIState : AHUDState
         base.ConfigureUIElementsOnAwake();
 
         _pauseButton = _screen.Q<Button>("PauseButton");
-        _heritageButton = _screen.Q<Button>("HeritageButton");
         _tooltip = _screen.Q<Label>("Tooltip");
         _milestoneArea = _screen.Q<VisualElement>("MilestoneArea");
         _milestoneInfoButton = _milestoneArea.Q<Button>("InfoButton");
@@ -68,7 +66,6 @@ public class SpectatorHUD_UIState : AHUDState
     protected override void RegisterUICallbacksOnAwake()
     {
         _pauseButton.RegisterCallback<ClickEvent>(OnPauseClicked);
-        _heritageButton.RegisterCallback<ClickEvent>(OnHeritageClicked);
         _milestoneInfoButton.RegisterCallback<ClickEvent>(OnMilestoneClicked);
         _nextMilestoneButton.RegisterCallback<ClickEvent>(OnNextMilestoneClicked);
         _previousMilestoneButton.RegisterCallback<ClickEvent>(OnPreviousMilestoneClicked);
@@ -129,12 +126,6 @@ public class SpectatorHUD_UIState : AHUDState
     #endregion
 
     #region CALLBACK METHODS
-    void OnHeritageClicked(ClickEvent evt)
-    {
-        _uiManager.SwitchToHeritageState();
-        _soundManager.PlayButtonClickSFX();
-    }
-
     void OnMilestoneClicked(ClickEvent evt)
     {
         ShowContextualPanel(_progressManager.CurrentMilestoneMapping);

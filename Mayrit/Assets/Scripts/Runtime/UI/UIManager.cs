@@ -12,7 +12,6 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     public bool IsInSpectatorHUDState => _sfsm.IsCurrentState(_spectatorHUDState);
     public bool IsInPlayerHUDState => _sfsm.IsCurrentState(_playerHUDState);
     public bool IsInPauseState => _sfsm.IsCurrentState(_pauseState);
-    public bool IsInHeritageState => _sfsm.IsCurrentState(_heritageState);
     public bool IsInSettingsMenuState => _sfsm.IsCurrentState(_settingsMenuState);
     public bool IsInLoadingScreenState => _sfsm.IsCurrentState(_loadingScreenState);
     //public Vector2 TooltipOffset => _tooltipOffset; // TODO: remove later
@@ -59,7 +58,6 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     SpectatorHUD_UIState _spectatorHUDState;
     PlayerHUD_UIState _playerHUDState;
     PauseMenu_UIState _pauseState;
-    HeritageMenu_UIState _heritageState;
     SettingsMenu_UIState _settingsMenuState;
     LoadingScreen_UIState _loadingScreenState;
 
@@ -81,7 +79,6 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
         _spectatorHUDState = new(_uiDocument);
         _playerHUDState = new(_uiDocument);
         _pauseState = new(_uiDocument);
-        _heritageState = new(_uiDocument);
         _settingsMenuState = new(_uiDocument);
         _loadingScreenState = new(_uiDocument, _fadeInDuration, _fadeOutDuration);
 
@@ -90,7 +87,6 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
         _spectatorHUDState.AwakeState();
         _playerHUDState.AwakeState();
         _pauseState.AwakeState();
-        _heritageState.AwakeState();
         _settingsMenuState.AwakeState();
         _loadingScreenState.AwakeState();
 
@@ -126,11 +122,14 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     #endregion
 
     #region STATE HANDLING
-    public void SwitchToMainMenuState() => _sfsm?.SwitchState(_mainMenuState);
+    public void SwitchToMainMenuState()
+    {
+        _mainMenuState.OnMainMenuSceneLoadedFully(); // Show buttons if not shown yet
+        _sfsm?.SwitchState(_mainMenuState);
+    }
     public void SwitchToSpectatorHUDState() => _sfsm?.SwitchState(_spectatorHUDState);
     public void SwitchToPlayerHUDState() => _sfsm?.SwitchState(_playerHUDState);
     public void SwitchToPauseState() => _sfsm?.SwitchState(_pauseState);
-    public void SwitchToHeritageState() => _sfsm?.SwitchState(_heritageState);
     public void SwitchToSettingsMenuState() => _sfsm?.SwitchState(_settingsMenuState);
     public void SwitchToLoadingScreenState() => _sfsm?.SwitchState(_loadingScreenState);
     #endregion

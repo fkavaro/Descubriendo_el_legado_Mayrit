@@ -1,6 +1,6 @@
 ﻿<Solution>
-  <Project Path="Mayrit.csproj" />
   <Project Path="Mayrit.Behaviour.csproj" />
+  <Project Path="Mayrit.csproj" />
   <Project Path="sc.terrain.painter.runtime.csproj" />
   <Project Path="Assembly-CSharp-Editor.csproj" />
   <Project Path="Mayrit.Utils.csproj" />
