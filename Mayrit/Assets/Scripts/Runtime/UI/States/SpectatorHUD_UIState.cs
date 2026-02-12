@@ -106,6 +106,8 @@ public class SpectatorHUD_UIState : AHUDState
             _milestoneArea.style.display = DisplayStyle.Flex;
 
         _nextMilestoneButton.SetEnabled(_progressManager.IsNextMilestoneAvailable());
+
+        _playerFollowerComponent.Start();
     }
 
     public override void UpdateState()

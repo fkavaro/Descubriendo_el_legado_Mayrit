@@ -8,9 +8,10 @@ public class PlayerFollower
 
     private readonly VisualElement _container;
     private readonly VisualElement _angle;
+    UIManager _uiManager;
+    CameraManager _cameraManager;
 
     public Transform PlayerTransform;
-    public Vector2 _screenMargin = new(50f, 50f);
     Vector2 _screenCenter;
     Vector2 _followerCenter;
     Vector2 _direction;
@@ -31,20 +32,30 @@ public class PlayerFollower
     #endregion
 
     #region PUBLIC METHODS
+    public void Start()
+    {
+        if (_uiManager == null)
+            _uiManager = ServiceLocator.Instance.Get<UIManager>();
+        if (_cameraManager == null)
+            _cameraManager = ServiceLocator.Instance.Get<CameraManager>();
+
+        if (_uiManager == null)
+            Debug.LogWarning("PlayerFollower: UIManager not found in ServiceLocator.");
+        if (_cameraManager == null)
+            Debug.LogWarning("PlayerFollower: CameraManager not found in ServiceLocator.");
+    }
+
     public void Update()
     {
-        if (PlayerTransform == null)
+        if (PlayerTransform == null ||
+            !_cameraManager.IsInSpectatorState ||
+            Camera.main == null)
         {
             HideFollower();
             return;
         }
 
         Camera mainCamera = Camera.main; // TODO: avoid this
-        if (mainCamera == null)
-        {
-            HideFollower();
-            return;
-        }
 
         // Project the player into screen/viewport space for visibility checks.
         _playerScreenPos = mainCamera.WorldToScreenPoint(PlayerTransform.position);
@@ -134,10 +145,10 @@ public class PlayerFollower
         Vector2 uiScreenCenter = ScreenToUICoordinates(_screenCenter);
 
         // Intersect the ray from the center with the screen rectangle in UI space.
-        float minX = halfSize.x + _screenMargin.x;
-        float maxX = Screen.width - halfSize.x - _screenMargin.x;
-        float minY = halfSize.y + _screenMargin.y;
-        float maxY = Screen.height - halfSize.y - _screenMargin.y;
+        float minX = halfSize.x + _uiManager.PlayerFollowerScreenMargin.x;
+        float maxX = Screen.width - halfSize.x - _uiManager.PlayerFollowerScreenMargin.x;
+        float minY = halfSize.y + _uiManager.PlayerFollowerScreenMargin.y;
+        float maxY = Screen.height - halfSize.y - _uiManager.PlayerFollowerScreenMargin.y;
 
         float tx = Mathf.Abs(direction.x) < NEAR_ZERO
             ? float.PositiveInfinity
@@ -154,8 +165,8 @@ public class PlayerFollower
     {
         // screenPos is already in UI Toolkit coordinates (from ClampToScreenBorder)
         // Convert from center to top-left corner
-        float uiX = screenPos.x - halfSize.x;
-        float uiY = screenPos.y - halfSize.y;
+        float uiX = screenPos.x - halfSize.x - _uiManager.PlayerFollowerPositionOffset.x;
+        float uiY = screenPos.y - halfSize.y - _uiManager.PlayerFollowerPositionOffset.y;
 
         _container.style.left = uiX;
         _container.style.top = uiY;

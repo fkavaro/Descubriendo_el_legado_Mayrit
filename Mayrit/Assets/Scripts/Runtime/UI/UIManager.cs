@@ -20,6 +20,8 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     public float MusicVolumeValueSet => _musicVolumeValueSet;
     public float SFXVolumeValueSet => _sfxVolumeValueSet;
     public bool IsCursorOverUI => BehaviourSystem.CurrentState.IsCursorOverUI();
+    public Vector2 PlayerFollowerScreenMargin => _playerFollowerScreenMargin;
+    public Vector2 PlayerFollowerPositionOffset => _playerFollowerPositionOffset;
     #endregion
 
     #region EDITOR PROPERTIES
@@ -27,8 +29,12 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     [SerializeField] float _fadeInDuration = 5f;
     [SerializeField] float _fadeOutDuration = 1f;
 
-    [Header("Other settings")]
+    [Header("Player Follower")]
     //[SerializeField] Vector2 _tooltipOffset = new(-30, -30); // TODO: remove later
+    [SerializeField] Vector2 _playerFollowerScreenMargin = new(100f, 100f);
+    [SerializeField] Vector2 _playerFollowerPositionOffset = new(25f, 25f);
+
+    [Header("Settings menu values")]
     [SerializeField] bool _edgeScrollingValueSet = true;
     [SerializeField] bool _controlsVisibilityValueSet = true;
     [SerializeField] float _musicVolumeValueSet = 1f;
