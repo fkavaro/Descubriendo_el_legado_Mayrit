@@ -6,8 +6,8 @@ public class PlayerFollower
     #region PROPERTIES
     const float NEAR_ZERO = 0.0001f;
 
-    private readonly VisualElement _playerFollower;
-    private readonly VisualElement _playerFollowerAngle;
+    private readonly VisualElement _container;
+    private readonly VisualElement _angle;
 
     public Transform PlayerTransform;
     public Vector2 _screenMargin = new(50f, 50f);
@@ -20,10 +20,13 @@ public class PlayerFollower
     #endregion
 
     #region CONSTRUCTOR
-    public PlayerFollower(VisualElement playerFollower, VisualElement playerFollowerAngle)
+    public PlayerFollower(VisualElement container)
     {
-        _playerFollower = playerFollower;
-        _playerFollowerAngle = playerFollowerAngle;
+        _container = container;
+        _angle = _container.Q<VisualElement>("Angle");
+
+        if (_angle == null)
+            Debug.LogWarning("PlayerFollower: No VisualElement with name 'Angle' was found in the container.");
     }
     #endregion
 
@@ -56,7 +59,7 @@ public class PlayerFollower
         ShowFollower();
 
         _screenCenter = new Vector2(Screen.width, Screen.height) * 0.5f;
-        _followerCenter = GetCenter(_playerFollower);
+        _followerCenter = GetCenter(_container);
 
         // Direction from screen center to player (flipped if behind camera).
         _direction = GetDirectionFromCenter(_playerScreenPos, _screenCenter);
@@ -71,14 +74,14 @@ public class PlayerFollower
     #region PRIVATE METHODS
     void HideFollower()
     {
-        if (_playerFollower.style.display != DisplayStyle.None)
-            _playerFollower.style.display = DisplayStyle.None;
+        if (_container.style.display != DisplayStyle.None)
+            _container.style.display = DisplayStyle.None;
     }
 
     void ShowFollower()
     {
-        if (_playerFollower.style.display != DisplayStyle.Flex)
-            _playerFollower.style.display = DisplayStyle.Flex;
+        if (_container.style.display != DisplayStyle.Flex)
+            _container.style.display = DisplayStyle.Flex;
     }
 
     Vector2 ScreenToUICoordinates(Vector3 screenPos)
@@ -122,8 +125,6 @@ public class PlayerFollower
         float halfWidth = width * 0.5f;
         float halfHeight = height * 0.5f;
 
-        Debug.Log($"Element resolved dimensions - Width: {width}, Height: {height}, HalfWidth: {halfWidth}, HalfHeight: {halfHeight}");
-
         return new Vector2(halfWidth, halfHeight);
     }
 
@@ -156,15 +157,15 @@ public class PlayerFollower
         float uiX = screenPos.x - halfSize.x;
         float uiY = screenPos.y - halfSize.y;
 
-        _playerFollower.style.left = uiX;
-        _playerFollower.style.top = uiY;
+        _container.style.left = uiX;
+        _container.style.top = uiY;
     }
 
     void SetFollowerRotation(Vector2 direction)
     {
         // direction is in UI space (Y down), and Atan2 works correctly for this
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 90f;
-        _playerFollowerAngle.style.rotate = new Rotate(new Angle(angle, AngleUnit.Degree));
+        _angle.style.rotate = new Rotate(new Angle(angle, AngleUnit.Degree));
     }
     #endregion
 }

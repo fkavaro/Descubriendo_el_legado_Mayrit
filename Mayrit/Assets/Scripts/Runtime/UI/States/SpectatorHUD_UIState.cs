@@ -19,8 +19,7 @@ public class SpectatorHUD_UIState : AHUDState
         _previousMilestoneButton,
         _modernSuperpositionButton;
     VisualElement _milestoneArea,
-        _playerFollower,
-        _playerFollowerAngle;
+        _playerFollower;
 
     // Dependency Injection
     ProgressManager _progressManager;
@@ -46,7 +45,6 @@ public class SpectatorHUD_UIState : AHUDState
         _previousMilestoneButton = _milestoneArea.Q<Button>("PreviousMilestoneButton");
         _modernSuperpositionButton = _screen.Q<Button>("ModernSuperpositionButton");
         _playerFollower = _screen.Q<VisualElement>("PlayerFollower");
-        _playerFollowerAngle = _playerFollower.Q<VisualElement>("PlayerFollowerAngle");
 
         if (_pauseButton == null)
             Debug.LogWarning("_pauseButton not found");
@@ -68,9 +66,8 @@ public class SpectatorHUD_UIState : AHUDState
             Debug.LogWarning("_modernSuperpositionButton button not found");
         if (_playerFollower == null)
             Debug.LogWarning("_playerFollower not found");
-        if (_playerFollowerAngle == null) Debug.LogWarning("_playerFollowerAngle not found");
 
-        _playerFollowerComponent = new PlayerFollower(_playerFollower, _playerFollowerAngle);
+        _playerFollowerComponent = new PlayerFollower(_playerFollower);
     }
 
     protected override void RegisterUICallbacksOnAwake()
