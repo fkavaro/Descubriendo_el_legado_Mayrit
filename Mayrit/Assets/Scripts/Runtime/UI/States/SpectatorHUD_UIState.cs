@@ -8,6 +8,8 @@ public class SpectatorHUD_UIState : AHUDState
     #region PROPERTIES
     public event Action OnModernSuperpositionEvent;
 
+    PlayerFollower _playerFollowerComponent;
+
     Label _tooltip,
         _milestoneName,
         _milestoneDate;
@@ -16,10 +18,11 @@ public class SpectatorHUD_UIState : AHUDState
         _nextMilestoneButton,
         _previousMilestoneButton,
         _modernSuperpositionButton;
-    VisualElement _milestoneArea;
+    VisualElement _milestoneArea,
+        _playerFollower,
+        _playerFollowerAngle;
 
     // Dependency Injection
-    CameraManager _cameraManager;
     ProgressManager _progressManager;
     #endregion
 
@@ -42,6 +45,8 @@ public class SpectatorHUD_UIState : AHUDState
         _nextMilestoneButton = _milestoneArea.Q<Button>("NextMilestoneButton");
         _previousMilestoneButton = _milestoneArea.Q<Button>("PreviousMilestoneButton");
         _modernSuperpositionButton = _screen.Q<Button>("ModernSuperpositionButton");
+        _playerFollower = _screen.Q<VisualElement>("PlayerFollower");
+        _playerFollowerAngle = _playerFollower.Q<VisualElement>("PlayerFollowerAngle");
 
         if (_pauseButton == null)
             Debug.LogWarning("_pauseButton not found");
@@ -61,6 +66,11 @@ public class SpectatorHUD_UIState : AHUDState
             Debug.LogWarning("_previousMilestoneButton button not found");
         if (_modernSuperpositionButton == null)
             Debug.LogWarning("_modernSuperpositionButton button not found");
+        if (_playerFollower == null)
+            Debug.LogWarning("_playerFollower not found");
+        if (_playerFollowerAngle == null) Debug.LogWarning("_playerFollowerAngle not found");
+
+        _playerFollowerComponent = new PlayerFollower(_playerFollower, _playerFollowerAngle);
     }
 
     protected override void RegisterUICallbacksOnAwake()
@@ -76,7 +86,6 @@ public class SpectatorHUD_UIState : AHUDState
     {
         base.GetServicesDependenciesOnStart();
 
-        _cameraManager = ServiceLocator.Instance.Get<CameraManager>();
         _progressManager = ServiceLocator.Instance.Get<ProgressManager>();
     }
 
@@ -100,6 +109,13 @@ public class SpectatorHUD_UIState : AHUDState
             _milestoneArea.style.display = DisplayStyle.Flex;
 
         _nextMilestoneButton.SetEnabled(_progressManager.IsNextMilestoneAvailable());
+    }
+
+    public override void UpdateState()
+    {
+        base.UpdateState();
+
+        _playerFollowerComponent.Update();
     }
 
     protected override void UnsubscribeToServicesEventsOnExit()
@@ -166,6 +182,8 @@ public class SpectatorHUD_UIState : AHUDState
             _previousMilestoneButton.SetEnabled(true);
 
         ShowContextualPanel(mapping);
+
+        _playerFollowerComponent.PlayerTransform = ServiceLocator.Instance.Get<PlayableCharacter>().transform;
     }
 
     // TODO: remove later
