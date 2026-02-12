@@ -70,7 +70,7 @@
     font-size: 35px;
     -unity-font-style: bold;
     color: rgb(255, 255, 255);
-    background-color: rgb(113, 119, 153);
+    background-color: rgb(89, 96, 140);
     border-left-color: rgb(47, 68, 89);
     border-right-color: rgb(47, 68, 89);
     border-top-color: rgb(47, 68, 89);
@@ -96,12 +96,11 @@
 }
 
 .button:hover {
-    background-color: rgb(117, 191, 190);
+    background-color: rgb(111, 122, 185);
+    scale: 1.05 1.05;
 }
 
-.button:active {
-    scale: 0.9 0.9;
-}
+
 
 .button.smallButton {
     width: 80px;
@@ -140,10 +139,6 @@
     border-bottom-left-radius: 20px;
 }
 
-
-
-
-
 .landmarkVisual {
     background-color: rgba(0, 0, 0, 0);
     top: 0;
@@ -170,4 +165,25 @@
     border-bottom-right-radius: 200px;
     border-bottom-left-radius: 200px;
     scale: 1.1 1.1 1.1;
+}
+
+.button.closeButton {
+    width: 80px;
+    height: 80px;
+    font-size: 30px;
+    position: absolute;
+    background-color: rgb(156, 66, 64);
+    border-left-color: rgb(89, 48, 47);
+    border-right-color: rgb(89, 48, 47);
+    border-top-color: rgb(89, 48, 47);
+    border-bottom-color: rgb(89, 48, 47);
+}
+
+
+
+.button.closeButton:hover {
+    width: 80px;
+    height: 80px;
+    position: absolute;
+    background-color: rgb(192, 76, 75);
 }
