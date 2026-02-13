@@ -53,10 +53,13 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     //public event Action HideTooltipEvent;
 
     public event Action PlayCharacterClickedEvent;
-    public event Action ModernSuperpositionToggledEvent;
     public event Action<bool> EdgeScrollingToggledEvent;
     public event Action<float> MusicVolumeChangedEvent;
     public event Action<float> SFXVolumeChangedEvent;
+    public event Action<bool> ModernVisualizationToggled;
+    public event Action<bool> LandmarkVisualizationToggled;
+    public bool IsModernVisualizationOn { get => _spectatorHUDState._modernVisualizactionSwitch.Value; }
+    public bool IsLandmarkVisualizationOn { get => _spectatorHUDState._landmarkVisualizationSwitch.Value; }
 
     // Stack FSM
     StackFiniteStateMachine<AUIState> _sfsm;
@@ -193,7 +196,12 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
         {
             _mainMenuState.OnMainMenuSceneLoadedFully(); // Show buttons
 
-            // Unsubscribe from events
+            _playerHUDState.ContextualPanelHiddenEvent -= OnContextualPanelHidden;
+            _spectatorHUDState.ContextualPanelHiddenEvent -= OnContextualPanelHidden;
+            _spectatorHUDState.PlayCharacterEvent -= OnPlayCharacterClicked;
+            _spectatorHUDState._modernVisualizactionSwitch.Toggled -= OnModernVisualizationToggled;
+            _spectatorHUDState._landmarkVisualizationSwitch.Toggled -= OnLandmarkVisualizationToggled;
+
             if (_tourManager != null)
             {
                 _tourManager.POIVisitedEvent -= OnTourPOIVisited;
@@ -205,11 +213,6 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
                 _cameraManager.CameraStateChangedEvent -= OnCameraStateChanged;
                 _cameraManager = null;
             }
-
-            _playerHUDState.ContextualPanelHiddenEvent -= OnContextualPanelHidden;
-            _spectatorHUDState.ContextualPanelHiddenEvent -= OnContextualPanelHidden;
-            _spectatorHUDState.PlayCharacterEvent -= OnPlayCharacterClicked;
-            _spectatorHUDState.OnModernSuperpositionEvent -= OnModernSuperpositionToggled;
         }
         // In gameplay scene
         else if (loadedScenes.ContainsValue(SceneDatabase.SceneName.GameplayScene))
@@ -222,7 +225,8 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
             _playerHUDState.ContextualPanelHiddenEvent += OnContextualPanelHidden;
             _spectatorHUDState.ContextualPanelHiddenEvent += OnContextualPanelHidden;
             _spectatorHUDState.PlayCharacterEvent += OnPlayCharacterClicked;
-            _spectatorHUDState.OnModernSuperpositionEvent += OnModernSuperpositionToggled;
+            _spectatorHUDState._modernVisualizactionSwitch.Toggled += OnModernVisualizationToggled;
+            _spectatorHUDState._landmarkVisualizationSwitch.Toggled += OnLandmarkVisualizationToggled;
             _tourManager.POIVisitedEvent += OnTourPOIVisited;
             _cameraManager.CameraStateChangedEvent += OnCameraStateChanged;
         }
@@ -248,9 +252,14 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
         PlayCharacterClickedEvent?.Invoke();
     }
 
-    void OnModernSuperpositionToggled()
+    void OnModernVisualizationToggled(bool value)
     {
-        ModernSuperpositionToggledEvent?.Invoke();
+        ModernVisualizationToggled?.Invoke(value);
+    }
+
+    void OnLandmarkVisualizationToggled(bool value)
+    {
+        LandmarkVisualizationToggled?.Invoke(value);
     }
 
     void OnTourPOIVisited(PointOfInterest poi)

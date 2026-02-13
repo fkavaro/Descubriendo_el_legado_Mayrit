@@ -3,7 +3,12 @@ using UnityEngine;
 
 public class ModernSuperposition : MonoBehaviour
 {
-    #region PROPERTY HELPERS
+    #region EDITOR PROPERTIES
+    [Header("Settings")]
+    public bool _isActive = false;
+    #endregion
+
+    #region INTERNAL PROPERTIES
     bool IsActive
     {
         get { return _isActive; }
@@ -13,11 +18,8 @@ public class ModernSuperposition : MonoBehaviour
             SetChildrenActive(_isActive);
         }
     }
-    #endregion
 
-    #region EDITOR PROPERTIES
-    [Header("Settings")]
-    public bool _isActive = false;
+    bool _wasActive;
 
     // Dependency Injection
     CameraManager _cameraManager;
@@ -30,25 +32,27 @@ public class ModernSuperposition : MonoBehaviour
         // Get dependencies from ServiceLocator
         _cameraManager = ServiceLocator.Instance.Get<CameraManager>();
         _uiManager = ServiceLocator.Instance.Get<UIManager>();
+
+        IsActive = _uiManager.IsModernVisualizationOn;
     }
 
     void Start()
     {
         // Subscribe to events
         _cameraManager.CameraStateChangedEvent += OnCameraStateChanged;
-        _uiManager.ModernSuperpositionToggledEvent += ToggleMode;
+        _uiManager.ModernVisualizationToggled += OnVisualizationToggled;
     }
 
     void OnValidate()
     {
         SetChildrenActive(IsActive);
     }
-    #endregion 
 
-    #region PUBLIC METHODS
-    public void ToggleMode()
+    void OnDisable()
     {
-        IsActive = !IsActive;
+        // Unsubscribe from events
+        _cameraManager.CameraStateChangedEvent -= OnCameraStateChanged;
+        _uiManager.ModernVisualizationToggled -= OnVisualizationToggled;
     }
     #endregion
 
@@ -65,6 +69,14 @@ public class ModernSuperposition : MonoBehaviour
     {
         if (_cameraManager.IsInThirdPersonState || _cameraManager.IsInPOIState)
             IsActive = false;
+        else
+            IsActive = _wasActive;
+    }
+
+    void OnVisualizationToggled(bool value)
+    {
+        IsActive = value;
+        _wasActive = value;
     }
     #endregion
 }

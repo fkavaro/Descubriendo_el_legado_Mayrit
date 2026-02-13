@@ -17,12 +17,7 @@ public class LandmarkVisual : Billboard
     #endregion
 
     #region INTERNAL PROPERTIES
-    Label _nameLabel;
-    Button _nameButton;
-    Vector3 _originalPosition;
     float OriginalHeight => _originalPosition.y;
-
-    // Computed properties
     float CameraDistance
     {
         get
@@ -31,6 +26,11 @@ public class LandmarkVisual : Billboard
         }
     }
 
+    VisualElement _rootVisual;
+    Label _nameLabel;
+    Button _nameButton;
+    Vector3 _originalPosition;
+    bool _wasActive = true;
 
     // Dependency Injection
     UIManager _uiManager;
@@ -50,12 +50,10 @@ public class LandmarkVisual : Billboard
         if (_orbitalStateSetting.Target == null)
             _orbitalStateSetting.Target = transform; // Default to self if no target assigned
 
-        _originalPosition = transform.position;
+        _rootVisual = GetComponent<UIDocument>().rootVisualElement;
 
-        VisualElement root = GetComponent<UIDocument>().rootVisualElement;
-
-        _nameLabel = root.Q<Label>("Name");
-        _nameButton = root.Q<Button>("NameButton");
+        _nameLabel = _rootVisual.Q<Label>("Name");
+        _nameButton = _rootVisual.Q<Button>("NameButton");
 
         if (_nameLabel == null)
         {
@@ -69,18 +67,21 @@ public class LandmarkVisual : Billboard
             return;
         }
 
-        _nameLabel.text = _orbitalStateSetting.DataToShow.Header;
-        _nameButton.RegisterCallback<ClickEvent>(OnNameButtonClick);
-    }
 
-    void Start()
-    {
-        // Get dependency from Service Locator
+        _nameLabel.text = _orbitalStateSetting.DataToShow.Header;
+        _nameButton.RegisterCallback<ClickEvent>(OnClicked);
+
+        // Get dependencies from Service Locator
         _uiManager = ServiceLocator.Instance.Get<UIManager>();
         _soundManager = ServiceLocator.Instance.Get<SoundManager>();
         _cameraManager = ServiceLocator.Instance.Get<CameraManager>();
 
+        _rootVisual.visible = _uiManager.IsLandmarkVisualizationOn;
+
         _cameraManager.CameraStateChangedEvent += OnCameraStateChanged;
+        _uiManager.LandmarkVisualizationToggled += OnVisualizationToggled;
+
+        _originalPosition = transform.position;
     }
 
     protected override void Update()
@@ -91,13 +92,13 @@ public class LandmarkVisual : Billboard
         {
             if (_isTooFar)
             {
-                if (_nameButton.visible)
-                    _nameButton.visible = false;
+                if (_rootVisual.visible)
+                    _rootVisual.visible = false;
             }
             else
             {
-                if (!_nameButton.visible)
-                    _nameButton.visible = true;
+                if (!_rootVisual.visible && _wasActive)
+                    _rootVisual.visible = true;
             }
         }
 
@@ -111,15 +112,14 @@ public class LandmarkVisual : Billboard
 
     void OnDisable()
     {
-        _nameButton?.UnregisterCallback<ClickEvent>(OnNameButtonClick);
-
-        if (_cameraManager != null)
-            _cameraManager.CameraStateChangedEvent -= OnCameraStateChanged;
+        _nameButton.UnregisterCallback<ClickEvent>(OnClicked);
+        _cameraManager.CameraStateChangedEvent -= OnCameraStateChanged;
+        _uiManager.LandmarkVisualizationToggled -= OnVisualizationToggled;
     }
     #endregion
 
     #region CALLBACK METHODS
-    void OnNameButtonClick(ClickEvent evt)
+    void OnClicked(ClickEvent evt)
     {
         _uiManager.ShowContextualPanel(_orbitalStateSetting.DataToShow);
         _soundManager.PlayButtonClickSFX();
@@ -135,10 +135,16 @@ public class LandmarkVisual : Billboard
 
     void OnCameraStateChanged()
     {
-        if (_cameraManager.IsInSpectatorState)
-            _nameButton.visible = true;
+        if (_cameraManager.IsInThirdPersonState || _cameraManager.IsInPOIState)
+            _rootVisual.visible = false;
         else
-            _nameButton.visible = false;
+            _rootVisual.visible = _wasActive;
+    }
+
+    void OnVisualizationToggled(bool value)
+    {
+        _rootVisual.visible = value;
+        _wasActive = value;
     }
     #endregion
 }

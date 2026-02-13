@@ -6,8 +6,6 @@ using UnityEngine.InputSystem;
 public class SpectatorHUD_UIState : AHUDState
 {
     #region PROPERTIES
-    public event Action OnModernSuperpositionEvent;
-
     PlayerFollower _playerFollowerComponent;
 
     Label _tooltip,
@@ -16,10 +14,12 @@ public class SpectatorHUD_UIState : AHUDState
     Button _pauseButton,
         _milestoneInfoButton,
         _nextMilestoneButton,
-        _previousMilestoneButton,
-        _modernSuperpositionButton;
+        _previousMilestoneButton;
     VisualElement _milestoneArea,
         _playerFollower;
+
+    public Switch _modernVisualizactionSwitch,
+        _landmarkVisualizationSwitch;
 
     // Dependency Injection
     ProgressManager _progressManager;
@@ -43,8 +43,9 @@ public class SpectatorHUD_UIState : AHUDState
         _milestoneDate = _milestoneArea.Q<Label>("Date");
         _nextMilestoneButton = _milestoneArea.Q<Button>("NextMilestoneButton");
         _previousMilestoneButton = _milestoneArea.Q<Button>("PreviousMilestoneButton");
-        _modernSuperpositionButton = _screen.Q<Button>("ModernSuperpositionButton");
         _playerFollower = _screen.Q<VisualElement>("PlayerFollower");
+        _modernVisualizactionSwitch = _screen.Q<Switch>("ModernVisualizationSwitch");
+        _landmarkVisualizationSwitch = _screen.Q<Switch>("LandmarkVisualizationSwitch");
 
         if (_pauseButton == null)
             Debug.LogWarning("_pauseButton not found");
@@ -62,10 +63,12 @@ public class SpectatorHUD_UIState : AHUDState
             Debug.LogWarning("_nextMilestoneButton button not found");
         if (_previousMilestoneButton == null)
             Debug.LogWarning("_previousMilestoneButton button not found");
-        if (_modernSuperpositionButton == null)
-            Debug.LogWarning("_modernSuperpositionButton button not found");
         if (_playerFollower == null)
             Debug.LogWarning("_playerFollower not found");
+        if (_modernVisualizactionSwitch == null)
+            Debug.LogWarning("_modernVisualizactionSwitch not found");
+        if (_landmarkVisualizationSwitch == null)
+            Debug.LogWarning("_landmarkVisualizationSwitch not found");
 
         _playerFollowerComponent = new PlayerFollower(_playerFollower);
     }
@@ -76,7 +79,9 @@ public class SpectatorHUD_UIState : AHUDState
         _milestoneInfoButton.RegisterCallback<ClickEvent>(OnMilestoneClicked);
         _nextMilestoneButton.RegisterCallback<ClickEvent>(OnNextMilestoneClicked);
         _previousMilestoneButton.RegisterCallback<ClickEvent>(OnPreviousMilestoneClicked);
-        _modernSuperpositionButton.RegisterCallback<ClickEvent>(OnModerSuperpositionToggled);
+
+        _modernVisualizactionSwitch.Toggled += OnModernSuperpositionToggled;
+        _landmarkVisualizationSwitch.Toggled += OnLandmarkVisualizationToggled;
     }
 
     protected override void GetServicesDependenciesOnStart()
@@ -159,9 +164,12 @@ public class SpectatorHUD_UIState : AHUDState
         _soundManager.PlayButtonClickSFX();
     }
 
-    void OnModerSuperpositionToggled(ClickEvent evt)
+    private void OnModernSuperpositionToggled(bool value)
     {
-        OnModernSuperpositionEvent?.Invoke();
+        _soundManager.PlayButtonClickSFX();
+    }
+    private void OnLandmarkVisualizationToggled(bool value)
+    {
         _soundManager.PlayButtonClickSFX();
     }
 
