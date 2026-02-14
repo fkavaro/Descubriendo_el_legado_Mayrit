@@ -154,7 +154,7 @@
                 <ui:Label text="¡Tour completado!" class="header" style="-unity-text-align: upper-center;"/>
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="ContextualPanel" style="width: 35%; border-top-left-radius: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px; border-bottom-left-radius: 20px; display: none; padding-top: 40px; padding-right: 40px; padding-bottom: 40px; padding-left: 40px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; position: absolute; top: 0; right: 0; bottom: 0; flex-grow: 1; justify-content: center; visibility: visible;">
+        <ui:VisualElement name="ContextualPanel" style="width: 35%; border-top-left-radius: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px; border-bottom-left-radius: 20px; padding-top: 40px; padding-right: 40px; padding-bottom: 40px; padding-left: 40px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; position: absolute; top: 0; right: 0; bottom: 0; flex-grow: 1; justify-content: center; display: none;">
             <ui:VisualElement name="BlurBg" style="background-color: rgba(0, 0, 0, 0.94); filter: blur(50); height: 140%; width: 140%; align-self: center; position: absolute; justify-content: space-around; right: -200px;"/>
             <ui:VisualElement name="InformationArea" style="flex-grow: 1;">
                 <ui:VisualElement name="UpperArea" style="flex-direction: row-reverse; flex-grow: 0; flex-shrink: 0; margin-bottom: 20px;">
