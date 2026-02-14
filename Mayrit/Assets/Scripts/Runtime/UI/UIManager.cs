@@ -282,6 +282,9 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
 
     public IEnumerator FadeOutLoadingScreenCoroutine()
     {
+        // Fade out after continue button is clicked in loading screen
+        while (!_loadingScreenState.ContinueIsClicked)
+            yield return null;
         yield return _loadingScreenState.FadeOutCoroutine();
     }
     #endregion

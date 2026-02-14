@@ -20,9 +20,6 @@ public class SpectatorHUD_UIState : AHUDState
 
     public Switch _modernVisualizactionSwitch,
         _landmarkVisualizationSwitch;
-
-    // Dependency Injection
-    ProgressManager _progressManager;
     #endregion
 
     #region CONSTRUCTOR
@@ -187,8 +184,6 @@ public class SpectatorHUD_UIState : AHUDState
             _previousMilestoneButton.SetEnabled(false);
         else
             _previousMilestoneButton.SetEnabled(true);
-
-        ShowContextualPanel(mapping);
 
         _playerFollowerComponent.PlayerTransform = ServiceLocator.Instance.Get<PlayableCharacter>().transform;
     }

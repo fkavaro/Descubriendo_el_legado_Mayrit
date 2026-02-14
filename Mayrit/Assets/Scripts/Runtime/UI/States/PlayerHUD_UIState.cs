@@ -14,7 +14,6 @@ public class PlayerHUD_UIState : AHUDState
 
     // Dependency Injection
     TourManager _tourManager;
-    ProgressManager _progressManager;
     #endregion
 
     #region CONSTRUCTOR

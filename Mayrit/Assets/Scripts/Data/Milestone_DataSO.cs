@@ -10,5 +10,4 @@ public class Milestone_DataSO : DataSO
 
     public SceneDatabase.SceneName SceneName => _sceneName;
     public float WantedTime => _wantedTime;
-    public int Index => _milestoneIndex;
 }

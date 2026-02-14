@@ -104,8 +104,9 @@ where StateType : AState
     /// <summary>
     /// Switches to the previous state in the list.
     /// </summary>
-    public bool SwitchToPreviousStateInSequence()
+    public bool SwitchToPreviousStateInSequence(out int previousStateIndex)
     {
+        previousStateIndex = -1;
         if (_statesSequence.Count == 0 || _currentState == null) return false;
 
         int currentIndex = _statesSequence.IndexOf(_currentState);
@@ -115,6 +116,7 @@ where StateType : AState
 
         StateType previousState = _statesSequence[currentIndex - 1];
 
+        previousStateIndex = currentIndex - 1;
         SwitchState(previousState);
         return true;
     }
@@ -122,8 +124,10 @@ where StateType : AState
     /// <summary>
     /// Switches to the next state in the list.
     /// </summary>
-    public virtual bool SwitchToNextStateInSequence()
+    public virtual bool SwitchToNextStateInSequence(out int nextStateIndex)
     {
+        nextStateIndex = -1;
+
         if (_statesSequence.Count == 0 || _currentState == null) return false;
 
         int currentIndex = _statesSequence.IndexOf(_currentState);
@@ -133,6 +137,7 @@ where StateType : AState
 
         StateType nextState = _statesSequence[currentIndex + 1];
 
+        nextStateIndex = currentIndex + 1;
         SwitchState(nextState);
         return true;
     }

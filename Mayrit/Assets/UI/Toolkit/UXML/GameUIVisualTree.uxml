@@ -11,7 +11,7 @@
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="HUD" picking-mode="Ignore" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; flex-grow: 1; position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; padding-top: 30px; padding-right: 30px; padding-bottom: 30px; padding-left: 30px;">
-        <ui:VisualElement name="SpectatorHUD" enabled="true" picking-mode="Ignore" style="height: auto; width: auto; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; flex-direction: row; display: none; flex-grow: 1; position: absolute; top: 0; left: 0; bottom: 0; right: 0;">
+        <ui:VisualElement name="SpectatorHUD" enabled="true" picking-mode="Ignore" style="height: auto; width: auto; flex-direction: row; display: none; flex-grow: 1; position: absolute; top: 0; left: 0; bottom: 0; right: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 30px; margin-right: 30px; margin-bottom: 30px; margin-left: 30px;">
             <ui:VisualElement style="flex-direction: row; align-self: flex-start; justify-content: center; align-items: center;">
                 <ui:Button text="| |" name="PauseButton" class="button smallButton" style="align-self: flex-start; position: relative; flex-direction: row;"/>
                 <ui:VisualElement style="flex-grow: 1; align-self: center; justify-content: center; align-items: flex-start;">
@@ -93,7 +93,7 @@
             </ui:VisualElement>
             <ui:Label text="Tooltip" name="Tooltip" class="tooltip" style="top: 1108px; left: 17px; border-top-left-radius: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px; border-bottom-left-radius: 10px; background-color: rgb(41, 48, 57); font-size: 15px;"/>
         </ui:VisualElement>
-        <ui:VisualElement name="PlayerHUD" style="justify-content: space-between; align-self: stretch; flex-grow: 1; flex-direction: row; display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0;">
+        <ui:VisualElement name="PlayerHUD" style="justify-content: space-between; align-self: stretch; flex-grow: 1; flex-direction: row; display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 30px; margin-right: 30px; margin-bottom: 30px; margin-left: 30px;">
             <ui:Button text="| |" name="PauseButton" class="button smallButton" style="align-self: flex-start; position: relative; flex-direction: row;"/>
             <ui:VisualElement name="TourArea" style="padding-right: 15px; padding-top: 10px; padding-bottom: 15px; padding-left: 15px; flex-shrink: 0; top: 0; right: 0; position: absolute;">
                 <ui:Label text="Actividad" name="Name" class="header" style="align-self: flex-end; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;"/>

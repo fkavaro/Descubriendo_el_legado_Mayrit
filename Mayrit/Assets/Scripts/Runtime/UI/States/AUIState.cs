@@ -9,9 +9,11 @@ public abstract class AUIState : AState
     public VisualElement _screen;
 
     // Dependency Injection
+    protected ScenesController _scenesController;
     protected UIManager _uiManager;
     protected GameManager _gameManager;
     protected SoundManager _soundManager;
+    protected ProgressManager _progressManager;
     #endregion
 
     #region CONSTRUCTOR
@@ -51,12 +53,16 @@ public abstract class AUIState : AState
 
     protected override void GetServicesDependenciesOnStart()
     {
+        if (_scenesController == null)
+            _scenesController = ServiceLocator.Instance.Get<ScenesController>();
         if (_uiManager == null)
             _uiManager = ServiceLocator.Instance.Get<UIManager>();
         if (_gameManager == null)
             _gameManager = ServiceLocator.Instance.Get<GameManager>();
         if (_soundManager == null)
             _soundManager = ServiceLocator.Instance.Get<SoundManager>();
+        if (_progressManager == null)
+            _progressManager = ServiceLocator.Instance.Get<ProgressManager>();
     }
 
     public override void StartState()

@@ -7,8 +7,6 @@ public class ProgressManager : ABehaviourEntity<FiniteStateMachine<MilestoneStat
 {
     #region PROPERTY HELPERS
     public Milestone_DataSO CurrentMilestoneMapping => _milestoneMappings[_currentMilestoneIndex];
-
-    public int CurrentMilestoneIndex => _currentMilestoneIndex;
     #endregion
 
     #region EDITOR PROPERTIES
@@ -21,7 +19,6 @@ public class ProgressManager : ABehaviourEntity<FiniteStateMachine<MilestoneStat
     [Header("Milestones")]
     [Range(0, 7)]
     [SerializeField] int _currentMilestoneIndex = 0;
-    [SerializeField] Milestone_DataSO _currentMilestoneMapping;
     [SerializeField] List<Milestone_DataSO> _milestoneMappings = new();
     #endregion
 
@@ -47,8 +44,6 @@ public class ProgressManager : ABehaviourEntity<FiniteStateMachine<MilestoneStat
         // Build state for each milestone scene
         for (int i = 0; i < _milestoneMappings.Count; i++)
             _fsm.AddStateToSequence(new MilestoneState(_milestoneMappings[i]));
-
-        _fsm.SwitchedStateEvent += OnStateSwitch;
 
         return _fsm;
     }
@@ -101,22 +96,26 @@ public class ProgressManager : ABehaviourEntity<FiniteStateMachine<MilestoneStat
 
     protected override void Start()
     {
-        _scenesController = ServiceLocator.Instance.Get<ScenesController>();
-        _tourManager = ServiceLocator.Instance.Get<TourManager>();
+        _currentMilestoneIndex = 0; // TODO load from memory
 
+        _scenesController = ServiceLocator.Instance.Get<ScenesController>();
+        _scenesController.SceneLoadedPartiallyEvent += OnSceneLoadedPartially;
         _scenesController.ScenesLoadedFullyEvent += OnScenesLoadedFully;
+
+        // base.Start(); when gameplay scene loaded, to start behaviour system
     }
 
     void OnDisable()
     {
+        _scenesController.SceneLoadedPartiallyEvent -= OnSceneLoadedPartially;
         _scenesController.ScenesLoadedFullyEvent -= OnScenesLoadedFully;
         ServiceLocator.Instance.Unregister(this);
     }
     #endregion
 
     #region PUBLIC METHODS
-    public void SwitchToNextMilestone() => _fsm.SwitchToNextStateInSequence();
-    public void SwitchToPreviousMilestone() => _fsm.SwitchToPreviousStateInSequence();
+    public void SwitchToNextMilestone() => _fsm.SwitchToNextStateInSequence(out _currentMilestoneIndex);
+    public void SwitchToPreviousMilestone() => _fsm.SwitchToPreviousStateInSequence(out _currentMilestoneIndex);
     public bool AtFirstMilestone() => _fsm.AtFistStateInSequence();
     public bool AtLastMilestone() => _fsm.AtLastStateInSequence();
     #endregion
@@ -152,6 +151,12 @@ public class ProgressManager : ABehaviourEntity<FiniteStateMachine<MilestoneStat
     #endregion
 
     #region CALLBACK METHODS
+    void OnSceneLoadedPartially(SceneDatabase.SceneType type, SceneDatabase.SceneName name)
+    {
+        if (name == SceneDatabase.SceneName.GameplayScene)
+            _tourManager = ServiceLocator.Instance.Get<TourManager>();
+    }
+
     void OnScenesLoadedFully(Dictionary<SceneDatabase.SceneType, SceneDatabase.SceneName> loadedScenes, List<SceneDatabase.SceneType> unloadedTypes)
     {
         // If gameplay scene loaded, start behaviour system
@@ -164,12 +169,6 @@ public class ProgressManager : ABehaviourEntity<FiniteStateMachine<MilestoneStat
                 Debug.Log($"[ProgressManager] Milestone Change Event invoked.");
             MilestoneChangedEvent?.Invoke(CurrentMilestoneMapping);
         }
-    }
-
-    void OnStateSwitch()
-    {
-        _currentMilestoneMapping = _fsm.CurrentState.Data;
-        _currentMilestoneIndex = _currentMilestoneMapping.Index;
     }
     #endregion
 }
