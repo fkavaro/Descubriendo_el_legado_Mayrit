@@ -68,6 +68,7 @@ public abstract class AHUDState : AUIState
         _contextualPanel.ShownEvent += OnContextualPanelShownCallback;
         _contextualPanel.ClosedEvent += OnContextualPanelClosedCallback;
         _uiManager.ShowContextualPanelEvent += ShowContextualPanel;
+        _uiManager.OnContextualPanelHiddenEvent += HideContextualPanel;
     }
 
     protected override void UnsubscribeToServicesEventsOnExit()
@@ -76,6 +77,7 @@ public abstract class AHUDState : AUIState
         _contextualPanel.ShownEvent -= OnContextualPanelShownCallback;
         _contextualPanel.ClosedEvent -= OnContextualPanelClosedCallback;
         _uiManager.ShowContextualPanelEvent -= ShowContextualPanel;
+        _uiManager.OnContextualPanelHiddenEvent -= HideContextualPanel;
     }
 
     public override void ExitState()
@@ -101,6 +103,11 @@ public abstract class AHUDState : AUIState
     {
         _wasContextualPanelShown = true;
         _contextualPanel.ShowInfo(data, isCharacterData);
+    }
+    void HideContextualPanel()
+    {
+        _contextualPanel.Hide();
+        OnContextualPanelHidden();
     }
     #endregion
 

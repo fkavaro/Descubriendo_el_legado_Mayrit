@@ -6,8 +6,6 @@ using UnityEngine.InputSystem;
 public class ThirdPerson_CameraState : ACameraState
 {
     #region PROPERTIES
-    public event Action ExitThirdPersonCameraEvent;
-
     readonly ThirdPersonCameraController _cameraController;
     #endregion
 
@@ -25,7 +23,7 @@ public class ThirdPerson_CameraState : ACameraState
         base.StartState();
 
         _gameManager.InputActions.Camera.Enable();
-        _gameManager.InputActions.Camera.ExitMode.performed += OnExitThirdPersonModePressed;
+        _gameManager.InputActions.Camera.ExitMode.performed += OnExitCameraMode;
 
         // Lock cursor to screen center and hide it
         Cursor.lockState = CursorLockMode.Locked;
@@ -60,7 +58,7 @@ public class ThirdPerson_CameraState : ACameraState
         base.ExitState();
 
         _gameManager.InputActions.Camera.Disable();
-        _gameManager.InputActions.Camera.ExitMode.performed -= OnExitThirdPersonModePressed;
+        _gameManager.InputActions.Camera.ExitMode.performed -= OnExitCameraMode;
 
         // Unlock cursor and make it visible
         Cursor.lockState = CursorLockMode.None;
@@ -68,9 +66,9 @@ public class ThirdPerson_CameraState : ACameraState
     #endregion
 
     #region CALLBACK METHODS
-    void OnExitThirdPersonModePressed(InputAction.CallbackContext context)
+    void OnExitCameraMode(InputAction.CallbackContext context)
     {
-        ExitThirdPersonCameraEvent?.Invoke();
+        _cameraManager.SwitchToSpectatorCamera();
     }
     #endregion
 }

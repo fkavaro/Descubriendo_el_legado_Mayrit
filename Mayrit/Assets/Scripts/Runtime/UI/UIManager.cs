@@ -149,6 +149,12 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
         ShowContextualPanelEvent?.Invoke(data, isCharacterData);
     }
 
+    public void HideContextualPanel()
+    {
+        //HideContextualPanelEvent?.Invoke();
+        OnContextualPanelHiddenEvent?.Invoke();
+    }
+
     // TODO: remove later
     // public void ShowTooltip(DataSO data)
     // {

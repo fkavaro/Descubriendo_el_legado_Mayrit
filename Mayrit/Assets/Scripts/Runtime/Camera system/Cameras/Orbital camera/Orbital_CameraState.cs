@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using Unity.Cinemachine;
+using UnityEngine.InputSystem;
 
 [Serializable]
 public class OrbitalStateSetting
@@ -74,12 +75,24 @@ public class Orbital_CameraState : ACameraState
         ApplyContextualPanelOffset();
 
         _uiManager.ShowContextualPanel(_setting.DataToShow, _setting.IsForCharacter);
+
+        _gameManager.InputActions.Camera.Enable();
+        _gameManager.InputActions.Camera.ExitMode.performed += OnExitCameraMode;
     }
 
     public override void UpdateState()
     {
         AutomaticOrbit();
     }
+
+    public override void ExitState()
+    {
+        base.ExitState();
+
+        _gameManager.InputActions.Camera.Disable();
+        _gameManager.InputActions.Camera.ExitMode.performed -= OnExitCameraMode;
+    }
+
     #endregion
 
     #region PRIVATE METHODS
@@ -96,4 +109,10 @@ public class Orbital_CameraState : ACameraState
         _orbitalFollow.HorizontalAxis.Value += _orbitSpeed * Time.unscaledDeltaTime;
     }
     #endregion
+
+    private void OnExitCameraMode(InputAction.CallbackContext context)
+    {
+        _cameraManager.SwitchToSpectatorCamera();
+        _uiManager.HideContextualPanel();
+    }
 }

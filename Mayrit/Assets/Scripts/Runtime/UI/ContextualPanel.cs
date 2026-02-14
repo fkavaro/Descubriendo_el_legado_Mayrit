@@ -135,10 +135,8 @@ public class ContextualPanel
 
         ShownEvent?.Invoke();
     }
-    #endregion
 
-    #region PRIVATE METHODS
-    void Hide()
+    public void Hide()
     {
         _root.style.display = DisplayStyle.None; // Hide
 
