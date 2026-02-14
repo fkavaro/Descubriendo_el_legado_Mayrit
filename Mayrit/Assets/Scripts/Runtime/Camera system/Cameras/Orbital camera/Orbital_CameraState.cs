@@ -110,7 +110,7 @@ public class Orbital_CameraState : ACameraState
     }
     #endregion
 
-    private void OnExitCameraMode(InputAction.CallbackContext context)
+    void OnExitCameraMode(InputAction.CallbackContext context)
     {
         _cameraManager.SwitchToSpectatorCamera();
         _uiManager.HideContextualPanel();
