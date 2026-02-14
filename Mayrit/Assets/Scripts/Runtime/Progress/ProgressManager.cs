@@ -7,6 +7,7 @@ public class ProgressManager : ABehaviourEntity<FiniteStateMachine<MilestoneStat
 {
     #region PROPERTY HELPERS
     public Milestone_DataSO CurrentMilestoneMapping => _milestoneMappings[_currentMilestoneIndex];
+    public SceneDatabase.SceneName RestoredMilestone => CurrentMilestoneMapping.SceneName;
     #endregion
 
     #region EDITOR PROPERTIES

@@ -139,7 +139,6 @@ public class LoadingScreen_UIState : AUIState
 
     public IEnumerator FadeOutCoroutine()
     {
-        Debug.Log("Starting fade out of loading screen...");
         yield return FadeToAlpha(_infoLoadingScreen, 0f, _fadeOutDuration);
         _infoLoadingScreen.style.display = DisplayStyle.None;
         yield return BlackFadeOutCoroutine();

@@ -12,11 +12,13 @@ public class GamePlay_GameState : AGameState
 
     public override void StartState()
     {
+        base.StartState();
+
         // Load Game Scene, if not already loaded
         if (!SceneManager.GetSceneByName(SceneDatabase.SceneName.GameplayScene.ToString()).isLoaded)
             _scenesController.NewTransitionPlan()
                 .Load(SceneDatabase.SceneType.Session, SceneDatabase.SceneName.GameplayScene, setActive: true)
-                .Load(SceneDatabase.SceneType.Milestone, SceneDatabase.SceneName.Milestone) // TODO: load restored milestone from local memory
+                .Load(SceneDatabase.SceneType.Milestone, _progressManager.RestoredMilestone)
                 .WithOverlay()
                 .ClearAssets()
                 .Perform();
