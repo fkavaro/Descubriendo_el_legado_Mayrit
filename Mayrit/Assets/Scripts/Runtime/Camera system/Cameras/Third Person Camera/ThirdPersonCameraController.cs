@@ -30,9 +30,9 @@ public class ThirdPersonCameraController
     #endregion
 
     #region CONSTRUCTOR
-    public ThirdPersonCameraController(ThirdPersonCameraData thirdPersonCameraData)
+    public ThirdPersonCameraController(ThirdPersonCameraDataSO thirdPersonCameraData, CinemachineCamera camera)
     {
-        _cameraTarget = thirdPersonCameraData.Camera.LookAt;
+        _cameraTarget = camera.LookAt;
         _targetPitch = 0f;
         _targetYaw = 0f;
         _orbitSpeed = thirdPersonCameraData.OrbitSpeed;

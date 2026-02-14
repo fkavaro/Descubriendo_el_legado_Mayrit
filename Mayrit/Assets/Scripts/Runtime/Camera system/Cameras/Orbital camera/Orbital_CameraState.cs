@@ -44,10 +44,10 @@ public class Orbital_CameraState : ACameraState
     #endregion
 
     #region CONSTRUCTOR
-    public Orbital_CameraState(OrbitalCameraData orbitalCameraData)
-    : base("Orbital camera", orbitalCameraData.Camera, orbitalCameraData.SimulationSpeed)
+    public Orbital_CameraState(OrbitalCameraDataSO orbitalCameraData, CinemachineCamera camera)
+    : base("Orbital camera", camera, orbitalCameraData.SimulationSpeed)
     {
-        _orbitalFollow = orbitalCameraData.Camera.GetComponent<CinemachineOrbitalFollow>();
+        _orbitalFollow = camera.GetComponent<CinemachineOrbitalFollow>();
     }
     #endregion
 

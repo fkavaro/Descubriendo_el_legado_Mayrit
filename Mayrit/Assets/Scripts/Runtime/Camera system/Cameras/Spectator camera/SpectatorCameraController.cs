@@ -58,18 +58,18 @@ public class SpectatorCameraController
     }
 
     // Dependencies
-    readonly SpectatorCameraData _spectatorCameraData;
+    readonly SpectatorCameraDataSO _spectatorCameraData;
     readonly GameManager _gameManager;
     readonly UIManager _uiManager;
     #endregion
 
     #region CONSTRUCTOR
-    public SpectatorCameraController(SpectatorCameraData spectatorCameraData)
+    public SpectatorCameraController(SpectatorCameraDataSO spectatorCameraData, CinemachineCamera camera)
     {
         _spectatorCameraData = spectatorCameraData;
 
         // Initialize camera references
-        _camera = spectatorCameraData.Camera;
+        _camera = camera;
         _cameraTarget = _camera.Target.TrackingTarget.transform;
         _orbitalFollow = _camera.GetComponent<CinemachineOrbitalFollow>();
 

@@ -12,10 +12,10 @@ public class Spectator_CameraState : ACameraState
     #endregion
 
     #region CONSTRUCTOR
-    public Spectator_CameraState(SpectatorCameraData spectatorCameraData)
-    : base("Spectator camera", spectatorCameraData.Camera, spectatorCameraData.SimulationSpeed)
+    public Spectator_CameraState(SpectatorCameraDataSO spectatorCameraData, CinemachineCamera camera)
+    : base("Spectator camera", camera, spectatorCameraData.SimulationSpeed)
     {
-        _cameraController = new(spectatorCameraData);
+        _cameraController = new(spectatorCameraData, camera);
         //_cameraSelector = new(spectatorCameraData); // TODO: remove later
     }
     #endregion

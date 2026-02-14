@@ -12,10 +12,10 @@ public class ThirdPerson_CameraState : ACameraState
     #endregion
 
     #region CONSTRUCTOR
-    public ThirdPerson_CameraState(ThirdPersonCameraData thirdPersonCameraData)
-    : base("Third person camera", thirdPersonCameraData.Camera, thirdPersonCameraData.SimulationSpeed)
+    public ThirdPerson_CameraState(ThirdPersonCameraDataSO thirdPersonCameraData, CinemachineCamera camera)
+    : base("Third person camera", camera, thirdPersonCameraData.SimulationSpeed)
     {
-        _cameraController = new(thirdPersonCameraData);
+        _cameraController = new(thirdPersonCameraData, camera);
     }
     #endregion
 
