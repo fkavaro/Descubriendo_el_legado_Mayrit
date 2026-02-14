@@ -67,7 +67,6 @@ public class LandmarkVisual : Billboard
             return;
         }
 
-
         _nameLabel.text = _orbitalStateSetting.DataToShow.Header;
         _nameButton.RegisterCallback<ClickEvent>(OnClicked);
 
@@ -75,6 +74,8 @@ public class LandmarkVisual : Billboard
         _uiManager = ServiceLocator.Instance.Get<UIManager>();
         _soundManager = ServiceLocator.Instance.Get<SoundManager>();
         _cameraManager = ServiceLocator.Instance.Get<CameraManager>();
+
+        _rootVisual.visible = _uiManager.IsLandmarkVisualizationOn;
 
         _cameraManager.CameraStateChangedEvent += OnCameraStateChanged;
         _uiManager.LandmarkVisualizationToggled += OnVisualizationToggled;
