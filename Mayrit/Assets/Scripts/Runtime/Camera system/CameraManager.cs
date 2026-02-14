@@ -143,7 +143,7 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
         _orbitalState.Setting = orbitalStateSetting;
         _soundManager.PlayCameraTransitionSFX();
 
-        SyncOrbitalCameraWithSpectator();
+        SyncOrbitalWithSpectator();
         _fsm.SwitchState(_orbitalState);
 
         if (DebugMode)
@@ -212,6 +212,7 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
         _soundManager.PlayCameraTransitionSFX();
         _spectatorCamera.LookAt.position = _thirdPersonCamera.LookAt.position;
         Vector3 spectatorLookAt = GetFixedSpectatorLookAtPosition(_spectatorCamera.LookAt.position);
+        SyncSpectatorWithThirdPerson();
         _fsm.SwitchState(_spectatorState);
         SmoothVerticalMovementCoroutine(_spectatorCamera.LookAt, spectatorLookAt, _spectatorCameraData.targetPositionFixSpeed);
 
@@ -225,7 +226,7 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
     {
         _soundManager.PlayCameraTransitionSFX();
         _spectatorCamera.LookAt.position = _orbitalCamera.LookAt.position;
-        SyncSpectatorCameraWithOrbital();
+        SyncSpectatorWithOrbital();
         Vector3 spectatorLookAt = GetFixedSpectatorLookAtPosition(_spectatorCamera.LookAt.position);
         _spectatorCamera.LookAt.position = spectatorLookAt;
         _fsm.SwitchState(_spectatorState);
@@ -245,7 +246,7 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
         );
     }
 
-    void SyncSpectatorCameraWithOrbital()
+    void SyncSpectatorWithOrbital()
     {
         CinemachineOrbitalFollow spectatorOrbit = _spectatorCamera.GetComponent<CinemachineOrbitalFollow>();
         CinemachineOrbitalFollow orbitalOrbit = _orbitalCamera.GetComponent<CinemachineOrbitalFollow>();
@@ -254,13 +255,40 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
         spectatorOrbit.VerticalAxis.Value = orbitalOrbit.VerticalAxis.Value;
     }
 
-    void SyncOrbitalCameraWithSpectator()
+    void SyncOrbitalWithSpectator()
     {
         CinemachineOrbitalFollow orbitalOrbit = _orbitalCamera.GetComponent<CinemachineOrbitalFollow>();
         CinemachineOrbitalFollow spectatorOrbit = _spectatorCamera.GetComponent<CinemachineOrbitalFollow>();
 
         orbitalOrbit.HorizontalAxis.Value = spectatorOrbit.HorizontalAxis.Value;
         orbitalOrbit.VerticalAxis.Value = spectatorOrbit.VerticalAxis.Value;
+    }
+
+    void SyncSpectatorWithThirdPerson()
+    {
+        CinemachineOrbitalFollow spectatorOrbit = _spectatorCamera.GetComponent<CinemachineOrbitalFollow>();
+
+        if (spectatorOrbit == null || _thirdPersonCamera.LookAt == null)
+        {
+            Debug.LogWarning("Cannot sync spectator with third person: Missing CinemachineOrbitalFollow component or third person LookAt target.");
+            return;
+        }
+
+        // Extract pitch/yaw from third-person target rotation and convert to signed degrees
+        Vector3 eulerAngles = _thirdPersonCamera.LookAt.eulerAngles;
+        float signedPitch = Mathf.DeltaAngle(0f, eulerAngles.x);
+        float signedYaw = Mathf.DeltaAngle(0f, eulerAngles.y);
+
+        spectatorOrbit.HorizontalAxis.Value = signedYaw;
+
+        // Apply limits by snapping to the nearest bound if surpassed
+        Vector2 limits = _spectatorCameraData.verticalAngleLimits;
+        if (signedPitch < limits.x)
+            spectatorOrbit.VerticalAxis.Value = limits.x;
+        else if (signedPitch > limits.y)
+            spectatorOrbit.VerticalAxis.Value = limits.y;
+        else
+            spectatorOrbit.VerticalAxis.Value = signedPitch;
     }
     #endregion
 

@@ -29,6 +29,7 @@ public class SpectatorCameraController
     readonly Vector3 _movementLimitsZ;
     readonly float _orbitSpeed;
     readonly float _orbitSmoothing;
+    readonly Vector2 _verticalAngleLimits;
     readonly float _zoomSpeed;
     readonly float _zoomSmoothing;
 
@@ -83,6 +84,7 @@ public class SpectatorCameraController
         _movementLimitsZ = spectatorCameraData.movementLimitsZ;
         _orbitSpeed = spectatorCameraData.OrbitSpeed;
         _orbitSmoothing = spectatorCameraData.orbitSmoothing;
+        _verticalAngleLimits = spectatorCameraData.verticalAngleLimits;
         _zoomSpeed = spectatorCameraData.zoomSpeed;
         _zoomSmoothing = spectatorCameraData.zoomSmoothing;
         _moveSpeedZoomCurve = spectatorCameraData.zoomSpeedCurve;
@@ -90,6 +92,9 @@ public class SpectatorCameraController
         // Get dependencies from ServiceLocator
         _gameManager = ServiceLocator.Instance.Get<GameManager>();
         _uiManager = ServiceLocator.Instance.Get<UIManager>();
+
+        // Set initial orbital limits
+        _orbitalFollow.VerticalAxis.Range = _verticalAngleLimits;
     }
     #endregion
 

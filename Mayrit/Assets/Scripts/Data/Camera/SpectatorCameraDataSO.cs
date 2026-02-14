@@ -29,6 +29,7 @@ public class SpectatorCameraDataSO : ScriptableObject
 
     [Header("Orbit")]
     public float orbitSmoothing = 5f;
+    public Vector2 verticalAngleLimits = new(10, 50);
 
     [Header("Zoom")]
     [Tooltip("Speed of camera zoom with scroll wheel.")]
