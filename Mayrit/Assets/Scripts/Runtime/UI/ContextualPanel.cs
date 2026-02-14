@@ -18,7 +18,7 @@ public class ContextualPanel
         _playCharacterButton;
 
     readonly VisualElement _root,
-        _icon,
+        //_icon,
         _image;
 
     // Dependency Injection
@@ -39,7 +39,7 @@ public class ContextualPanel
         _subHeader = _root.Q<Label>("SubHeader");
         _description = _root.Q<Label>("Description");
         _closeButton = _root.Q<Button>("CloseButton");
-        _icon = _root.Q<VisualElement>("Icon");
+        //_icon = _root.Q<VisualElement>("Icon");
         _image = _root.Q<VisualElement>("Image");
         _imageCaption = _root.Q<Label>("Caption");
         _playCharacterButton = _root.Q<Button>("PlayCharacterButton");
@@ -54,8 +54,8 @@ public class ContextualPanel
             Debug.LogWarning("_closeButton button not found");
         if (_image == null)
             Debug.LogWarning("_image not found");
-        if (_icon == null)
-            Debug.LogWarning("_icon not found");
+        //if (_icon == null)
+        // Debug.LogWarning("_icon not found");
         if (_imageCaption == null)
             Debug.LogWarning("_imageCaption not found");
         if (_playCharacterButton == null)
@@ -77,23 +77,24 @@ public class ContextualPanel
         _subHeader.text = data.SubHeader;
         _description.text = data.Description;
 
-        // Data has icon
-        if (data.Icon != null)
-        {
-            // Show it
-            _icon.style.backgroundImage = new StyleBackground(data.Icon.texture);
-            if (!_hadIcon)
-            {
-                _icon.style.display = DisplayStyle.Flex;
-                _hadIcon = true;
-            }
-        }
-        else
-        {
-            _icon.style.backgroundImage = new StyleBackground();
-            _icon.style.display = DisplayStyle.None;
-            _hadIcon = false;
-        }
+        // TODO remove later
+        // // Data has icon
+        // if (data.Icon != null)
+        // {
+        //     // Show it
+        //     _icon.style.backgroundImage = new StyleBackground(data.Icon.texture);
+        //     if (!_hadIcon)
+        //     {
+        //         _icon.style.display = DisplayStyle.Flex;
+        //         _hadIcon = true;
+        //     }
+        // }
+        // else
+        // {
+        //     _icon.style.backgroundImage = new StyleBackground();
+        //     _icon.style.display = DisplayStyle.None;
+        //     _hadIcon = false;
+        // }
 
         // Handle image
         if (data.Image != null)
@@ -141,13 +142,14 @@ public class ContextualPanel
     {
         _root.style.display = DisplayStyle.None; // Hide
 
-        // Only clear if something was shown
-        if (_hadIcon)
-        {
-            _icon.style.backgroundImage = new StyleBackground();
-            _icon.style.display = DisplayStyle.None;
-            _hadIcon = false;
-        }
+        // TODO remove later
+        // // Only clear if something was shown
+        // if (_hadIcon)
+        // {
+        //     _icon.style.backgroundImage = new StyleBackground();
+        //     _icon.style.display = DisplayStyle.None;
+        //     _hadIcon = false;
+        // }
 
         if (_hadImage)
         {
