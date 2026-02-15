@@ -20,7 +20,8 @@ public class LoadingScreen_UIState : AUIState
 
     VisualElement _infoLoadingScreen,
         _blackLoadingScreen,
-        _image;
+        _image,
+        _loadingAnimation;
 
     DataSO _currentMilestone;
     #endregion
@@ -46,6 +47,7 @@ public class LoadingScreen_UIState : AUIState
         _description = _infoLoadingScreen.Q<Label>("Description");
         _continueButton = _infoLoadingScreen.Q<Button>("ContinueButton");
         _image = _infoLoadingScreen.Q<VisualElement>("Image");
+        _loadingAnimation = _infoLoadingScreen.Q<VisualElement>("LoadingAnimation");
 
         if (_infoLoadingScreen == null)
             Debug.LogWarning("LoadingScreenController: No VisualElement with name 'LoadingScreen' found.");
@@ -59,6 +61,8 @@ public class LoadingScreen_UIState : AUIState
             Debug.LogWarning("LoadingScreenController: No Button with name 'ContinueButton' found.");
         if (_image == null)
             Debug.LogWarning("LoadingScreenController: No VisualElement with name 'Image' found.");
+        if (_loadingAnimation == null)
+            Debug.LogWarning("LoadingScreenController: No VisualElement with name 'LoadingAnimation' found.");
     }
 
     protected override void RegisterUICallbacksOnAwake()
@@ -76,9 +80,9 @@ public class LoadingScreen_UIState : AUIState
         _blackLoadingScreen.style.display = DisplayStyle.None;
 
         ContinueIsClicked = false;
-        //_continueButton.style.opacity = 0f;
-        _continueButton.text = "Cargando...";
-        _continueButton.SetEnabled(false);
+
+        _loadingAnimation.style.display = DisplayStyle.Flex;
+        _continueButton.style.display = DisplayStyle.None;
 
         _scenesController.SceneLoadedPartiallyEvent += OnSceneLoadedPartially;
 
@@ -175,9 +179,8 @@ public class LoadingScreen_UIState : AUIState
     {
         if (type == SceneDatabase.SceneType.Milestone)
         {
-            _continueButton.text = "Continuar";
-            _continueButton.SetEnabled(true);
-            //_continueButton.style.opacity = 100f;
+            _loadingAnimation.style.display = DisplayStyle.None;
+            _continueButton.style.display = DisplayStyle.Flex;
         }
     }
 }
