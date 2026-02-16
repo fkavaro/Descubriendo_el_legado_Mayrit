@@ -30,6 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 896832215447561950}
+  - {fileID: 5452998411628021164}
   m_Father: {fileID: 4834830275555568445}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6035488652241029550
@@ -147,4 +148,70 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 1264379889245979819, guid: 82547526f0915144a8b6af01661b087b, type: 3}
   m_PrefabInstance: {fileID: 2159980605210059381}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &4307481666470684797
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 6453991533538374941}
+    m_Modifications:
+    - target: {fileID: 1419383007071796252, guid: 7111637221276ed47938fad8c8091467, type: 3}
+      propertyPath: m_Name
+      value: Palacio Real
+      objectReference: {fileID: 0}
+    - target: {fileID: 8100795863127141841, guid: 7111637221276ed47938fad8c8091467, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 346.10004
+      objectReference: {fileID: 0}
+    - target: {fileID: 8100795863127141841, guid: 7111637221276ed47938fad8c8091467, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 87
+      objectReference: {fileID: 0}
+    - target: {fileID: 8100795863127141841, guid: 7111637221276ed47938fad8c8091467, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 76.79999
+      objectReference: {fileID: 0}
+    - target: {fileID: 8100795863127141841, guid: 7111637221276ed47938fad8c8091467, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.6691307
+      objectReference: {fileID: 0}
+    - target: {fileID: 8100795863127141841, guid: 7111637221276ed47938fad8c8091467, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8100795863127141841, guid: 7111637221276ed47938fad8c8091467, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7431448
+      objectReference: {fileID: 0}
+    - target: {fileID: 8100795863127141841, guid: 7111637221276ed47938fad8c8091467, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8100795863127141841, guid: 7111637221276ed47938fad8c8091467, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8100795863127141841, guid: 7111637221276ed47938fad8c8091467, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 96
+      objectReference: {fileID: 0}
+    - target: {fileID: 8100795863127141841, guid: 7111637221276ed47938fad8c8091467, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8705741694441105857, guid: 7111637221276ed47938fad8c8091467, type: 3}
+      propertyPath: m_VersionIndex
+      value: 23133
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7111637221276ed47938fad8c8091467, type: 3}
+--- !u!4 &5452998411628021164 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8100795863127141841, guid: 7111637221276ed47938fad8c8091467, type: 3}
+  m_PrefabInstance: {fileID: 4307481666470684797}
   m_PrefabAsset: {fileID: 0}
