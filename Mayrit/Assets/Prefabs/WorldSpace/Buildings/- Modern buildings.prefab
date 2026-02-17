@@ -15,7 +15,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6453991533538374941
 Transform:
   m_ObjectHideFlags: 0
@@ -31,6 +31,7 @@ Transform:
   m_Children:
   - {fileID: 896832215447561950}
   - {fileID: 4085500441442960242}
+  - {fileID: 661003088065168700}
   m_Father: {fileID: 4834830275555568445}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6035488652241029550
@@ -78,7 +79,73 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d752d4e4f60de18458d8206deff39ae9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isActive: 0
+  _isActive: 1
+--- !u!1001 &1131910702364085479
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 6453991533538374941}
+    m_Modifications:
+    - target: {fileID: 475411266002766299, guid: 0841cf5c76b5bd54b92192b1fbac4f00, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 315
+      objectReference: {fileID: 0}
+    - target: {fileID: 475411266002766299, guid: 0841cf5c76b5bd54b92192b1fbac4f00, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 95
+      objectReference: {fileID: 0}
+    - target: {fileID: 475411266002766299, guid: 0841cf5c76b5bd54b92192b1fbac4f00, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -270.00006
+      objectReference: {fileID: 0}
+    - target: {fileID: 475411266002766299, guid: 0841cf5c76b5bd54b92192b1fbac4f00, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.6691306
+      objectReference: {fileID: 0}
+    - target: {fileID: 475411266002766299, guid: 0841cf5c76b5bd54b92192b1fbac4f00, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 475411266002766299, guid: 0841cf5c76b5bd54b92192b1fbac4f00, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7431448
+      objectReference: {fileID: 0}
+    - target: {fileID: 475411266002766299, guid: 0841cf5c76b5bd54b92192b1fbac4f00, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 475411266002766299, guid: 0841cf5c76b5bd54b92192b1fbac4f00, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 475411266002766299, guid: 0841cf5c76b5bd54b92192b1fbac4f00, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 475411266002766299, guid: 0841cf5c76b5bd54b92192b1fbac4f00, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2958528434033759162, guid: 0841cf5c76b5bd54b92192b1fbac4f00, type: 3}
+      propertyPath: m_Name
+      value: Teatro Real
+      objectReference: {fileID: 0}
+    - target: {fileID: 8405083107310225359, guid: 0841cf5c76b5bd54b92192b1fbac4f00, type: 3}
+      propertyPath: m_VersionIndex
+      value: 6432
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0841cf5c76b5bd54b92192b1fbac4f00, type: 3}
+--- !u!4 &661003088065168700 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 475411266002766299, guid: 0841cf5c76b5bd54b92192b1fbac4f00, type: 3}
+  m_PrefabInstance: {fileID: 1131910702364085479}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2159980605210059381
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -129,7 +196,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3390421779974783583, guid: 82547526f0915144a8b6af01661b087b, type: 3}
       propertyPath: m_VersionIndex
-      value: 9860
+      value: 9863
       objectReference: {fileID: 0}
     - target: {fileID: 3986610442869793587, guid: 82547526f0915144a8b6af01661b087b, type: 3}
       propertyPath: m_VersionIndex
@@ -159,7 +226,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 920390805818403592, guid: 7111637221276ed47938fad8c8091467, type: 3}
       propertyPath: m_VersionIndex
-      value: 39385
+      value: 39388
       objectReference: {fileID: 0}
     - target: {fileID: 8644808381158618494, guid: 7111637221276ed47938fad8c8091467, type: 3}
       propertyPath: m_Name
