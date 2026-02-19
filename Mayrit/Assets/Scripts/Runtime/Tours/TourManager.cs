@@ -134,7 +134,7 @@ public class TourManager : MonoBehaviour
         if (type == SceneDatabase.SceneType.Milestone)
         {
             AttachToTour(ServiceLocator.Instance.Get<Tour>());
-            _uiManager.OnContextualPanelHiddenEvent += OnContextualPanelHidden;
+            _uiManager.ContextualPanelHiddenEvent += OnContextualPanelHidden;
         }
     }
 
@@ -157,7 +157,7 @@ public class TourManager : MonoBehaviour
             TourCompletedEvent?.Invoke(_currentTour);
             _soundManager.PlayTourEndSFX();
             DetachFromCurrentTour();
-            _uiManager.OnContextualPanelHiddenEvent -= OnContextualPanelHidden;
+            _uiManager.ContextualPanelHiddenEvent -= OnContextualPanelHidden;
         }
     }
 

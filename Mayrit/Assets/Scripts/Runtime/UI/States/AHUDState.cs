@@ -67,8 +67,8 @@ public abstract class AHUDState : AUIState
         _contextualPanel.PlayCharacterClickedEvent += OnPlayCharacterClicked;
         _contextualPanel.ShownEvent += OnContextualPanelShownCallback;
         _contextualPanel.ClosedEvent += OnContextualPanelClosedCallback;
-        _uiManager.ShowContextualPanelEvent += ShowContextualPanel;
-        _uiManager.OnContextualPanelHiddenEvent += HideContextualPanel;
+        _uiManager.ContextualPanelShownEvent += ShowContextualPanel;
+        _uiManager.ContextualPanelHiddenEvent += HideContextualPanel;
     }
 
     protected override void UnsubscribeToServicesEventsOnExit()
@@ -76,8 +76,8 @@ public abstract class AHUDState : AUIState
         _contextualPanel.PlayCharacterClickedEvent -= OnPlayCharacterClicked; ;
         _contextualPanel.ShownEvent -= OnContextualPanelShownCallback;
         _contextualPanel.ClosedEvent -= OnContextualPanelClosedCallback;
-        _uiManager.ShowContextualPanelEvent -= ShowContextualPanel;
-        _uiManager.OnContextualPanelHiddenEvent -= HideContextualPanel;
+        _uiManager.ContextualPanelShownEvent -= ShowContextualPanel;
+        _uiManager.ContextualPanelHiddenEvent -= HideContextualPanel;
     }
 
     public override void ExitState()

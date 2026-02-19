@@ -45,8 +45,8 @@ public class ModernBuilding : MonoBehaviour
         // Subscribe to events
         _cameraManager.CameraStateChangedEvent += OnCameraStateChanged;
         _uiManager.ModernVisualizationToggled += OnVisualizationToggled;
-        _uiManager.ShowContextualPanelEvent += OnContextualShownPanel;
-        _uiManager.OnContextualPanelHiddenEvent += OnContextualHiddenPanel;
+        _uiManager.ContextualPanelShownEvent += OnContextualShownPanel;
+        _uiManager.ContextualPanelHiddenEvent += OnContextualHiddenPanel;
     }
 
     void OnDisable()
@@ -54,8 +54,8 @@ public class ModernBuilding : MonoBehaviour
         // Unsubscribe from events
         _cameraManager.CameraStateChangedEvent -= OnCameraStateChanged;
         _uiManager.ModernVisualizationToggled -= OnVisualizationToggled;
-        _uiManager.ShowContextualPanelEvent -= OnContextualShownPanel;
-        _uiManager.OnContextualPanelHiddenEvent -= OnContextualHiddenPanel;
+        _uiManager.ContextualPanelShownEvent -= OnContextualShownPanel;
+        _uiManager.ContextualPanelHiddenEvent -= OnContextualHiddenPanel;
     }
     #endregion
 

@@ -91,7 +91,7 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
         // Subscribe to events
         _uiManager.EdgeScrollingToggledEvent += _spectatorCameraData.OnIsEdgeScrollingToggled;
         //_spectatorState.ObjectSelectedEvent += SwitchToOrbitalCamera;
-        _uiManager.OnContextualPanelHiddenEvent += OnContextualPanelHidden;
+        _uiManager.ContextualPanelHiddenEvent += OnContextualPanelHidden;
         _uiManager.PlayCharacterClickedEvent += OnPlayCharacterClicked;
         _tourManager.POIVisitedEvent += OnTourPOIVisited;
 
@@ -118,7 +118,7 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
     {
         // Unsubscribe from events
         //_spectatorState.ObjectSelectedEvent -= SwitchToOrbitalCamera;
-        _uiManager.OnContextualPanelHiddenEvent -= OnContextualPanelHidden;
+        _uiManager.ContextualPanelHiddenEvent -= OnContextualPanelHidden;
         _uiManager.PlayCharacterClickedEvent -= OnPlayCharacterClicked;
         _tourManager.POIVisitedEvent -= OnTourPOIVisited;
 

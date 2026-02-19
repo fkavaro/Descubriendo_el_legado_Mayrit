@@ -115,7 +115,7 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
     void SubscribeToServicesEvents()
     {
         _uiManager.PlayCharacterClickedEvent += OnPlayCharacterClicked;
-        _uiManager.OnContextualPanelHiddenEvent += OnContextualPanelHidden;
+        _uiManager.ContextualPanelHiddenEvent += OnContextualPanelHidden;
         _tourManager.POIVisitedEvent += OnTourPOIVisited;
         _cameraManager.CameraStateChangedEvent += OnCameraStateChanged;
         _progressManager.MilestoneChangedEvent += OnMilestoneChanged;
@@ -124,7 +124,7 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
     void UnsubscribeFromServicesEvents()
     {
         _uiManager.PlayCharacterClickedEvent -= OnPlayCharacterClicked;
-        _uiManager.OnContextualPanelHiddenEvent -= OnContextualPanelHidden;
+        _uiManager.ContextualPanelHiddenEvent -= OnContextualPanelHidden;
         _tourManager.POIVisitedEvent -= OnTourPOIVisited;
         _cameraManager.CameraStateChangedEvent -= OnCameraStateChanged;
         _progressManager.MilestoneChangedEvent -= OnMilestoneChanged;

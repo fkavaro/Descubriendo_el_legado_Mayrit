@@ -45,8 +45,8 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     UIDocument _uiDocument;
 
     // Events
-    public event Action<DataSO, bool> ShowContextualPanelEvent;
-    public event Action OnContextualPanelHiddenEvent;
+    public event Action<DataSO, bool> ContextualPanelShownEvent;
+    public event Action ContextualPanelHiddenEvent;
 
     // TODO: remove later
     //public event Action<DataSO> ShowTooltipEvent;
@@ -146,13 +146,13 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     #region PUBLIC METHODS
     public void ShowContextualPanel(DataSO data, bool isCharacterData = false)
     {
-        ShowContextualPanelEvent?.Invoke(data, isCharacterData);
+        ContextualPanelShownEvent?.Invoke(data, isCharacterData);
     }
 
     public void HideContextualPanel()
     {
         //HideContextualPanelEvent?.Invoke();
-        OnContextualPanelHiddenEvent?.Invoke();
+        ContextualPanelHiddenEvent?.Invoke();
     }
 
     // TODO: remove later
@@ -275,7 +275,7 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
 
     void OnContextualPanelHidden()
     {
-        OnContextualPanelHiddenEvent?.Invoke();
+        ContextualPanelHiddenEvent?.Invoke();
     }
     #endregion
 
