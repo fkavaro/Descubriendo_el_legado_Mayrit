@@ -59,7 +59,8 @@ public class TourManager : MonoBehaviour
 
         // Subscribe to events
         _scenesController.SceneLoadedPartiallyEvent += OnSceneLoadedPartially;
-        _uiManager.PlayCharacterClickedEvent += OnPlayCharacterClicked;
+        _uiManager.PlayTourClickedEvent += OnPlayTourClicked;
+        _uiManager.ResetTourClickedEvent += OnResetTourClicked;
 
         _pathVisualizer = new PathVisualizer(
             GetComponent<LineRenderer>(),
@@ -91,7 +92,8 @@ public class TourManager : MonoBehaviour
         // Unsubscribe from events
         _scenesController.SceneLoadedPartiallyEvent -= OnSceneLoadedPartially;
 
-        _uiManager.PlayCharacterClickedEvent -= OnPlayCharacterClicked;
+        _uiManager.PlayTourClickedEvent -= OnPlayTourClicked;
+        _uiManager.ResetTourClickedEvent -= OnResetTourClicked;
 
         DetachFromCurrentTour();
 
@@ -110,7 +112,6 @@ public class TourManager : MonoBehaviour
 
         // Update current
         _currentTour = tour;
-        _currentTour.Reset();
         _currentTour.OnVisitedPOIEvent += OnTourPOIVisited;
         _currentTour.OnNextPOIChangeEvent += OnTourNextPOIChange;
     }
@@ -121,7 +122,6 @@ public class TourManager : MonoBehaviour
 
         _currentTour.OnVisitedPOIEvent -= OnTourPOIVisited;
         _currentTour.OnNextPOIChangeEvent -= OnTourNextPOIChange;
-        _currentTour.EndTour();
         _nextPOI = null;
     }
     #endregion
@@ -156,12 +156,11 @@ public class TourManager : MonoBehaviour
         {
             TourCompletedEvent?.Invoke(_currentTour);
             _soundManager.PlayTourEndSFX();
-            DetachFromCurrentTour();
             _uiManager.ContextualPanelHiddenEvent -= OnContextualPanelHidden;
         }
     }
 
-    void OnPlayCharacterClicked()
+    void OnPlayTourClicked()
     {
         if (_currentTour != null)
         {
@@ -170,6 +169,15 @@ public class TourManager : MonoBehaviour
         }
 
         _playableCharacter = ServiceLocator.Instance.Get<PlayableCharacter>();
+    }
+
+    void OnResetTourClicked()
+    {
+        if (_currentTour != null)
+        {
+            _currentTour.Reset();
+            OnPlayTourClicked();
+        }
     }
     #endregion
 }

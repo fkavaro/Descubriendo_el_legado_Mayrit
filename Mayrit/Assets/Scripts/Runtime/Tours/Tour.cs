@@ -60,22 +60,17 @@ public class Tour : MonoBehaviour
     #endregion
 
     #region PUBLIC METHODS
-    public void Reset()
-    {
-        _isCompleted = false;
-        _currentPOIindex = 0;
-        ResetPOIs();
-    }
-
     public void StartTour()
     {
         Activate();
         SetNextPOI();
     }
 
-    public void EndTour()
+    public void Reset()
     {
-        Deactivate();
+        _isCompleted = false;
+        _currentPOIindex = 0;
+        ResetPOIs();
     }
     #endregion
 

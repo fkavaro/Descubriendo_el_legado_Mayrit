@@ -114,27 +114,35 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
     #region EVENTS SUBSCRIPTION
     void SubscribeToServicesEvents()
     {
-        _uiManager.PlayCharacterClickedEvent += OnPlayCharacterClicked;
+        _uiManager.PlayTourClickedEvent += OnPlayTourClicked;
+        _uiManager.ResetTourClickedEvent += OnResetTourClicked;
         _uiManager.ContextualPanelHiddenEvent += OnContextualPanelHidden;
         _tourManager.POIVisitedEvent += OnTourPOIVisited;
         _cameraManager.CameraStateChangedEvent += OnCameraStateChanged;
-        _progressManager.MilestoneChangedEvent += OnMilestoneChanged;
+        //_progressManager.MilestoneChangedEvent += OnMilestoneChanged;
     }
 
     void UnsubscribeFromServicesEvents()
     {
-        _uiManager.PlayCharacterClickedEvent -= OnPlayCharacterClicked;
+        _uiManager.PlayTourClickedEvent -= OnPlayTourClicked;
+        _uiManager.ResetTourClickedEvent -= OnResetTourClicked;
         _uiManager.ContextualPanelHiddenEvent -= OnContextualPanelHidden;
         _tourManager.POIVisitedEvent -= OnTourPOIVisited;
         _cameraManager.CameraStateChangedEvent -= OnCameraStateChanged;
-        _progressManager.MilestoneChangedEvent -= OnMilestoneChanged;
+        //_progressManager.MilestoneChangedEvent -= OnMilestoneChanged;
     }
     #endregion
 
     #region CALLBACK METHODS
-    void OnPlayCharacterClicked()
+    void OnPlayTourClicked()
     {
         SwitchToControlledState();
+    }
+
+    void OnResetTourClicked()
+    {
+        SwitchToControlledState();
+        GO.transform.SetPositionAndRotation(_originalPosition, _originalRotation);
     }
 
     void OnContextualPanelHidden()
@@ -156,13 +164,13 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
             SwitchToNotControlledState();
     }
 
-    void OnMilestoneChanged(Milestone_DataSO milestoneMapping)
-    {
-        Tour tour = ServiceLocator.Instance.Get<Tour>();
-        // Reset position and rotation if tour is completed
-        if (tour != null && tour.IsCompleted)
-            GO.transform.SetPositionAndRotation(_originalPosition, _originalRotation);
-    }
+    // void OnMilestoneChanged(Milestone_DataSO milestoneMapping)
+    // {
+    //     Tour tour = ServiceLocator.Instance.Get<Tour>();
+    //     // Reset position and rotation if tour is completed
+    //     if (tour != null && tour.IsCompleted)
+    //         GO.transform.SetPositionAndRotation(_originalPosition, _originalRotation);
+    // }
     #endregion
 
     #region EDITOR UPDATES

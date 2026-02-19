@@ -52,7 +52,8 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     //public event Action<DataSO> ShowTooltipEvent;
     //public event Action HideTooltipEvent;
 
-    public event Action PlayCharacterClickedEvent;
+    public event Action PlayTourClickedEvent;
+    public event Action ResetTourClickedEvent;
     public event Action<bool> EdgeScrollingToggledEvent;
     public event Action<float> MusicVolumeChangedEvent;
     public event Action<float> SFXVolumeChangedEvent;
@@ -204,7 +205,8 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
 
             _playerHUDState.ContextualPanelHiddenEvent -= OnContextualPanelHidden;
             _spectatorHUDState.ContextualPanelHiddenEvent -= OnContextualPanelHidden;
-            _spectatorHUDState.PlayCharacterEvent -= OnPlayCharacterClicked;
+            _spectatorHUDState.PlayTourEvent -= OnPlayTourClicked;
+            _spectatorHUDState.ResetTourEvent -= OnResetTourClicked;
             _spectatorHUDState._modernVisualizactionSwitch.Toggled -= OnModernVisualizationToggled;
             _spectatorHUDState._landmarkVisualizationSwitch.Toggled -= OnLandmarkVisualizationToggled;
 
@@ -230,7 +232,8 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
             // Subscribe to events
             _playerHUDState.ContextualPanelHiddenEvent += OnContextualPanelHidden;
             _spectatorHUDState.ContextualPanelHiddenEvent += OnContextualPanelHidden;
-            _spectatorHUDState.PlayCharacterEvent += OnPlayCharacterClicked;
+            _spectatorHUDState.PlayTourEvent += OnPlayTourClicked;
+            _spectatorHUDState.ResetTourEvent += OnResetTourClicked;
             _spectatorHUDState._modernVisualizactionSwitch.Toggled += OnModernVisualizationToggled;
             _spectatorHUDState._landmarkVisualizationSwitch.Toggled += OnLandmarkVisualizationToggled;
             _tourManager.POIVisitedEvent += OnTourPOIVisited;
@@ -252,10 +255,16 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
             SwitchToPlayerHUDState();
     }
 
-    void OnPlayCharacterClicked()
+    void OnPlayTourClicked()
     {
         SwitchToPlayerHUDState();
-        PlayCharacterClickedEvent?.Invoke();
+        PlayTourClickedEvent?.Invoke();
+    }
+
+    void OnResetTourClicked()
+    {
+        SwitchToPlayerHUDState();
+        ResetTourClickedEvent?.Invoke();
     }
 
     void OnModernVisualizationToggled(bool value)

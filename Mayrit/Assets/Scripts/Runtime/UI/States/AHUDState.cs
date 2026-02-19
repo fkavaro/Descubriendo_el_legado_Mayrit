@@ -7,7 +7,8 @@ using UnityEngine.UIElements;
 public abstract class AHUDState : AUIState
 {
     #region PROPERTIES
-    public event Action PlayCharacterEvent;
+    public event Action PlayTourEvent;
+    public event Action ResetTourEvent;
     public event Action ContextualPanelHiddenEvent;
 
     protected ContextualPanel _contextualPanel;
@@ -64,7 +65,8 @@ public abstract class AHUDState : AUIState
 
     protected override void SubscribeToServicesEventsOnStart()
     {
-        _contextualPanel.PlayCharacterClickedEvent += OnPlayCharacterClicked;
+        _contextualPanel.PlayTourClickedEvent += OnPlayTourClicked;
+        _contextualPanel.ResetTourClickedEvent += OnResetTourClicked;
         _contextualPanel.ShownEvent += OnContextualPanelShownCallback;
         _contextualPanel.ClosedEvent += OnContextualPanelClosedCallback;
         _uiManager.ContextualPanelShownEvent += ShowContextualPanel;
@@ -73,7 +75,8 @@ public abstract class AHUDState : AUIState
 
     protected override void UnsubscribeToServicesEventsOnExit()
     {
-        _contextualPanel.PlayCharacterClickedEvent -= OnPlayCharacterClicked; ;
+        _contextualPanel.PlayTourClickedEvent -= OnPlayTourClicked;
+        _contextualPanel.ResetTourClickedEvent -= OnResetTourClicked;
         _contextualPanel.ShownEvent -= OnContextualPanelShownCallback;
         _contextualPanel.ClosedEvent -= OnContextualPanelClosedCallback;
         _uiManager.ContextualPanelShownEvent -= ShowContextualPanel;
@@ -164,10 +167,16 @@ public abstract class AHUDState : AUIState
         OnContextualPanelShown();
     }
 
-    void OnPlayCharacterClicked()
+    void OnPlayTourClicked()
     {
         _wasContextualPanelShown = false;
-        PlayCharacterEvent?.Invoke();
+        PlayTourEvent?.Invoke();
+    }
+
+    void OnResetTourClicked()
+    {
+        _wasContextualPanelShown = false;
+        ResetTourEvent?.Invoke();
     }
 
     void OnContextualPanelClosedCallback()

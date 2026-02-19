@@ -5,7 +5,8 @@ using UnityEngine.UIElements;
 public class ContextualPanel
 {
     #region PROPERTIES
-    public event Action PlayCharacterClickedEvent;
+    public event Action PlayTourClickedEvent;
+    public event Action ResetTourClickedEvent;
     public event Action ShownEvent;
     public event Action ClosedEvent;
 
@@ -15,7 +16,8 @@ public class ContextualPanel
         _imageCaption;
 
     readonly Button _closeButton,
-        _playCharacterButton;
+        _startTourButton,
+        _resetTourButton;
 
     readonly VisualElement _root,
         //_icon,
@@ -23,6 +25,8 @@ public class ContextualPanel
 
     // Dependency Injection
     SoundManager _soundManager;
+
+    Tour CurrentTour => ServiceLocator.Instance.Get<Tour>();
 
     // Tracking flags
     bool _hadIcon;
@@ -42,7 +46,8 @@ public class ContextualPanel
         //_icon = _root.Q<VisualElement>("Icon");
         _image = _root.Q<VisualElement>("Image");
         _imageCaption = _root.Q<Label>("Caption");
-        _playCharacterButton = _root.Q<Button>("PlayCharacterButton");
+        _startTourButton = _root.Q<Button>("StartTourButton");
+        _resetTourButton = _root.Q<Button>("ResetTourButton");
 
         if (_header == null)
             Debug.LogWarning("_header not found");
@@ -58,13 +63,16 @@ public class ContextualPanel
         // Debug.LogWarning("_icon not found");
         if (_imageCaption == null)
             Debug.LogWarning("_imageCaption not found");
-        if (_playCharacterButton == null)
-            Debug.LogWarning("_playCharacterButton button not found");
+        if (_startTourButton == null)
+            Debug.LogWarning("_startTourButton button not found");
+        if (_resetTourButton == null)
+            Debug.LogWarning("_resetTourButton button not found");
 
         _closeButton.RegisterCallback<ClickEvent>(OnCloseButton);
-        _playCharacterButton.RegisterCallback<ClickEvent>(OnPlayCharacter);
+        _startTourButton.RegisterCallback<ClickEvent>(OnStartTour);
+        _resetTourButton.RegisterCallback<ClickEvent>(OnResetTour);
 
-        // Get SoundManager dependency from Service Locator
+        // Get dependencies from Service Locator
         _soundManager = ServiceLocator.Instance.Get<SoundManager>();
     }
     #endregion
@@ -116,18 +124,24 @@ public class ContextualPanel
             _hadImage = false;
         }
 
-        // Handle play button
+        // Handle tour butons
         if (isCharacterData)
         {
             if (!_hadPlayButton)
             {
-                _playCharacterButton.style.display = DisplayStyle.Flex;
+                _startTourButton.style.display = DisplayStyle.Flex;
                 _hadPlayButton = true;
+
+                // Only show reset button if tour is already completed
+                if (CurrentTour.IsCompleted)
+                    _resetTourButton.style.display = DisplayStyle.Flex;
+                else
+                    _resetTourButton.style.display = DisplayStyle.None;
             }
         }
         else
         {
-            _playCharacterButton.style.display = DisplayStyle.None;
+            _startTourButton.style.display = DisplayStyle.None;
             _hadPlayButton = false;
         }
 
@@ -159,7 +173,7 @@ public class ContextualPanel
 
         if (_hadPlayButton)
         {
-            _playCharacterButton.style.display = DisplayStyle.None;
+            _startTourButton.style.display = DisplayStyle.None;
             _hadPlayButton = false;
         }
 
@@ -181,10 +195,16 @@ public class ContextualPanel
         _soundManager.PlayButtonClickSFX();
     }
 
-    void OnPlayCharacter(ClickEvent evt)
+    void OnStartTour(ClickEvent evt)
     {
         Hide();
-        PlayCharacterClickedEvent?.Invoke();
+        PlayTourClickedEvent?.Invoke();
+    }
+
+    void OnResetTour(ClickEvent evt)
+    {
+        Hide();
+        ResetTourClickedEvent?.Invoke();
     }
     #endregion
 }
