@@ -8,4 +8,5 @@ public class OrbitalCameraDataSO : ScriptableObject
     public float SimulationSpeed => data.simulationSpeed;
     public float MovementSpeed => data.movementSpeed;
     public float OrbitSpeed => data.orbitSpeed;
+    public float orbitSmoothing = 0.5f;
 }

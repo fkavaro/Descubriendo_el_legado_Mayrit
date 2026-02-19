@@ -50,12 +50,12 @@ public class Orbital_CameraState : ACameraState
         _uiManager.ShowContextualPanel(_setting.DataToShow, _setting.IsForCharacter);
     }
 
-    public override void UpdateState()
+    public override void LateUpdateState()
     {
-        // Do not update controller if game paused
-        if (_gameManager.IsInPauseState) return;
+        if (_gameManager.IsInPauseState || _uiManager.IsInLoadingScreenState)
+            return;
 
-        _controller.Update();
+        _controller.LateUpdate();
     }
 
     public override void ExitState()
