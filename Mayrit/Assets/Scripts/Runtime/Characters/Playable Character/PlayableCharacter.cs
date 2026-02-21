@@ -140,7 +140,8 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
     #region PUBLIC METHODS
     public void LocateAt(Transform transform)
     {
-        GO.transform.SetPositionAndRotation(transform.position, transform.rotation);
+        Vector3 fixedPosition = transform.position + Vector3.up * 2f;
+        GO.transform.SetPositionAndRotation(fixedPosition, transform.rotation);
     }
     #endregion
 
