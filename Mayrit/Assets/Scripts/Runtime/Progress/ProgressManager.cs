@@ -154,8 +154,12 @@ public class ProgressManager : ABehaviourEntity<FiniteStateMachine<MilestoneStat
     int GetStoredMilestone()
     {
         PlayerProgressData saveData = GameSaveSystem.Load();
-        _highestCompletedMilestoneIndex = saveData.HighestCompletedMilestoneIndex;
+        _highestCompletedMilestoneIndex = saveData.HighestCompletedMilestoneIndex; // Could be -1 if no valid data found
         _currentMilestoneIndex = Mathf.Clamp(saveData.HighestCompletedMilestoneIndex, 0, _milestonesData.Count - 1);
+
+        if (DebugMode)
+            Debug.Log($"[ProgressManager] Milestone Change index loaded {_currentMilestoneIndex} ({CurrentMilestoneData.Header}).");
+
         return _currentMilestoneIndex;
     }
 
@@ -194,9 +198,10 @@ public class ProgressManager : ABehaviourEntity<FiniteStateMachine<MilestoneStat
         // If milestone loaded, invoke event
         if (loadedScenes.TryGetValue(SceneDatabase.SceneType.Milestone, out var milestoneScene))
         {
-            if (DebugMode)
-                Debug.Log($"[ProgressManager] Milestone Change Event invoked.");
             MilestoneChangedEvent?.Invoke(CurrentMilestoneData);
+
+            if (DebugMode)
+                Debug.Log($"[ProgressManager] Milestone Change Event invoked for milestone index {_currentMilestoneIndex} ({CurrentMilestoneData.Header}).");
         }
     }
 
@@ -204,7 +209,6 @@ public class ProgressManager : ABehaviourEntity<FiniteStateMachine<MilestoneStat
     {
         UpdateHighestCompletedMilestone();
         SaveProgress();
-        _tourManager.TourCompletedEvent -= OnTourCompleted;
     }
     #endregion
 }

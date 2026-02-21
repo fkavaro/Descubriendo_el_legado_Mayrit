@@ -185,6 +185,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1524226024950362450, guid: f2ef195e03d1d9f42b446ab9d417ae05, type: 3}
+      propertyPath: _debugMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1524226024950362450, guid: f2ef195e03d1d9f42b446ab9d417ae05, type: 3}
       propertyPath: _canSkipTours
       value: 0
       objectReference: {fileID: 0}

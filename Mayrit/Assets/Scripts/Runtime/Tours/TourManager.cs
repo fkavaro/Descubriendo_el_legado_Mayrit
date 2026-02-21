@@ -116,6 +116,7 @@ public class TourManager : MonoBehaviour
         _currentTour = tour;
         _currentTour.OnVisitedPOIEvent += OnTourPOIVisited;
         _currentTour.OnNextPOIChangeEvent += OnTourNextPOIChange;
+        _currentTour.OnTourCompletedEvent += OnTourCompleted;
     }
 
     void DetachFromCurrentTour()
@@ -124,6 +125,7 @@ public class TourManager : MonoBehaviour
 
         _currentTour.OnVisitedPOIEvent -= OnTourPOIVisited;
         _currentTour.OnNextPOIChangeEvent -= OnTourNextPOIChange;
+        _currentTour.OnTourCompletedEvent -= OnTourCompleted;
         _nextPOI = null;
     }
     #endregion
@@ -175,10 +177,14 @@ public class TourManager : MonoBehaviour
         // Invoke completed event if tour is completed
         if (_currentTour != null && _currentTour.IsCompleted)
         {
-            TourCompletedEvent?.Invoke(_currentTour);
             _soundManager.PlayTourEndSFX();
             _uiManager.ContextualPanelHiddenEvent -= OnContextualPanelHidden;
         }
+    }
+
+    private void OnTourCompleted()
+    {
+        TourCompletedEvent?.Invoke(_currentTour);
     }
 
     void OnPlayTourClicked()

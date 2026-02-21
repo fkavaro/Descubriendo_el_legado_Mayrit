@@ -31,6 +31,7 @@ public class Tour : MonoBehaviour
     #region INTERNAL PROPERTIES
     public event Action<PointOfInterest> OnVisitedPOIEvent;
     public event Action<PointOfInterest> OnNextPOIChangeEvent;
+    public event Action OnTourCompletedEvent;
 
     //ProgressManager _progressManager;
     #endregion
@@ -163,6 +164,7 @@ public class Tour : MonoBehaviour
         _isCompleted = true;
         _hasBeenCompleted = true;
         _nextPOI = null;
+        OnTourCompletedEvent?.Invoke();
     }
     #endregion
 
