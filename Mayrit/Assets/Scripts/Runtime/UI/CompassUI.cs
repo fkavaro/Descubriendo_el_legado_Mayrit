@@ -106,14 +106,15 @@ public class CompassUI
         _nextPOI = _tourManager.CurrentTour.NextPOI;
 
         // Get the direction to the POI in world space
-        Vector3 directionToPOI = _nextPOI.transform.position - _mainCamera.transform.position;
-        directionToPOI.y = 0; // Ignore vertical difference
+        Vector3 toPoi = _nextPOI.transform.position - _mainCamera.transform.position;
+        Vector3 flatToPoi = Vector3.ProjectOnPlane(toPoi, Vector3.up).normalized;
+        Vector3 flatForward = Vector3.ProjectOnPlane(_mainCamera.transform.forward, Vector3.up).normalized;
 
-        // Get the angle between the camera's forward direction and the direction to the POI
-        float angleToPOI = Vector3.SignedAngle(_mainCamera.transform.forward, directionToPOI, Vector3.up);
-
-        // Rotate the POI indicator to point towards the POI
-        _nextPoiDirection.style.rotate = new Rotate(angleToPOI);
+        if (flatToPoi.sqrMagnitude > 0.0001f && flatForward.sqrMagnitude > 0.0001f)
+        {
+            float angle = Vector3.SignedAngle(flatForward, flatToPoi, Vector3.up);
+            _nextPoiDirection.style.rotate = new Rotate(angle);
+        }
 
         if (_nextPOIVisual.style.display == DisplayStyle.None)
             _nextPOIVisual.style.display = DisplayStyle.Flex;
