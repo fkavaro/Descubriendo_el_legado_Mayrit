@@ -35,7 +35,8 @@ public class TourManager : MonoBehaviour
     public event Action<PointOfInterest> NextPOIChangeEvent;
     public event Action<Tour> TourCompletedEvent;
 
-    PathVisualizer _pathVisualizer;
+    // TODO remove
+    // PathVisualizer _pathVisualizer; 
 
     // Dependency Injection
     ScenesController _scenesController;
@@ -64,32 +65,35 @@ public class TourManager : MonoBehaviour
         _uiManager.PlayTourClickedEvent += OnPlayTourClicked;
         _uiManager.ResetTourClickedEvent += OnResetTourClicked;
 
-        _pathVisualizer = new PathVisualizer(
-            GetComponent<LineRenderer>(),
-            _pointSpacing,
-            _endpointSnapDistance,
-            _terrainProjectionDistance,
-            _heightOffset,
-            _maxPointCount,
-            _maxTrailLength);
-        _pathVisualizer.Initialize();
+        // TODO remove
+        // _pathVisualizer = new PathVisualizer(
+        //     GetComponent<LineRenderer>(),
+        //     _pointSpacing,
+        //     _endpointSnapDistance,
+        //     _terrainProjectionDistance,
+        //     _heightOffset,
+        //     _maxPointCount,
+        //     _maxTrailLength);
+        // _pathVisualizer.Initialize();
 
         AttachToTour(ServiceLocator.Instance.Get<Tour>());
     }
 
-    void Update()
-    {
-        if (_playableCharacter != null && _playableCharacter.IsBeingControlled &&
-            _currentTour != null && !_currentTour.IsCompleted)
-            _pathVisualizer.UpdatePath(_playableCharacter.transform);
-        else
-            _pathVisualizer.Clear();
-    }
+    // TODO remove
+    // void Update()
+    // {
+    //     if (_playableCharacter != null && _playableCharacter.IsBeingControlled &&
+    //         _currentTour != null && !_currentTour.IsCompleted)
+    //         _pathVisualizer.UpdatePath(_playableCharacter.transform);
+    //     else
+    //         _pathVisualizer.Clear();
+    // }
 
     void OnDisable()
     {
-        // Let the visualizer unsubscribe from ProgressManager and cleanup
-        _pathVisualizer.Deinitialize();
+        // TODO remove
+        // // Let the visualizer unsubscribe from ProgressManager and cleanup
+        //_pathVisualizer.Deinitialize();
 
         // Unsubscribe from events
         _scenesController.SceneLoadedPartiallyEvent -= OnSceneLoadedPartially;
