@@ -62,22 +62,22 @@ public class LightingManager : MonoBehaviour
     #endregion
 
     #region LIFE CYCLE
-    // #if UNITY_EDITOR
-    //     void OnValidate()
-    //     {
-    //         if (Application.isPlaying)
-    //             return;
+#if UNITY_EDITOR
+    void OnValidate()
+    {
+        if (Application.isPlaying)
+            return;
 
-    //         _milestoneSetting = GetComponentInParent<MilestoneSetting>();
+        _milestoneSetting = GetComponentInParent<MilestoneSetting>();
 
-    //         _currentTime = _milestoneSetting.MilestonePreviewIndex >= 0
-    //         ? _milestoneTimes.List[_milestoneSetting.MilestonePreviewIndex]._time
-    //         : 10f; // Default to 10am if no milestone preview index is set
+        _currentTime = _milestoneSetting.MilestonePreviewIndex >= 0
+        ? _milestoneTimes.List[_milestoneSetting.MilestonePreviewIndex]._time
+        : 10f; // Default to 10am if no milestone preview index is set
 
-    //         UpdateLighting();
-    //         CheckActiveLightSource();
-    //     }
-    // #endif
+        UpdateLighting();
+        CheckActiveLightSource();
+    }
+#endif
 
     void Awake()
     {
@@ -93,7 +93,7 @@ public class LightingManager : MonoBehaviour
         // Get dependencies from ServiceLocator
         _progressManager = ServiceLocator.Instance.Get<ProgressManager>();
         _gameManager = ServiceLocator.Instance.Get<GameManager>();
-        _currentTime = _progressManager.CurrentMilestoneData.WantedTime;
+        //_currentTime = _progressManager.CurrentMilestoneData.WantedTime;
 
         // Subscribe to ProgressManager event to set the wanted time when the game starts
         _progressManager.MilestoneChangedEvent += OnMilestoneChanged;
@@ -205,8 +205,8 @@ public class LightingManager : MonoBehaviour
     #region EVENT METHODS
     void OnMilestoneChanged(Milestone_DataSO mapping)
     {
-        if (mapping != null)
-            _wantedTime = mapping.WantedTime;
+        // if (mapping != null)
+        //     _wantedTime = mapping.WantedTime;
     }
     #endregion
 }
