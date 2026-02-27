@@ -134,7 +134,6 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     #region STATE HANDLING
     public void SwitchToMainMenuState()
     {
-        _mainMenuState.OnMainMenuSceneLoadedFully(); // Show buttons if not shown yet
         _sfsm?.SwitchState(_mainMenuState);
     }
     public void SwitchToSpectatorHUDState() => _sfsm?.SwitchState(_spectatorHUDState);
@@ -201,8 +200,6 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     {
         if (loadedScenes.ContainsValue(SceneDatabase.SceneName.MainMenuScene))
         {
-            _mainMenuState.OnMainMenuSceneLoadedFully(); // Show buttons
-
             _playerHUDState.ContextualPanelHiddenEvent -= OnContextualPanelHidden;
             _spectatorHUDState.ContextualPanelHiddenEvent -= OnContextualPanelHidden;
             _spectatorHUDState.PlayTourEvent -= OnPlayTourClicked;

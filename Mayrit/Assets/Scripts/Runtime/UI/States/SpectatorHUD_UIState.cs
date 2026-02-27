@@ -115,6 +115,7 @@ public class SpectatorHUD_UIState : AHUDState
         }
 
         _nextMilestoneButton.SetEnabled(_progressManager.IsNextMilestoneAvailable());
+        _nextMilestoneButton.pickingMode = _progressManager.IsNextMilestoneAvailable() ? PickingMode.Position : PickingMode.Ignore;
 
         _playerFollowerComponent.Start();
     }
@@ -188,13 +189,10 @@ public class SpectatorHUD_UIState : AHUDState
         _milestoneDate.text = mapping.SubHeader;
 
         _nextMilestoneButton.SetEnabled(_progressManager.IsNextMilestoneAvailable());
+        _nextMilestoneButton.pickingMode = _progressManager.IsNextMilestoneAvailable() ? PickingMode.Position : PickingMode.Ignore;
 
-        // First milestone
-        if (_progressManager.AtFirstMilestone())
-            // Disable previous button
-            _previousMilestoneButton.SetEnabled(false);
-        else
-            _previousMilestoneButton.SetEnabled(true);
+        _previousMilestoneButton.SetEnabled(!_progressManager.AtFirstMilestone());
+        _previousMilestoneButton.pickingMode = !_progressManager.AtFirstMilestone() ? PickingMode.Position : PickingMode.Ignore;
 
         _playerFollowerComponent.PlayerTransform = ServiceLocator.Instance.Get<PlayableCharacter>().transform;
     }

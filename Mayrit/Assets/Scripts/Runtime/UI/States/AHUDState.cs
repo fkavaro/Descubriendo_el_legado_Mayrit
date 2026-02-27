@@ -29,12 +29,19 @@ public abstract class AHUDState : AUIState
     #region INHERITED METHODS
     public override void AwakeState()
     {
+        _hudScreen = _UIDocument.rootVisualElement.Q<VisualElement>("HUD");
+
+        if (_hudScreen == null)
+        {
+            Debug.LogWarning($"{_stateName} HUD element not found in UIDocument");
+        }
+
         if (_contextualPanelRoot == null)
             InitializeContextualPanelOnAwake();
 
         if (_contextualPanel == null)
         {
-            Debug.LogWarning($"{_stateName} HUD State: Contextual Panel is null!");
+            Debug.LogWarning($"{_stateName}: Contextual Panel is null!");
             return;
         }
 
@@ -43,10 +50,9 @@ public abstract class AHUDState : AUIState
 
         if (_compass == null)
         {
-            Debug.LogWarning($"{_stateName} HUD State: Compass is null!");
+            Debug.LogWarning($"{_stateName}: Compass is null!");
             return;
         }
-
 
         base.AwakeState();
     }
@@ -81,6 +87,8 @@ public abstract class AHUDState : AUIState
 
     public override void StartState()
     {
+        _hudScreen.style.display = DisplayStyle.Flex;
+
         base.StartState();
 
         // Show contextual panel root if it was shown before
@@ -106,6 +114,8 @@ public abstract class AHUDState : AUIState
 
     public override void ExitState()
     {
+        _hudScreen.style.display = DisplayStyle.None;
+
         base.ExitState();
 
         // Hide contextual panel root
@@ -151,14 +161,6 @@ public abstract class AHUDState : AUIState
         if (_UIDocument.rootVisualElement == null)
         {
             Debug.LogError($"{_stateName} HUD State: UIDocument rootVisualElement is null!");
-            return false;
-        }
-
-        _hudScreen = _UIDocument.rootVisualElement.Q<VisualElement>("HUD");
-
-        if (_hudScreen == null)
-        {
-            Debug.LogWarning($"{_stateName} HUD element not found in UIDocument");
             return false;
         }
 

@@ -1,13 +1,21 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/Toolkit/USS/MayritStyle.uss?fileID=7433441132597879392&amp;guid=7a6c8e791557401438e2762dac509247&amp;type=3#MayritStyle"/>
     <ui:VisualElement name="MainMenu" style="-unity-text-align: middle-center; flex-grow: 1; justify-content: center; align-self: stretch; display: none; background-image: url(&quot;project://database/Assets/Imports/Background%201.png?fileID=2800000&amp;guid=45191b62e64522742a762b45f9987ec1&amp;type=3#Background 1&quot;); position: absolute; top: 0; left: 0; right: 0; bottom: 0;">
-        <ui:VisualElement name="Menu" style="flex-grow: 1;">
-            <ui:Label text="MAYRIT" name="Title" class="title" style="position: absolute; top: 100px; bottom: auto; right: auto; left: auto; color: rgb(255, 255, 255); font-size: 130px; text-shadow: 10px 10px 5px rgba(0, 0, 0, 0.21);"/>
-            <ui:VisualElement name="Buttons" style="flex-grow: 1; position: absolute; top: 500px; left: 0; right: 0;">
-                <ui:Button text="Nueva partida" name="NewGameButton" class="button"/>
-                <ui:Button text="Cargar partida" name="LoadGameButton" enabled="false" class="button"/>
-                <ui:Button text="Ajustes" name="SettingsButton" class="button"/>
-                <ui:Button text="Salir" name="QuitButton" class="button"/>
+        <ui:Label text="MAYRIT" name="Title" style="position: absolute; top: 100px; bottom: auto; right: auto; left: auto; color: rgb(255, 255, 255); font-size: 130px; align-self: center; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; -unity-text-outline-width: 2px; -unity-text-outline-color: rgb(128, 128, 128); -unity-font-style: bold; letter-spacing: 15px;"/>
+        <ui:VisualElement name="Buttons" style="flex-grow: 1; position: absolute; top: 500px; left: 0; right: 0;">
+            <ui:Button text="Nueva partida" name="NewGameButton" class="button"/>
+            <ui:Button text="Cargar partida" name="LoadGameButton" class="button"/>
+            <ui:Button text="Ajustes" name="SettingsButton" class="button"/>
+            <ui:Button text="Salir" name="QuitButton" class="button"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="NewGameWarning" style="flex-grow: 1; position: absolute; width: 490px; height: 350px; top: 515px; left: auto; right: auto; justify-content: space-between; align-self: center; background-color: rgb(49, 55, 89); border-top-left-radius: 30px; border-top-right-radius: 30px; border-bottom-right-radius: 30px; border-bottom-left-radius: 30px; border-top-width: 3px; border-right-width: 3px; border-bottom-width: 3px; border-left-width: 3px; border-left-color: rgb(18, 43, 67); border-right-color: rgb(18, 43, 67); border-top-color: rgb(18, 43, 67); border-bottom-color: rgb(18, 43, 67); display: none;">
+            <ui:VisualElement style="justify-content: space-between; align-self: stretch; padding-top: 40px; padding-right: 40px; padding-bottom: 0; padding-left: 40px;">
+                <ui:Label text="¿Seguro que quieres empezar una nueva partida?" style="-unity-font-style: bold; font-size: 25px; color: rgb(245, 245, 245); white-space: normal; margin-top: 0; margin-right: 0; margin-bottom: 30px; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;"/>
+                <ui:Label text="Se borrará la partida anterior." style="-unity-font-style: normal; font-size: 25px; color: rgb(245, 245, 245); white-space: normal; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;"/>
+            </ui:VisualElement>
+            <ui:VisualElement style="justify-content: space-between; align-self: stretch; flex-direction: row; padding-top: 0; padding-right: 30px; padding-bottom: 30px; padding-left: 30px;">
+                <ui:Button text="Sí" name="ConfirmNewGameButton" class="button" style="width: 180px;"/>
+                <ui:Button text="No" name="CancelNewGameButton" class="button" style="width: 180px;"/>
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
