@@ -17,7 +17,8 @@ public class ModernBuilding : MonoBehaviour
         set
         {
             _isActive = value;
-            _landmarkVisual.SetActive(_isActive);
+            _landmarkVisual.IsShown = _isActive;
+            _landmarkVisual.IsSetAsShown = _isActive;
             _model.SetActive(_isActive);
         }
     }
@@ -36,6 +37,7 @@ public class ModernBuilding : MonoBehaviour
         _cameraManager = ServiceLocator.Instance.Get<CameraManager>();
         _uiManager = ServiceLocator.Instance.Get<UIManager>();
 
+        _landmarkVisual.IsBlocked = true;
         IsActive = _uiManager.IsModernVisualizationOn;
         _wasActive = IsActive;
     }
@@ -64,6 +66,8 @@ public class ModernBuilding : MonoBehaviour
     {
         if (_cameraManager.IsInThirdPersonState || _cameraManager.IsInPOIState)
             IsActive = false;
+        else if (_wasActive)
+            IsActive = true;
     }
 
     void OnVisualizationToggled(bool value)
@@ -72,9 +76,9 @@ public class ModernBuilding : MonoBehaviour
         _wasActive = value;
     }
 
-    void OnContextualShownPanel(DataSO data, bool isCharacter)
+    void OnContextualShownPanel(DataSO data, bool isCharacterData)
     {
-        if (isCharacter)
+        if (isCharacterData)
             IsActive = false;
 
         if (data == null || _landmarkVisual.Data == null)

@@ -32,7 +32,8 @@ public class LandmarkVisual : Billboard
     Label _nameLabel;
     Button _nameButton;
     Vector3 _originalPosition;
-    bool _wasActive = true;
+    [HideInInspector] public bool IsBlocked = false;
+    [HideInInspector] public bool IsSetAsShown = false;
 
     // Dependency Injection
     UIManager _uiManager;
@@ -76,12 +77,10 @@ public class LandmarkVisual : Billboard
         _uiManager = ServiceLocator.Instance.Get<UIManager>();
         _soundManager = ServiceLocator.Instance.Get<SoundManager>();
         _cameraManager = ServiceLocator.Instance.Get<CameraManager>();
-
-        _rootVisual.visible = _uiManager.IsLandmarkVisualizationOn;
-        _wasActive = _rootVisual.visible;
-
         _cameraManager.CameraStateChangedEvent += OnCameraStateChanged;
         _uiManager.LandmarkVisualizationToggled += OnVisualizationToggled;
+
+        IsShown = _uiManager.IsLandmarkVisualizationOn;
 
         _originalPosition = transform.position;
     }
@@ -94,13 +93,13 @@ public class LandmarkVisual : Billboard
         {
             if (_isTooFar)
             {
-                if (_rootVisual.visible)
-                    _rootVisual.visible = false;
+                if (_rootVisual.style.display != DisplayStyle.None)
+                    _rootVisual.style.display = DisplayStyle.None;
             }
             else
             {
-                if (!_rootVisual.visible && _wasActive)
-                    _rootVisual.visible = true;
+                if (_rootVisual.style.display != DisplayStyle.Flex)
+                    _rootVisual.style.display = DisplayStyle.Flex;
             }
         }
 
@@ -121,9 +120,21 @@ public class LandmarkVisual : Billboard
     #endregion
 
     #region PUBLIC METHODS
-    public void SetActive(bool isActive)
+    public bool IsShown
     {
-        _rootVisual.visible = isActive && _wasActive;
+        get
+        {
+            //return _rootVisual.style.display == DisplayStyle.Flex;
+            return _rootVisual.visible;
+        }
+        set
+        {
+            // This causes jittering
+            // _rootVisual.style.display = value ?
+            //     DisplayStyle.Flex :
+            //     DisplayStyle.None;
+            _rootVisual.visible = value && _uiManager.IsLandmarkVisualizationOn;
+        }
     }
     #endregion
 
@@ -145,15 +156,17 @@ public class LandmarkVisual : Billboard
     void OnCameraStateChanged()
     {
         if (_cameraManager.IsInThirdPersonState || _cameraManager.IsInPOIState || _cameraManager.IsInOrbitalState)
-            _rootVisual.visible = false;
-        else
-            _rootVisual.visible = _wasActive;
+            IsShown = false;
+        else if (!IsBlocked)
+            IsShown = _uiManager.IsLandmarkVisualizationOn;
     }
 
     void OnVisualizationToggled(bool value)
     {
-        _rootVisual.visible = value;
-        _wasActive = value;
+        if (!IsBlocked)
+            IsShown = value;
+        else
+            IsShown = IsSetAsShown && value;
     }
     #endregion
 }
