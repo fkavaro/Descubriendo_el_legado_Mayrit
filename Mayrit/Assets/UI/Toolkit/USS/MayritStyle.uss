@@ -45,7 +45,7 @@
     color: rgb(255, 255, 255);
     -unity-font-style: bold;
     white-space: normal;
-    -unity-text-align: upper-center;
+    -unity-text-align: upper-left;
     margin-top: 15px;
     margin-right: 15px;
     margin-bottom: 15px;
@@ -62,7 +62,7 @@
     text-shadow: -3px -3px 2px rgba(20, 20, 20, 0);
     -unity-font-style: normal;
     white-space: normal;
-    -unity-text-align: upper-center;
+    -unity-text-align: upper-left;
     margin-top: 10px;
     margin-right: 10px;
     margin-bottom: 10px;
@@ -79,7 +79,7 @@
     font-size: 18px;
     color: rgb(255, 255, 255);
     -unity-font-style: normal;
-    -unity-text-align: middle-center;
+    -unity-text-align: middle-left;
 }
 
 .tooltip {
