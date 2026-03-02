@@ -22,8 +22,8 @@ public abstract class AHUDState : AUIState
     #endregion
 
     #region CONSTRUCTOR
-    public AHUDState(string name, UIDocument uiDocument)
-    : base(name, uiDocument) { }
+    public AHUDState(string name, UIDocument uiDocument, float fadeInDuration, float fadeOutDuration)
+    : base(name, uiDocument, fadeInDuration, fadeOutDuration) { }
     #endregion
 
     #region INHERITED METHODS

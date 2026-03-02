@@ -15,8 +15,8 @@ public class PlayerHUD_UIState : AHUDState
     #endregion
 
     #region CONSTRUCTOR
-    public PlayerHUD_UIState(UIDocument uiDocument)
-    : base("PlayerHUD", uiDocument) { }
+    public PlayerHUD_UIState(UIDocument uiDocument, float fadeInDuration, float fadeOutDuration)
+    : base("PlayerHUD", uiDocument, fadeInDuration, fadeOutDuration) { }
     #endregion
 
     #region UI STATE INHERITED METHODS

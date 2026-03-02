@@ -23,8 +23,8 @@ public class SpectatorHUD_UIState : AHUDState
     #endregion
 
     #region CONSTRUCTOR
-    public SpectatorHUD_UIState(UIDocument uiDocument)
-    : base("SpectatorHUD", uiDocument) { }
+    public SpectatorHUD_UIState(UIDocument uiDocument, float fadeInDuration, float fadeOutDuration)
+    : base("SpectatorHUD", uiDocument, fadeInDuration, fadeOutDuration) { }
     #endregion
 
     #region UI STATE INHERITED METHODS

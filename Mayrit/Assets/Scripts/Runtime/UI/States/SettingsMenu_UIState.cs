@@ -13,8 +13,8 @@ public class SettingsMenu_UIState : AUIState
     #endregion
 
     #region CONSTRUCTOR
-    public SettingsMenu_UIState(UIDocument uiDocument)
-    : base("SettingsMenu", uiDocument) { }
+    public SettingsMenu_UIState(UIDocument uiDocument, float fadeInDuration, float fadeOutDuration)
+    : base("SettingsMenu", uiDocument, fadeInDuration, fadeOutDuration) { }
     #endregion
 
     #region OVERRIDDEN METHODS

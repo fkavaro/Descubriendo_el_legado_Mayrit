@@ -17,8 +17,8 @@ public class MainMenu_UIState : AUIState
     #endregion
 
     #region CONSTRUCTOR
-    public MainMenu_UIState(UIDocument uiDocument)
-    : base("MainMenu", uiDocument) { }
+    public MainMenu_UIState(UIDocument uiDocument, float fadeInDuration, float fadeOutDuration)
+    : base("MainMenu", uiDocument, fadeInDuration, fadeOutDuration) { }
     #endregion
 
     #region INHERITED METHODS
@@ -42,6 +42,11 @@ public class MainMenu_UIState : AUIState
         CheckLoadButtonAvailability();
 
         base.StartState();
+    }
+
+    public override void ExitState()
+    {
+        base.ExitState();
     }
     #endregion
 

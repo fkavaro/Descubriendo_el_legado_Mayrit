@@ -9,9 +9,6 @@ public class LoadingScreen_UIState : AUIState
     #region PROPERTIES
     public bool ContinueIsClicked { get; private set; }
 
-    readonly float _fadeInDuration;
-    readonly float _fadeOutDuration;
-
     Label _header,
         _subHeader,
         _description,
@@ -28,14 +25,8 @@ public class LoadingScreen_UIState : AUIState
     #endregion
 
     #region CONSTRUCTOR
-    public LoadingScreen_UIState(UIDocument uiDocument,
-    float fadeInDuration = 0.5f,
-    float fadeOutDuration = 0.5f)
-    : base("LoadingScreen", uiDocument)
-    {
-        _fadeInDuration = fadeInDuration;
-        _fadeOutDuration = fadeOutDuration;
-    }
+    public LoadingScreen_UIState(UIDocument uiDocument, float fadeInDuration, float fadeOutDuration)
+    : base("LoadingScreen", uiDocument, fadeInDuration, fadeOutDuration) { }
     #endregion
 
     #region INHERITED METHODS
@@ -120,39 +111,18 @@ public class LoadingScreen_UIState : AUIState
         base.ExitState(); // Hide after fade out is complete
     }
 
-    public IEnumerator FadeInCoroutine()
+    public new IEnumerator FadeInCoroutine()
     {
         yield return BlackFadeInCoroutine();
         _infoLoadingScreen.style.display = DisplayStyle.Flex;
         yield return FadeToAlpha(_infoLoadingScreen, 1f, _fadeInDuration);
     }
 
-    public IEnumerator FadeOutCoroutine()
+    public new IEnumerator FadeOutCoroutine()
     {
         yield return FadeToAlpha(_infoLoadingScreen, 0f, _fadeOutDuration);
         _infoLoadingScreen.style.display = DisplayStyle.None;
         yield return BlackFadeOutCoroutine();
-    }
-
-    IEnumerator FadeToAlpha(VisualElement visualElement, float targetAlpha, float duration)
-    {
-        if (visualElement.style.display == DisplayStyle.None)
-            visualElement.style.display = DisplayStyle.Flex;
-
-        if (visualElement.resolvedStyle.opacity == targetAlpha)
-            Debug.LogWarning("FadeToAlpha called with targetAlpha equal to current alpha.");
-
-        float startAlpha = visualElement.resolvedStyle.opacity;
-        float elapsed = 0f;
-        while (elapsed < duration)
-        {
-            elapsed += Time.unscaledDeltaTime;
-            float t = Mathf.Clamp01(elapsed / duration);
-            float newAlpha = Mathf.Lerp(startAlpha, targetAlpha, t);
-            visualElement.style.opacity = newAlpha;
-            yield return null;
-        }
-        visualElement.style.opacity = targetAlpha;
     }
     #endregion
 

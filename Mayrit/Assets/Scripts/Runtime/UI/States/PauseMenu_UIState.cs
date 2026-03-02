@@ -15,8 +15,8 @@ public class PauseMenu_UIState : AUIState
     #endregion
 
     #region CONSTRUCTOR
-    public PauseMenu_UIState(UIDocument uiDocument)
-    : base("PauseMenu", uiDocument) { }
+    public PauseMenu_UIState(UIDocument uiDocument, float fadeInDuration, float fadeOutDuration)
+    : base("PauseMenu", uiDocument, fadeInDuration, fadeOutDuration) { }
     #endregion
 
     #region INHERITED METHODS

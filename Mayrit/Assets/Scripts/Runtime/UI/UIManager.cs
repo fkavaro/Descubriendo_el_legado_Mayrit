@@ -14,7 +14,6 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     public bool IsInPauseState => _sfsm.IsCurrentState(_pauseState);
     public bool IsInSettingsMenuState => _sfsm.IsCurrentState(_settingsMenuState);
     public bool IsInLoadingScreenState => _sfsm.IsCurrentState(_loadingScreenState);
-    //public Vector2 TooltipOffset => _tooltipOffset; // TODO: remove later
     public bool EdgeScrollingValueSet => _edgeScrollingValueSet;
     public bool ControlsVisibilityValueSet => _controlsVisibilityValueSet;
     public float MusicVolumeValueSet => _musicVolumeValueSet;
@@ -25,12 +24,11 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     #endregion
 
     #region EDITOR PROPERTIES
-    [Header("Loading Screen")]
-    [SerializeField] float _fadeInDuration = 5f;
+    [Header("Fade animation")]
+    [SerializeField] float _fadeInDuration = 1f;
     [SerializeField] float _fadeOutDuration = 1f;
 
     [Header("Player Follower")]
-    //[SerializeField] Vector2 _tooltipOffset = new(-30, -30); // TODO: remove later
     [SerializeField] Vector2 _playerFollowerScreenMargin = new(100f, 100f);
     [SerializeField] Vector2 _playerFollowerPositionOffset = new(25f, 25f);
 
@@ -47,10 +45,6 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     // Events
     public event Action<DataSO, bool> ContextualPanelShownEvent;
     public event Action ContextualPanelHiddenEvent;
-
-    // TODO: remove later
-    //public event Action<DataSO> ShowTooltipEvent;
-    //public event Action HideTooltipEvent;
 
     public event Action PlayTourClickedEvent;
     public event Action ResetTourClickedEvent;
@@ -85,11 +79,11 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
         _uiDocument = GetComponent<UIDocument>();
 
         // States initialization
-        _mainMenuState = new(_uiDocument);
-        _spectatorHUDState = new(_uiDocument);
-        _playerHUDState = new(_uiDocument);
-        _pauseState = new(_uiDocument);
-        _settingsMenuState = new(_uiDocument);
+        _mainMenuState = new(_uiDocument, _fadeInDuration, _fadeOutDuration);
+        _spectatorHUDState = new(_uiDocument, _fadeInDuration * 5f, _fadeOutDuration);
+        _playerHUDState = new(_uiDocument, _fadeInDuration, _fadeOutDuration);
+        _pauseState = new(_uiDocument, _fadeInDuration, _fadeOutDuration);
+        _settingsMenuState = new(_uiDocument, 0f, 0f);
         _loadingScreenState = new(_uiDocument, _fadeInDuration, _fadeOutDuration);
 
         // State AwakeState calls
@@ -154,16 +148,6 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
         //HideContextualPanelEvent?.Invoke();
         ContextualPanelHiddenEvent?.Invoke();
     }
-
-    // TODO: remove later
-    // public void ShowTooltip(DataSO data)
-    // {
-    //     ShowTooltipEvent?.Invoke(data);
-    // }
-    // public void HideTooltip()
-    // {
-    //     HideTooltipEvent?.Invoke();
-    // }
 
     public void SetControlsVisibility(bool newValue)
     {
@@ -239,9 +223,7 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
 
         // A milestone scene loaded
         if (loadedScenes.TryGetValue(SceneDatabase.SceneType.Milestone, out var milestoneScene))
-        {
-            SwitchToSpectatorHUDState();
-        }
+            StartCoroutine(FadeInSpecatorHUDCoroutine()); // TODO: Improve this
     }
 
     private void OnCameraStateChanged()
@@ -319,6 +301,12 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     public IEnumerator FadeOutBlackLoadingScreenCoroutine()
     {
         yield return _loadingScreenState.BlackFadeOutCoroutine();
+    }
+
+    IEnumerator FadeInSpecatorHUDCoroutine()
+    {
+        SwitchToSpectatorHUDState();
+        yield return _spectatorHUDState.FadeInCoroutine();
     }
     #endregion
 }

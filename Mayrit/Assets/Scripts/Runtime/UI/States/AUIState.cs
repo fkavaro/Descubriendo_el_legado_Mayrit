@@ -1,11 +1,15 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 public abstract class AUIState : AState
 {
     #region PROPERTIES
-    protected UIDocument _UIDocument;
+    readonly protected UIDocument _UIDocument;
+    readonly protected float _fadeInDuration;
+    readonly protected float _fadeOutDuration;
+
     VisualElement _screen;
 
     // Dependency Injection
@@ -17,10 +21,12 @@ public abstract class AUIState : AState
     #endregion
 
     #region CONSTRUCTOR
-    protected AUIState(string name, UIDocument uiDocument)
+    protected AUIState(string name, UIDocument uiDocument, float fadeInDuration = 0f, float fadeOutDuration = 0f)
     : base(name)
     {
         _UIDocument = uiDocument;
+        _fadeInDuration = fadeInDuration;
+        _fadeOutDuration = fadeOutDuration;
     }
     #endregion
 
@@ -67,24 +73,18 @@ public abstract class AUIState : AState
             return;
         }
 
-        // TODO: fade in coroutine
-        _screen.style.display = DisplayStyle.Flex; // Show
+        _screen.style.display = DisplayStyle.Flex;
         base.StartState();
     }
 
     public override void ExitState()
     {
         base.ExitState();
-        // TODO: fade out coroutine
-        _screen.style.display = DisplayStyle.None; // Hide
+        _screen.style.display = DisplayStyle.None;
     }
     #endregion
 
     #region PUBLIC METHODS
-    /// <summary>
-    /// Returns true if the cursor is over any UI element that is a descendant of _screen.
-    /// </summary>
-    /// <param name="cursorPos">Screen-space position of the cursor (Input.mousePosition).</param>
     public virtual bool IsCursorOverUI()
     {
         return IsCursorOver(_screen);
@@ -161,5 +161,63 @@ public abstract class AUIState : AState
 
     #region ABSTRACT METHODS
     protected abstract void ConfigureUIElementsOnAwake();
+    #endregion
+
+    #region COROUTINES
+    public virtual IEnumerator FadeInCoroutine()
+    {
+        _screen.style.opacity = 0f;
+        _screen.style.display = DisplayStyle.Flex;
+        yield return FadeToAlpha(_screen, 1f, _fadeInDuration);
+    }
+
+    public virtual IEnumerator FadeOutCoroutine()
+    {
+        yield return FadeToAlpha(_screen, 0f, _fadeOutDuration);
+        _screen.style.display = DisplayStyle.None;
+    }
+
+    public virtual IEnumerator FadeInCoroutine(VisualElement visualElement)
+    {
+        visualElement.style.opacity = 0f;
+        visualElement.style.display = DisplayStyle.Flex;
+        yield return FadeToAlpha(visualElement, 1f, _fadeInDuration);
+    }
+
+    public virtual IEnumerator FadeOutCoroutine(VisualElement visualElement)
+    {
+        yield return FadeToAlpha(visualElement, 0f, _fadeOutDuration);
+        visualElement.style.display = DisplayStyle.None;
+    }
+
+    protected IEnumerator FadeToAlpha(VisualElement visualElement, float targetAlpha, float duration)
+    {
+        if (duration <= 0f)
+        {
+            visualElement.style.opacity = targetAlpha;
+            yield break;
+        }
+
+        if (visualElement.style.display == DisplayStyle.None)
+            visualElement.style.display = DisplayStyle.Flex;
+
+        if (visualElement.resolvedStyle.opacity == targetAlpha)
+            Debug.LogWarning("FadeToAlpha called with targetAlpha equal to current alpha.");
+
+        float startAlpha = visualElement.resolvedStyle.opacity;
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+            float newAlpha = Mathf.Lerp(startAlpha, targetAlpha, t);
+            visualElement.style.opacity = newAlpha;
+            yield return null;
+        }
+
+        visualElement.style.opacity = targetAlpha;
+
+        Debug.Log($"{_stateName}: Finished fade animation to {targetAlpha} alpha for {visualElement.name}.");
+    }
     #endregion
 }
