@@ -10,7 +10,7 @@ public abstract class AUIState : AState
     readonly protected float _fadeInDuration;
     readonly protected float _fadeOutDuration;
 
-    protected VisualElement _screen;
+    VisualElement _screen;
 
     // Dependency Injection
     protected ScenesController _scenesController;

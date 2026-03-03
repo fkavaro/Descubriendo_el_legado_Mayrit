@@ -3,16 +3,20 @@ using UnityEngine.UIElements;
 
 public class TutorialState : AUIState
 {
-    private readonly TutorialStepSO _tutorialStepData;
+    VisualElement _tutorialScreen;
 
     public TutorialState(TutorialStepSO tutorialStepData, UIDocument uiDocument)
-    : base(tutorialStepData.VisualElementName, uiDocument)
-    {
-        _tutorialStepData = tutorialStepData;
-    }
+    : base(tutorialStepData.VisualElementName, uiDocument) { }
 
     protected override void ConfigureUIElementsOnAwake()
     {
+        _tutorialScreen = GetByName<VisualElement>("TutorialSteps", _UIDocument.rootVisualElement);
+        _tutorialScreen.style.display = DisplayStyle.None;
+    }
 
+    public override void StartState()
+    {
+        _tutorialScreen.style.display = DisplayStyle.Flex;
+        base.StartState();
     }
 }

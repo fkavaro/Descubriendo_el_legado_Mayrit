@@ -347,6 +347,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f159fddb4a5e56746916cbd293b0859e, type: 3}
+--- !u!114 &1028781348 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6354518598366967083, guid: f159fddb4a5e56746916cbd293b0859e, type: 3}
+  m_PrefabInstance: {fileID: 1002981176}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2209254174389618083
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -452,6 +463,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3618290972786116656, guid: 668020751133b714495ee039980b3080, type: 3}
+      propertyPath: _uiDocument
+      value: 
+      objectReference: {fileID: 1028781348}
     - target: {fileID: 7574419577275873137, guid: 668020751133b714495ee039980b3080, type: 3}
       propertyPath: m_Name
       value: "\U0001F6DFTutorialManager"
