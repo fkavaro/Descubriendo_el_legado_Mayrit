@@ -4,14 +4,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UIElements;
 
+[RequireComponent(typeof(UIDocument))]
 public class TutorialManager : ABehaviourEntity<StackFiniteStateMachine<TutorialState>>
 {
     #region EDITOR PROPERTIES
-    [SerializeField] UIDocument _uiDocument;
+    [Header("Tutorial Settings")]
     [SerializeField] List<TutorialStepSO> _tutorialStepsData = new();
     #endregion
 
     #region INTERNAL PROPERTIES
+    UIDocument _uiDocument;
+
     StackFiniteStateMachine<TutorialState> _fsm;
 
     ScenesController _scenesController;
@@ -32,6 +35,7 @@ public class TutorialManager : ABehaviourEntity<StackFiniteStateMachine<Tutorial
     #region LIFE CYCLE
     protected override void Awake()
     {
+        _uiDocument = GetComponent<UIDocument>();
         ServiceLocator.Instance.Register(this);
 
         base.Awake();
