@@ -61,7 +61,9 @@ public class TutorialManager : ABehaviourEntity<StackFiniteStateMachine<Tutorial
 
     void OnDisable()
     {
-        _scenesController.ScenesLoadedFullyEvent -= OnScenesLoadedFully;
+        if (_scenesController != null)
+            _scenesController.ScenesLoadedFullyEvent -= OnScenesLoadedFully;
+
         ServiceLocator.Instance.Unregister(this);
         StopCurrentCondition();
     }
@@ -84,8 +86,7 @@ public class TutorialManager : ABehaviourEntity<StackFiniteStateMachine<Tutorial
         _currentCondition = Instantiate(condition);
         _currentCondition.Completed += OnCurrentStepCompleted;
 
-        if (_currentCondition is ClickButtonConditionSO clickCondition)
-            clickCondition.UIDocument = _uiDocument;
+        _currentCondition.SetUIDocument(_uiDocument);
 
         _currentCondition.BeginListening();
     }

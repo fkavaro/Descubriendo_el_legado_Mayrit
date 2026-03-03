@@ -4,13 +4,24 @@ using UnityEngine.UIElements;
 [CreateAssetMenu(fileName = "ClickButtonConditionSO", menuName = "Scriptable Objects/Tutorial Conditions/Click Button")]
 public class ClickButtonConditionSO : ATutorialStepConditionSO
 {
-    [HideInInspector] public UIDocument UIDocument;
     [SerializeField] string _buttonName;
+    UIDocument _uiDocument;
     Button _button;
+
+    public override void SetUIDocument(UIDocument uiDocument)
+    {
+        _uiDocument = uiDocument;
+    }
 
     public override void BeginListening()
     {
-        _button = UIDocument.rootVisualElement.Q<Button>(_buttonName);
+        if (_uiDocument == null)
+        {
+            Debug.LogWarning("ClickButtonConditionSO has no UIDocument assigned.");
+            return;
+        }
+
+        _button = _uiDocument.rootVisualElement.Q<Button>(_buttonName);
         if (_button == null)
         {
             Debug.LogWarning($"Button '{_buttonName}' not found for tutorial condition.");
