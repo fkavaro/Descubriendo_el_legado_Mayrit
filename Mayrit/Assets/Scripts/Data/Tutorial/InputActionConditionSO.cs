@@ -70,5 +70,7 @@ public class InputActionConditionSO : ATutorialStepConditionSO
 
         // prevent multiple triggers while waiting
         _action.action.performed -= OnPerformed;
+
+        MarkTriggered();
     }
 }

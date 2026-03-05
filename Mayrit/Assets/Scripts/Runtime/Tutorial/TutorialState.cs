@@ -10,6 +10,7 @@ public class TutorialState : AUIState
     readonly AStateMachine<TutorialState> _fsm;
     readonly ATutorialStepConditionSO _completionCondition;
     readonly List<VisualElement> _hiddenElements = new();
+    bool _animationStarted;
 
     public TutorialState(TutorialStepSO tutorialStepData, UIManager uiManager, AStateMachine<TutorialState> fsm)
     : base(tutorialStepData.VisualElementName, uiManager.UIDocument)
@@ -38,14 +39,13 @@ public class TutorialState : AUIState
 
     public override void StartState()
     {
+        _animationStarted = false;
+        _completionCondition.Triggered += OnConditionTriggered;
         _completionCondition.Completed += OnCompletionConditionCompleted;
         _completionCondition.BeginListening();
 
         foreach (VisualElement element in _hiddenElements)
-        {
             element.style.display = DisplayStyle.None;
-            //Debug.Log($"{_stateName}: Hiding element {element.name}");
-        }
 
         base.StartState();
     }
@@ -57,15 +57,25 @@ public class TutorialState : AUIState
         _completionCondition.Tick(Time.deltaTime);
     }
 
+    void OnConditionTriggered()
+    {
+        _completionCondition.Triggered -= OnConditionTriggered;
+        _animationStarted = true;
+
+        if (_data.AnimationDuration > 0f)
+            _uiManager.StartCoroutine(ScalePunchAnimation(_screen, _data.AnimationPeakScale, _data.AnimationDuration));
+    }
+
     void OnCompletionConditionCompleted()
     {
+        _completionCondition.Triggered -= OnConditionTriggered;
         _completionCondition.Completed -= OnCompletionConditionCompleted;
         _completionCondition.EndListening();
 
-        if (_data.AnimationDuration <= 0f)
-            OnAnimationComplete();
-        else
+        if (!_animationStarted && _data.AnimationDuration > 0f)
             _uiManager.StartCoroutine(ScalePunchAnimation(_screen, _data.AnimationPeakScale, _data.AnimationDuration, OnAnimationComplete));
+        else
+            OnAnimationComplete();
     }
 
     void OnAnimationComplete()
