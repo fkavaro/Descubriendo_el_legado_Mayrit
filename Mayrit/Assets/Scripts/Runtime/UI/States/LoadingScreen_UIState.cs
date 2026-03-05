@@ -129,6 +129,7 @@ public class LoadingScreen_UIState : AUIState
     void OnContinueButtonClicked(ClickEvent evt)
     {
         ContinueIsClicked = true;
+        _soundManager.PlayButtonClickSFX();
     }
 
     void OnSceneLoadedPartially(SceneDatabase.SceneType type, SceneDatabase.SceneName name)
