@@ -21,6 +21,7 @@ public class PlayerVisual : Billboard
     ProgressManager _progressManager;
     CameraManager _cameraManager;
     SoundManager _soundManager;
+    TutorialManager _tutorialManager;
     #endregion
 
     #region LIFE CYCLLE
@@ -50,11 +51,14 @@ public class PlayerVisual : Billboard
         _progressManager = ServiceLocator.Instance.Get<ProgressManager>();
         _cameraManager = ServiceLocator.Instance.Get<CameraManager>();
         _soundManager = ServiceLocator.Instance.Get<SoundManager>();
+        _tutorialManager = ServiceLocator.Instance.Get<TutorialManager>();
 
         // Subscribe to events and callbacks
         _scenesController.SceneLoadedPartiallyEvent += OnSceneLoadedPartially;
         _progressManager.MilestoneChangedEvent += OnMilestoneChanged;
         _cameraManager.CameraStateChangedEvent += OnCameraStateChanged;
+        _tutorialManager.ShowPlayerFollowerEvent += OnShowPlayerFollowerTutorialEvent;
+        _tutorialManager.TutorialCompletedEvent += OnTutorialCompleted;
     }
 
     void OnDisable()
@@ -63,6 +67,8 @@ public class PlayerVisual : Billboard
         _scenesController.SceneLoadedPartiallyEvent -= OnSceneLoadedPartially;
         _progressManager.MilestoneChangedEvent -= OnMilestoneChanged;
         _cameraManager.CameraStateChangedEvent -= OnCameraStateChanged;
+        _tutorialManager.ShowPlayerFollowerEvent -= OnShowPlayerFollowerTutorialEvent;
+        _tutorialManager.TutorialCompletedEvent -= OnTutorialCompleted;
     }
     #endregion
 
@@ -119,6 +125,17 @@ public class PlayerVisual : Billboard
 
         _cameraManager.SwitchToOrbitalCamera(_orbitalStateSetting);
         _soundManager.PlayButtonClickSFX();
+    }
+
+    void OnShowPlayerFollowerTutorialEvent(bool isShown)
+    {
+        _playerButton.style.display = isShown ? DisplayStyle.Flex : DisplayStyle.None;
+    }
+
+    void OnTutorialCompleted()
+    {
+        _tutorialManager.ShowPlayerFollowerEvent -= OnShowPlayerFollowerTutorialEvent;
+        _tutorialManager.TutorialCompletedEvent -= OnTutorialCompleted;
     }
     #endregion
 }

@@ -39,6 +39,7 @@ public class LandmarkVisual : Billboard
     UIManager _uiManager;
     SoundManager _soundManager;
     CameraManager _cameraManager;
+    TutorialManager _tutorialManager;
     #endregion
 
     #region LIFE CYCLE
@@ -77,8 +78,12 @@ public class LandmarkVisual : Billboard
         _uiManager = ServiceLocator.Instance.Get<UIManager>();
         _soundManager = ServiceLocator.Instance.Get<SoundManager>();
         _cameraManager = ServiceLocator.Instance.Get<CameraManager>();
+        _tutorialManager = ServiceLocator.Instance.Get<TutorialManager>();
+
         _cameraManager.CameraStateChangedEvent += OnCameraStateChanged;
         _uiManager.LandmarkVisualizationToggled += OnVisualizationToggled;
+        _tutorialManager.ShowLandmarkVisualsEvent += OnShowLandmarkVisualsTutorialEvent;
+        _tutorialManager.TutorialCompletedEvent += OnTutorialCompleted;
 
         IsShown = _uiManager.IsLandmarkVisualizationOn;
 
@@ -116,6 +121,8 @@ public class LandmarkVisual : Billboard
         _nameButton.UnregisterCallback<ClickEvent>(OnClicked);
         _cameraManager.CameraStateChangedEvent -= OnCameraStateChanged;
         _uiManager.LandmarkVisualizationToggled -= OnVisualizationToggled;
+        _tutorialManager.ShowLandmarkVisualsEvent -= OnShowLandmarkVisualsTutorialEvent;
+        _tutorialManager.TutorialCompletedEvent -= OnTutorialCompleted;
     }
     #endregion
 
@@ -133,7 +140,7 @@ public class LandmarkVisual : Billboard
             // _rootVisual.style.display = value ?
             //     DisplayStyle.Flex :
             //     DisplayStyle.None;
-            _rootVisual.visible = value && _uiManager.IsLandmarkVisualizationOn;
+            _rootVisual.visible = value && _uiManager.IsLandmarkVisualizationOn && _cameraManager.IsInSpectatorState;
         }
     }
     #endregion
@@ -167,6 +174,17 @@ public class LandmarkVisual : Billboard
             IsShown = value;
         else
             IsShown = IsSetAsShown && value;
+    }
+
+    void OnShowLandmarkVisualsTutorialEvent(bool areShown)
+    {
+        IsShown = areShown && _uiManager.IsLandmarkVisualizationOn;
+    }
+
+    void OnTutorialCompleted()
+    {
+        _tutorialManager.ShowLandmarkVisualsEvent -= OnShowLandmarkVisualsTutorialEvent;
+        _tutorialManager.TutorialCompletedEvent -= OnTutorialCompleted;
     }
     #endregion
 }

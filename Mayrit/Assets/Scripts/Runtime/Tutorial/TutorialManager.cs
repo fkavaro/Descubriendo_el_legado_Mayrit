@@ -15,6 +15,10 @@ public class TutorialManager : ABehaviourEntity<StackFiniteStateMachine<Tutorial
     #endregion
 
     #region INTERNAL PROPERTIES
+    public event Action<bool> ShowPlayerFollowerEvent;
+    public event Action<bool> ShowLandmarkVisualsEvent;
+    public event Action TutorialCompletedEvent;
+
     StackFiniteStateMachine<TutorialState> _fsm;
     ScenesController _scenesController;
     #endregion
@@ -51,15 +55,14 @@ public class TutorialManager : ABehaviourEntity<StackFiniteStateMachine<Tutorial
     protected override void Start()
     {
         _scenesController = ServiceLocator.Instance.Get<ScenesController>();
-        _scenesController.ScenesLoadedFullyEvent += OnScenesLoadedFully;
+        _scenesController.SceneLoadedPartiallyEvent += OnSceneLoadedPartially;
 
         // base.Start(); when gameplay scene loaded, to start behaviour system
     }
 
     void OnDisable()
     {
-        if (_scenesController != null)
-            _scenesController.ScenesLoadedFullyEvent -= OnScenesLoadedFully;
+        _scenesController.SceneLoadedPartiallyEvent -= OnSceneLoadedPartially;
 
         ServiceLocator.Instance.Unregister(this);
     }
@@ -74,12 +77,23 @@ public class TutorialManager : ABehaviourEntity<StackFiniteStateMachine<Tutorial
         {
             _hasCompletedTutorial = true;
             GameSaveSystem.SaveTutorial(true);
+            TutorialCompletedEvent?.Invoke();
         }
+
+        if (_fsm.CurrentState.Data.VisualElementsToHide.Contains(UIElementsToHide.TutorialPlayerFollower))
+            ShowPlayerFollowerEvent?.Invoke(false);
+        else
+            ShowPlayerFollowerEvent?.Invoke(true);
+
+        if (_fsm.CurrentState.Data.VisualElementsToHide.Contains(UIElementsToHide.TutorialSwitches))
+            ShowLandmarkVisualsEvent?.Invoke(false);
+        else
+            ShowLandmarkVisualsEvent?.Invoke(true);
     }
 
-    void OnScenesLoadedFully(Dictionary<SceneDatabase.SceneType, SceneDatabase.SceneName> loadedScenes, List<SceneDatabase.SceneType> unloadedTypes)
+    private void OnSceneLoadedPartially(SceneDatabase.SceneType type, SceneDatabase.SceneName name)
     {
-        if (!loadedScenes.TryGetValue(SceneDatabase.SceneType.Milestone, out var milestoneScene))
+        if (name != SceneDatabase.SceneName.GameplayScene)
             return;
 
         _hasCompletedTutorial = GameSaveSystem.LoadTutorialCompletion();

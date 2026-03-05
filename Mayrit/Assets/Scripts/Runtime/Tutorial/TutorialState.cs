@@ -5,6 +5,7 @@ using UnityEngine.UIElements;
 
 public class TutorialState : AUIState
 {
+    public TutorialStepSO Data => _data;
     readonly TutorialStepSO _data;
     readonly AStateMachine<TutorialState> _fsm;
     readonly ATutorialStepConditionSO _completionCondition;
