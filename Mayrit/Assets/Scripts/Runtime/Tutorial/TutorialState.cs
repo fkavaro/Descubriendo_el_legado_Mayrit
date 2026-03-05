@@ -10,8 +10,6 @@ public class TutorialState : AUIState
     readonly ATutorialStepConditionSO _completionCondition;
     readonly List<VisualElement> _hiddenElements = new();
 
-    VisualElement _hudScreen, _tutorialStepsParent;
-
     public TutorialState(TutorialStepSO tutorialStepData, UIManager uiManager, AStateMachine<TutorialState> fsm)
     : base(tutorialStepData.VisualElementName, uiManager.UIDocument)
     {
@@ -28,15 +26,9 @@ public class TutorialState : AUIState
 
     protected override void ConfigureUIElementsOnAwake()
     {
-        _hudScreen = GetByName<VisualElement>("HUD", _UIDocument.rootVisualElement);
-        _tutorialStepsParent = GetByName<VisualElement>("TutorialSteps", _hudScreen);
-
-        if (_tutorialStepsParent.style.display != DisplayStyle.None)
-            _tutorialStepsParent.style.display = DisplayStyle.None;
-
         foreach (UIElementsToHide elementName in _data.VisualElementsToHide)
         {
-            VisualElement elementToHide = GetByName<VisualElement>(elementName.ToString(), _hudScreen);
+            VisualElement elementToHide = GetByName<VisualElement>(elementName.ToString(), _UIDocument.rootVisualElement);
 
             if (elementToHide != null)
                 _hiddenElements.Add(elementToHide);
@@ -48,15 +40,11 @@ public class TutorialState : AUIState
         _completionCondition.Completed += OnCompletionConditionCompleted;
         _completionCondition.BeginListening();
 
-        if (_tutorialStepsParent.style.display != DisplayStyle.Flex)
-            _tutorialStepsParent.style.display = DisplayStyle.Flex;
-
         foreach (VisualElement element in _hiddenElements)
         {
             element.style.display = DisplayStyle.None;
-            Debug.Log($"{_stateName}: Hiding element {element.name}");
+            //Debug.Log($"{_stateName}: Hiding element {element.name}");
         }
-
 
         base.StartState();
     }

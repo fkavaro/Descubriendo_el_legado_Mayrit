@@ -16,8 +16,8 @@ public class TutorialStepSO : ScriptableObject
 public enum UIElementsToHide
 {
     TutorialMilestoneButtons,
-    MilestoneArea,
-    PlayerFollower,
-    Compass,
+    TutorialMilestoneArea,
+    TutorialPlayerFollower,
+    TutorialCompass,
     TutorialSwitches
 }

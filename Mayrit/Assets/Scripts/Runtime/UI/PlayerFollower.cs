@@ -67,7 +67,7 @@ public class PlayerFollower
             return;
         }
 
-        //ShowFollower();
+        ShowFollower();
 
         _screenCenter = new Vector2(Screen.width, Screen.height) * 0.5f;
         _followerCenter = GetCenter(_container);
