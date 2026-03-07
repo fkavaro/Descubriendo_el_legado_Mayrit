@@ -29,12 +29,15 @@ public class PointOfInterest : MonoBehaviour
     public event Action<PointOfInterest> OnVisitedEvent;
 
     bool _isActive;
+    bool _initialized;
     SphereCollider _sphereCollider;
     #endregion
 
     #region LIFE CYCLE
     void OnEnable()
     {
+        if (_initialized) return;
+
         if (TryGetComponent(out _sphereCollider))
         {
             _sphereCollider.radius = _colliderRadius;
@@ -50,6 +53,7 @@ public class PointOfInterest : MonoBehaviour
                 _detectionMask = 1 << playableLayer;
         }
 
+        _initialized = true;
         Deactivate();
     }
 
@@ -86,6 +90,7 @@ public class PointOfInterest : MonoBehaviour
 
         _vfxGO.SetActive(true);
         _isActive = true;
+        enabled = true;
     }
 
     public void Deactivate()
@@ -95,6 +100,7 @@ public class PointOfInterest : MonoBehaviour
 
         _vfxGO.SetActive(false);
         _isActive = false;
+        enabled = false;
     }
 
     public void Reset()
