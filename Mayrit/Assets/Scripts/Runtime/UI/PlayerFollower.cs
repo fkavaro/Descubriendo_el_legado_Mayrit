@@ -6,10 +6,11 @@ public class PlayerFollower
     #region PROPERTIES
     const float NEAR_ZERO = 0.0001f;
 
-    private readonly VisualElement _container;
+    private readonly VisualElement _root;
     private readonly VisualElement _angle;
     UIManager _uiManager;
     CameraManager _cameraManager;
+    Camera _mainCamera;
 
     public Transform PlayerTransform;
     Vector2 _screenCenter;
@@ -21,10 +22,10 @@ public class PlayerFollower
     #endregion
 
     #region CONSTRUCTOR
-    public PlayerFollower(VisualElement container)
+    public PlayerFollower(VisualElement root)
     {
-        _container = container;
-        _angle = _container.Q<VisualElement>("Angle");
+        _root = root;
+        _angle = _root.Q<VisualElement>("Angle");
 
         if (_angle == null)
             Debug.LogWarning("PlayerFollower: No VisualElement with name 'Angle' was found in the container.");
@@ -43,34 +44,35 @@ public class PlayerFollower
             Debug.LogWarning("PlayerFollower: UIManager not found in ServiceLocator.");
         if (_cameraManager == null)
             Debug.LogWarning("PlayerFollower: CameraManager not found in ServiceLocator.");
+
+        _mainCamera = Camera.main;
     }
 
     public void Update()
     {
+        if (_mainCamera == null)
+            _mainCamera = Camera.main;
+
         if (PlayerTransform == null ||
             !_cameraManager.IsInSpectatorState ||
-            Camera.main == null)
+            _mainCamera == null)
         {
-            HideFollower();
+            IsShown(false);
             return;
         }
 
-        Camera mainCamera = Camera.main; // TODO: avoid this
-
         // Project the player into screen/viewport space for visibility checks.
-        _playerScreenPos = mainCamera.WorldToScreenPoint(PlayerTransform.position);
-        _playerViewportPos = mainCamera.WorldToViewportPoint(PlayerTransform.position);
+        _playerScreenPos = _mainCamera.WorldToScreenPoint(PlayerTransform.position);
+        _playerViewportPos = _mainCamera.WorldToViewportPoint(PlayerTransform.position);
 
         if (IsOnScreen(_playerScreenPos, _playerViewportPos))
         {
-            HideFollower();
+            IsShown(false);
             return;
         }
 
-        ShowFollower();
-
         _screenCenter = new Vector2(Screen.width, Screen.height) * 0.5f;
-        _followerCenter = GetCenter(_container);
+        _followerCenter = GetCenter(_root);
 
         // Direction from screen center to player (flipped if behind camera).
         _direction = GetDirectionFromCenter(_playerScreenPos, _screenCenter);
@@ -79,20 +81,15 @@ public class PlayerFollower
         _clampedScreenPos = ClampToScreenBorder(_direction, _followerCenter);
         SetFollowerPosition(_clampedScreenPos, _followerCenter);
         SetFollowerRotation(_direction);
+
+        IsShown(true);
     }
     #endregion
 
     #region PRIVATE METHODS
-    void HideFollower()
+    void IsShown(bool value)
     {
-        if (_container.style.display != DisplayStyle.None)
-            _container.style.display = DisplayStyle.None;
-    }
-
-    void ShowFollower()
-    {
-        if (_container.style.display != DisplayStyle.Flex)
-            _container.style.display = DisplayStyle.Flex;
+        _root.style.display = value ? DisplayStyle.Flex : DisplayStyle.None;
     }
 
     Vector2 ScreenToUICoordinates(Vector3 screenPos)
@@ -168,8 +165,8 @@ public class PlayerFollower
         float uiX = screenPos.x - halfSize.x - _uiManager.PlayerFollowerPositionOffset.x;
         float uiY = screenPos.y - halfSize.y - _uiManager.PlayerFollowerPositionOffset.y;
 
-        _container.style.left = uiX;
-        _container.style.top = uiY;
+        _root.style.left = uiX;
+        _root.style.top = uiY;
     }
 
     void SetFollowerRotation(Vector2 direction)
