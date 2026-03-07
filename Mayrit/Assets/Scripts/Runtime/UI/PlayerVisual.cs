@@ -44,8 +44,10 @@ public class PlayerVisual : Billboard
         _orbitalStateSetting.IsForCharacter = true;
     }
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
+
         // Get dependencies from Service Locator
         _scenesController = ServiceLocator.Instance.Get<ScenesController>();
         _progressManager = ServiceLocator.Instance.Get<ProgressManager>();

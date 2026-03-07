@@ -40,12 +40,6 @@ public class LandmarkVisual : Billboard
     #endregion
 
     #region LIFE CYCLE
-    void Awake()
-    {
-        _uiDocument = GetComponent<UIDocument>();
-        _originalPosition = transform.position;
-    }
-
     void OnEnable()
     {
         if (_orbitalStateSetting.DataToShow == null)
@@ -58,6 +52,17 @@ public class LandmarkVisual : Billboard
             _orbitalStateSetting.Target = transform;
 
         if (!SetupElements()) return;
+    }
+
+    void Awake()
+    {
+        _uiDocument = GetComponent<UIDocument>();
+        _originalPosition = transform.position;
+    }
+
+    protected override void Start()
+    {
+        base.Start();
 
         _uiManager = ServiceLocator.Instance.Get<UIManager>();
         _soundManager = ServiceLocator.Instance.Get<SoundManager>();
@@ -68,6 +73,8 @@ public class LandmarkVisual : Billboard
         _uiManager.LandmarkVisualizationToggled += OnVisualizationToggled;
         _tutorialManager.ShowLandmarkVisualsEvent += OnShowLandmarkVisualsTutorialEvent;
         _tutorialManager.TutorialCompletedEvent += OnTutorialCompleted;
+
+        IsShown = true;
     }
 
     protected override void Update()
@@ -168,7 +175,7 @@ public class LandmarkVisual : Billboard
         _cameraManager.SwitchToOrbitalCamera(_orbitalStateSetting);
     }
 
-    void OnCameraStateChanged() => IsShown = _uiManager.IsLandmarkVisualizationOn;
+    void OnCameraStateChanged() => IsShown = true;
 
     void OnVisualizationToggled(bool value) => IsShown = value;
 

@@ -24,7 +24,7 @@ public class Billboard : MonoBehaviour
     #endregion
 
     #region MONOBEHAVIOUR
-    void Start()
+    protected virtual void Start()
     {
         _mainCamera = Camera.main;
     }
