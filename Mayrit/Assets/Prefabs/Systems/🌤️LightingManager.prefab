@@ -287,7 +287,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4532c210d7d8f854fa2f13a2a7a04f7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hasTransitions: 0
+  _hasTransitions: 1
   _currentTime: 10
   _milestoneTimes: {fileID: 11400000, guid: 2f87c216a02f9df4ea6ca75e3f59708b, type: 2}
   _isDynamic: 0
@@ -337,24 +337,24 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: -2
-      outSlope: -2
+      inSlope: -2.8
+      outSlope: -2.8
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 0.25
-      value: 0.5
-      inSlope: -0.70000005
-      outSlope: -0.70000005
+      value: 0.3
+      inSlope: -0.79999995
+      outSlope: -0.79999995
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 0.5
-      value: 0.65
+      value: 0.6
       inSlope: 0
       outSlope: 0
       tangentMode: 34
@@ -363,9 +363,9 @@ MonoBehaviour:
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 0.75
-      value: 0.5
-      inSlope: 0.70000005
-      outSlope: 0.70000005
+      value: 0.3
+      inSlope: 0.79999995
+      outSlope: 0.79999995
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -373,8 +373,8 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 2
-      outSlope: 2
+      inSlope: 2.8
+      outSlope: 2.8
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -574,7 +574,7 @@ Light:
   m_LightShadowCasterMode: 2
   m_AreaSize: {x: 0.5, y: 0.5}
   m_BounceIntensity: 1
-  m_ColorTemperature: 5981.481
+  m_ColorTemperature: 5100
   m_UseColorTemperature: 1
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
@@ -682,7 +682,7 @@ MonoBehaviour:
   m_ShadowResolution:
     m_Override: 512
     m_UseOverride: 0
-    m_Level: 1
+    m_Level: 2
   m_ShadowDimmer: 1
   m_VolumetricShadowDimmer: 1
   m_ShadowFadeDistance: 10000
