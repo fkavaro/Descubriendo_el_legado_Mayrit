@@ -46,7 +46,7 @@
                             <ui:VisualElement name="MilestoneButtons" style="flex-grow: 1; flex-direction: row; display: flex;">
                                 <ui:Button name="PreviousMilestoneButton" class="smallButton button" style="position: relative; background-image: url(&quot;project://database/Assets/UI/Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=-1008301579157283121&amp;guid=2196264947afaa74a8b087d37850e618&amp;type=3#arrow-left@2x&quot;); align-self: flex-start; margin-right: 7.5px;"/>
                                 <ui:Button name="NextMilestoneButton" text="Siguiente hito" class="button mediumButton highlighted" style="position: relative; margin-left: 7.5px; padding-left: 50px; width: 220px; align-self: flex-start;">
-                                    <ui:Image source="project://database/Assets/UI/Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=-1087164816274819069&amp;guid=2196264947afaa74a8b087d37850e618&amp;type=3#arrow-right@2x" style="position: absolute; top: -7px; left: 0; right: auto; bottom: -7px; width: 60px;"/>
+                                    <ui:Image source="project://database/Assets/UI/Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=-1087164816274819069&amp;guid=2196264947afaa74a8b087d37850e618&amp;type=3#arrow-right@2x" name="RightArrow" style="position: absolute; top: -7px; left: 0; right: auto; bottom: -7px; width: 60px;"/>
                                 </ui:Button>
                             </ui:VisualElement>
                         </ui:VisualElement>

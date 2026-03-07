@@ -85,7 +85,7 @@ public class ProgressManager : ABehaviourEntity<FiniteStateMachine<MilestoneStat
         }
 
         bool canSkipInRuntime = _canSkipTours; //Application.isPlaying && Application.isEditor // TODO: full line when gold release
-        bool tourCompleted = _tourManager.CurrentTour.IsCompleted;
+        bool tourCompleted = _tourManager.CurrentTour.HasBeenCompleted;
         bool isNextMilestoneAvailable = !AtLastMilestone() && (canSkipInRuntime || tourCompleted);
 
         return isNextMilestoneAvailable;

@@ -16,7 +16,8 @@ public class SpectatorHUD_UIState : AHUDState
     VisualElement _milestoneArea,
         _playerFollowerRoot,
         _switches,
-        _milestoneButtons;
+        _milestoneButtons,
+        _nextMilestoneButtonImage;
 
     public Switch _modernVisualizactionSwitch,
         _landmarkVisualizationSwitch;
@@ -44,6 +45,7 @@ public class SpectatorHUD_UIState : AHUDState
         _milestoneButtons = GetByName<VisualElement>("MilestoneButtons");
         _nextMilestoneButton = GetButtonAndRegisterCallback("NextMilestoneButton", OnNextMilestoneClicked, _milestoneButtons);
         _previousMilestoneButton = GetButtonAndRegisterCallback("PreviousMilestoneButton", OnPreviousMilestoneClicked, _milestoneButtons);
+        _nextMilestoneButtonImage = GetByName<VisualElement>("RightArrow", _nextMilestoneButton);
 
         _playerFollower = new PlayerFollower(_playerFollowerRoot);
     }
@@ -105,11 +107,15 @@ public class SpectatorHUD_UIState : AHUDState
     #region PRIVATE METHODS
     void CheckMilestoneButtonsAvailability()
     {
-        _nextMilestoneButton.SetEnabled(_progressManager.IsNextMilestoneAvailable());
-        _nextMilestoneButton.pickingMode = _progressManager.IsNextMilestoneAvailable() ? PickingMode.Position : PickingMode.Ignore;
+        bool isNextMilestoneAvailable = _progressManager.IsNextMilestoneAvailable();
+        bool isPreviousMilestoneAvailable = !_progressManager.AtFirstMilestone();
 
-        _previousMilestoneButton.SetEnabled(!_progressManager.AtFirstMilestone());
-        _previousMilestoneButton.pickingMode = !_progressManager.AtFirstMilestone() ? PickingMode.Position : PickingMode.Ignore;
+        _nextMilestoneButton.SetEnabled(isNextMilestoneAvailable);
+        _nextMilestoneButton.pickingMode = isNextMilestoneAvailable ? PickingMode.Position : PickingMode.Ignore;
+        _nextMilestoneButtonImage.pickingMode = isNextMilestoneAvailable ? PickingMode.Position : PickingMode.Ignore;
+
+        _previousMilestoneButton.SetEnabled(isPreviousMilestoneAvailable);
+        _previousMilestoneButton.pickingMode = isPreviousMilestoneAvailable ? PickingMode.Position : PickingMode.Ignore;
     }
     #endregion
 
