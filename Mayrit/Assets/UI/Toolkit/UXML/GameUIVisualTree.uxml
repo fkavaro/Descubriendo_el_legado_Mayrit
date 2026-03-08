@@ -294,10 +294,10 @@
         <ui:VisualElement name="ContextualPanel" class="contextualPanel" style="display: none;">
             <ui:VisualElement name="Bg" class="contextualPanelBlurBg"/>
             <ui:VisualElement name="InformationArea" style="flex-grow: 1;">
-                <ui:VisualElement name="UpperArea" style="flex-direction: row-reverse; flex-grow: 0; flex-shrink: 0; margin-bottom: 40px;">
+                <ui:VisualElement name="UpperArea" style="flex-direction: row-reverse; flex-grow: 0; flex-shrink: 0; margin-bottom: 20px;">
                     <ui:VisualElement name="Headers" style="flex-grow: 1;">
-                        <ui:Label name="Header" text="*Mezquita aljama" class="header" style="width: 485px;"/>
-                        <ui:Label name="SubHeader" text="*Segunda mitad s.IX" class="subHeader" style="flex-grow: 1; display: flex; margin-left: 15px;"/>
+                        <ui:Label name="Header" text="*Mezquita aljama" class="header" style="width: 485px; margin-top: 15px; margin-bottom: 10px;"/>
+                        <ui:Label name="SubHeader" text="*Segunda mitad s.IX" class="subHeader" style="flex-grow: 1; display: flex; margin-left: 15px; margin-top: 0;"/>
                     </ui:VisualElement>
                 </ui:VisualElement>
                 <ui:ScrollView focusable="false" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Auto" enabled="true" mode="Vertical" name="ScrollView" style="display: flex;">
@@ -305,7 +305,7 @@
                         <ui:Label text="*Era la principal, la de la oración del viernes, y por la que la población tenía carácter de medina/ciudad. Sobre esta se levantó la Iglesia de Santa María de la Almudena, derribada para ensanchar la calle Mayor, en el entorno de las actuales calles Mayor y Bailén, en la zona que hoy conocemos como Las Vistillas.  Tenía cinco naves perpendiculares al muro de la alquibla (el que da a la Meca), con su característico mihrab u hornacina decorada, donde después se abrió la entrada principal de la iglesia. &#10;En su parte opuesta, es decir, noroeste, había un patio con su alminar, que dio lugar después al campanario cristiano. Sería una torre cuadrada con el cuerpo superior retranqueado que suelen tener las mezquitas del occidente islámico. Estaría rematada por un ŷamur.  En sus conquistas, los cristianos acostumbraban a consagrar sus parroquias principales bajo la titulación de Santa María como signo de protección cuando antes había sido mezquita." name="Description" class="text" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;"/>
                         <ui:VisualElement name="ImageArea" style="flex-grow: 1; display: flex;">
                             <ui:VisualElement name="Image" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Imports/External/Rocks%20and%20Boulders%202/Source/Textures/Rockdetail1.tif?fileID=2800000&amp;guid=19b818e26c2922a488c06b1fbdae5df3&amp;type=3#Rockdetail1&quot;); height: 300px; width: 100%; flex-shrink: 0; border-top-left-radius: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px; border-bottom-left-radius: 20px; margin-top: 20px; margin-bottom: 20px; display: flex;"/>
-                            <ui:Label text="Pie de foto" name="Caption" class="text" style="display: flex; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;"/>
+                            <ui:Label text="Pie de foto" name="Caption" class="text" style="display: flex; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; -unity-text-align: upper-center;"/>
                         </ui:VisualElement>
                     </ui:VisualElement>
                 </ui:ScrollView>
@@ -315,7 +315,7 @@
                 <ui:Button text="Jugar" name="StartTourButton" class="mediumButton button highlighted" style="display: flex; position: relative; align-self: flex-end; flex-grow: 1; margin-left: 0; margin-right: 0; margin-bottom: 0; margin-top: 0; width: auto; flex-shrink: 1;"/>
             </ui:VisualElement>
             <ui:Button text="X" name="CloseContextualPanelButton" class="button closeButton smallButton" style="top: 30px; left: auto; right: 30px;"/>
-            <ui:VisualElement name="CloseContextualPanelTutorialStep" style="position: absolute; top: 30px; left: auto; right: 760px; bottom: auto; align-self: center; flex-direction: column; justify-content: center; display: flex; width: 500px; padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 20px;">
+            <ui:VisualElement name="CloseContextualPanelTutorialStep" style="position: absolute; top: 30px; left: auto; right: 760px; bottom: auto; align-self: center; flex-direction: column; justify-content: center; display: none; width: 500px; padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 20px;">
                 <ui:VisualElement name="Bg" class="tutorialBlurBg" style="flex-grow: 1; display: flex;"/>
                 <ui:Label text="Cerrar el panel contextual" name="Subheader" class="subHeader" style="margin-top: 0; -unity-text-align: upper-center;"/>
                 <ui:Label text="Pulsa el botón rojo o la tecla X." name="Text" class="text" style="-unity-text-align: middle-center;"/>
@@ -566,10 +566,10 @@
             <ui:VisualElement name="RightPanel" class="contextualPanel" style="display: flex; justify-content: space-between;">
                 <ui:VisualElement name="Bg" class="contextualPanelBlurBg"/>
                 <ui:VisualElement name="InformationArea">
-                    <ui:VisualElement name="UpperArea" style="flex-direction: row-reverse; flex-grow: 0; flex-shrink: 0; margin-bottom: 40px;">
+                    <ui:VisualElement name="UpperArea" style="flex-direction: row-reverse; flex-grow: 0; flex-shrink: 0; margin-bottom: 20px;">
                         <ui:VisualElement name="Headers" style="flex-grow: 1;">
-                            <ui:Label name="Header" text="*Mezquita aljama" class="header" style="flex-grow: 1;"/>
-                            <ui:Label name="SubHeader" text="*Segunda mitad s.IX" class="subHeader" style="flex-grow: 1; display: flex; margin-left: 15px;"/>
+                            <ui:Label name="Header" text="*Mezquita aljama" class="header" style="flex-grow: 1; margin-bottom: 10px;"/>
+                            <ui:Label name="SubHeader" text="*Segunda mitad s.IX" class="subHeader" style="flex-grow: 1; display: flex; margin-left: 15px; margin-top: 0;"/>
                         </ui:VisualElement>
                     </ui:VisualElement>
                     <ui:ScrollView focusable="false" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Auto" enabled="true" mode="Vertical" name="ScrollView" style="display: flex;">
