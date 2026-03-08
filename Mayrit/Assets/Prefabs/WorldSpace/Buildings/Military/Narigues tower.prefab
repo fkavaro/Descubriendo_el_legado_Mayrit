@@ -75,15 +75,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 123590667843245280, guid: fc5b95d01dc9ae845ad1c50f4c753439, type: 3}
       propertyPath: m_VersionIndex
-      value: 371
+      value: 383
       objectReference: {fileID: 0}
     - target: {fileID: 264653619609270475, guid: fc5b95d01dc9ae845ad1c50f4c753439, type: 3}
       propertyPath: m_VersionIndex
-      value: 371
+      value: 383
       objectReference: {fileID: 0}
     - target: {fileID: 2464044187345813974, guid: fc5b95d01dc9ae845ad1c50f4c753439, type: 3}
       propertyPath: m_VersionIndex
-      value: 331
+      value: 343
       objectReference: {fileID: 0}
     - target: {fileID: 2466965453775768732, guid: fc5b95d01dc9ae845ad1c50f4c753439, type: 3}
       propertyPath: m_Name
@@ -91,19 +91,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2611803646633227576, guid: fc5b95d01dc9ae845ad1c50f4c753439, type: 3}
       propertyPath: m_VersionIndex
-      value: 371
+      value: 383
       objectReference: {fileID: 0}
     - target: {fileID: 3156296752316131330, guid: fc5b95d01dc9ae845ad1c50f4c753439, type: 3}
       propertyPath: m_VersionIndex
-      value: 331
+      value: 343
       objectReference: {fileID: 0}
     - target: {fileID: 3334518274821111211, guid: fc5b95d01dc9ae845ad1c50f4c753439, type: 3}
       propertyPath: m_VersionIndex
-      value: 331
+      value: 343
       objectReference: {fileID: 0}
     - target: {fileID: 4642069214134010373, guid: fc5b95d01dc9ae845ad1c50f4c753439, type: 3}
       propertyPath: m_VersionIndex
-      value: 294
+      value: 306
       objectReference: {fileID: 0}
     - target: {fileID: 8038429083490279149, guid: fc5b95d01dc9ae845ad1c50f4c753439, type: 3}
       propertyPath: m_LocalPosition.x
@@ -145,9 +145,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8060091383190792837, guid: fc5b95d01dc9ae845ad1c50f4c753439, type: 3}
+      propertyPath: m_VersionIndex
+      value: 5260
+      objectReference: {fileID: 0}
     - target: {fileID: 8286100798166023146, guid: fc5b95d01dc9ae845ad1c50f4c753439, type: 3}
       propertyPath: m_VersionIndex
-      value: 371
+      value: 383
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
