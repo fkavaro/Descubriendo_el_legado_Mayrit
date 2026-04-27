@@ -193,7 +193,7 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
 
             if (_tourManager != null)
             {
-                _tourManager.POIVisitedEvent -= OnTourPOIVisited;
+                _tourManager.TourStopVisitedEvent -= OnTourStopVisited;
                 _tourManager = null;
             }
 
@@ -217,7 +217,7 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
             _spectatorHUDState.ResetTourEvent += OnResetTourClicked;
             _spectatorHUDState._modernVisualizactionSwitch.Toggled += OnModernVisualizationToggled;
             _spectatorHUDState._landmarkVisualizationSwitch.Toggled += OnLandmarkVisualizationToggled;
-            _tourManager.POIVisitedEvent += OnTourPOIVisited;
+            _tourManager.TourStopVisitedEvent += OnTourStopVisited;
             _cameraManager.CameraStateChangedEvent += OnCameraStateChanged;
         }
 
@@ -266,9 +266,9 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
         LandmarkVisualizationToggled?.Invoke(value);
     }
 
-    void OnTourPOIVisited(PointOfInterest poi)
+    void OnTourStopVisited(TourStop tourStop)
     {
-        ShowContextualPanel(poi.Data);
+        ShowContextualPanel(tourStop.Data);
     }
 
     void OnContextualPanelHidden()

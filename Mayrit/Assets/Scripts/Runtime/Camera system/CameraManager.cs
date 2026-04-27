@@ -13,7 +13,7 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
 
     public bool IsInThirdPersonState => _fsm.IsCurrentState(_thirdPersonState);
 
-    public bool IsInPOIState => _fsm.IsCurrentState(_poiState);
+    public bool IsInTourStopState => _fsm.IsCurrentState(_tourStopState);
 
     public PlayableCharacter PlayableCharacter => _playableCharacter;
 
@@ -37,7 +37,7 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
     #endregion
 
     #region EVENTS
-    /// <summary>Invoked whenever the camera state changes (spectator, orbital, third-person, POI).</summary>
+    /// <summary>Invoked whenever the camera state changes (spectator, orbital, third-person, tour stop).</summary>
     public event Action CameraStateChangedEvent;
     #endregion
 
@@ -47,7 +47,7 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
     Spectator_CameraState _spectatorState;
     ThirdPerson_CameraState _thirdPersonState;
     Orbital_CameraState _orbitalState;
-    POI_CameraState _poiState;
+    TourStop_CameraState _tourStopState;
 
     // Dependency Injection
     UIManager _uiManager;
@@ -65,7 +65,7 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
         _spectatorState = new(_spectatorCameraData, _spectatorCamera);
         _orbitalState = new(_orbitalCameraData, _orbitalCamera);
         _thirdPersonState = new(_thirdPersonCameraData, _thirdPersonCamera);
-        _poiState = new(_thirdPersonCameraData.SimulationSpeed);
+        _tourStopState = new(_thirdPersonCameraData.SimulationSpeed);
 
         _fsm.SetInitialState(_spectatorState);
 
@@ -92,7 +92,7 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
         _uiManager.EdgeScrollingToggledEvent += _spectatorCameraData.OnIsEdgeScrollingToggled;
         _uiManager.ContextualPanelHiddenEvent += OnContextualPanelHidden;
         _uiManager.PlayTourClickedEvent += SwitchToThirdPersonCamera;
-        _tourManager.POIVisitedEvent += OnTourPOIVisited;
+        _tourManager.TourStopVisitedEvent += OnTourStopVisited;
 
         // Set camera target at min height
         CinemachineOrbitalFollow _orbitalFollow = _spectatorCamera.GetComponent<CinemachineOrbitalFollow>();
@@ -118,7 +118,7 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
         // Unsubscribe from events
         _uiManager.ContextualPanelHiddenEvent -= OnContextualPanelHidden;
         _uiManager.PlayTourClickedEvent -= SwitchToThirdPersonCamera;
-        _tourManager.POIVisitedEvent -= OnTourPOIVisited;
+        _tourManager.TourStopVisitedEvent -= OnTourStopVisited;
 
         ServiceLocator.Instance.Unregister(this);
     }
@@ -193,8 +193,8 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
 
         if (IsInOrbitalState)
             SyncThirdPersonWithOrbital();
-        else if (IsInPOIState)
-            SyncThirdPersonWithPOI();
+        else if (IsInTourStopState)
+            SyncThirdPersonWithTourStop();
 
         _thirdPersonCamera.LookAt.position = _playableCharacter.transform.position;
         _fsm.SwitchState(_thirdPersonState);
@@ -206,14 +206,14 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
     }
 
     /// <summary>
-    /// Switches to POI (Point of Interest) camera mode.
+    /// Switches to TourStop camera mode.
     /// </summary>
-    /// <param name="camera">The POI camera to switch to.</param>
-    public void SwitchToPoiCamera(CinemachineCamera camera)
+    /// <param name="camera">The TourStop camera to switch to.</param>
+    public void SwitchToTourSTOPCamera(CinemachineCamera camera)
     {
         _soundManager.PlayCameraTransitionSFX();
-        _poiState.Camera = camera;
-        _fsm.SwitchState(_poiState);
+        _tourStopState.Camera = camera;
+        _fsm.SwitchState(_tourStopState);
         CameraStateChangedEvent?.Invoke();
     }
     #endregion
@@ -310,12 +310,12 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
         _thirdPersonCamera.LookAt.rotation = Quaternion.Euler(clampedPitch, yaw, 0f);
     }
 
-    void SyncThirdPersonWithPOI()
+    void SyncThirdPersonWithTourStop()
     {
-        Transform poiCameraTransform = _poiState.Camera.transform;
-        Vector3 poiForward = poiCameraTransform.forward;
+        Transform tourStopCameraTransform = _tourStopState.Camera.transform;
+        Vector3 tourStopForward = tourStopCameraTransform.forward;
 
-        Vector3 eulerAngles = Quaternion.LookRotation(poiForward, Vector3.up).eulerAngles;
+        Vector3 eulerAngles = Quaternion.LookRotation(tourStopForward, Vector3.up).eulerAngles;
         float pitch = Mathf.DeltaAngle(0f, eulerAngles.x);
         float yaw = Mathf.Repeat(eulerAngles.y, 360f);
 
@@ -377,19 +377,19 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
     {
         if (IsInOrbitalState)
             SwitchToSpectatorCamera();
-        else if (IsInPOIState)
+        else if (IsInTourStopState)
             SwitchToThirdPersonCamera();
     }
 
-    void OnTourPOIVisited(PointOfInterest poi)
+    void OnTourStopVisited(TourStop tourStop)
     {
-        if (!poi.gameObject.activeInHierarchy)
+        if (!tourStop.gameObject.activeInHierarchy)
         {
-            Debug.LogWarning($"POI '{poi.name}' is not active in hierarchy.");
+            Debug.LogWarning($"TourStop '{tourStop.name}' is not active in hierarchy.");
             return;
         }
 
-        SwitchToPoiCamera(poi.Camera);
+        SwitchToTourSTOPCamera(tourStop.Camera);
     }
     #endregion
 }

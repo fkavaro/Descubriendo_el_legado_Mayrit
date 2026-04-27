@@ -10,8 +10,8 @@ public class Tour : MonoBehaviour
     public DataSO Data => _data;
     public bool IsCompleted => _isCompleted;
     public bool HasBeenCompleted => _hasBeenCompleted;
-    public PointOfInterest NextPOI => _nextPOI;
-    public PointOfInterest LastPOIinList => GetPOIFromList(_pointsOfInterest.Count - 1);
+    public TourStop NextTourStop => _nextTourStop;
+    public TourStop LastTourStopinList => GetTourStopFromList(_tourStops.Count - 1);
     #endregion
 
     #region EDITOR PROPERTIES
@@ -21,16 +21,16 @@ public class Tour : MonoBehaviour
     [Header("Tour Settings")]
     [SerializeField] bool _isCompleted = false;
     [SerializeField] bool _hasBeenCompleted = false;
-    [SerializeField] int _currentPOIindex = 0;
-    [Tooltip("Next POI to visit in the tour")]
-    [SerializeField] PointOfInterest _nextPOI;
-    [Tooltip("Ordered POIs for this tour")]
-    [SerializeField] List<PointOfInterest> _pointsOfInterest = new();
+    [SerializeField] int _currentTourStopIdx = 0;
+    [Tooltip("Next TourStop to visit in the tour")]
+    [SerializeField] TourStop _nextTourStop;
+    [Tooltip("Ordered TourStops for this tour")]
+    [SerializeField] List<TourStop> _tourStops = new();
     #endregion
 
     #region INTERNAL PROPERTIES
-    public event Action<PointOfInterest> OnVisitedPOIEvent;
-    public event Action<PointOfInterest> OnNextPOIChangeEvent;
+    public event Action<TourStop> OnVisitedTourStopEvent;
+    public event Action<TourStop> OnNextTourStopChangeEvent;
     public event Action OnTourCompletedEvent;
 
     //ProgressManager _progressManager;
@@ -53,6 +53,8 @@ public class Tour : MonoBehaviour
     void Awake()
     {
         ServiceLocator.Instance.Register(this);
+
+        _tourStops = new List<TourStop>(GetComponentsInChildren<TourStop>());
     }
 
     void OnDisable()
@@ -68,14 +70,14 @@ public class Tour : MonoBehaviour
         Activate();
 
         if (!_isCompleted)
-            SetNextPOI();
+            SetNextTourStop();
     }
 
     public void Reset()
     {
         _isCompleted = false;
-        _currentPOIindex = 0;
-        ResetPOIs();
+        _currentTourStopIdx = 0;
+        ResetTourStops();
     }
 
     public void MarkAsCompleted()
@@ -86,60 +88,62 @@ public class Tour : MonoBehaviour
     #endregion
 
     #region PRIVATE METHODS
-    void UpdateNextPOI()
+    void UpdateNextTourStop()
     {
-        _nextPOI = GetPOIFromList(_currentPOIindex);
+        _nextTourStop = GetTourStopFromList(_currentTourStopIdx);
 
-        if (_nextPOI != null)
-            DetachFromPOI(_nextPOI);
+        if (_nextTourStop != null)
+            DetachFromTourStop(_nextTourStop);
 
-        _currentPOIindex++;
+        _currentTourStopIdx++;
 
-        // All POIs visited
-        if (_currentPOIindex >= _pointsOfInterest.Count)
+        // All TourStops visited
+        if (_currentTourStopIdx >= _tourStops.Count)
         {
             TourCompleted();
             return;
         }
-
-        SetNextPOI();
+        SetNextTourStop();
     }
 
-    PointOfInterest GetPOIFromList(int index)
+    TourStop GetTourStopFromList(int index)
     {
-        return (index >= 0 && index < _pointsOfInterest.Count) ?
-            _pointsOfInterest[index] :
+        return (index >= 0 && index < _tourStops.Count) ?
+            _tourStops[index] :
             null;
     }
 
-    void SetNextPOI()
+    void SetNextTourStop()
     {
-        _nextPOI = GetPOIFromList(_currentPOIindex);
+        _nextTourStop = GetTourStopFromList(_currentTourStopIdx);
 
-        if (_nextPOI == null)
+        if (_nextTourStop == null)
+        {
+            Debug.LogWarning($"[Tour] Next tour stop is null at index {_currentTourStopIdx}");
             return;
+        }
 
-        AttachToPOI(_nextPOI);
-        OnNextPOIChangeEvent?.Invoke(_nextPOI);
+        AttachToTourStop(_nextTourStop);
+        OnNextTourStopChangeEvent?.Invoke(_nextTourStop);
     }
 
-    void AttachToPOI(PointOfInterest poi)
+    void AttachToTourStop(TourStop tourStop)
     {
-        DetachFromPOI(_nextPOI);
+        DetachFromTourStop(_nextTourStop);
 
-        if (poi != null)
+        if (tourStop != null)
         {
-            poi.OnVisitedEvent += OnPOIVisited;
-            poi.Activate();
+            tourStop.OnVisitedEvent += OnTourStopVisited;
+            tourStop.Activate();
         }
     }
 
-    void DetachFromPOI(PointOfInterest poi)
+    void DetachFromTourStop(TourStop tourStop)
     {
-        if (poi != null)
+        if (tourStop != null)
         {
-            poi.OnVisitedEvent -= OnPOIVisited;
-            poi.Deactivate();
+            tourStop.OnVisitedEvent -= OnTourStopVisited;
+            tourStop.Deactivate();
         }
     }
 
@@ -153,26 +157,26 @@ public class Tour : MonoBehaviour
         transform.gameObject.SetActive(false);
     }
 
-    void ResetPOIs()
+    void ResetTourStops()
     {
-        foreach (PointOfInterest point in _pointsOfInterest)
-            if (point != null) point.Reset();
+        foreach (TourStop stop in _tourStops)
+            if (stop != null) stop.Reset();
     }
 
     void TourCompleted()
     {
         _isCompleted = true;
         _hasBeenCompleted = true;
-        _nextPOI = null;
+        _nextTourStop = null;
         OnTourCompletedEvent?.Invoke();
     }
     #endregion
 
     #region CALLBACK METHODS
-    void OnPOIVisited(PointOfInterest poi)
+    void OnTourStopVisited(TourStop tourStop)
     {
-        OnVisitedPOIEvent?.Invoke(poi);
-        UpdateNextPOI();
+        OnVisitedTourStopEvent?.Invoke(tourStop);
+        UpdateNextTourStop();
     }
 
     // TODO: remove eventually

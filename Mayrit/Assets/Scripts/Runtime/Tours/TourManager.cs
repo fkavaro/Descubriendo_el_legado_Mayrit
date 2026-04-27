@@ -13,13 +13,13 @@ public class TourManager : MonoBehaviour
     #region EDITOR PROPERTIES
     [Header("Tour manager")]
     [SerializeField] Tour _currentTour;
-    [SerializeField] PointOfInterest _nextPOI;
+    [SerializeField] TourStop _nextTourStop;
 
     /* TODO remove
     [Header("Path visualizer settings")]
     [Tooltip("Meters between samples along segments. Lower = smoother")]
     [SerializeField] float _pointSpacing = 0.5f;
-    [Tooltip("Max distance to snap player/POI to NavMesh")]
+    [Tooltip("Max distance to snap player/TourStop to NavMesh")]
     [SerializeField] float _endpointSnapDistance = 2f;
     [Tooltip("Max distance to project points down to NavMesh terrain")]
     [SerializeField] float _terrainProjectionDistance = 1f;
@@ -33,8 +33,8 @@ public class TourManager : MonoBehaviour
     #endregion
 
     #region INTERNAL PROPERTIES
-    public event Action<PointOfInterest> POIVisitedEvent;
-    public event Action<PointOfInterest> NextPOIChangeEvent;
+    public event Action<TourStop> TourStopVisitedEvent;
+    public event Action<TourStop> NextTourStopChangeEvent;
     public event Action<Tour> TourCompletedEvent;
 
     // TODO remove
@@ -120,8 +120,8 @@ public class TourManager : MonoBehaviour
 
         // Update current
         _currentTour = tour;
-        _currentTour.OnVisitedPOIEvent += OnTourPOIVisited;
-        _currentTour.OnNextPOIChangeEvent += OnTourNextPOIChange;
+        _currentTour.OnVisitedTourStopEvent += OnTourStopVisited;
+        _currentTour.OnNextTourStopChangeEvent += OnNextTourStopChange;
         _currentTour.OnTourCompletedEvent += OnTourCompleted;
     }
 
@@ -129,10 +129,10 @@ public class TourManager : MonoBehaviour
     {
         if (_currentTour == null) return;
 
-        _currentTour.OnVisitedPOIEvent -= OnTourPOIVisited;
-        _currentTour.OnNextPOIChangeEvent -= OnTourNextPOIChange;
+        _currentTour.OnVisitedTourStopEvent -= OnTourStopVisited;
+        _currentTour.OnNextTourStopChangeEvent -= OnNextTourStopChange;
         _currentTour.OnTourCompletedEvent -= OnTourCompleted;
-        _nextPOI = null;
+        _nextTourStop = null;
     }
     #endregion
 
@@ -156,20 +156,20 @@ public class TourManager : MonoBehaviour
             if (_progressManager.WasCurrentMilestoneCompleted)
             {
                 _currentTour.MarkAsCompleted();
-                _playableCharacter.LocateAt(_currentTour.LastPOIinList.transform);
+                _playableCharacter.LocateAt(_currentTour.LastTourStopinList.transform);
             }
         }
     }
 
-    void OnTourPOIVisited(PointOfInterest poi)
+    void OnTourStopVisited(TourStop tourStop)
     {
-        POIVisitedEvent?.Invoke(poi);
+        TourStopVisitedEvent?.Invoke(tourStop);
     }
 
-    void OnTourNextPOIChange(PointOfInterest poi)
+    void OnNextTourStopChange(TourStop tourStop)
     {
-        NextPOIChangeEvent?.Invoke(poi);
-        _nextPOI = poi;
+        NextTourStopChangeEvent?.Invoke(tourStop);
+        _nextTourStop = tourStop;
     }
 
     void OnContextualPanelHidden()

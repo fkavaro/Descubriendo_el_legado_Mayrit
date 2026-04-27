@@ -64,7 +64,7 @@ public class ModernBuilding : MonoBehaviour
     #region CALLBACK METHODS
     void OnCameraStateChanged()
     {
-        if (_cameraManager.IsInThirdPersonState || _cameraManager.IsInPOIState)
+        if (_cameraManager.IsInThirdPersonState || _cameraManager.IsInTourStopState)
             IsActive = false;
     }
 

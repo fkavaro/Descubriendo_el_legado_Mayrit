@@ -1,5 +1,3 @@
-using System;
-using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -10,11 +8,11 @@ public class CompassUI : AUIState
     readonly VisualElement _root;
 
     VisualElement _cardinalDirections;
-    VisualElement _nextPOIVisual;
-    VisualElement _nextPoiDirection;
+    VisualElement _nextTourStopVisual;
+    VisualElement _nextTourStopDirection;
 
     Camera _mainCamera;
-    PointOfInterest _nextPOI;
+    TourStop _nextTourStop;
 
     // Dependency Injection
     TourManager _tourManager;
@@ -37,8 +35,8 @@ public class CompassUI : AUIState
     protected override void ConfigureUIElementsOnAwake()
     {
         _cardinalDirections = GetByName<VisualElement>("CardinalDirections", _root);
-        _nextPOIVisual = GetByName<VisualElement>("NextPOI", _root);
-        _nextPoiDirection = GetByName<VisualElement>("NextPOIDirection", _root);
+        _nextTourStopVisual = GetByName<VisualElement>("NextTourStop", _root);
+        _nextTourStopDirection = GetByName<VisualElement>("NextTourStopDirection", _root);
     }
     #endregion
 
@@ -48,7 +46,7 @@ public class CompassUI : AUIState
         base.AwakeState();
 
         IsShown = false;
-        IsNextPOIShown = false;
+        IsNextTourStopShown = false;
     }
 
     public override void StartState()
@@ -68,8 +66,8 @@ public class CompassUI : AUIState
     {
         FixCardinalDirections();
 
-        if (IsNextPOIShown)
-            FixPOIDirection();
+        if (IsNextTourStopShown)
+            FixTourStopDirection();
     }
     #endregion
 
@@ -80,9 +78,9 @@ public class CompassUI : AUIState
         set => _root.style.display = value ? DisplayStyle.Flex : DisplayStyle.None;
     }
 
-    public bool IsNextPOIShown
+    public bool IsNextTourStopShown
     {
-        get => _nextPOIVisual.style.display == DisplayStyle.Flex;
+        get => _nextTourStopVisual.style.display == DisplayStyle.Flex;
         set
         {
             if (value)
@@ -96,12 +94,12 @@ public class CompassUI : AUIState
                     return;
                 }
 
-                _nextPOIVisual.style.display = DisplayStyle.Flex;
+                _nextTourStopVisual.style.display = DisplayStyle.Flex;
             }
             else
             {
-                _nextPOIVisual.style.display = DisplayStyle.None;
-                _nextPoiDirection.style.display = DisplayStyle.None;
+                _nextTourStopVisual.style.display = DisplayStyle.None;
+                _nextTourStopDirection.style.display = DisplayStyle.None;
 
                 _tourManager = null;
             }
@@ -117,33 +115,33 @@ public class CompassUI : AUIState
         _cardinalDirections.style.rotate = new Rotate(-cameraYRotation);
     }
 
-    void FixPOIDirection()
+    void FixTourStopDirection()
     {
-        if (_tourManager.CurrentTour == null || _tourManager.CurrentTour.NextPOI == null)
+        if (_tourManager.CurrentTour == null || _tourManager.CurrentTour.NextTourStop == null)
         {
-            _nextPOIVisual.style.display = DisplayStyle.None;
-            _nextPoiDirection.style.display = DisplayStyle.None;
+            _nextTourStopVisual.style.display = DisplayStyle.None;
+            _nextTourStopDirection.style.display = DisplayStyle.None;
             return;
         }
 
-        _nextPOI = _tourManager.CurrentTour.NextPOI;
+        _nextTourStop = _tourManager.CurrentTour.NextTourStop;
 
-        // Get the direction to the POI in world space
-        Vector3 toPoi = _nextPOI.transform.position - _mainCamera.transform.position;
-        Vector3 flatToPoi = Vector3.ProjectOnPlane(toPoi, Vector3.up).normalized;
+        // Get the direction to the TourStop in world space
+        Vector3 toTourStop = _nextTourStop.transform.position - _mainCamera.transform.position;
+        Vector3 flatToTourStop = Vector3.ProjectOnPlane(toTourStop, Vector3.up).normalized;
         Vector3 flatForward = Vector3.ProjectOnPlane(_mainCamera.transform.forward, Vector3.up).normalized;
 
-        if (flatToPoi.sqrMagnitude > 0.0001f && flatForward.sqrMagnitude > 0.0001f)
+        if (flatToTourStop.sqrMagnitude > 0.0001f && flatForward.sqrMagnitude > 0.0001f)
         {
-            float angle = Vector3.SignedAngle(flatForward, flatToPoi, Vector3.up);
-            _nextPoiDirection.style.rotate = new Rotate(angle);
+            float angle = Vector3.SignedAngle(flatForward, flatToTourStop, Vector3.up);
+            _nextTourStopDirection.style.rotate = new Rotate(angle);
         }
 
-        if (_nextPOIVisual.style.display == DisplayStyle.None)
-            _nextPOIVisual.style.display = DisplayStyle.Flex;
+        if (_nextTourStopVisual.style.display == DisplayStyle.None)
+            _nextTourStopVisual.style.display = DisplayStyle.Flex;
 
-        if (_nextPoiDirection.style.display == DisplayStyle.None)
-            _nextPoiDirection.style.display = DisplayStyle.Flex;
+        if (_nextTourStopDirection.style.display == DisplayStyle.None)
+            _nextTourStopDirection.style.display = DisplayStyle.Flex;
     }
     #endregion
 

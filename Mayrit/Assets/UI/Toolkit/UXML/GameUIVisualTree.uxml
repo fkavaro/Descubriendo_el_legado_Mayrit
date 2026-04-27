@@ -334,12 +334,12 @@
                 <ui:VisualElement name="Center" style="flex-grow: 1; position: absolute; top: 50%; left: 50%;">
                     <ui:VisualElement name="VisualElement" style="width: 20px; height: 20px; background-color: rgb(24, 24, 24); border-top-left-radius: 30px; border-top-right-radius: 30px; border-bottom-right-radius: 30px; border-bottom-left-radius: 30px; border-left-color: rgb(45, 45, 45); border-right-color: rgb(45, 45, 45); border-top-color: rgb(45, 45, 45); border-bottom-color: rgb(45, 45, 45); border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; flex-grow: 1; top: -10px; left: -10px;"/>
                 </ui:VisualElement>
-                <ui:VisualElement name="NextPOI" style="flex-grow: 1; position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: none;">
+                <ui:VisualElement name="NextTourStop" style="flex-grow: 1; position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: none;">
                     <ui:VisualElement name="Center" style="flex-grow: 1; position: absolute; top: 50%; left: 50%;">
                         <ui:VisualElement name="VisualElement" style="width: 40px; height: 40px; background-color: rgb(94, 81, 11); border-top-left-radius: 30px; border-top-right-radius: 30px; border-bottom-right-radius: 30px; border-bottom-left-radius: 30px; border-left-color: rgb(255, 215, 0); border-right-color: rgb(255, 215, 0); border-top-color: rgb(255, 215, 0); border-bottom-color: rgb(255, 215, 0); border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; flex-grow: 1; top: -20px; left: -20px;"/>
                     </ui:VisualElement>
                     <ui:Label text="?" name="Icon" style="color: rgb(255, 215, 0); font-size: 25px; -unity-text-align: middle-center; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; -unity-font-style: bold; position: absolute; top: 0; left: 0; right: 0; bottom: 0; align-self: center;"/>
-                    <ui:VisualElement name="NextPOIDirection" style="flex-grow: 1;">
+                    <ui:VisualElement name="NextTourStopDirection" style="flex-grow: 1;">
                         <ui:VisualElement name="VisualElement" style="background-image: url(&quot;project://database/Assets/UI/Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=-1304905567622442630&amp;guid=2196264947afaa74a8b087d37850e618&amp;type=3#arrow-down@2x&quot;); width: 40px; height: 30px; align-self: center; position: absolute; top: 28px; left: auto; -unity-background-image-tint-color: rgb(255, 215, 0); rotate: 180deg;"/>
                     </ui:VisualElement>
                 </ui:VisualElement>

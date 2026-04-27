@@ -30,7 +30,7 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
     FiniteStateMachine<APlayableCharacterState> _fsm;
     NotControlled_PlayableCharacterState _notControlledState;
     Controlled_PlayableCharacterState _controlledState;
-    AtPOI_PlayableCharacterState _atPOIState;
+    AtTourStop_PlayableCharacterState _atTourStopState;
 
     // Dependency Injection
     TourManager _tourManager;
@@ -46,7 +46,7 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
 
         _notControlledState = new(this);
         _controlledState = new(this);
-        _atPOIState = new(this);
+        _atTourStopState = new(this);
 
         _fsm.SetInitialState(_notControlledState);
 
@@ -108,10 +108,10 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
     #region STATE HANDLING
     public void SwitchToNotControlledState() => _fsm.SwitchState(_notControlledState);
     public void SwitchToControlledState() => _fsm.SwitchState(_controlledState);
-    public void SwitchToAtPOIState(PointOfInterest poi)
+    public void SwitchToAtTourStopState(TourStop tourStop)
     {
-        _atPOIState.CurrentPOI = poi;
-        _fsm.SwitchState(_atPOIState);
+        _atTourStopState.CurrentTourStop = tourStop;
+        _fsm.SwitchState(_atTourStopState);
     }
     #endregion
 
@@ -121,7 +121,7 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
         _uiManager.PlayTourClickedEvent += OnPlayTourClicked;
         _uiManager.ResetTourClickedEvent += OnResetTourClicked;
         _uiManager.ContextualPanelHiddenEvent += OnContextualPanelHidden;
-        _tourManager.POIVisitedEvent += OnTourPOIVisited;
+        _tourManager.TourStopVisitedEvent += OnTourStopVisited;
         _cameraManager.CameraStateChangedEvent += OnCameraStateChanged;
         //_progressManager.MilestoneChangedEvent += OnMilestoneChanged;
     }
@@ -131,7 +131,7 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
         _uiManager.PlayTourClickedEvent -= OnPlayTourClicked;
         _uiManager.ResetTourClickedEvent -= OnResetTourClicked;
         _uiManager.ContextualPanelHiddenEvent -= OnContextualPanelHidden;
-        _tourManager.POIVisitedEvent -= OnTourPOIVisited;
+        _tourManager.TourStopVisitedEvent -= OnTourStopVisited;
         _cameraManager.CameraStateChangedEvent -= OnCameraStateChanged;
         //_progressManager.MilestoneChangedEvent -= OnMilestoneChanged;
     }
@@ -171,9 +171,9 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
             SwitchToControlledState();
     }
 
-    void OnTourPOIVisited(PointOfInterest poi)
+    void OnTourStopVisited(TourStop tourStop)
     {
-        SwitchToAtPOIState(poi);
+        SwitchToAtTourStopState(tourStop);
     }
 
     void OnCameraStateChanged()

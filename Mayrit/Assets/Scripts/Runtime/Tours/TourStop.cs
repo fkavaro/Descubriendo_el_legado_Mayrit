@@ -3,7 +3,7 @@ using Unity.Cinemachine;
 using UnityEngine;
 
 [RequireComponent(typeof(SphereCollider))]
-public class PointOfInterest : MonoBehaviour
+public class TourStop : MonoBehaviour
 {
     #region PROPERTY HELPERS
     public DataSO Data => _data;
@@ -26,7 +26,7 @@ public class PointOfInterest : MonoBehaviour
     #endregion
 
     #region INTERNAL PROPERTIES
-    public event Action<PointOfInterest> OnVisitedEvent;
+    public event Action<TourStop> OnVisitedEvent;
 
     bool _isActive;
     bool _initialized;
@@ -58,7 +58,7 @@ public class PointOfInterest : MonoBehaviour
     }
 
     /// <summary>
-    /// Called when another collider enters the POI trigger zone. If the collider is on a valid layer and the POI
+    /// Called when another collider enters the TourStop trigger zone. If the collider is on a valid layer and the POI
     /// hasn't been visited yet, marks it as visited.
     /// </summary>
     void OnTriggerEnter(Collider other)

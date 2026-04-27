@@ -68,7 +68,7 @@ public class PauseMenu_UIState : AUIState
 
         if (_cameraManager.IsInSpectatorState || _cameraManager.IsInOrbitalState)
             _uiManager.SwitchToSpectatorHUDState();
-        else // Third Person or POI cameras
+        else // Third Person or TourStop cameras
             _uiManager.SwitchToPlayerHUDState();
     }
 

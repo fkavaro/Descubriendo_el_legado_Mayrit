@@ -16,14 +16,14 @@ public class PathVisualizer
     // Configuration
     readonly LineRenderer _lineRenderer;
     readonly float _pointSpacing;           // Distance between sample points along path segments
-    readonly float _endpointSnapDistance;   // Max distance to snap player/POI to NavMesh
+    readonly float _endpointSnapDistance;   // Max distance to snap player/TourStop to NavMesh
     readonly float _terrainProjectionDistance; // Max distance to project points down to NavMesh terrain
     readonly float _heightOffset;           // Vertical offset to lift line above ground (prevents z-fighting)
     readonly int _maxPointCount;            // Hard limit on total points for performance
     readonly float _maxTrailLength;         // Maximum distance from start to render (trail cutoff)
 
     // Runtime state
-    Transform _nextPOI;
+    Transform _nextTourStop;
 
     // Dependency Injection
     readonly TourManager _tourManager;
@@ -58,7 +58,7 @@ public class PathVisualizer
     /// </summary>
     public void Initialize()
     {
-        _tourManager.NextPOIChangeEvent += OnNextPOIChange;
+        _tourManager.NextTourStopChangeEvent += OnNextPOIChange;
 
         if (_lineRenderer == null)
             return;
@@ -73,7 +73,7 @@ public class PathVisualizer
     /// </summary>
     public void Deinitialize()
     {
-        _tourManager.NextPOIChangeEvent -= OnNextPOIChange;
+        _tourManager.NextTourStopChangeEvent -= OnNextPOIChange;
     }
 
     /// <summary>
@@ -89,28 +89,28 @@ public class PathVisualizer
     }
 
     /// <summary>
-    /// Update the visualized path between player and next POI (if available).
+    /// Update the visualized path between player and next TourStop (if available).
     /// </summary>
     public void UpdatePath(Transform player)
     {
-        if (_nextPOI == null || player == null)
+        if (_nextTourStop == null || player == null)
         {
             if (_lineRenderer != null && _lineRenderer.enabled)
             {
-                if (_nextPOI == null)
-                    Debug.LogWarning("PathVisualizer: Clear path - no POI target");
+                if (_nextTourStop == null)
+                    Debug.LogWarning("PathVisualizer: Clear path - no TourStop target");
                 else
                     Debug.LogWarning("PathVisualizer: Clear path - no playable character");
             }
 
-            Debug.LogWarning("  [PathVisualizer] No next POI or player transform available, clearing path.");
+            Debug.LogWarning("  [PathVisualizer] No next TourStop or player transform available, clearing path.");
 
             Clear();
             return;
         }
 
         // Draw path from player to next POI
-        DrawPath(player.position, _nextPOI.position);
+        DrawPath(player.position, _nextTourStop.position);
     }
     #endregion
 
@@ -161,7 +161,7 @@ public class PathVisualizer
 
     #region SAMPLING HELPERS
     /// <summary>
-    /// Attempts to snap both player and POI positions to the nearest NavMesh surface.
+    /// Attempts to snap both player and TourStop positions to the nearest NavMesh surface.
     /// </summary>
     bool TryGetSnappedEndpoints(Vector3 playerPos, Vector3 poiPos, out Vector3 snappedStart, out Vector3 snappedEnd)
     {
@@ -271,9 +271,9 @@ public class PathVisualizer
     #endregion
 
     #region EVENT METHODS
-    void OnNextPOIChange(PointOfInterest poi)
+    void OnNextPOIChange(TourStop tourStop)
     {
-        _nextPOI = poi.transform;
+        _nextTourStop = tourStop.transform;
     }
     #endregion
 }
