@@ -6,7 +6,7 @@ public class ModernBuilding : MonoBehaviour
     #region EDITOR PROPERTIES
     [Header("Settings")]
     [SerializeField] bool _isActive = false;
-    [SerializeField] LandmarkVisual _landmarkVisual;
+    [SerializeField] PointOfInterest _pointOfInterest;
     [SerializeField] GameObject _model;
     #endregion
 
@@ -17,8 +17,8 @@ public class ModernBuilding : MonoBehaviour
         set
         {
             _isActive = value;
-            _landmarkVisual.IsSetAsShown = _isActive;
-            _landmarkVisual.IsShown = _isActive;
+            _pointOfInterest.IsSetAsShown = _isActive;
+            _pointOfInterest.IsShown = _isActive;
             _model.SetActive(_isActive);
         }
     }
@@ -37,7 +37,7 @@ public class ModernBuilding : MonoBehaviour
         _cameraManager = ServiceLocator.Instance.Get<CameraManager>();
         _uiManager = ServiceLocator.Instance.Get<UIManager>();
 
-        _landmarkVisual.IsBlocked = true;
+        _pointOfInterest.IsBlocked = true;
         IsActive = _uiManager.IsModernVisualizationOn;
         _wasActive = IsActive;
     }
@@ -82,7 +82,7 @@ public class ModernBuilding : MonoBehaviour
             return;
         }
 
-        IsActive = data == _landmarkVisual.Data;
+        IsActive = data == _pointOfInterest.Data;
     }
 
     void OnContextualPanelHidden()

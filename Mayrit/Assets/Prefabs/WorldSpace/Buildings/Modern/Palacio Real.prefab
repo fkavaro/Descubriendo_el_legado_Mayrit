@@ -73389,7 +73389,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Mayrit::ModernBuilding
   _isActive: 0
-  _landmarkVisual: {fileID: 6715644156154762290}
+  _pointOfInterest: {fileID: 6715644156154762290}
   _model: {fileID: 5457621326804823330}
 --- !u!1001 &1119668615666846921
 PrefabInstance:
@@ -73441,7 +73441,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4002786552147983938, guid: 20122a36d24c42945ad2861e326b4edc, type: 3}
       propertyPath: m_Name
-      value: Landmark Visual
+      value: Point of interest
       objectReference: {fileID: 0}
     - target: {fileID: 5961391977125746939, guid: 20122a36d24c42945ad2861e326b4edc, type: 3}
       propertyPath: _orbitalStateSetting.Target

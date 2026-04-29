@@ -53,9 +53,9 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     public event Action<float> MusicVolumeChangedEvent;
     public event Action<float> SFXVolumeChangedEvent;
     public event Action<bool> ModernVisualizationToggled;
-    public event Action<bool> LandmarkVisualizationToggled;
+    public event Action<bool> PointOfInterestVisualizationToggledEvent;
     public bool IsModernVisualizationOn { get => _spectatorHUDState._modernVisualizactionSwitch.Value; }
-    public bool IsLandmarkVisualizationOn { get => _spectatorHUDState._landmarkVisualizationSwitch.Value; }
+    public bool ArePointsOfInterestShown { get => _spectatorHUDState._landmarkVisualizationSwitch.Value; }
 
     // Stack FSM
     StackFiniteStateMachine<AUIState> _sfsm;
@@ -263,7 +263,7 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
 
     void OnLandmarkVisualizationToggled(bool value)
     {
-        LandmarkVisualizationToggled?.Invoke(value);
+        PointOfInterestVisualizationToggledEvent?.Invoke(value);
     }
 
     void OnTourStopVisited(TourStop tourStop)

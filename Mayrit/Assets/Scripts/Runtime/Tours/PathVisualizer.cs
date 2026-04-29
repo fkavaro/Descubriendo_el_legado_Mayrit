@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 /// <summary>
-/// Draws a navigation path between the player and the next Point Of Interest (POI) of the tour.
+/// Draws a navigation path between the player and the next tour stop.
 /// </summary>
 public class PathVisualizer
 {
@@ -109,7 +109,7 @@ public class PathVisualizer
             return;
         }
 
-        // Draw path from player to next POI
+        // Draw path from player to next tour stop
         DrawPath(player.position, _nextTourStop.position);
     }
     #endregion

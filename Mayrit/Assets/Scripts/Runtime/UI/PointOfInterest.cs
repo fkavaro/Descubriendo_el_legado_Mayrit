@@ -5,13 +5,13 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 [RequireComponent(typeof(UIDocument))]
-public class LandmarkVisual : Billboard
+public class PointOfInterest : Billboard
 {
     #region EDITOR PROPERTIES
-    [Header("Landmark information")]
-    [SerializeField] bool _hideIfTooFar = true;
+    [Header("Point of interest information")]
     [SerializeField] OrbitalStateSetting _orbitalStateSetting;
     [Header("Height Adjustment")]
+    [SerializeField] bool _hideIfTooFar = true;
     [SerializeField] bool _fixHeight = false;
     [SerializeField] AnimationCurve _heightMultiplierCurve;
     [SerializeField] float _cameraDistance;
@@ -44,7 +44,7 @@ public class LandmarkVisual : Billboard
     {
         if (_orbitalStateSetting.DataToShow == null)
         {
-            Debug.LogWarning($"[LandmarkVisual] No information assigned to {gameObject.name}. Please assign a DataSO with the landmark's information.", this);
+            Debug.LogWarning($"[PointOfInterest] No information assigned to {gameObject.name}. Please assign a DataSO.", this);
             return;
         }
 
@@ -70,8 +70,8 @@ public class LandmarkVisual : Billboard
         _tutorialManager = ServiceLocator.Instance.Get<TutorialManager>();
 
         _cameraManager.CameraStateChangedEvent += OnCameraStateChanged;
-        _uiManager.LandmarkVisualizationToggled += OnVisualizationToggled;
-        _tutorialManager.ShowLandmarkVisualsEvent += OnShowLandmarkVisualsTutorialEvent;
+        _uiManager.PointOfInterestVisualizationToggledEvent += OnVisualizationToggled;
+        _tutorialManager.ShowPointsOfInterestEvent += OnShowInTutorialEvent;
         _tutorialManager.TutorialCompletedEvent += OnTutorialCompleted;
 
         IsShown = true;
@@ -97,10 +97,10 @@ public class LandmarkVisual : Billboard
     {
         _nameButton?.UnregisterCallback<ClickEvent>(OnClicked);
         if (_cameraManager != null) _cameraManager.CameraStateChangedEvent -= OnCameraStateChanged;
-        if (_uiManager != null) _uiManager.LandmarkVisualizationToggled -= OnVisualizationToggled;
+        if (_uiManager != null) _uiManager.PointOfInterestVisualizationToggledEvent -= OnVisualizationToggled;
         if (_tutorialManager != null)
         {
-            _tutorialManager.ShowLandmarkVisualsEvent -= OnShowLandmarkVisualsTutorialEvent;
+            _tutorialManager.ShowPointsOfInterestEvent -= OnShowInTutorialEvent;
             _tutorialManager.TutorialCompletedEvent -= OnTutorialCompleted;
         }
     }
@@ -116,13 +116,13 @@ public class LandmarkVisual : Billboard
 
         if (_nameLabel == null)
         {
-            Debug.LogWarning("[LandmarkVisual] No Label with name 'Name' was found in the UIDocument.", this);
+            Debug.LogWarning("[PointOfInterest] No Label with name 'Name' was found in the UIDocument.", this);
             return false;
         }
 
         if (_nameButton == null)
         {
-            Debug.LogWarning("[LandmarkVisual] No Button with name 'NameButton' was found in the UIDocument.", this);
+            Debug.LogWarning("[PointOfInterest] No Button with name 'NameButton' was found in the UIDocument.", this);
             return false;
         }
 
@@ -142,7 +142,7 @@ public class LandmarkVisual : Billboard
 
             bool resolvedValue = value
                 && (!IsBlocked || IsSetAsShown)
-                && _uiManager.IsLandmarkVisualizationOn
+                && _uiManager.ArePointsOfInterestShown
                 && _cameraManager.IsInSpectatorState
                 && _shownDueToTutorial;
 
@@ -168,7 +168,7 @@ public class LandmarkVisual : Billboard
 
         if (_orbitalStateSetting.Target == null)
         {
-            Debug.LogWarning($"[LandmarkVisual] can't orbit around null target.", this);
+            Debug.LogWarning($"[PointOfInterest] can't orbit around null target.", this);
             return;
         }
 
@@ -179,7 +179,7 @@ public class LandmarkVisual : Billboard
 
     void OnVisualizationToggled(bool value) => IsShown = value;
 
-    void OnShowLandmarkVisualsTutorialEvent(bool areShown)
+    void OnShowInTutorialEvent(bool areShown)
     {
         _shownDueToTutorial = areShown;
         IsShown = _shownDueToTutorial;
@@ -187,7 +187,7 @@ public class LandmarkVisual : Billboard
 
     void OnTutorialCompleted()
     {
-        _tutorialManager.ShowLandmarkVisualsEvent -= OnShowLandmarkVisualsTutorialEvent;
+        _tutorialManager.ShowPointsOfInterestEvent -= OnShowInTutorialEvent;
         _tutorialManager.TutorialCompletedEvent -= OnTutorialCompleted;
     }
     #endregion

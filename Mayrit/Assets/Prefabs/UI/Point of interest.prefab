@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4063419521434886960}
   - component: {fileID: 5961391977125746939}
   m_Layer: 5
-  m_Name: Landmark Visual
+  m_Name: Point of interest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -72,7 +72,6 @@ MonoBehaviour:
   _dynamicScaling: 1
   scaleRange: {x: 1, y: 10}
   distanceRange: {x: 50, y: 1000}
-  _hideIfTooFar: 0
   _orbitalStateSetting:
     IsForCharacter: 0
     DataToShow: {fileID: 0}
@@ -80,6 +79,7 @@ MonoBehaviour:
     _orbitSpeed: 5
     _zoomValue: 70
     _horizontalOffset: 20
+  _hideIfTooFar: 0
   _fixHeight: 0
   _heightMultiplierCurve:
     serializedVersion: 2
@@ -116,3 +116,5 @@ MonoBehaviour:
     m_RotationOrder: 4
   _cameraDistance: 0
   _currentHeightOffset: 0
+  IsBlocked: 0
+  IsSetAsShown: 0

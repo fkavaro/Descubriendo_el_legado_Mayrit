@@ -1,8 +1,6 @@
 using UnityEngine;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.UIElements;
 
 public class TutorialManager : ABehaviourEntity<StackFiniteStateMachine<TutorialState>>
 {
@@ -18,7 +16,7 @@ public class TutorialManager : ABehaviourEntity<StackFiniteStateMachine<Tutorial
 
     #region INTERNAL PROPERTIES
     public event Action<bool> ShowPlayerFollowerEvent;
-    public event Action<bool> ShowLandmarkVisualsEvent;
+    public event Action<bool> ShowPointsOfInterestEvent;
     public event Action<bool> ShowCompassTutorialEvent;
     public event Action TutorialCompletedEvent;
 
@@ -84,7 +82,7 @@ public class TutorialManager : ABehaviourEntity<StackFiniteStateMachine<Tutorial
         }
 
         ShowPlayerFollowerEvent?.Invoke(!_fsm.CurrentState.Data.VisualElementsToHide.Contains(UIElementsToHide.TutorialPlayerFollower));
-        ShowLandmarkVisualsEvent?.Invoke(!_fsm.CurrentState.Data.VisualElementsToHide.Contains(UIElementsToHide.TutorialSwitches));
+        ShowPointsOfInterestEvent?.Invoke(!_fsm.CurrentState.Data.VisualElementsToHide.Contains(UIElementsToHide.TutorialSwitches));
         ShowCompassTutorialEvent?.Invoke(!_fsm.CurrentState.Data.VisualElementsToHide.Contains(UIElementsToHide.TutorialCompass));
     }
 

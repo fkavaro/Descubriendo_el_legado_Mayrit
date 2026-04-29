@@ -11,7 +11,7 @@ public class TourStop : MonoBehaviour
     #endregion
 
     #region EDITOR PROPERTIES
-    [Tooltip("Information associated with this POI")]
+    [Tooltip("Information associated with this stop")]
     [SerializeField] DataSO _data;
 
     [Header("Detection Settings")]
@@ -58,7 +58,7 @@ public class TourStop : MonoBehaviour
     }
 
     /// <summary>
-    /// Called when another collider enters the TourStop trigger zone. If the collider is on a valid layer and the POI
+    /// Called when another collider enters the TourStop trigger zone. If the collider is on a valid layer and the stop
     /// hasn't been visited yet, marks it as visited.
     /// </summary>
     void OnTriggerEnter(Collider other)
