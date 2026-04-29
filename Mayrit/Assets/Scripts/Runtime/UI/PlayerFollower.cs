@@ -54,7 +54,7 @@ public class PlayerFollower
             _mainCamera = Camera.main;
 
         if (PlayerTransform == null ||
-            !_cameraManager.IsInSpectatorState ||
+            !_cameraManager.IsInAerialState ||
             _mainCamera == null)
         {
             IsShown(false);

@@ -167,7 +167,7 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
 
     void OnContextualPanelHidden()
     {
-        if (!_cameraManager.IsInSpectatorState)
+        if (!_cameraManager.IsInAerialState)
             SwitchToControlledState();
     }
 

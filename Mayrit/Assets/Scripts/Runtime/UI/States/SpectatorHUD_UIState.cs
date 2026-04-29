@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class SpectatorHUD_UIState : AHUDState
+public class AerialHUD_UIState : AHUDState
 {
     #region PROPERTIES
     PlayerFollower _playerFollower;
@@ -24,8 +24,8 @@ public class SpectatorHUD_UIState : AHUDState
     #endregion
 
     #region CONSTRUCTOR
-    public SpectatorHUD_UIState(UIDocument uiDocument, float fadeInDuration, float fadeOutDuration)
-    : base("SpectatorHUD", uiDocument, fadeInDuration, fadeOutDuration) { }
+    public AerialHUD_UIState(UIDocument uiDocument, float fadeInDuration, float fadeOutDuration)
+    : base("AerialHUD", uiDocument, fadeInDuration, fadeOutDuration) { }
     #endregion
 
     #region UI STATE INHERITED METHODS

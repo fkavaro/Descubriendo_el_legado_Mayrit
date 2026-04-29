@@ -2,21 +2,20 @@
 using System;
 using Unity.Cinemachine;
 
-public class Spectator_CameraState : ACameraState
+public class Aerial_CameraState : ACameraState
 {
     #region PROPERTIES
     //public event Action<SelectableObject> ObjectSelectedEvent; // TODO: remove later
 
-    readonly SpectatorCameraController _cameraController;
-    //readonly SpectatorCameraSelector _cameraSelector; // TODO: remove later
+    readonly AerialCameraController _cameraController;
+    //readonly AerialCameraSelector _cameraSelector; // TODO: remove later
     #endregion
 
     #region CONSTRUCTOR
-    public Spectator_CameraState(SpectatorCameraDataSO spectatorCameraData, CinemachineCamera camera)
-    : base("Spectator camera", camera, spectatorCameraData.SimulationSpeed)
+    public Aerial_CameraState(AerialCameraDataSO aerialCameraData, CinemachineCamera camera)
+    : base("Aerial camera", camera, aerialCameraData.SimulationSpeed)
     {
-        _cameraController = new(spectatorCameraData, camera);
-        //_cameraSelector = new(spectatorCameraData); // TODO: remove later
+        _cameraController = new(aerialCameraData, camera);
     }
     #endregion
 

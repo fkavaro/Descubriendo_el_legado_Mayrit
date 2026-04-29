@@ -76,7 +76,7 @@ public class ThirdPerson_CameraState : ACameraState
     #region CALLBACK METHODS
     void OnExitCameraMode(InputAction.CallbackContext context)
     {
-        _cameraManager.SwitchToSpectatorCamera();
+        _cameraManager.SwitchToAerialCamera();
     }
     #endregion
 }

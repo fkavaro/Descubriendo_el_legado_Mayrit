@@ -6,7 +6,7 @@ using Unity.Cinemachine;
 /// Camera controller supporting WASD movement, edge scrolling, zoom and orbit relative to mouse pointer.
 /// All movement is independent of Time.timeScale.
 /// </summary>
-public class SpectatorCameraController
+public class AerialCameraController
 {
     #region PROPERTIES
     // Constants
@@ -59,15 +59,15 @@ public class SpectatorCameraController
     }
 
     // Dependencies
-    readonly SpectatorCameraDataSO _spectatorCameraData;
+    readonly AerialCameraDataSO _aerialCameraData;
     readonly GameManager _gameManager;
     readonly UIManager _uiManager;
     #endregion
 
     #region CONSTRUCTOR
-    public SpectatorCameraController(SpectatorCameraDataSO spectatorCameraData, CinemachineCamera camera)
+    public AerialCameraController(AerialCameraDataSO aerialCameraData, CinemachineCamera camera)
     {
-        _spectatorCameraData = spectatorCameraData;
+        _aerialCameraData = aerialCameraData;
 
         // Initialize camera references
         _camera = camera;
@@ -75,19 +75,19 @@ public class SpectatorCameraController
         _orbitalFollow = _camera.GetComponent<CinemachineOrbitalFollow>();
 
         // Initialize configuration from data
-        _edgeScrollingMargin = spectatorCameraData.edgeScrollingMargin;
-        _moveSpeed = spectatorCameraData.MovementSpeed;
-        _acceleration = spectatorCameraData.acceleration;
-        _deceleration = spectatorCameraData.deceleration;
-        _sprintSpeedMultiplier = spectatorCameraData.sprintSpeedMultiplier;
-        _movementLimitsX = spectatorCameraData.movementLimitsX;
-        _movementLimitsZ = spectatorCameraData.movementLimitsZ;
-        _orbitSpeed = spectatorCameraData.OrbitSpeed;
-        _orbitSmoothing = spectatorCameraData.orbitSmoothing;
-        _verticalAngleLimits = spectatorCameraData.verticalAngleLimits;
-        _zoomSpeed = spectatorCameraData.zoomSpeed;
-        _zoomSmoothing = spectatorCameraData.zoomSmoothing;
-        _moveSpeedZoomCurve = spectatorCameraData.zoomSpeedCurve;
+        _edgeScrollingMargin = aerialCameraData.edgeScrollingMargin;
+        _moveSpeed = aerialCameraData.MovementSpeed;
+        _acceleration = aerialCameraData.acceleration;
+        _deceleration = aerialCameraData.deceleration;
+        _sprintSpeedMultiplier = aerialCameraData.sprintSpeedMultiplier;
+        _movementLimitsX = aerialCameraData.movementLimitsX;
+        _movementLimitsZ = aerialCameraData.movementLimitsZ;
+        _orbitSpeed = aerialCameraData.OrbitSpeed;
+        _orbitSmoothing = aerialCameraData.orbitSmoothing;
+        _verticalAngleLimits = aerialCameraData.verticalAngleLimits;
+        _zoomSpeed = aerialCameraData.zoomSpeed;
+        _zoomSmoothing = aerialCameraData.zoomSmoothing;
+        _moveSpeedZoomCurve = aerialCameraData.zoomSpeedCurve;
 
         // Get dependencies from ServiceLocator
         _gameManager = ServiceLocator.Instance.Get<GameManager>();
@@ -112,7 +112,7 @@ public class SpectatorCameraController
             _scrollInput = _gameManager.InputActions.Camera.Zoom.ReadValue<Vector2>();
 
         // Update camera state
-        if (_spectatorCameraData.isEdgeScrolling)
+        if (_aerialCameraData.isEdgeScrolling)
             UpdateEdgeScrolling();
 
         UpdateMovement();

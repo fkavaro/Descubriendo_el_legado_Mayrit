@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 // TODO: remove later
-// public class SpectatorCameraSelector
+// public class AerialCameraSelector
 // {
 //     #region EVENTS
 //     public event Action<SelectableObject> ObjectSelectedEvent;
@@ -28,9 +28,9 @@ using UnityEngine.InputSystem;
 //     #endregion
 
 //     #region CONSTRUCTOR
-//     public SpectatorCameraSelector(SpectatorCameraData spectatorCameraData)
+//     public AerialCameraSelector(AerialCameraData AerialCameraData)
 //     {
-//         _selectableLayer = spectatorCameraData.selectableLayer;
+//         _selectableLayer = aerialCameraData.selectableLayer;
 
 //         // Get dependencies from ServiceLocator
 //         _gameManager = ServiceLocator.Instance.Get<GameManager>();

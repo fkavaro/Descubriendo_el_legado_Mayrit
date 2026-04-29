@@ -10,7 +10,7 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     #region PROPERTY HELPERS
     public UIDocument UIDocument => _uiDocument;
     public bool IsInMainMenuState => _sfsm.IsCurrentState(_mainMenuState);
-    public bool IsInSpectatorHUDState => _sfsm.IsCurrentState(_spectatorHUDState);
+    public bool IsInAerialHUDState => _sfsm.IsCurrentState(_aerialHUDState);
     public bool IsInPlayerHUDState => _sfsm.IsCurrentState(_playerHUDState);
     public bool IsInPauseState => _sfsm.IsCurrentState(_pauseState);
     public bool IsInSettingsMenuState => _sfsm.IsCurrentState(_settingsMenuState);
@@ -54,13 +54,13 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     public event Action<float> SFXVolumeChangedEvent;
     public event Action<bool> ModernVisualizationToggled;
     public event Action<bool> PointOfInterestVisualizationToggledEvent;
-    public bool IsModernVisualizationOn { get => _spectatorHUDState._modernVisualizactionSwitch.Value; }
-    public bool ArePointsOfInterestShown { get => _spectatorHUDState._landmarkVisualizationSwitch.Value; }
+    public bool IsModernVisualizationOn { get => _aerialHUDState._modernVisualizactionSwitch.Value; }
+    public bool ArePointsOfInterestShown { get => _aerialHUDState._landmarkVisualizationSwitch.Value; }
 
     // Stack FSM
     StackFiniteStateMachine<AUIState> _sfsm;
     MainMenu_UIState _mainMenuState;
-    SpectatorHUD_UIState _spectatorHUDState;
+    AerialHUD_UIState _aerialHUDState;
     PlayerHUD_UIState _playerHUDState;
     PauseMenu_UIState _pauseState;
     SettingsMenu_UIState _settingsMenuState;
@@ -81,7 +81,7 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
 
         // States initialization
         _mainMenuState = new(_uiDocument, _fadeInDuration, _fadeOutDuration);
-        _spectatorHUDState = new(_uiDocument, _fadeInDuration * 5f, _fadeOutDuration);
+        _aerialHUDState = new(_uiDocument, _fadeInDuration * 5f, _fadeOutDuration);
         _playerHUDState = new(_uiDocument, _fadeInDuration, _fadeOutDuration);
         _pauseState = new(_uiDocument, _fadeInDuration, _fadeOutDuration);
         _settingsMenuState = new(_uiDocument, 0f, 0f);
@@ -89,7 +89,7 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
 
         // State AwakeState calls
         _mainMenuState.AwakeState();
-        _spectatorHUDState.AwakeState();
+        _aerialHUDState.AwakeState();
         _playerHUDState.AwakeState();
         _pauseState.AwakeState();
         _settingsMenuState.AwakeState();
@@ -131,7 +131,7 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     {
         _sfsm?.SwitchState(_mainMenuState);
     }
-    public void SwitchToSpectatorHUDState() => _sfsm?.SwitchState(_spectatorHUDState);
+    public void SwitchToAerialHUDState() => _sfsm?.SwitchState(_aerialHUDState);
     public void SwitchToPlayerHUDState() => _sfsm?.SwitchState(_playerHUDState);
     public void SwitchToPauseState() => _sfsm?.SwitchState(_pauseState);
     public void SwitchToSettingsMenuState() => _sfsm?.SwitchState(_settingsMenuState);
@@ -185,11 +185,11 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
         if (loadedScenes.ContainsValue(SceneDatabase.SceneName.MainMenuScene))
         {
             _playerHUDState.ContextualPanelHiddenEvent -= OnContextualPanelHidden;
-            _spectatorHUDState.ContextualPanelHiddenEvent -= OnContextualPanelHidden;
-            _spectatorHUDState.PlayTourEvent -= OnPlayTourClicked;
-            _spectatorHUDState.ResetTourEvent -= OnResetTourClicked;
-            _spectatorHUDState._modernVisualizactionSwitch.Toggled -= OnModernVisualizationToggled;
-            _spectatorHUDState._landmarkVisualizationSwitch.Toggled -= OnLandmarkVisualizationToggled;
+            _aerialHUDState.ContextualPanelHiddenEvent -= OnContextualPanelHidden;
+            _aerialHUDState.PlayTourEvent -= OnPlayTourClicked;
+            _aerialHUDState.ResetTourEvent -= OnResetTourClicked;
+            _aerialHUDState._modernVisualizactionSwitch.Toggled -= OnModernVisualizationToggled;
+            _aerialHUDState._landmarkVisualizationSwitch.Toggled -= OnLandmarkVisualizationToggled;
 
             if (_tourManager != null)
             {
@@ -212,24 +212,24 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
 
             // Subscribe to events
             _playerHUDState.ContextualPanelHiddenEvent += OnContextualPanelHidden;
-            _spectatorHUDState.ContextualPanelHiddenEvent += OnContextualPanelHidden;
-            _spectatorHUDState.PlayTourEvent += OnPlayTourClicked;
-            _spectatorHUDState.ResetTourEvent += OnResetTourClicked;
-            _spectatorHUDState._modernVisualizactionSwitch.Toggled += OnModernVisualizationToggled;
-            _spectatorHUDState._landmarkVisualizationSwitch.Toggled += OnLandmarkVisualizationToggled;
+            _aerialHUDState.ContextualPanelHiddenEvent += OnContextualPanelHidden;
+            _aerialHUDState.PlayTourEvent += OnPlayTourClicked;
+            _aerialHUDState.ResetTourEvent += OnResetTourClicked;
+            _aerialHUDState._modernVisualizactionSwitch.Toggled += OnModernVisualizationToggled;
+            _aerialHUDState._landmarkVisualizationSwitch.Toggled += OnLandmarkVisualizationToggled;
             _tourManager.TourStopVisitedEvent += OnTourStopVisited;
             _cameraManager.CameraStateChangedEvent += OnCameraStateChanged;
         }
 
         // A milestone scene loaded
         if (loadedScenes.TryGetValue(SceneDatabase.SceneType.Milestone, out var milestoneScene))
-            SwitchToSpectatorHUDState();
+            SwitchToAerialHUDState();
     }
 
     private void OnCameraStateChanged()
     {
-        if (_cameraManager.IsInSpectatorState || _cameraManager.IsInOrbitalState)
-            SwitchToSpectatorHUDState();
+        if (_cameraManager.IsInAerialState || _cameraManager.IsInOrbitalState)
+            SwitchToAerialHUDState();
         else
             SwitchToPlayerHUDState();
     }
@@ -305,8 +305,8 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
 
     IEnumerator FadeInSpecatorHUDCoroutine()
     {
-        SwitchToSpectatorHUDState();
-        yield return _spectatorHUDState.FadeInCoroutine();
+        SwitchToAerialHUDState();
+        yield return _aerialHUDState.FadeInCoroutine();
     }
     #endregion
 }

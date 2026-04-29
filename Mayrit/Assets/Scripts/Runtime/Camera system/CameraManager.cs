@@ -7,7 +7,7 @@ using Unity.Cinemachine;
 public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
 {
     #region GETTERS
-    public bool IsInSpectatorState => _fsm.IsCurrentState(_spectatorState);
+    public bool IsInAerialState => _fsm.IsCurrentState(_aerialState);
 
     public bool IsInOrbitalState => _fsm.IsCurrentState(_orbitalState);
 
@@ -17,15 +17,15 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
 
     public PlayableCharacter PlayableCharacter => _playableCharacter;
 
-    public CinemachineCamera SpectatorCamera => _spectatorCamera;
+    public CinemachineCamera AerialCamera => _aerialCamera;
     public CinemachineCamera OrbitalCamera => _orbitalCamera;
     public CinemachineCamera ThirdPersonCamera => _thirdPersonCamera;
     #endregion
 
     #region EDITOR PROPERTIES
     [Space]
-    [SerializeField] SpectatorCameraDataSO _spectatorCameraData;
-    [SerializeField] CinemachineCamera _spectatorCamera;
+    [SerializeField] AerialCameraDataSO _aerialCameraData;
+    [SerializeField] CinemachineCamera _aerialCamera;
 
     [Space]
     [SerializeField] OrbitalCameraDataSO _orbitalCameraData;
@@ -37,14 +37,14 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
     #endregion
 
     #region EVENTS
-    /// <summary>Invoked whenever the camera state changes (spectator, orbital, third-person, tour stop).</summary>
+    /// <summary>Invoked whenever the camera state changes (aerial, orbital, third-person, tour stop).</summary>
     public event Action CameraStateChangedEvent;
     #endregion
 
     #region INTERNAL PROPERTIES
     // Finiste State Machine and states
     FiniteStateMachine<ACameraState> _fsm;
-    Spectator_CameraState _spectatorState;
+    Aerial_CameraState _aerialState;
     ThirdPerson_CameraState _thirdPersonState;
     Orbital_CameraState _orbitalState;
     TourStop_CameraState _tourStopState;
@@ -62,12 +62,12 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
         _fsm = new(this);
 
         // States initialization
-        _spectatorState = new(_spectatorCameraData, _spectatorCamera);
+        _aerialState = new(_aerialCameraData, _aerialCamera);
         _orbitalState = new(_orbitalCameraData, _orbitalCamera);
         _thirdPersonState = new(_thirdPersonCameraData, _thirdPersonCamera);
         _tourStopState = new(_thirdPersonCameraData.SimulationSpeed);
 
-        _fsm.SetInitialState(_spectatorState);
+        _fsm.SetInitialState(_aerialState);
 
         return _fsm;
     }
@@ -89,26 +89,26 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
         _soundManager = ServiceLocator.Instance.Get<SoundManager>();
 
         // Subscribe to events
-        _uiManager.EdgeScrollingToggledEvent += _spectatorCameraData.OnIsEdgeScrollingToggled;
+        _uiManager.EdgeScrollingToggledEvent += _aerialCameraData.OnIsEdgeScrollingToggled;
         _uiManager.ContextualPanelHiddenEvent += OnContextualPanelHidden;
         _uiManager.PlayTourClickedEvent += SwitchToThirdPersonCamera;
         _tourManager.TourStopVisitedEvent += OnTourStopVisited;
 
         // Set camera target at min height
-        CinemachineOrbitalFollow _orbitalFollow = _spectatorCamera.GetComponent<CinemachineOrbitalFollow>();
-        _orbitalFollow.Radius = _spectatorCameraData.movementLimitsY.y;
+        CinemachineOrbitalFollow _orbitalFollow = _aerialCamera.GetComponent<CinemachineOrbitalFollow>();
+        _orbitalFollow.Radius = _aerialCameraData.movementLimitsY.y;
 
-        if (_spectatorCamera.LookAt.position.y != _spectatorCameraData.movementLimitsY.x)
+        if (_aerialCamera.LookAt.position.y != _aerialCameraData.movementLimitsY.x)
         {
-            // Fix spectator target height
-            _spectatorCamera.LookAt.position = new(
-                _spectatorCamera.LookAt.position.x,
-                _spectatorCameraData.movementLimitsY.x,
-                _spectatorCamera.LookAt.position.z);
+            // Fix aerial target height
+            _aerialCamera.LookAt.position = new(
+                _aerialCamera.LookAt.position.x,
+                _aerialCameraData.movementLimitsY.x,
+                _aerialCamera.LookAt.position.z);
         }
 
         // Check edge scrolling initial state
-        _spectatorCameraData.isEdgeScrolling = _uiManager.EdgeScrollingValueSet;
+        _aerialCameraData.isEdgeScrolling = _uiManager.EdgeScrollingValueSet;
 
         base.Start();
     }
@@ -126,14 +126,14 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
 
     #region STATE TRANSITIONS
     /// <summary>
-    /// Switches to spectator camera mode. Handles transitions from third-person and orbital modes.
+    /// Switches to aerial camera mode. Handles transitions from third-person and orbital modes.
     /// </summary>
-    public void SwitchToSpectatorCamera()
+    public void SwitchToAerialCamera()
     {
         if (IsInThirdPersonState)
-            TransitionFromThirdPersonToSpectator();
+            TransitionFromThirdPersonToAerial();
         else if (IsInOrbitalState)
-            TransitionFromOrbitalToSpectator();
+            TransitionFromOrbitalToAerial();
 
         if (_playableCharacter != null)
             _playableCharacter.PositionResetEvent -= SwitchToThirdPersonCamera;
@@ -144,7 +144,7 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
         _orbitalState.Setting = orbitalStateSetting;
         _soundManager.PlayCameraTransitionSFX();
 
-        SyncOrbitalWithSpectator();
+        SyncOrbitalWithAerial();
         _fsm.SwitchState(_orbitalState);
 
         if (DebugMode)
@@ -169,7 +169,7 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
     //     //_orbitalState.SelectedObject = selectedElement;
     //     _soundManager.PlayCameraTransitionSFX();
 
-    //     SyncOrbitalCameraWithSpectator();
+    //     SyncOrbitalCameraWithAerial();
     //     _fsm.SwitchState(_orbitalState);
 
     //     if (DebugMode)
@@ -219,82 +219,82 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
     #endregion
 
     #region PRIVATE METHODS - STATE TRANSITIONS
-    void TransitionFromThirdPersonToSpectator()
+    void TransitionFromThirdPersonToAerial()
     {
         _soundManager.PlayCameraTransitionSFX();
-        _spectatorCamera.LookAt.position = _thirdPersonCamera.LookAt.position;
-        Vector3 spectatorLookAt = GetFixedSpectatorLookAtPosition(_spectatorCamera.LookAt.position);
-        SyncSpectatorWithThirdPerson();
-        _fsm.SwitchState(_spectatorState);
-        SmoothVerticalMovementCoroutine(_spectatorCamera.LookAt, spectatorLookAt, _spectatorCameraData.targetPositionFixSpeed);
+        _aerialCamera.LookAt.position = _thirdPersonCamera.LookAt.position;
+        Vector3 aerialLookAt = GetFixedAerialLookAtPosition(_aerialCamera.LookAt.position);
+        SyncAerialWithThirdPerson();
+        _fsm.SwitchState(_aerialState);
+        SmoothVerticalMovementCoroutine(_aerialCamera.LookAt, aerialLookAt, _aerialCameraData.targetPositionFixSpeed);
 
         if (DebugMode)
-            Debug.Log("Switched to spectator camera from third person.");
+            Debug.Log("Switched to aerial camera from third person.");
 
         CameraStateChangedEvent?.Invoke();
     }
 
-    void TransitionFromOrbitalToSpectator()
+    void TransitionFromOrbitalToAerial()
     {
         _soundManager.PlayCameraTransitionSFX();
-        _spectatorCamera.LookAt.position = _orbitalCamera.LookAt.position;
-        SyncSpectatorWithOrbital();
-        Vector3 spectatorLookAt = GetFixedSpectatorLookAtPosition(_spectatorCamera.LookAt.position);
-        _spectatorCamera.LookAt.position = spectatorLookAt;
-        _fsm.SwitchState(_spectatorState);
+        _aerialCamera.LookAt.position = _orbitalCamera.LookAt.position;
+        SyncAerialWithOrbital();
+        Vector3 aerialLookAt = GetFixedAerialLookAtPosition(_aerialCamera.LookAt.position);
+        _aerialCamera.LookAt.position = aerialLookAt;
+        _fsm.SwitchState(_aerialState);
 
         if (DebugMode)
-            Debug.Log("Switched to spectator camera from orbital.");
+            Debug.Log("Switched to aerial camera from orbital.");
 
         CameraStateChangedEvent?.Invoke();
     }
 
-    Vector3 GetFixedSpectatorLookAtPosition(Vector3 currentPosition)
+    Vector3 GetFixedAerialLookAtPosition(Vector3 currentPosition)
     {
         return new(
             currentPosition.x,
-            _spectatorCameraData.movementLimitsY.x,
+            _aerialCameraData.movementLimitsY.x,
             currentPosition.z
         );
     }
 
-    void SyncSpectatorWithOrbital()
+    void SyncAerialWithOrbital()
     {
-        CinemachineOrbitalFollow spectatorOrbit = _spectatorCamera.GetComponent<CinemachineOrbitalFollow>();
+        CinemachineOrbitalFollow aerialOrbit = _aerialCamera.GetComponent<CinemachineOrbitalFollow>();
         CinemachineOrbitalFollow orbitalOrbit = _orbitalCamera.GetComponent<CinemachineOrbitalFollow>();
 
-        spectatorOrbit.HorizontalAxis.Value = orbitalOrbit.HorizontalAxis.Value;
-        spectatorOrbit.VerticalAxis.Value = orbitalOrbit.VerticalAxis.Value;
+        aerialOrbit.HorizontalAxis.Value = orbitalOrbit.HorizontalAxis.Value;
+        aerialOrbit.VerticalAxis.Value = orbitalOrbit.VerticalAxis.Value;
     }
 
-    void SyncOrbitalWithSpectator()
+    void SyncOrbitalWithAerial()
     {
         CinemachineOrbitalFollow orbitalOrbit = _orbitalCamera.GetComponent<CinemachineOrbitalFollow>();
-        CinemachineOrbitalFollow spectatorOrbit = _spectatorCamera.GetComponent<CinemachineOrbitalFollow>();
+        CinemachineOrbitalFollow aerialOrbit = _aerialCamera.GetComponent<CinemachineOrbitalFollow>();
 
-        orbitalOrbit.HorizontalAxis.Value = spectatorOrbit.HorizontalAxis.Value;
-        orbitalOrbit.VerticalAxis.Value = spectatorOrbit.VerticalAxis.Value;
+        orbitalOrbit.HorizontalAxis.Value = aerialOrbit.HorizontalAxis.Value;
+        orbitalOrbit.VerticalAxis.Value = aerialOrbit.VerticalAxis.Value;
     }
 
-    void SyncSpectatorWithThirdPerson()
+    void SyncAerialWithThirdPerson()
     {
-        CinemachineOrbitalFollow spectatorOrbit = _spectatorCamera.GetComponent<CinemachineOrbitalFollow>();
+        CinemachineOrbitalFollow aerialOrbit = _aerialCamera.GetComponent<CinemachineOrbitalFollow>();
 
         // Extract pitch/yaw from third-person target rotation and convert to signed degrees
         Vector3 eulerAngles = _thirdPersonCamera.LookAt.eulerAngles;
         float signedPitch = Mathf.DeltaAngle(0f, eulerAngles.x);
         float signedYaw = Mathf.DeltaAngle(0f, eulerAngles.y);
 
-        spectatorOrbit.HorizontalAxis.Value = signedYaw;
+        aerialOrbit.HorizontalAxis.Value = signedYaw;
 
         // Apply limits by snapping to the nearest bound if surpassed
-        Vector2 limits = _spectatorCameraData.verticalAngleLimits;
+        Vector2 limits = _aerialCameraData.verticalAngleLimits;
         if (signedPitch < limits.x)
-            spectatorOrbit.VerticalAxis.Value = limits.x;
+            aerialOrbit.VerticalAxis.Value = limits.x;
         else if (signedPitch > limits.y)
-            spectatorOrbit.VerticalAxis.Value = limits.y;
+            aerialOrbit.VerticalAxis.Value = limits.y;
         else
-            spectatorOrbit.VerticalAxis.Value = signedPitch;
+            aerialOrbit.VerticalAxis.Value = signedPitch;
     }
 
     void SyncThirdPersonWithOrbital()
@@ -376,7 +376,7 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
     void OnContextualPanelHidden()
     {
         if (IsInOrbitalState)
-            SwitchToSpectatorCamera();
+            SwitchToAerialCamera();
         else if (IsInTourStopState)
             SwitchToThirdPersonCamera();
     }

@@ -143,7 +143,7 @@ public class PointOfInterest : Billboard
             bool resolvedValue = value
                 && (!IsBlocked || IsSetAsShown)
                 && _uiManager.ArePointsOfInterestShown
-                && _cameraManager.IsInSpectatorState
+                && _cameraManager.IsInAerialState
                 && _shownDueToTutorial;
 
             if (_uiDocument.enabled == resolvedValue) return;

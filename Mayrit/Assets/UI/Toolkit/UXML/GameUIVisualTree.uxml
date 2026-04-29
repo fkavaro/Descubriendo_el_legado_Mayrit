@@ -36,7 +36,7 @@
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="HUD" picking-mode="Ignore" style="flex-grow: 1; position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: none; flex-direction: row-reverse;">
-        <ui:VisualElement name="SpectatorHUD" enabled="true" picking-mode="Ignore" style="height: auto; width: auto; flex-direction: row; display: none; flex-grow: 1; position: absolute; top: 0; left: 0; bottom: 0; right: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 30px; margin-right: 30px; margin-bottom: 30px; margin-left: 30px;">
+        <ui:VisualElement name="AerialHUD" enabled="true" picking-mode="Ignore" style="height: auto; width: auto; flex-direction: row; display: none; flex-grow: 1; position: absolute; top: 0; left: 0; bottom: 0; right: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 30px; margin-right: 30px; margin-bottom: 30px; margin-left: 30px;">
             <ui:VisualElement name="Left" picking-mode="Ignore" style="flex-grow: 1;">
                 <ui:VisualElement name="Up" style="flex-direction: column; position: absolute; top: 0; left: 0;">
                     <ui:VisualElement name="Buttons" style="flex-grow: 1; align-self: flex-start; flex-direction: row;">
@@ -419,7 +419,7 @@
             <ui:VisualElement name="Controls" style="flex-direction: column; align-self: center; justify-content: center; align-items: center;">
                 <ui:VisualElement style="flex-grow: 1; margin-top: 30px; margin-right: 30px; margin-bottom: 30px; margin-left: 30px;">
                     <ui:Label text="De vista aérea" class="subHeader" style="-unity-text-align: upper-center; font-size: 25px;"/>
-                    <ui:VisualElement name="SpectatorControls" style="position: relative; top: auto; left: 0; bottom: 0; flex-direction: row; margin-bottom: 30px; margin-top: 30px; margin-right: 30px; margin-left: 30px;">
+                    <ui:VisualElement name="AerialControls" style="position: relative; top: auto; left: 0; bottom: 0; flex-direction: row; margin-bottom: 30px; margin-top: 30px; margin-right: 30px; margin-left: 30px;">
                         <ui:VisualElement name="Keyboard" style="justify-content: space-between; align-items: flex-start; align-self: flex-start; flex-direction: column; flex-grow: 0; flex-shrink: 1;">
                             <ui:VisualElement style="flex-grow: 1; flex-direction: row; justify-content: space-between; align-self: flex-start; align-items: stretch;">
                                 <ui:VisualElement name="Key" style="align-self: flex-start; justify-content: center; align-items: center; width: 60px; height: 40px; background-color: rgba(204, 204, 204, 0.29); border-left-color: rgba(229, 229, 229, 0.59); border-right-color: rgba(229, 229, 229, 0.59); border-top-color: rgba(229, 229, 229, 0.59); border-bottom-color: rgba(229, 229, 229, 0.59); border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-top-left-radius: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px; border-bottom-left-radius: 10px; margin-top: 5px; margin-right: 5px; margin-bottom: 5px; margin-left: 5px;">

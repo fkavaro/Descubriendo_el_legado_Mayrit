@@ -79,7 +79,7 @@ public class PlayerVisual : Billboard
     {
         PlayableCharacter playableCharacter = ServiceLocator.Instance.Get<PlayableCharacter>();
 
-        if (!_cameraManager.IsInSpectatorState || playableCharacter == null)
+        if (!_cameraManager.IsInAerialState || playableCharacter == null)
         {
             _playerButton.visible = false;
             return;

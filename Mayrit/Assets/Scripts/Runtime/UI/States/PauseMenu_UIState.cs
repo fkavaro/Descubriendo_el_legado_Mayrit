@@ -66,8 +66,8 @@ public class PauseMenu_UIState : AUIState
         _gameManager.SwitchToGamePlayState();
         _soundManager.PlayButtonClickSFX();
 
-        if (_cameraManager.IsInSpectatorState || _cameraManager.IsInOrbitalState)
-            _uiManager.SwitchToSpectatorHUDState();
+        if (_cameraManager.IsInAerialState || _cameraManager.IsInOrbitalState)
+            _uiManager.SwitchToAerialHUDState();
         else // Third Person or TourStop cameras
             _uiManager.SwitchToPlayerHUDState();
     }

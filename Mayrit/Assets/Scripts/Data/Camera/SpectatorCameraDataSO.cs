@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "SpectatorCameraDataSO", menuName = "Scriptable Objects/Camera/SpectatorCameraDataSO")]
-public class SpectatorCameraDataSO : ScriptableObject
+[CreateAssetMenu(fileName = "AerialCameraDataSO", menuName = "Scriptable Objects/Camera/AerialCameraDataSO")]
+public class AerialCameraDataSO : ScriptableObject
 {
     public CameraDataSO data;
 
@@ -42,7 +42,7 @@ public class SpectatorCameraDataSO : ScriptableObject
     // public LayerMask selectableLayer;
 
     [Header("Third-Person Transition")]
-    [Tooltip("Speed at which to move the spectator camera target when switching from third-person camera.")]
+    [Tooltip("Speed at which aerial camera target moves when switching from third-person camera.")]
     public float targetPositionFixSpeed = 50f;
 
     public void OnIsEdgeScrollingToggled(bool newValue)
