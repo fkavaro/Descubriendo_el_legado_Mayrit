@@ -76,8 +76,8 @@ MonoBehaviour:
   _fadeOutDuration: 1
   _playerFollowerScreenMargin: {x: 100, y: 100}
   _playerFollowerPositionOffset: {x: 25, y: 25}
-  _edgeScrollingValueSet: 0
-  _controlsVisibilityValueSet: 0
+  _edgeScrollingValueSet: 1
+  _controlsVisibilityValueSet: 1
   _musicVolumeValueSet: 1
   _sfxVolumeValueSet: 1
 --- !u!114 &8866597934866581004
