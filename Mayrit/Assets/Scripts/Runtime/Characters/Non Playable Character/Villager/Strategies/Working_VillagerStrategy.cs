@@ -18,11 +18,9 @@ public class Working_VillagerStrategy : ATimedNPCStrategy<Villager>
         CleanupStaleConversation();
 
         if (_workplaceSpot == null)
-        {
             Debug.LogWarning($"[{_npc.Name}.Working_VillagerStrategy.Start()] has null workplace", _npc.GO);
-            return Node.Status.Failure;
-        }
-        _npc.MovementController.PlaceAtSpot(_workplaceSpot, true);
+        else
+            _npc.MovementController.PlaceAtSpot(_workplaceSpot, true);
 
         if (_npc.Workplace.IsInterior)
             // Deactivate model and agent

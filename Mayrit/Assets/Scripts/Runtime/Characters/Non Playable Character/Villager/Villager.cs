@@ -8,7 +8,7 @@ public class Villager : ANPC<BehaviourTree>
     Spot _homeEntrance;
 
     #region BEHAVIOUR SYSTEM DEFINITION
-    public override BehaviourTree DefineBehaviourSystemOnAwake()
+    public override BehaviourTree DefineBehaviourSystem()
     {
         // Conversation sequence
         ConditionStrategy notInAccessZoneStrategy = new(() => !InAccessZone);
@@ -56,7 +56,7 @@ public class Villager : ANPC<BehaviourTree>
         // Pray at sanctuary
         GoToDestinationStrategy<Villager> goToSanctuaryStrategy = new(this, _sanctuaryEntrance);
         InInteriorStrategy<Villager> prayingStrategy = new(this, _sanctuaryEntrance);
-        SequenceNode prayingSequence = new(this, "Praying");
+        SequenceNode prayingSequence = new(this, "Praying sequence");
         LeafNode goToSanctuaryLeaf = new(this, "Going to sanctuary", goToSanctuaryStrategy);
         LeafNode prayLeaf = new(this, "Praying", prayingStrategy);
         prayingSequence.AddChild(goToSanctuaryLeaf);
@@ -68,7 +68,7 @@ public class Villager : ANPC<BehaviourTree>
             GoToDestinationStrategy<Villager> goToWorkStrategy = new(this, _workplaceEntrance, true);
             Working_VillagerStrategy workingStrategy = new(this, _workplaceEntrance, 60, 180);
 
-            SequenceNode workingSequence = new(this, "Working");
+            SequenceNode workingSequence = new(this, "Working sequence");
             LeafNode goToWorkLeaf = new(this, "Going to work", goToWorkStrategy);
             LeafNode workLeaf = new(this, "Working", workingStrategy);
             workingSequence.AddChild(goToWorkLeaf);
@@ -77,7 +77,7 @@ public class Villager : ANPC<BehaviourTree>
             routineSequence.AddChild(workingSequence);
         }
 
-        SuccederNode shoppingSucceeder = new(this, "Shopping");
+        SuccederNode shoppingSucceeder = new(this, "Shopping sequence");
         if (_market != null)
         {
             GoToMarket_VillagerStrategy goToMarketStrategy = new(this);
@@ -98,12 +98,30 @@ public class Villager : ANPC<BehaviourTree>
             routineSequence.AddChild(shoppingSucceeder);
         }
 
+        // Random starting node in routine sequence to add variability among villagers
+        Node initialRoutineNode = routineSequence.GetCurrentRandomChild();
+
+        // If shopping initially, go from home
+        if (initialRoutineNode == shoppingSucceeder)
+        {
+            // Place at home
+            MovementController.PlaceAtSpot(_homeEntrance, true);
+            SetCharacterAndAgentActive(true);
+            Debug.Log($"[{name}] Initial node: {initialRoutineNode._nodeName}", this);
+        }
+        // If initial node has more than 1 child, start with the second (action) instead of the first (going to destination)
+        else if (initialRoutineNode._children.Count > 1)
+        {
+            initialRoutineNode.SetCurrentChild(1); // So that it starts in the action, not in the going to destination part
+            Debug.Log($"[{name}] Initial node: {initialRoutineNode._nodeName} (skipping going to destination)", this);
+        }
+
         if (_homeEntrance != null)
         {
             GoToDestinationStrategy<Villager> goToHomeStrategy = new(this, _homeEntrance, true);
             EnterHome_VillagerStrategy enterHomeStrategy = new(this);
 
-            SequenceNode enterHomeSequence = new(this, "Going home");
+            SequenceNode enterHomeSequence = new(this, "Going home sequence");
             LeafNode goHomeLeaf = new(this, "Going home", goToHomeStrategy);
             LeafNode enterHomeLeaf = new(this, "Resting", enterHomeStrategy);
             enterHomeSequence.AddChild(goHomeLeaf);

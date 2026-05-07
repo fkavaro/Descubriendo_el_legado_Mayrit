@@ -280,7 +280,7 @@ public class NPCPoolManager : MonoBehaviour
         // Activate and reset components
         villager.CharacterModel.SetActive(false);
         villager.gameObject.SetActive(true);
-        villager.BehaviourSystem = villager.DefineBehaviourSystemOnAwake(); // Re-define behaviour system to reset its state
+        villager.BehaviourSystem = villager.DefineBehaviourSystem();
         villager.MovementController.Reset();
         villager.InteractionController.Reset();
         villager.AnimationController.Reset();
@@ -292,6 +292,7 @@ public class NPCPoolManager : MonoBehaviour
     void ReleaseVillager(Villager villager)
     {
         _activeVillagers.Remove(villager);
+        villager.BehaviourSystem = null;
     }
     #endregion
 }
