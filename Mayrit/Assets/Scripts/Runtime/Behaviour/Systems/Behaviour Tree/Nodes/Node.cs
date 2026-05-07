@@ -10,7 +10,7 @@ public class Node : ABehaviourSystem
 {
     public enum Status
     {
-        Running, // In progress
+        Running,
         Success,
         Failure
     }
@@ -75,6 +75,28 @@ public class Node : ABehaviourSystem
     public void AddChild(Node child)
     {
         _children.Add(child);
+    }
+
+    public void SetCurrentChild(int childIdx)
+    {
+        if (childIdx >= 0 && childIdx < _children.Count)
+            _currentChildIdx = childIdx;
+        else
+            Debug.LogWarning("[" + _nodeName + "] Trying to set current child index to " + childIdx + " but it is out of bounds.");
+    }
+
+    public void SetRandomCurrentChild()
+    {
+        if (_children.Count > 0)
+            _currentChildIdx = UnityEngine.Random.Range(0, _children.Count);
+    }
+
+    public Node GetCurrentRandomChild()
+    {
+        if (_children.Count <= 0) return null;
+
+        SetRandomCurrentChild();
+        return _children[_currentChildIdx];
     }
     #endregion
 
