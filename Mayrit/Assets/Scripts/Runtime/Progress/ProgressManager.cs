@@ -33,7 +33,7 @@ public class ProgressManager : ABehaviourEntity<FiniteStateMachine<MilestoneStat
     #endregion
 
     #region INHERITED
-    public override FiniteStateMachine<MilestoneState> DefineBehaviourSystemOnAwake()
+    public override FiniteStateMachine<MilestoneState> DefineBehaviourSystem()
     {
         _fsm = new(this);
 

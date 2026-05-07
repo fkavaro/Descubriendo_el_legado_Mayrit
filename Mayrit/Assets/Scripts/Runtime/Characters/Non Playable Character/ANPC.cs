@@ -118,12 +118,11 @@ where BehaviourSystemType : ABehaviourSystem
     #region LIFE CYCLE
     protected override void Awake()
     {
-        base.Awake();
-
         _animationController = new(this, this, CharacterAnimator);
         _agent = GetComponent<NavMeshAgent>();
         _movementController = new(this);
         _interactionController = new(this, _agent, _interactionRange, _conversationCooldownNode);
+        //base.Awake();
     }
 
     protected override void Update()

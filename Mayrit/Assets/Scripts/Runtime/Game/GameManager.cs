@@ -28,7 +28,7 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
     #endregion
 
     #region INHERITED
-    public override FiniteStateMachine<AGameState> DefineBehaviourSystemOnAwake()
+    public override FiniteStateMachine<AGameState> DefineBehaviourSystem()
     {
         _fsm = new(this);
 

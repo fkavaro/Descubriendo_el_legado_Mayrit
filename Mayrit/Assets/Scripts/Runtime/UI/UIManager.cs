@@ -73,7 +73,7 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     #endregion
 
     #region INHERITED
-    public override StackFiniteStateMachine<AUIState> DefineBehaviourSystemOnAwake()
+    public override StackFiniteStateMachine<AUIState> DefineBehaviourSystem()
     {
         _sfsm = new(this);
 

@@ -57,7 +57,7 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
     #endregion
 
     #region INHERITED
-    public override FiniteStateMachine<ACameraState> DefineBehaviourSystemOnAwake()
+    public override FiniteStateMachine<ACameraState> DefineBehaviourSystem()
     {
         _fsm = new(this);
 

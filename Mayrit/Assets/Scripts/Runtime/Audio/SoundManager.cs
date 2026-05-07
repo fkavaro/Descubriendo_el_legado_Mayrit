@@ -46,7 +46,7 @@ public class SoundManager : ABehaviourEntity<FiniteStateMachine<AMusicState>>
     #endregion
 
     #region INHERITED
-    public override FiniteStateMachine<AMusicState> DefineBehaviourSystemOnAwake()
+    public override FiniteStateMachine<AMusicState> DefineBehaviourSystem()
     {
         _fsm = new(this);
 

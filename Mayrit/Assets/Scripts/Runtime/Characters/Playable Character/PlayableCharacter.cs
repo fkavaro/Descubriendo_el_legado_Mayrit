@@ -40,7 +40,7 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
     #endregion
 
     #region INHERITED
-    public override FiniteStateMachine<APlayableCharacterState> DefineBehaviourSystemOnAwake()
+    public override FiniteStateMachine<APlayableCharacterState> DefineBehaviourSystem()
     {
         _fsm = new(this);
 

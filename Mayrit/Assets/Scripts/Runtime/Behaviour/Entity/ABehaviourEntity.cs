@@ -51,15 +51,15 @@ where BehaviourSystemType : ABehaviourSystem
     #region TO BE IMPLEMENTED METHODS
     /// <summary>
     /// Returned value will be assigned to the BehaviourSystem property.
-    /// Is executed in Awake().
+    /// Is executed automatically in Awake().
     /// </summary>
-    public abstract BehaviourSystemType DefineBehaviourSystemOnAwake();
+    public abstract BehaviourSystemType DefineBehaviourSystem();
     #endregion
 
     #region LIFE CYCLE: DERIVED TO BEHAVIOUR SYSTEM
     protected virtual void Awake()
     {
-        _behaviourSystem = DefineBehaviourSystemOnAwake();
+        _behaviourSystem = DefineBehaviourSystem();
     }
 
     protected virtual void Start()

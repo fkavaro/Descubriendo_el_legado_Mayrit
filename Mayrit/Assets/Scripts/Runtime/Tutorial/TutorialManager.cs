@@ -25,7 +25,7 @@ public class TutorialManager : ABehaviourEntity<StackFiniteStateMachine<Tutorial
     #endregion
 
     #region INHERITED
-    public override StackFiniteStateMachine<TutorialState> DefineBehaviourSystemOnAwake()
+    public override StackFiniteStateMachine<TutorialState> DefineBehaviourSystem()
     {
         _fsm = new(this);
 
