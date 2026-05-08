@@ -30,9 +30,6 @@ public class GoToMarket_VillagerStrategy : ANPCStrategy<Villager>
 
     public override Node.Status Update()
     {
-        if (_npc.MovementController.CheckAndHandlePlayerProximity())
-            return Node.Status.Running;
-
         if (!ValidateMarketState())
             return Node.Status.Failure;
 
@@ -85,7 +82,7 @@ public class GoToMarket_VillagerStrategy : ANPCStrategy<Villager>
         // Still far from stall
         if (!_npc.MovementController.IsNearDestinationSpot(_marketStallSpot))
         {
-            _npc.MovementController.IsAgentStopped = false;
+            _npc.MovementController.CheckAndHandlePlayerProximity();
             return Node.Status.Running;
         }
 
