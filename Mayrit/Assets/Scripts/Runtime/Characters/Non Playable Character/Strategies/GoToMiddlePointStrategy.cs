@@ -42,6 +42,9 @@ where NPCtype : INPC
 
     public override Node.Status Update()
     {
+        if (_npc.MovementController.CheckAndHandlePlayerProximity())
+            return Node.Status.Running;
+
         // Failure if other NPC is no longer in conversation
         if (!_otherNPC.InteractionController.IsStillTalkingWith(_npc))
         {

@@ -20,10 +20,13 @@ public class NPCMovementController
     readonly NavMeshAgent _agent;
     readonly float _positionLeniency;
     readonly NavMeshQueryFilter _queryFilter;
+    PlayableCharacter _player;
 
     Vector3 _destinationPos;
     Spot _destinationSpot;
     int _originalAvoidancePriority = -1;
+
+    const float PLAYER_STOP_DISTANCE = 2.5f;
     #endregion
 
     #region CONSTRUCTOR
@@ -63,6 +66,8 @@ public class NPCMovementController
             _destinationSpot = null;
         }
         _destinationPos = Vector3.zero;
+
+        _player = ServiceLocator.Instance.Get<PlayableCharacter>();
     }
     #endregion
 
@@ -521,6 +526,34 @@ public class NPCMovementController
             if (_npc.DebugMode)
                 Debug.LogWarning($"[{_npc.Name}.PlaceAt] exception when placing NPC: {e.Message}", _npc.GO);
         }
+    }
+    #endregion
+
+    #region PLAYER PROXIMITY METHODS
+    /// <summary>
+    /// Checks if the player is too close. If so, stops the agent and clears the current destination to trigger path recalculation.
+    /// </summary>
+    /// <returns>True if the player was too close and the agent was stopped.</returns>
+    public bool CheckAndHandlePlayerProximity()
+    {
+        if (_player == null || !IsAgentValid) return false;
+
+        float distanceToPlayer = Vector3.Distance(_npc.GO.transform.position, _player.GO.transform.position);
+
+        if (distanceToPlayer < PLAYER_STOP_DISTANCE)
+        {
+            // Stop the agent
+            IsAgentStopped = true;
+            _npc.AnimationController.ChangeToIdle();
+
+            // Clear destination to trigger behavior state to recalculate path
+            ClearDestinationSpot();
+            _destinationPos = Vector3.zero;
+
+            return true;
+        }
+
+        return false;
     }
     #endregion
 

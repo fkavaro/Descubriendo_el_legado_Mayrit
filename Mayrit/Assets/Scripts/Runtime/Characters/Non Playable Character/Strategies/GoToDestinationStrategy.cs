@@ -39,6 +39,9 @@ where NPCtype : INPC
 
     public override Node.Status Update()
     {
+        if (_npc.MovementController.CheckAndHandlePlayerProximity())
+            return Node.Status.Running;
+
         if (!TryEnsureDestination(_destinationSpot))
             return Node.Status.Failure;
 
