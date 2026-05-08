@@ -118,8 +118,6 @@ public class NPCPoolManager : MonoBehaviour
     /// </summary>
     public void ReturnVillagerToPool(Villager villager)
     {
-        if (_villagerPool == null || villager == null) return;
-
         villager.Reset();
         _villagerPool.Release(villager);
         _activeVillagers.Remove(villager);
@@ -191,15 +189,11 @@ public class NPCPoolManager : MonoBehaviour
     #endregion
 
     #region EVENT HANDLERS
+    // On each milestone change
     void OnTownPopulationChanged(int newPopulation)
     {
-        //Debug.Log($"NPCPoolManager: Town population changed to {newPopulation}. Updating active villagers...");
+        //Debug.Log($"[NPCPoolManager]: Town population changed to {newPopulation}");
         _maxActiveVillagers = Mathf.RoundToInt(newPopulation * _activeVillagersRatio);
-
-        // Move all active villagers to pool
-        foreach (var villager in _activeVillagers)
-            if (villager != null)
-                ReturnVillagerToPool(villager);
     }
     #endregion
 
@@ -281,8 +275,6 @@ public class NPCPoolManager : MonoBehaviour
         }
         villager.AssignMarket(randomMarket);
 
-        _activeVillagers.Add(villager);
-
         // Activate and reset components
         villager.gameObject.SetActive(true);
         villager.CharacterModel.SetActive(false);
@@ -290,6 +282,8 @@ public class NPCPoolManager : MonoBehaviour
         villager.InteractionController.Reset();
         villager.AnimationController.Reset();
         villager.BehaviourSystem ??= villager.DefineBehaviourSystem();
+
+        _activeVillagers.Add(villager);
     }
     #endregion
 }
