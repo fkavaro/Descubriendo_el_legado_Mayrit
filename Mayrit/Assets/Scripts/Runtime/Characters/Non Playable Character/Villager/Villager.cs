@@ -99,22 +99,21 @@ public class Villager : ANPC<BehaviourTree>
         }
 
         // Random starting node in routine sequence to add variability among villagers
-        Node initialRoutineNode = routineSequence.GetCurrentRandomChild();
+        Node initialNode = routineSequence.SetRandomCurrentChild();
 
         // If shopping initially, go from home
-        if (initialRoutineNode == shoppingSucceeder)
+        if (initialNode == shoppingSucceeder)
         {
             // Place at home
             MovementController.PlaceAtSpot(_homeEntrance, true);
             SetCharacterAndAgentActive(true);
-            Debug.Log($"[{name}] Initial node: {initialRoutineNode._nodeName}", this);
         }
         // If initial node has more than 1 child, start with the second (action) instead of the first (going to destination)
-        else if (initialRoutineNode._children.Count > 1)
-        {
-            initialRoutineNode.SetCurrentChild(1); // So that it starts in the action, not in the going to destination part
-            Debug.Log($"[{name}] Initial node: {initialRoutineNode._nodeName} (skipping going to destination)", this);
-        }
+        else if (initialNode._children.Count > 1)
+            initialNode.SetCurrentChild(1); // So that it starts in the action, not in the going to destination part
+
+        if (DebugMode)
+            Debug.Log($"[{name}] Initial node: {initialNode._nodeName}", this);
 
         if (_homeEntrance != null)
         {

@@ -58,7 +58,6 @@ public class Node : ABehaviourSystem
     #region LIFE CYCLE
     public override void Update()
     {
-
         if (!_behaviourEntity.IsExecutionPaused)
         {
             _status = UpdateNode();
@@ -85,17 +84,10 @@ public class Node : ABehaviourSystem
             Debug.LogWarning("[" + _nodeName + "] Trying to set current child index to " + childIdx + " but it is out of bounds.");
     }
 
-    public void SetRandomCurrentChild()
-    {
-        if (_children.Count > 0)
-            _currentChildIdx = UnityEngine.Random.Range(0, _children.Count);
-    }
-
-    public Node GetCurrentRandomChild()
+    public Node SetRandomCurrentChild()
     {
         if (_children.Count <= 0) return null;
-
-        SetRandomCurrentChild();
+        _currentChildIdx = UnityEngine.Random.Range(0, _children.Count);
         return _children[_currentChildIdx];
     }
     #endregion

@@ -152,10 +152,7 @@ where BehaviourSystemType : ABehaviourSystem
             return;
         }
 
-        if (_characterModel.activeSelf != isActive)
-        {
-            _characterModel.SetActive(isActive);
-            _agent.enabled = isActive;
-        }
+        _characterModel.SetActive(isActive);
+        _agent.enabled = isActive;
     }
 }
