@@ -126,12 +126,6 @@ public class Villager : ANPC<BehaviourTree>
     }
     #endregion
 
-    protected override void Awake()
-    {
-        base.Awake();
-        SetRandomInitialRoutineNode(); // Just once when it is created
-    }
-
     #region PUBLIC METHODS
     public void AssignHome(House home)
     {
@@ -187,6 +181,29 @@ public class Villager : ANPC<BehaviourTree>
         _market = randomMarket;
     }
 
+    public void SetRandomInitialRoutineNode()
+    {
+        Node initialNode;
+        do
+        {
+            initialNode = _routineSequence.SetRandomCurrentChild();
+        } while (initialNode == _enterHomeSequence); // So that not all villagers start at home, which would look weird
+
+        // If shopping initially, go from home
+        if (initialNode == _shoppingSucceeder)
+        {
+            // Place at home
+            MovementController.PlaceAtSpot(_homeEntrance, true);
+            SetCharacterAndAgentActive(true);
+        }
+        // If initial node has more than 1 child, start with the second (action) instead of the first (going to destination)
+        else if (initialNode._children.Count > 1)
+            initialNode.SetCurrentChild(1); // So that it starts in the action, not in the going to destination part
+
+        if (DebugMode)
+            Debug.Log($"[{name}] Random routine start: {initialNode._nodeName}", this);
+    }
+
     public void ReturnToPool()
     {
         Reset();
@@ -216,34 +233,6 @@ public class Villager : ANPC<BehaviourTree>
         _marketStall = null;
 
         _behaviourSystem = null;
-    }
-    #endregion
-
-    #region PRIVATE METHODS
-    /// <summary>
-    /// Sets a random initial node in the routine sequence to add variability among villagers.
-    /// </summary>
-    void SetRandomInitialRoutineNode()
-    {
-        Node initialNode;
-        do
-        {
-            initialNode = _routineSequence.SetRandomCurrentChild();
-        } while (initialNode == _enterHomeSequence); // So that not all villagers start at home, which would look weird
-
-        // If shopping initially, go from home
-        if (initialNode == _shoppingSucceeder)
-        {
-            // Place at home
-            MovementController.PlaceAtSpot(_homeEntrance, true);
-            SetCharacterAndAgentActive(true);
-        }
-        // If initial node has more than 1 child, start with the second (action) instead of the first (going to destination)
-        else if (initialNode._children.Count > 1)
-            initialNode.SetCurrentChild(1); // So that it starts in the action, not in the going to destination part
-
-        if (DebugMode)
-            Debug.Log($"[{name}] Random routine start: {initialNode._nodeName}", this);
     }
     #endregion
 }

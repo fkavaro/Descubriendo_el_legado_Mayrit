@@ -38,6 +38,7 @@ public class NPCPoolManager : MonoBehaviour
     readonly List<Villager> _nearbyBuffer = new(); // Reusable scratch buffer for proximity queries — do not store returned references across frames
     bool _physicsQueryReady; // True when physics overlap queries are usable (cached in Awake)
     readonly Queue<Villager> _pendingRelease = new(); // Villagers that failed setup and must be returned to the pool next frame
+    bool _populationChanged;
 
     // Dependency Injection
     TownManager _townManager;
@@ -101,6 +102,8 @@ public class NPCPoolManager : MonoBehaviour
         else if (activeDifference > 0)
             for (int i = 0; i < batch; i++)
                 _villagerPool.Get();
+        else
+            _populationChanged = false;
     }
 
     void OnDisable()
@@ -194,6 +197,7 @@ public class NPCPoolManager : MonoBehaviour
     {
         //Debug.Log($"[NPCPoolManager]: Town population changed to {newPopulation}");
         _maxActiveVillagers = Mathf.RoundToInt(newPopulation * _activeVillagersRatio);
+        _populationChanged = true;
     }
     #endregion
 
@@ -282,6 +286,9 @@ public class NPCPoolManager : MonoBehaviour
         villager.InteractionController.Reset();
         villager.AnimationController.Reset();
         villager.BehaviourSystem ??= villager.DefineBehaviourSystem();
+
+        if (_populationChanged)
+            villager.SetRandomInitialRoutineNode();
 
         _activeVillagers.Add(villager);
     }
