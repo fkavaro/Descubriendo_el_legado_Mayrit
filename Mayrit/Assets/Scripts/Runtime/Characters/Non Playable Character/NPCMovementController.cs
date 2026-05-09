@@ -448,6 +448,10 @@ public class NPCMovementController
         Vector3 directionToOther = GO.transform.position - _agent.transform.position;
         directionToOther.y = 0f; // Keep only horizontal direction
 
+        // Prevent zero vector error by checking magnitude
+        if (directionToOther.sqrMagnitude < 0.001f)
+            return true;
+
         directionToOther.Normalize();
         return RotateSmoothlyTowards(Quaternion.LookRotation(directionToOther));
     }
