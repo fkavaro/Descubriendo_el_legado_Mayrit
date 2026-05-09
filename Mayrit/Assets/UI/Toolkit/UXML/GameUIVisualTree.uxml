@@ -14,11 +14,12 @@
                 <ui:VisualElement name="TitleArea" style="justify-content: center; align-self: center; height: 300px;">
                     <ui:Label text="Menú principal" name="Title" class="subtitle"/>
                 </ui:VisualElement>
-                <ui:VisualElement name="Buttons" style="display: flex; margin-top: 70px;">
+                <ui:VisualElement name="Buttons" style="display: flex; margin-top: 50px;">
                     <ui:Button text="Cargar partida" name="LoadGameButton" class="button highlighted"/>
-                    <ui:Button text="Nueva partida" name="NewGameButton" class="button"/>
                     <ui:Button text="Ajustes" name="SettingsButton" class="button"/>
-                    <ui:Button text="Salir" name="QuitButton" class="button" style="margin-top: 130px;"/>
+                    <ui:Button text="Nueva partida" name="NewGameButton" class="button"/>
+                    <ui:Button text="Créditos" name="CreditsButton" class="button" style="position: relative; margin-top: 100px;"/>
+                    <ui:Button text="Salir" name="QuitButton" class="button" style="margin-top: 15px;"/>
                 </ui:VisualElement>
                 <ui:VisualElement name="NewGameWarning" style="display: none; position: absolute; align-self: center; top: 450px;">
                     <ui:VisualElement name="Pop-up" style="flex-grow: 0; width: 490px; height: 300px; justify-content: space-between; align-self: center; background-color: rgb(17, 17, 17); display: flex; border-top-left-radius: 25px; border-top-right-radius: 25px; border-bottom-right-radius: 25px; border-bottom-left-radius: 25px; border-top-width: 3px; border-right-width: 3px; border-bottom-width: 3px; border-left-width: 3px; border-left-color: rgb(26, 26, 26); border-right-color: rgb(26, 26, 26); border-top-color: rgb(26, 26, 26); border-bottom-color: rgb(26, 26, 26);">
@@ -395,11 +396,12 @@
             <ui:VisualElement style="justify-content: center; align-self: stretch; height: 300px;">
                 <ui:Label text="Pausa" class="subtitle" style="top: auto;"/>
             </ui:VisualElement>
-            <ui:VisualElement name="Buttons" style="justify-content: center; align-self: stretch; margin-top: 70px;">
+            <ui:VisualElement name="Buttons" style="justify-content: center; align-self: stretch; margin-top: 50px;">
                 <ui:Button name="PlayButton" text="Reanudar" class="button highlighted" style="align-self: center; position: relative;"/>
                 <ui:Button text="Ajustes" name="SettingsButton" class="button" style="position: relative;"/>
-                <ui:Button text="Inicio" name="MainMenuButton" class="button" style="position: relative;"/>
-                <ui:Button text="Salir" name="QuitButton" class="button" style="position: relative; margin-top: 130px;"/>
+                <ui:Button text="Inicio" name="MainMenuButton" class="button" style="position: relative; margin-top: 15px;"/>
+                <ui:Button text="Créditos" name="CreditsButton" class="button" style="position: relative; margin-top: 100px;"/>
+                <ui:Button text="Salir" name="QuitButton" class="button" style="position: relative; margin-top: 15px;"/>
             </ui:VisualElement>
             <ui:Button text="X" name="CloseButton" class="button closeButton" style="top: 30px; left: auto; right: 30px; bottom: auto; display: none;"/>
         </ui:VisualElement>
@@ -589,6 +591,68 @@
                     <ui:Button text="Continuar" name="ContinueButton" class="button mediumButton highlighted" style="display: flex;"/>
                 </ui:VisualElement>
             </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="CreditsScreen" style="display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; flex-direction: row; justify-content: flex-end;">
+        <ui:VisualElement name="Right" class="contextualPanel" style="right: 0; padding-top: 45px;">
+            <ui:VisualElement name="Bg" class="contextualPanelBlurBg"/>
+            <ui:Button text="X" name="CloseButton" class="button closeButton smallButton" style="top: 30px; left: auto; right: 30px; bottom: auto;"/>
+            <ui:VisualElement picking-mode="Ignore" name="Title" style="justify-content: flex-start; align-self: stretch; height: 170px;">
+                <ui:Label text="Créditos" class="subtitle"/>
+            </ui:VisualElement>
+            <ui:ScrollView name="Sections">
+                <ui:VisualElement name="Students" style="flex-grow: 1; justify-content: flex-start;">
+                    <ui:VisualElement picking-mode="Ignore" name="GameDesign" style="justify-content: center; align-self: stretch;">
+                        <ui:Label text="Diseño de juego" class="header" style="top: auto;"/>
+                        <ui:Label text="Álvaro Moreno García&#10;Francisco Rodríguez Martínez" class="text" style="top: auto; margin-left: 15px;"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement picking-mode="Ignore" name="Sofware" style="justify-content: center; align-self: stretch;">
+                        <ui:Label text="Programación" class="header" style="top: auto;"/>
+                        <ui:Label text="Álvaro Moreno García" class="text" style="top: auto; margin-left: 15px;"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement picking-mode="Ignore" name="Modelling" style="justify-content: center; align-self: stretch;">
+                        <ui:Label text="Modelado 3D" class="header" style="top: auto;"/>
+                        <ui:Label text="Francisco Rodríguez Martínez " class="text" style="top: auto; margin-left: 15px;"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement picking-mode="Ignore" name="Texturing" style="justify-content: center; align-self: stretch;">
+                        <ui:Label text="Texturizado 3D" class="header" style="top: auto;"/>
+                        <ui:Label text="Francisco Rodríguez Martínez " class="text" style="top: auto; margin-left: 15px;"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement picking-mode="Ignore" name="Animation" style="justify-content: center; align-self: stretch;">
+                        <ui:Label text="Animación 3D" class="header" style="top: auto;"/>
+                        <ui:Label text="Francisco Rodríguez Martínez " class="text" style="top: auto; margin-left: 15px;"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement picking-mode="Ignore" name="LevelDesign" style="justify-content: center; align-self: stretch;">
+                        <ui:Label text="Diseño de nivel" class="header" style="top: auto;"/>
+                        <ui:Label text="Álvaro Moreno García" class="text" style="top: auto; margin-left: 15px;"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement picking-mode="Ignore" name="2dDesign" style="justify-content: center; align-self: stretch;">
+                        <ui:Label text="Diseño gráfico" class="header" style="top: auto;"/>
+                        <ui:Label text="Álvaro Moreno García" class="text" style="top: auto; margin-left: 15px;"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement picking-mode="Ignore" name="UIDesign" style="justify-content: center; align-self: stretch;">
+                        <ui:Label text="Diseño de UI/UX" class="header" style="top: auto;"/>
+                        <ui:Label text="Álvaro Moreno García" class="text" style="top: auto; margin-left: 15px;"/>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement name="Teachers" style="flex-grow: 1; justify-content: flex-end; margin-top: 30px;">
+                    <ui:VisualElement picking-mode="Ignore" name="Tutors" style="justify-content: center; align-self: stretch;">
+                        <ui:Label text="Tutores de proyecto" class="header" style="top: auto;"/>
+                        <ui:Label text="María Zapata Cáceres&#10;José San Martín López&#10; " class="text" style="top: auto; margin-left: 15px;"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement picking-mode="Ignore" name="Thanks" style="justify-content: center; align-self: stretch;">
+                        <ui:Label text="Agradecimientos" class="header" style="top: auto;"/>
+                        <ui:Label text="Helena Domínguez Del Triunfo&#10;Laura Fuentes Moraleda&#10;Nuria Elisa Morere Molinero" class="text" style="top: auto; margin-left: 15px;"/>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement name="3rdParty" style="flex-grow: 1; justify-content: flex-end; margin-top: 30px;">
+                    <ui:VisualElement picking-mode="Ignore" name="Resources" style="justify-content: center; align-self: stretch;">
+                        <ui:Label text="Recursos de terceros" class="header" style="top: auto;"/>
+                        <ui:Label text="MÚSICA" class="text" style="top: auto; margin-left: 15px;"/>
+                        <ui:Label text="De la Unity Asset Store:&#10;Veridian Imposters (Veridian Systems)&#10;European Forests - Realistic Trees (Mysticforge)&#10;Rocks and Boulders 2 (Manufactura K4)&#10;Procedural Terrain Painter (Staggart Creations)&#10;Unity Terrain - HDRP Demo Scene (Unity Technologies) " class="text" style="top: auto; margin-left: 15px; margin-top: 15px;"/>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:ScrollView>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
