@@ -194,6 +194,10 @@ public class TourManager : MonoBehaviour
             _currentTour.StartTour();
             _soundManager.PlayTourStartSFX();
         }
+        else
+        {
+            Debug.LogWarning($"[TourManager] No current tour to start when PlayTourClicked.");
+        }
     }
 
     void OnResetTourClicked()

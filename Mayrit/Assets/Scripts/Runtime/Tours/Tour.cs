@@ -99,11 +99,9 @@ public class Tour : MonoBehaviour
 
         // All TourStops visited
         if (_currentTourStopIdx >= _tourStops.Count)
-        {
             TourCompleted();
-            return;
-        }
-        SetNextTourStop();
+        else
+            SetNextTourStop();
     }
 
     TourStop GetTourStopFromList(int index)
@@ -175,8 +173,8 @@ public class Tour : MonoBehaviour
     #region CALLBACK METHODS
     void OnTourStopVisited(TourStop tourStop)
     {
-        OnVisitedTourStopEvent?.Invoke(tourStop);
         UpdateNextTourStop();
+        OnVisitedTourStopEvent?.Invoke(tourStop);
     }
 
     // TODO: remove eventually
