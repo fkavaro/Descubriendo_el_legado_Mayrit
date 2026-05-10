@@ -75,20 +75,15 @@ public class ProgressManager : ABehaviourEntity<FiniteStateMachine<MilestoneStat
     public bool AtFirstMilestone() => _fsm.AtFistStateInSequence();
     public bool AtLastMilestone() => _fsm.AtLastStateInSequence();
 
-    public bool IsNextMilestoneAvailable()
+    public bool IsCurrentMilestoneCompleted()
     {
         if (_tourManager == null || _tourManager.CurrentTour == null)
         {
-            if (DebugMode)
-                Debug.LogWarning("ProgressManager: No current tour found. Next milestone availability will always return false.");
+            Debug.LogWarning("ProgressManager: No current tour found. Next milestone availability will always return false.");
             return false;
         }
 
-        bool canSkipInRuntime = _canSkipTours; //Application.isPlaying && Application.isEditor // TODO: full line when gold release
-        bool tourCompleted = _tourManager.CurrentTour.HasBeenCompleted;
-        bool isNextMilestoneAvailable = !AtLastMilestone() && (canSkipInRuntime || tourCompleted);
-
-        return isNextMilestoneAvailable;
+        return _canSkipTours || _tourManager.CurrentTour.HasBeenCompleted; //Application.isPlaying && Application.isEditor || _tourManager.CurrentTour.HasBeenCompleted// TODO: full line when gold release
     }
     #endregion
 

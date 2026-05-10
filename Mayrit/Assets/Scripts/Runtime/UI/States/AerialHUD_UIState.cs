@@ -109,21 +109,20 @@ public class AerialHUD_UIState : AHUDState
     #region PRIVATE METHODS
     void CheckMilestoneButtonsAvailability()
     {
-        bool isPreviousMilestoneAvailable = !_progressManager.AtFirstMilestone();
-        bool isNextMilestoneAvailable = _progressManager.IsNextMilestoneAvailable();
+        bool isTherePreviousMilestone = !_progressManager.AtFirstMilestone();
+        bool isCurrentMilestoneCompleted = _progressManager.IsCurrentMilestoneCompleted();
         bool atLastMilestone = _progressManager.AtLastMilestone();
+        bool displayMainMenuButton = atLastMilestone && isCurrentMilestoneCompleted;
 
-        _previousMilestoneButton.SetEnabled(isPreviousMilestoneAvailable);
-        _previousMilestoneButton.pickingMode = isPreviousMilestoneAvailable ? PickingMode.Position : PickingMode.Ignore;
+        _previousMilestoneButton.SetEnabled(isTherePreviousMilestone);
+        _previousMilestoneButton.pickingMode = isTherePreviousMilestone ? PickingMode.Position : PickingMode.Ignore;
 
-        _nextMilestoneButton.SetEnabled(isNextMilestoneAvailable);
-        _nextMilestoneButton.pickingMode = isNextMilestoneAvailable ? PickingMode.Position : PickingMode.Ignore;
-        _nextMilestoneButtonImage.pickingMode = isNextMilestoneAvailable ? PickingMode.Position : PickingMode.Ignore;
-
-        _mainMenuButton.SetEnabled(atLastMilestone);
         _nextMilestoneButton.style.display = atLastMilestone ? DisplayStyle.None : DisplayStyle.Flex;
-        _mainMenuButton.style.display = atLastMilestone ? DisplayStyle.Flex : DisplayStyle.None;
-        _mainMenuButton.pickingMode = atLastMilestone ? PickingMode.Position : PickingMode.Ignore;
+        _nextMilestoneButton.SetEnabled(isCurrentMilestoneCompleted);
+        _nextMilestoneButton.pickingMode = isCurrentMilestoneCompleted ? PickingMode.Position : PickingMode.Ignore;
+        _nextMilestoneButtonImage.pickingMode = isCurrentMilestoneCompleted ? PickingMode.Position : PickingMode.Ignore;
+
+        _mainMenuButton.style.display = displayMainMenuButton ? DisplayStyle.Flex : DisplayStyle.None;
     }
     #endregion
 
