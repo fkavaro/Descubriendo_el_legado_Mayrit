@@ -2,7 +2,7 @@
 }
 
 .title {
-    color: rgb(245, 245, 245);
+    color: rgb(255, 255, 255);
     font-size: 100px;
     align-self: center;
     margin-top: 0;
@@ -13,12 +13,11 @@
     padding-right: 0;
     padding-bottom: 0;
     padding-left: 0;
-    -unity-text-outline-width: 5px;
-    -unity-text-outline-color: rgb(102, 102, 102);
-    -unity-font-style: bold;
     letter-spacing: 15px;
     white-space: normal;
     -unity-text-align: upper-center;
+    -unity-font-definition: url("project://database/Assets/TextMesh%20Pro/Fonts/ElMessiri-Bold.ttf?fileID=12800000&guid=2d588446ee149eb408d77b917fa04672&type=3#ElMessiri-Bold");
+    text-shadow: 0 -3px 10px rgb(77, 77, 77);
 }
 
 .subtitle {
@@ -33,17 +32,15 @@
     padding-right: 0;
     padding-bottom: 0;
     padding-left: 0;
-    -unity-font-style: bold;
     white-space: normal;
     -unity-text-align: upper-center;
-    -unity-text-outline-width: 3px;
-    -unity-text-outline-color: rgb(51, 51, 51);
+    -unity-font-definition: url("project://database/Assets/TextMesh%20Pro/Fonts/ElMessiri-Bold.ttf?fileID=12800000&guid=2d588446ee149eb408d77b917fa04672&type=3#ElMessiri-Bold");
+    text-shadow: 0 2px 10px rgb(128, 128, 128);
 }
 
 .header {
     font-size: 35px;
     color: rgb(255, 255, 255);
-    -unity-font-style: bold;
     white-space: normal;
     -unity-text-align: upper-left;
     margin-top: 15px;
@@ -54,13 +51,13 @@
     padding-right: 0;
     padding-bottom: 0;
     padding-left: 0;
+    -unity-font-definition: url("project://database/Assets/TextMesh%20Pro/Fonts/ElMessiri-Bold.ttf?fileID=12800000&guid=2d588446ee149eb408d77b917fa04672&type=3#ElMessiri-Bold");
+    text-shadow: 0 2px 5px rgb(102, 102, 102);
 }
 
 .subHeader {
     font-size: 25px;
     color: rgb(255, 255, 255);
-    text-shadow: -3px -3px 2px rgba(20, 20, 20, 0);
-    -unity-font-style: normal;
     white-space: normal;
     -unity-text-align: upper-left;
     margin-top: 10px;
@@ -71,6 +68,7 @@
     padding-right: 0;
     padding-bottom: 0;
     padding-left: 0;
+    -unity-font-definition: url("project://database/Assets/TextMesh%20Pro/Fonts/ElMessiri-Regular.ttf?fileID=12800000&guid=c566193adbf5c6d44a80f316aea394d1&type=3#ElMessiri-Regular");
 }
 
 .text {
@@ -86,6 +84,7 @@
     padding-left: 0;
     font-size: 18px;
     white-space: normal;
+    -unity-font-definition: url("project://database/Assets/TextMesh%20Pro/Fonts/ElMessiri-Regular.ttf?fileID=12800000&guid=c566193adbf5c6d44a80f316aea394d1&type=3#ElMessiri-Regular");
 }
 
 .tooltip {
@@ -112,7 +111,7 @@
     height: 70px;
     align-self: center;
     font-size: 25px;
-    -unity-font-style: bold;
+    -unity-font-style: normal;
     color: rgb(255, 255, 255);
     background-color: rgb(24, 24, 24);
     border-left-color: rgb(55, 55, 55);
@@ -133,10 +132,12 @@
     margin-right: 15px;
     margin-bottom: 15px;
     margin-left: 15px;
-    padding-top: 0;
+    padding-top: 2px;
     padding-right: 0;
     padding-bottom: 0;
     padding-left: 0;
+    -unity-font-definition: url("project://database/Assets/TextMesh%20Pro/Fonts/ElMessiri-Bold.ttf?fileID=12800000&guid=2d588446ee149eb408d77b917fa04672&type=3#ElMessiri-Bold");
+    text-shadow: 0 1px 5px rgb(128, 128, 128);
 }
 
 .button:hover {
@@ -146,6 +147,7 @@
     border-right-color: rgb(60, 60, 60);
     border-top-color: rgb(60, 60, 60);
     border-bottom-color: rgb(60, 60, 60);
+    -unity-font-style: normal;
 }
 
 .tourStopItem {
@@ -161,21 +163,23 @@
     padding-left: 0;
     white-space: normal;
     -unity-text-align: upper-right;
-    text-shadow: 0 0 10px rgb(0, 0, 0);
+    -unity-font-definition: url("project://database/Assets/TextMesh%20Pro/Fonts/ElMessiri-Regular.ttf?fileID=12800000&guid=c566193adbf5c6d44a80f316aea394d1&type=3#ElMessiri-Regular");
 }
 
 .tourStopItem.visited {
-    color: rgb(150, 150, 150);
-    font-size: 18px;
+    color: rgb(178, 178, 178);
+    font-size: 17px;
     -unity-text-align: upper-right;
-    -unity-font-style: normal;
+    text-shadow: 0 1px 5px rgb(77, 77, 77);
 }
 
 .tourStopItem.next {
     color: rgb(255, 255, 255);
-    font-size: 18px;
-    -unity-font-style: bold;
+    font-size: 19px;
+    -unity-font-style: normal;
     -unity-text-align: upper-right;
+    -unity-font-definition: url("project://database/Assets/TextMesh%20Pro/Fonts/ElMessiri-Bold.ttf?fileID=12800000&guid=2d588446ee149eb408d77b917fa04672&type=3#ElMessiri-Bold");
+    text-shadow: 0 1px 5px rgb(51, 51, 51);
 }
 
 .tourStopItem.unvisited {
@@ -183,15 +187,13 @@
     font-size: 18px;
     -unity-font-style: normal;
     -unity-text-align: upper-right;
+    text-shadow: 0 1px 5px rgb(77, 77, 77);
 }
 
 .button.highlighted {
     width: 250px;
     height: 70px;
     align-self: center;
-    font-size: 25px;
-    -unity-font-style: bold;
-    color: rgb(255, 255, 255);
     background-color: rgb(37, 41, 58);
     border-left-color: rgb(64, 73, 118);
     border-right-color: rgb(64, 73, 118);
@@ -205,24 +207,13 @@
     border-top-right-radius: 17px;
     border-bottom-right-radius: 17px;
     border-bottom-left-radius: 17px;
-    margin-top: 15px;
-    -unity-text-align: middle-center;
     transition-duration: 0.2s;
-    margin-right: 15px;
-    margin-bottom: 15px;
-    margin-left: 15px;
-    padding-top: 0;
-    padding-right: 0;
-    padding-bottom: 0;
-    padding-left: 0;
 }
 
 .button.highlighted:hover {
     width: 250px;
     height: 70px;
     align-self: center;
-    font-size: 25px;
-    -unity-font-style: bold;
     color: rgb(255, 255, 255);
     background-color: rgb(49, 56, 87);
     border-left-color: rgb(76, 87, 142);
@@ -252,16 +243,13 @@
 .button.mediumButton {
     position: relative;
     width: 220px;
-    font-size: 20px;
-    -unity-font-style: bold;
     height: 60px;
+    font-size: 22px;
 }
 
 .button.mediumButton.highlighted {
     position: absolute;
     width: 220px;
-    font-size: 20px;
-    -unity-font-style: bold;
     height: 60px;
 }
 
@@ -270,6 +258,7 @@
     position: absolute;
     width: 60px;
     height: 60px;
+    -unity-font-style: normal;
 }
 
 .button.closeButton {
@@ -278,6 +267,7 @@
     border-right-color: rgb(103, 60, 60);
     border-top-color: rgb(103, 60, 60);
     border-bottom-color: rgb(103, 60, 60);
+    font-size: 30px;
 }
 
 .button.closeButton:hover {
@@ -440,6 +430,7 @@ Switch Label {
     padding-right: 0;
     padding-bottom: 0;
     padding-left: 0;
+    -unity-font-definition: url("project://database/Assets/TextMesh%20Pro/Fonts/ElMessiri-Regular.ttf?fileID=12800000&guid=c566193adbf5c6d44a80f316aea394d1&type=3#ElMessiri-Regular");
 }
 
 .switch-border {
