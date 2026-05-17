@@ -608,54 +608,60 @@
             </ui:VisualElement>
             <ui:ScrollView name="Sections" class="section scrollable">
                 <ui:VisualElement name="Students" style="flex-grow: 1; justify-content: flex-start;">
-                    <ui:VisualElement picking-mode="Ignore" name="GameDesign" style="justify-content: center; align-self: stretch;">
+                    <ui:VisualElement picking-mode="Ignore" name="GameDesign" style="justify-content: center; align-self: stretch; margin-bottom: 15px;">
                         <ui:Label text="Diseño de juego" class="header" style="top: auto;"/>
-                        <ui:Label text="Álvaro Moreno García&#10;Francisco Rodríguez Martínez" class="text" style="top: auto; margin-left: 15px;"/>
+                        <ui:Label text="Álvaro Moreno García&#10;Francisco Rodríguez Martínez" class="text" style="top: auto;"/>
                     </ui:VisualElement>
-                    <ui:VisualElement picking-mode="Ignore" name="Sofware" style="justify-content: center; align-self: stretch;">
+                    <ui:VisualElement picking-mode="Ignore" name="Sofware" style="justify-content: center; align-self: stretch; margin-bottom: 15px;">
                         <ui:Label text="Programación" class="header" style="top: auto;"/>
-                        <ui:Label text="Álvaro Moreno García" class="text" style="top: auto; margin-left: 15px;"/>
+                        <ui:Label text="Álvaro Moreno García" class="text" style="top: auto;"/>
                     </ui:VisualElement>
-                    <ui:VisualElement picking-mode="Ignore" name="Modelling" style="justify-content: center; align-self: stretch;">
+                    <ui:VisualElement picking-mode="Ignore" name="Modelling" style="justify-content: center; align-self: stretch; margin-bottom: 15px;">
                         <ui:Label text="Modelado 3D" class="header" style="top: auto;"/>
-                        <ui:Label text="Francisco Rodríguez Martínez " class="text" style="top: auto; margin-left: 15px;"/>
+                        <ui:Label text="Francisco Rodríguez Martínez " class="text" style="top: auto;"/>
                     </ui:VisualElement>
-                    <ui:VisualElement picking-mode="Ignore" name="Texturing" style="justify-content: center; align-self: stretch;">
+                    <ui:VisualElement picking-mode="Ignore" name="Texturing" style="justify-content: center; align-self: stretch; margin-bottom: 15px;">
                         <ui:Label text="Texturizado 3D" class="header" style="top: auto;"/>
-                        <ui:Label text="Francisco Rodríguez Martínez " class="text" style="top: auto; margin-left: 15px;"/>
+                        <ui:Label text="Francisco Rodríguez Martínez " class="text"/>
                     </ui:VisualElement>
-                    <ui:VisualElement picking-mode="Ignore" name="Animation" style="justify-content: center; align-self: stretch;">
+                    <ui:VisualElement picking-mode="Ignore" name="Animation" style="justify-content: center; align-self: stretch; margin-bottom: 15px;">
                         <ui:Label text="Animación 3D" class="header" style="top: auto;"/>
-                        <ui:Label text="Francisco Rodríguez Martínez " class="text" style="top: auto; margin-left: 15px;"/>
+                        <ui:Label text="Francisco Rodríguez Martínez " class="text" style="top: auto;"/>
                     </ui:VisualElement>
-                    <ui:VisualElement picking-mode="Ignore" name="LevelDesign" style="justify-content: center; align-self: stretch;">
+                    <ui:VisualElement picking-mode="Ignore" name="LevelDesign" style="justify-content: center; align-self: stretch; margin-bottom: 15px;">
                         <ui:Label text="Diseño de nivel" class="header" style="top: auto;"/>
-                        <ui:Label text="Álvaro Moreno García" class="text" style="top: auto; margin-left: 15px;"/>
+                        <ui:Label text="Álvaro Moreno García" class="text" style="top: auto;"/>
                     </ui:VisualElement>
-                    <ui:VisualElement picking-mode="Ignore" name="2dDesign" style="justify-content: center; align-self: stretch;">
+                    <ui:VisualElement picking-mode="Ignore" name="2dDesign" style="justify-content: center; align-self: stretch; margin-bottom: 15px;">
                         <ui:Label text="Diseño gráfico" class="header" style="top: auto;"/>
-                        <ui:Label text="Álvaro Moreno García" class="text" style="top: auto; margin-left: 15px;"/>
+                        <ui:Label text="Álvaro Moreno García" class="text" style="top: auto;"/>
                     </ui:VisualElement>
                     <ui:VisualElement picking-mode="Ignore" name="UIDesign" style="justify-content: center; align-self: stretch;">
                         <ui:Label text="Diseño de UI/UX" class="header" style="top: auto;"/>
-                        <ui:Label text="Álvaro Moreno García" class="text" style="top: auto; margin-left: 15px;"/>
+                        <ui:Label text="Álvaro Moreno García" class="text" style="top: auto;"/>
                     </ui:VisualElement>
                 </ui:VisualElement>
-                <ui:VisualElement name="Teachers" style="flex-grow: 1; justify-content: flex-end; margin-top: 30px;">
-                    <ui:VisualElement picking-mode="Ignore" name="Tutors" style="justify-content: center; align-self: stretch;">
+                <ui:VisualElement name="Teachers" style="flex-grow: 1; justify-content: flex-end; margin-top: 40px;">
+                    <ui:VisualElement picking-mode="Ignore" name="Tutors" style="justify-content: center; align-self: stretch; margin-bottom: 15px;">
                         <ui:Label text="Tutores de proyecto" class="header" style="top: auto;"/>
-                        <ui:Label text="María Zapata Cáceres&#10;José San Martín López&#10; " class="text" style="top: auto; margin-left: 15px;"/>
+                        <ui:Label text="María Zapata Cáceres&#10;José San Martín López&#10; " class="text" style="top: auto;"/>
                     </ui:VisualElement>
                     <ui:VisualElement picking-mode="Ignore" name="Thanks" style="justify-content: center; align-self: stretch;">
                         <ui:Label text="Agradecimientos" class="header" style="top: auto;"/>
                         <ui:Label text="Helena Domínguez Del Triunfo&#10;Laura Fuentes Moraleda&#10;Nuria Elisa Morere Molinero" class="text" style="top: auto; margin-left: 15px;"/>
                     </ui:VisualElement>
                 </ui:VisualElement>
-                <ui:VisualElement name="3rdParty" style="flex-grow: 1; justify-content: flex-end; margin-top: 30px;">
+                <ui:VisualElement name="3rdParty" style="flex-grow: 1; justify-content: flex-end; margin-top: 40px;">
                     <ui:VisualElement picking-mode="Ignore" name="Resources" style="justify-content: center; align-self: stretch;">
                         <ui:Label text="Recursos de terceros" class="header" style="top: auto;"/>
-                        <ui:Label text="MÚSICA" class="text" style="top: auto; margin-left: 15px;"/>
-                        <ui:Label text="De la Unity Asset Store:&#10;Veridian Imposters (Veridian Systems)&#10;European Forests - Realistic Trees (Mysticforge)&#10;Rocks and Boulders 2 (Manufactura K4)&#10;Procedural Terrain Painter (Staggart Creations)&#10;Unity Terrain - HDRP Demo Scene (Unity Technologies) " class="text" style="top: auto; margin-left: 15px; margin-top: 15px;"/>
+                        <ui:VisualElement style="flex-grow: 1; margin-bottom: 15px;">
+                            <ui:Label text="Audio" class="subHeader" style="top: auto;"/>
+                            <ui:Label text="Música de Emilio Villalba" class="text" style="top: auto;"/>
+                        </ui:VisualElement>
+                        <ui:VisualElement style="flex-grow: 1;">
+                            <ui:Label text="Assets" class="subHeader" style="top: auto;"/>
+                            <ui:Label text="De la Unity Asset Store:&#10;Veridian Imposters (Veridian Systems)&#10;European Forests - Realistic Trees (Mysticforge)&#10;Rocks and Boulders 2 (Manufactura K4)&#10;Procedural Terrain Painter (Staggart Creations)&#10;Unity Terrain - HDRP Demo Scene (Unity Technologies) " class="text" style="top: auto;"/>
+                        </ui:VisualElement>
                     </ui:VisualElement>
                 </ui:VisualElement>
             </ui:ScrollView>
