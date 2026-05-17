@@ -16,6 +16,7 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     public bool IsInSettingsMenuState => _sfsm.IsCurrentState(_settingsMenuState);
     public bool IsInLoadingScreenState => _sfsm.IsCurrentState(_loadingScreenState);
     public bool EdgeScrollingValueSet => _edgeScrollingValueSet;
+    public bool POIsVisibilityValueSet => _POIsVisibilityValueSet;
     public bool ControlsVisibilityValueSet => _controlsVisibilityValueSet;
     public float MusicVolumeValueSet => _musicVolumeValueSet;
     public float SFXVolumeValueSet => _sfxVolumeValueSet;
@@ -35,6 +36,7 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
 
     [Header("Settings menu values")]
     [SerializeField] bool _edgeScrollingValueSet = true;
+    [SerializeField] bool _POIsVisibilityValueSet = true;
     [SerializeField] bool _controlsVisibilityValueSet = true;
     [SerializeField] float _musicVolumeValueSet = 1f;
     [SerializeField] float _sfxVolumeValueSet = 1f;
@@ -53,9 +55,8 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     public event Action<float> MusicVolumeChangedEvent;
     public event Action<float> SFXVolumeChangedEvent;
     public event Action<bool> ModernVisualizationToggled;
-    public event Action<bool> PointOfInterestVisualizationToggledEvent;
+    public event Action<bool> POIsVisualizationToggledEvent;
     public bool IsModernVisualizationOn { get => _aerialHUDState._modernVisualizactionSwitch.Value; }
-    public bool ArePointsOfInterestShown { get => _aerialHUDState._POIVisualizationSwitch.Value; }
 
     // Stack FSM
     StackFiniteStateMachine<AUIState> _sfsm;
@@ -153,15 +154,21 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
         ContextualPanelHiddenEvent?.Invoke();
     }
 
+    public void SetEdgeScrollingValue(bool newValue)
+    {
+        _edgeScrollingValueSet = newValue;
+        EdgeScrollingToggledEvent?.Invoke(newValue);
+    }
+
+    public void SetPOIsVisibility(bool newValue)
+    {
+        _POIsVisibilityValueSet = newValue;
+        POIsVisualizationToggledEvent?.Invoke(newValue);
+    }
+
     public void SetControlsVisibility(bool newValue)
     {
         _controlsVisibilityValueSet = newValue;
-    }
-
-    public void InvokeEdgeScrollingToggledEvent(bool newValue)
-    {
-        EdgeScrollingToggledEvent?.Invoke(newValue);
-        _edgeScrollingValueSet = newValue;
     }
 
     public void InvokeMusicVolumeChangedEvent(float newValue)
@@ -193,7 +200,6 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
             _aerialHUDState.PlayTourEvent -= OnPlayTourClicked;
             _aerialHUDState.ResetTourEvent -= OnResetTourClicked;
             _aerialHUDState._modernVisualizactionSwitch.Toggled -= OnModernVisualizationToggled;
-            _aerialHUDState._POIVisualizationSwitch.Toggled -= OnPOIVisualizationToggled;
 
             if (_tourManager != null)
             {
@@ -220,7 +226,6 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
             _aerialHUDState.PlayTourEvent += OnPlayTourClicked;
             _aerialHUDState.ResetTourEvent += OnResetTourClicked;
             _aerialHUDState._modernVisualizactionSwitch.Toggled += OnModernVisualizationToggled;
-            _aerialHUDState._POIVisualizationSwitch.Toggled += OnPOIVisualizationToggled;
             _tourManager.TourStopVisitedEvent += OnTourStopVisited;
             _cameraManager.CameraStateChangedEvent += OnCameraStateChanged;
         }
@@ -263,11 +268,6 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     void OnModernVisualizationToggled(bool value)
     {
         ModernVisualizationToggled?.Invoke(value);
-    }
-
-    void OnPOIVisualizationToggled(bool value)
-    {
-        PointOfInterestVisualizationToggledEvent?.Invoke(value);
     }
 
     void OnTourStopVisited(TourStop tourStop)

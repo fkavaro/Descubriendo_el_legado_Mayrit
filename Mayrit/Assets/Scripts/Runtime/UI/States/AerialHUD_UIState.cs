@@ -20,8 +20,7 @@ public class AerialHUD_UIState : AHUDState
         _milestoneButtons,
         _nextMilestoneButtonImage;
 
-    public Switch _modernVisualizactionSwitch,
-        _POIVisualizationSwitch;
+    public Switch _modernVisualizactionSwitch;
     #endregion
 
     #region CONSTRUCTOR
@@ -42,7 +41,6 @@ public class AerialHUD_UIState : AHUDState
         _playerFollowerRoot = GetByName<VisualElement>("PlayerFollower");
         _switches = GetByName<VisualElement>("Switches");
         _modernVisualizactionSwitch = GetSwitchAndRegisterCallback("ModernVisualizationSwitch", OnModernSuperpositionToggled, _switches);
-        _POIVisualizationSwitch = GetSwitchAndRegisterCallback("POIVisualizationSwitch", OnPOIVisualizationToggled, _switches);
         _milestoneButtons = GetByName<VisualElement>("MilestoneButtons");
         _previousMilestoneButton = GetButtonAndRegisterCallback("PreviousMilestoneButton", OnPreviousMilestoneClicked, _milestoneButtons);
         _nextMilestoneButtonImage = GetByName<VisualElement>("RightArrow", _nextMilestoneButton);
@@ -153,10 +151,6 @@ public class AerialHUD_UIState : AHUDState
 
     // TODO: move to uiManager
     void OnModernSuperpositionToggled(bool newValue)
-    {
-        _soundManager.PlayButtonClickSFX();
-    }
-    void OnPOIVisualizationToggled(bool newValue)
     {
         _soundManager.PlayButtonClickSFX();
     }

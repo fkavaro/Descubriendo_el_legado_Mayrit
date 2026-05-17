@@ -8,6 +8,7 @@ public class SettingsMenu_UIState : AUIState
     Button _closeButton,
         _resetTutorialButton;
     Switch _edgeScrollingSwitch,
+    _showPOIsSwitch,
         _showControlsSwitch;
     Slider _musicVolumeSlider,
         _sfxVolumeSlider;
@@ -25,6 +26,7 @@ public class SettingsMenu_UIState : AUIState
     {
         _closeButton = GetButtonAndRegisterCallback("CloseButton", OnCloseClicked);
         _edgeScrollingSwitch = GetSwitchAndRegisterCallback("EdgeScrollingSwitch", OnEdgeScrollingToggled);
+        _showPOIsSwitch = GetSwitchAndRegisterCallback("ShowPOIsSwitch", OnShowPOIsToggled);
         _showControlsSwitch = GetSwitchAndRegisterCallback("ShowControlsSwitch", OnShowControlsToggled);
         _musicVolumeSlider = GetSliderAndRegisterCallback("MusicVolumeSlider", OnMusicVolumeChanged);
         _sfxVolumeSlider = GetSliderAndRegisterCallback("SFXVolumeSlider", OnSFXVolumeChanged);
@@ -58,7 +60,13 @@ public class SettingsMenu_UIState : AUIState
 
     void OnEdgeScrollingToggled(bool newValue)
     {
-        _uiManager.InvokeEdgeScrollingToggledEvent(newValue);
+        _uiManager.SetEdgeScrollingValue(newValue);
+        _soundManager.PlayButtonClickSFX();
+    }
+
+    void OnShowPOIsToggled(bool newValue)
+    {
+        _uiManager.SetPOIsVisibility(newValue);
         _soundManager.PlayButtonClickSFX();
     }
 

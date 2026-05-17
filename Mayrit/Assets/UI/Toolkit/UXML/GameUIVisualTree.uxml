@@ -112,7 +112,6 @@
                     <ui:VisualElement name="TutorialSwitches" style="flex-grow: 1;">
                         <ui:VisualElement name="Switches" style="flex-grow: 1; align-self: flex-start; justify-content: center; align-items: flex-start; display: flex; padding-top: 15px; padding-right: 15px; padding-bottom: 15px; padding-left: 15px;">
                             <ui:VisualElement name="BlurBg" class="smallButtonBlurBg"/>
-                            <Switch text="Puntos de Interés" name="POIVisualizationSwitch" value="true"/>
                             <Switch text="Edificios modernos" value="false" name="ModernVisualizationSwitch"/>
                         </ui:VisualElement>
                     </ui:VisualElement>
@@ -545,25 +544,26 @@
             </ui:VisualElement>
             <ui:VisualElement name="ControlsSettings" class="section" style="align-self: stretch;">
                 <ui:VisualElement name="Title">
-                    <ui:Label text="Control" class="header" style="-unity-text-align: upper-center;"/>
+                    <ui:Label text="Juego" class="header" style="-unity-text-align: upper-center; margin-bottom: 10px;"/>
                 </ui:VisualElement>
                 <ui:VisualElement style="align-self: stretch; justify-content: space-between; align-items: stretch; flex-shrink: 1; flex-grow: 1; align-content: center;">
                     <Switch text="Movimiento por borde de pantalla" name="EdgeScrollingSwitch" value="true" style="margin-bottom: 15px;"/>
-                    <Switch text="Mostrar controles en el juego" name="ShowControlsSwitch" value="true"/>
+                    <Switch text="Mostrar Puntos de Interés" name="ShowPOIsSwitch" value="true" style="margin-bottom: 15px;"/>
+                    <Switch text="Mostrar controles" name="ShowControlsSwitch" value="true"/>
                 </ui:VisualElement>
             </ui:VisualElement>
             <ui:VisualElement name="AudioSettings" class="section" style="align-self: stretch;">
                 <ui:VisualElement name="Title">
-                    <ui:Label text="Audio" class="header" style="-unity-text-align: upper-center;"/>
+                    <ui:Label text="Audio" class="header" style="-unity-text-align: upper-center; margin-bottom: 10px;"/>
                 </ui:VisualElement>
                 <ui:VisualElement style="flex-grow: 1; justify-content: center; flex-shrink: 1; align-self: stretch;">
-                    <ui:Slider label="Música" value="42" high-value="1" name="MusicVolumeSlider" fill="true" focusable="false" style="margin-bottom: 15px;"/>
-                    <ui:Slider label="Efectos" value="42" name="SFXVolumeSlider" high-value="1" fill="true" focusable="false"/>
+                    <ui:Slider label="Música" value="42" high-value="1" name="MusicVolumeSlider" fill="true" focusable="false" style="margin-bottom: 15px; margin-top: 5px; margin-left: 5px; margin-right: 5px;"/>
+                    <ui:Slider label="Efectos" value="42" name="SFXVolumeSlider" high-value="1" fill="true" focusable="false" style="margin-left: 5px; margin-top: 5px; margin-right: 1px;"/>
                 </ui:VisualElement>
             </ui:VisualElement>
             <ui:VisualElement name="TutorialSettings" style="flex-direction: row;">
                 <ui:Button text="Reiniciar tutorial" name="ResetTutorialButton" class="button mediumButton" style="align-self: flex-start;"/>
-                <ui:Label text="Lo haría al cambiar de hito." name="TutorialResetInfo" class="text" style="flex-shrink: 1; flex-grow: 1; align-self: center; display: flex; margin-left: 10px;"/>
+                <ui:Label text="Se reiniciaría al cambiar de hito." name="TutorialResetInfo" class="text" style="align-self: center; display: flex; margin-left: 10px; flex-shrink: 1;"/>
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

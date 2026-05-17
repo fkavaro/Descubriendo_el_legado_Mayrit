@@ -70,7 +70,7 @@ public class PointOfInterest : Billboard
         _tutorialManager = ServiceLocator.Instance.Get<TutorialManager>();
 
         _cameraManager.CameraStateChangedEvent += OnCameraStateChanged;
-        _uiManager.PointOfInterestVisualizationToggledEvent += OnVisualizationToggled;
+        _uiManager.POIsVisualizationToggledEvent += OnVisualizationToggled;
         _tutorialManager.ShowPointsOfInterestEvent += OnShowInTutorialEvent;
         _tutorialManager.TutorialCompletedEvent += OnTutorialCompleted;
 
@@ -97,7 +97,7 @@ public class PointOfInterest : Billboard
     {
         _nameButton?.UnregisterCallback<ClickEvent>(OnClicked);
         if (_cameraManager != null) _cameraManager.CameraStateChangedEvent -= OnCameraStateChanged;
-        if (_uiManager != null) _uiManager.PointOfInterestVisualizationToggledEvent -= OnVisualizationToggled;
+        if (_uiManager != null) _uiManager.POIsVisualizationToggledEvent -= OnVisualizationToggled;
         if (_tutorialManager != null)
         {
             _tutorialManager.ShowPointsOfInterestEvent -= OnShowInTutorialEvent;
@@ -142,7 +142,7 @@ public class PointOfInterest : Billboard
 
             bool resolvedValue = value
                 && (!IsBlocked || IsSetAsShown)
-                && _uiManager.ArePointsOfInterestShown
+                && _uiManager.POIsVisibilityValueSet
                 && _cameraManager.IsInAerialState
                 && _shownDueToTutorial;
 
