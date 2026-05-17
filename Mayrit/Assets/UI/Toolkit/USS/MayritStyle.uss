@@ -413,16 +413,8 @@ Switch Label {
 }
 
 .switch-border {
-    width: 40px;
+    width: 50px;
     height: 30px;
-    border-top-width: 0;
-    border-right-width: 7px;
-    border-bottom-width: 0;
-    border-left-width: 0;
-    border-left-color: rgb(49, 56, 87);
-    border-right-color: rgb(49, 56, 87);
-    border-top-color: rgb(49, 56, 87);
-    border-bottom-color: rgb(49, 56, 87);
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
     border-bottom-right-radius: 15px;
@@ -430,44 +422,29 @@ Switch Label {
     justify-content: center;
     align-self: center;
     -unity-text-align: upper-center;
+    background-color: rgb(34, 34, 34);
 }
 
 .switch-border:hover {
-    border-left-color: rgb(220, 220, 220);
-    border-right-color: rgb(220, 220, 220);
-    border-top-color: rgb(220, 220, 220);
-    border-bottom-color: rgb(220, 220, 220);
     justify-content: center;
     align-self: center;
     transition-duration: 0.2s;
-    border-right-width: 4px;
-    scale: 1.1 1.1;
+    background-color: rgb(60, 60, 60);
 }
 
 .switch-border_on {
-    border-left-color: rgb(76, 87, 142);
-    border-right-color: rgb(76, 87, 142);
-    border-top-color: rgb(76, 87, 142);
-    border-bottom-color: rgb(76, 87, 142);
-    border-left-width: 7px;
-    border-right-width: 0;
+    background-color: rgb(37, 41, 58);
 }
 
 .switch-border_on:hover {
     transition-duration: 0.2s;
-    border-left-color: rgb(128, 128, 128);
-    border-right-color: rgb(128, 128, 128);
-    border-top-color: rgb(128, 128, 128);
-    border-bottom-color: rgb(128, 128, 128);
-    border-left-width: 4px;
-    border-right-width: 0;
-    scale: 1.1 1.1;
+    background-color: rgb(64, 73, 118);
 }
 
 .switch-knob {
     width: 20px;
     height: 20px;
-    background-color: rgb(169, 169, 169);
+    background-color: rgb(105, 105, 105);
     margin-top: 4px;
     margin-right: 4px;
     margin-bottom: 4px;
@@ -478,29 +455,24 @@ Switch Label {
     border-bottom-left-radius: 20px;
     transition-duration: 0.2s;
     left: 0;
-    border-top-width: 3px;
-    border-right-width: 3px;
-    border-bottom-width: 3px;
-    border-left-width: 3px;
-    border-left-color: rgb(77, 77, 77);
-    border-right-color: rgb(77, 77, 77);
-    border-top-color: rgb(77, 77, 77);
-    border-bottom-color: rgb(77, 77, 77);
+    border-left-width: 5px;
+    border-left-color: rgb(220, 220, 220);
+    border-right-color: rgb(220, 220, 220);
+    border-top-color: rgb(220, 220, 220);
+    border-bottom-color: rgb(220, 220, 220);
 }
 
 .switch-knob_on {
-    background-color: rgb(229, 229, 229);
+    background-color: rgb(245, 245, 245);
     transition-duration: 0.2s;
     right: 0;
     align-self: flex-end;
-    border-left-color: rgb(169, 169, 169);
-    border-right-color: rgb(169, 169, 169);
-    border-top-color: rgb(169, 169, 169);
-    border-bottom-color: rgb(169, 169, 169);
-    border-top-width: 5px;
+    border-left-color: rgb(105, 105, 105);
+    border-right-color: rgb(105, 105, 105);
+    border-top-color: rgb(105, 105, 105);
+    border-bottom-color: rgb(105, 105, 105);
+    border-left-width: 0;
     border-right-width: 5px;
-    border-bottom-width: 5px;
-    border-left-width: 5px;
 }
 
 .playerButton {
