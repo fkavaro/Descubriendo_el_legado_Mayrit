@@ -558,7 +558,7 @@
                 </ui:VisualElement>
                 <ui:VisualElement style="flex-grow: 1; justify-content: center; flex-shrink: 1; align-self: stretch;">
                     <ui:Slider label="Música" value="42" high-value="1" name="MusicVolumeSlider" fill="true" focusable="false" style="margin-bottom: 15px; margin-top: 5px; margin-left: 5px; margin-right: 5px;"/>
-                    <ui:Slider label="Efectos" value="42" name="SFXVolumeSlider" high-value="1" fill="true" focusable="false" style="margin-left: 5px; margin-top: 5px; margin-right: 1px;"/>
+                    <ui:Slider label="Efectos" value="42" name="SFXVolumeSlider" high-value="1" fill="true" focusable="false" style="margin-left: 5px; margin-top: 5px; margin-right: 5px;"/>
                 </ui:VisualElement>
             </ui:VisualElement>
             <ui:VisualElement name="TutorialSettings" style="flex-direction: row;">
