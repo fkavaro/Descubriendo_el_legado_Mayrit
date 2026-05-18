@@ -44,6 +44,10 @@ where NPCtype : INPC
 
         // Continue timing
         _npc.ConversationDuration = StrategyRemainingTime;
+
+        if (!_npc.AnimationController.IsIdling())
+            _npc.AnimationController.ChangeToIdle();
+
         return base.Update();
     }
 

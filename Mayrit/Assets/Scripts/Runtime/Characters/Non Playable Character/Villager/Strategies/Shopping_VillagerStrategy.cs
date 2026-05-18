@@ -47,6 +47,9 @@ public class Shopping_VillagerStrategy : ATimedNPCStrategy<Villager>
             return Node.Status.Failure;
         }
 
+        if (!_npc.AnimationController.IsIdling())
+            _npc.AnimationController.ChangeToIdle();
+
         return base.Update();
     }
 
