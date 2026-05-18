@@ -590,11 +590,11 @@
                         </ui:VisualElement>
                     </ui:ScrollView>
                 </ui:VisualElement>
-                <ui:VisualElement name="Down" style="justify-content: flex-end; align-self: stretch; height: 120px; margin-left: 20px; margin-right: 20px;">
+                <ui:VisualElement name="Down" style="justify-content: flex-end; align-self: stretch; height: 120px;">
                     <ui:VisualElement name="LoadingAnimation" style="position: absolute; justify-content: center; align-self: center; bottom: 15px;">
                         <ui:Label text="Cargando..." name="LoadingLabel" class="text" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; display: flex;"/>
                     </ui:VisualElement>
-                    <ui:Button text="Continuar" name="ContinueButton" class="button mediumButton highlighted" style="display: flex;"/>
+                    <ui:Button text="Continuar" name="ContinueButton" class="button mediumButton highlighted" style="display: flex; width: 100%; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; position: relative;"/>
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
@@ -632,7 +632,7 @@
                         <ui:Label text="Diseño de nivel" class="header" style="top: auto;"/>
                         <ui:Label text="Álvaro Moreno García" class="text" style="top: auto;"/>
                     </ui:VisualElement>
-                    <ui:VisualElement picking-mode="Ignore" name="2dDesign" style="justify-content: center; align-self: stretch; margin-bottom: 15px;">
+                    <ui:VisualElement picking-mode="Ignore" name="2dDesign" style="justify-content: center; align-self: stretch; margin-bottom: 15px; display: none;">
                         <ui:Label text="Diseño gráfico" class="header" style="top: auto;"/>
                         <ui:Label text="Álvaro Moreno García" class="text" style="top: auto;"/>
                     </ui:VisualElement>
@@ -656,7 +656,7 @@
                         <ui:Label text="Recursos de terceros" class="header" style="top: auto;"/>
                         <ui:VisualElement style="flex-grow: 1; margin-bottom: 15px;">
                             <ui:Label text="Audio" class="subHeader" style="top: auto;"/>
-                            <ui:Label text="XXXXXX" class="text" style="top: auto;"/>
+                            <ui:Label text="Música de djovan (Pixabay)" class="text" style="top: auto;"/>
                         </ui:VisualElement>
                         <ui:VisualElement style="flex-grow: 1;">
                             <ui:Label text="Assets" class="subHeader" style="top: auto;"/>

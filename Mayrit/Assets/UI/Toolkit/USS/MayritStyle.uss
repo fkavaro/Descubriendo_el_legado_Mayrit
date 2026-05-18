@@ -148,6 +148,7 @@
     border-bottom-color: rgb(105, 105, 105);
     -unity-font-style: normal;
     border-bottom-width: 6px;
+    background-color: rgba(24, 24, 24, 0.39);
 }
 
 .tourStopItem {
@@ -220,6 +221,7 @@
     border-right-color: rgb(76, 87, 142);
     border-top-color: rgb(76, 87, 142);
     border-bottom-color: rgb(76, 87, 142);
+    background-color: rgba(49, 56, 87, 0.39);
 }
 
 .button.mediumButton {
@@ -256,6 +258,7 @@
     border-right-color: rgb(154, 86, 85);
     border-top-color: rgb(154, 86, 85);
     border-bottom-color: rgb(154, 86, 85);
+    background-color: rgba(72, 36, 36, 0.39);
 }
 
 .clickableArea {
@@ -413,38 +416,58 @@ Switch Label {
 }
 
 .switch-border {
-    width: 50px;
-    height: 30px;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
-    border-bottom-right-radius: 15px;
-    border-bottom-left-radius: 15px;
+    width: 56px;
+    height: 36px;
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+    border-bottom-right-radius: 18px;
+    border-bottom-left-radius: 18px;
     justify-content: center;
     align-self: center;
     -unity-text-align: upper-center;
-    background-color: rgb(34, 34, 34);
+    background-color: rgb(24, 24, 24);
+    border-top-width: 3px;
+    border-right-width: 3px;
+    border-bottom-width: 3px;
+    border-left-width: 3px;
+    border-left-color: rgb(55, 55, 55);
+    border-right-color: rgb(55, 55, 55);
+    border-top-color: rgb(55, 55, 55);
+    border-bottom-color: rgb(55, 55, 55);
 }
 
 .switch-border:hover {
     justify-content: center;
     align-self: center;
     transition-duration: 0.2s;
-    background-color: rgb(60, 60, 60);
+    border-left-color: rgb(60, 60, 60);
+    border-right-color: rgb(60, 60, 60);
+    border-top-color: rgb(60, 60, 60);
+    border-bottom-color: rgb(60, 60, 60);
+    background-color: rgb(34, 34, 34);
 }
 
 .switch-border_on {
     background-color: rgb(37, 41, 58);
+    border-left-color: rgb(64, 73, 118);
+    border-right-color: rgb(64, 73, 118);
+    border-top-color: rgb(64, 73, 118);
+    border-bottom-color: rgb(64, 73, 118);
 }
 
 .switch-border_on:hover {
     transition-duration: 0.2s;
-    background-color: rgb(64, 73, 118);
+    border-left-color: rgb(76, 87, 142);
+    border-right-color: rgb(76, 87, 142);
+    border-top-color: rgb(76, 87, 142);
+    border-bottom-color: rgb(76, 87, 142);
+    background-color: rgb(49, 56, 87);
 }
 
 .switch-knob {
     width: 20px;
     height: 20px;
-    background-color: rgb(24, 24, 24);
+    background-color: rgb(60, 60, 60);
     margin-top: 4px;
     margin-right: 4px;
     margin-bottom: 4px;
@@ -456,23 +479,17 @@ Switch Label {
     transition-duration: 0.2s;
     left: 0;
     border-left-width: 5px;
-    border-left-color: rgb(220, 220, 220);
-    border-right-color: rgb(220, 220, 220);
-    border-top-color: rgb(220, 220, 220);
-    border-bottom-color: rgb(220, 220, 220);
+    border-left-color: rgb(128, 128, 128);
+    border-right-color: rgb(128, 128, 128);
+    border-top-color: rgb(128, 128, 128);
+    border-bottom-color: rgb(128, 128, 128);
 }
 
 .switch-knob_on {
     background-color: rgb(245, 245, 245);
     transition-duration: 0.2s;
     right: 0;
-    align-self: flex-end;
-    border-left-color: rgb(105, 105, 105);
-    border-right-color: rgb(105, 105, 105);
-    border-top-color: rgb(105, 105, 105);
-    border-bottom-color: rgb(105, 105, 105);
-    border-left-width: 0;
-    border-right-width: 5px;
+    translate: 22px 0;
 }
 
 .playerButton {
@@ -621,7 +638,7 @@ Switch Label {
 }
 
 .unity-base-slider__fill {
-    background-color: rgb(49, 56, 87);
+    background-color: rgb(64, 73, 118);
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
@@ -654,7 +671,7 @@ Switch Label {
 }
 
 #unity-drag-container:hover {
-    background-color: rgb(34, 34, 34);
+    background-color: rgb(37, 41, 58);
 }
 
 #unity-tracker {
@@ -689,22 +706,22 @@ Switch Label {
     height: 20px;
     align-self: center;
     margin-top: 5px;
-    margin-right: 0;
+    margin-right: 5px;
     margin-bottom: 0;
-    margin-left: 0;
+    margin-left: 5px;
     padding-top: 0;
     padding-right: 0;
     padding-bottom: 0;
     padding-left: 0;
-    border-top-width: 3px;
-    border-right-width: 3px;
-    border-bottom-width: 3px;
-    border-left-width: 3px;
-    background-color: rgb(105, 105, 105);
-    border-left-color: rgb(169, 169, 169);
-    border-right-color: rgb(169, 169, 169);
-    border-top-color: rgb(169, 169, 169);
-    border-bottom-color: rgb(169, 169, 169);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 5px;
+    background-color: rgb(245, 245, 245);
+    border-left-color: rgb(128, 128, 128);
+    border-right-color: rgb(128, 128, 128);
+    border-top-color: rgb(128, 128, 128);
+    border-bottom-color: rgb(128, 128, 128);
     transition-duration: 0.2s;
     position: absolute;
     top: 0;
@@ -715,7 +732,6 @@ Switch Label {
 }
 
 #unity-dragger:hover {
-    background-color: rgb(255, 255, 255);
     overflow: visible;
 }
 
@@ -734,11 +750,11 @@ Switch Label {
 }
 
 .unity-scroller #unity-dragger {
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-    border-bottom-left-radius: 10px;
-    width: 20px;
+    border-top-left-radius: 9px;
+    border-top-right-radius: 9px;
+    border-bottom-right-radius: 9px;
+    border-bottom-left-radius: 9px;
+    width: 17px;
     height: auto;
     margin-top: 0;
     margin-right: 0;
@@ -752,38 +768,20 @@ Switch Label {
     border-right-width: 3px;
     border-bottom-width: 3px;
     border-left-width: 3px;
-    border-left-color: rgb(34, 34, 34);
-    border-right-color: rgb(34, 34, 34);
-    border-top-color: rgb(34, 34, 34);
-    border-bottom-color: rgb(34, 34, 34);
+    border-left-color: rgb(51, 51, 51);
+    border-right-color: rgb(51, 51, 51);
+    border-top-color: rgb(51, 51, 51);
+    border-bottom-color: rgb(51, 51, 51);
     transition-duration: 0.2s;
-    background-color: rgb(60, 60, 60);
+    background-color: rgb(105, 105, 105);
 }
 
 .unity-scroller #unity-dragger:hover {
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-    border-bottom-left-radius: 10px;
-    width: 20px;
-    height: auto;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 0;
-    padding-top: 0;
-    padding-right: 0;
-    padding-bottom: 0;
-    padding-left: 0;
-    border-top-width: 3px;
-    border-right-width: 3px;
-    border-bottom-width: 3px;
-    border-left-width: 3px;
-    border-left-color: rgb(60, 60, 60);
-    border-right-color: rgb(60, 60, 60);
-    border-top-color: rgb(60, 60, 60);
-    border-bottom-color: rgb(60, 60, 60);
-    background-color: rgb(105, 105, 105);
+    border-left-color: rgb(102, 102, 102);
+    border-right-color: rgb(102, 102, 102);
+    border-top-color: rgb(102, 102, 102);
+    border-bottom-color: rgb(102, 102, 102);
+    background-color: rgb(169, 169, 169);
 }
 
 .unity-scroller #unity-drag-container {
