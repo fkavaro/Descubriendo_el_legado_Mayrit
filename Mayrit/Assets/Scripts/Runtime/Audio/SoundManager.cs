@@ -60,7 +60,7 @@ public class SoundManager : ABehaviourEntity<FiniteStateMachine<AMusicState>>
         _mainMenuState.AwakeState();
         _gamePlayState.AwakeState();
 
-        _fsm.SetInitialState(_mainMenuState);
+        _fsm.SetInitialState(_gamePlayState);
 
         return _fsm;
     }
@@ -175,7 +175,7 @@ public class SoundManager : ABehaviourEntity<FiniteStateMachine<AMusicState>>
         if (loadedScene == SceneDatabase.SceneName.MainMenuScene)
         {
             _audioListener.enabled = true;
-            _fsm.SwitchState(_mainMenuState);
+            // _fsm.SwitchState(_mainMenuState);
         }
         else if (loadedScene == SceneDatabase.SceneName.GameplayScene)
             _audioListener.enabled = false;
@@ -183,8 +183,8 @@ public class SoundManager : ABehaviourEntity<FiniteStateMachine<AMusicState>>
 
     void OnScenesLoadedFully(Dictionary<SceneDatabase.SceneType, SceneDatabase.SceneName> loadedScenes, List<SceneDatabase.SceneType> unloadedTypes)
     {
-        if (loadedScenes.ContainsValue(SceneDatabase.SceneName.GameplayScene))
-            _fsm.SwitchState(_gamePlayState);
+        // if (loadedScenes.ContainsValue(SceneDatabase.SceneName.GameplayScene))
+        //     _fsm.SwitchState(_gamePlayState);
     }
     #endregion
 }
