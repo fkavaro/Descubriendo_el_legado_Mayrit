@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 908590970938235604}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
@@ -81,11 +81,11 @@ LODGroup:
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.06
+  - screenRelativeHeight: 0.052624088
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 7730407969058334565}
-  - screenRelativeHeight: 0.012
+  - screenRelativeHeight: 0.008998734
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 7196517530126959602}
@@ -169,7 +169,7 @@ Transform:
   m_GameObject: {fileID: 8017565445608905479}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 8, z: 0}
+  m_LocalPosition: {x: 0, y: 8, z: 0.06}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -387,7 +387,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 5248
+  m_VersionIndex: 5278
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []

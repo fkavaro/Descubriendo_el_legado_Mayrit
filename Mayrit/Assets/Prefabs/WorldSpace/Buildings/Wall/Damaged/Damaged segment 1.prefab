@@ -457,7 +457,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 3257
+  m_VersionIndex: 3266
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -613,11 +613,11 @@ LODGroup:
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.055242095
+  - screenRelativeHeight: 0.038842056
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 2342783812216335814}
-  - screenRelativeHeight: 0.0032533077
+  - screenRelativeHeight: 0.0064753606
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 90738981975584099}

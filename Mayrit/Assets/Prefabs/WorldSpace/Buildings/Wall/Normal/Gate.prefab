@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 908590970938235604}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
@@ -182,11 +182,11 @@ LODGroup:
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.05
+  - screenRelativeHeight: 0.048253097
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 2870974180527812038}
-  - screenRelativeHeight: 0.01
+  - screenRelativeHeight: 0.008251294
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 2756692582216500650}
@@ -2672,7 +2672,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 5820
+  m_VersionIndex: 5844
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
