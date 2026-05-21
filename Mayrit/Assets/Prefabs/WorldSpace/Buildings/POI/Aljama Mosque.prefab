@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &216525765105639600
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6514978032967869682}
+  m_Layer: 0
+  m_Name: POI Target
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6514978032967869682
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 216525765105639600}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1, y: 20, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 1482190129828467039}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1036659208089814625
 GameObject:
   m_ObjectHideFlags: 0
@@ -2569,8 +2600,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 6550683349703535610}
   - {fileID: 417156020235030714}
+  - {fileID: 6514978032967869682}
+  - {fileID: 6550683349703535610}
   - {fileID: 128149345391807958}
   - {fileID: 3484090949802422270}
   m_Father: {fileID: 0}
@@ -2710,12 +2742,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4002786552147983938, guid: 20122a36d24c42945ad2861e326b4edc, type: 3}
       propertyPath: m_Name
-      value: Landmark Visual
+      value: Point of interest
       objectReference: {fileID: 0}
     - target: {fileID: 5961391977125746939, guid: 20122a36d24c42945ad2861e326b4edc, type: 3}
       propertyPath: _information
       value: 
       objectReference: {fileID: 11400000, guid: 161bff25305ffa946b56fcfaa7b5915a, type: 2}
+    - target: {fileID: 5961391977125746939, guid: 20122a36d24c42945ad2861e326b4edc, type: 3}
+      propertyPath: _orbitalStateSetting.Target
+      value: 
+      objectReference: {fileID: 6514978032967869682}
     - target: {fileID: 5961391977125746939, guid: 20122a36d24c42945ad2861e326b4edc, type: 3}
       propertyPath: _orbitalCameraValues.DataToShow
       value: 

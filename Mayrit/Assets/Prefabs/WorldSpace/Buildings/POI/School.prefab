@@ -3580,6 +3580,10 @@ PrefabInstance:
       value: Point of interest
       objectReference: {fileID: 0}
     - target: {fileID: 5961391977125746939, guid: 20122a36d24c42945ad2861e326b4edc, type: 3}
+      propertyPath: _orbitalStateSetting.Target
+      value: 
+      objectReference: {fileID: 5212560165625060387}
+    - target: {fileID: 5961391977125746939, guid: 20122a36d24c42945ad2861e326b4edc, type: 3}
       propertyPath: _orbitalCameraValues.DataToShow
       value: 
       objectReference: {fileID: 11400000, guid: e1f9868b623061a45a060a253ed8667b, type: 2}
