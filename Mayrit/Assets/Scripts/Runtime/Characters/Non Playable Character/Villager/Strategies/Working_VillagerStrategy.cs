@@ -40,7 +40,7 @@ public class Working_VillagerStrategy : ATimedNPCStrategy<Villager>
 
     public override Node.Status Update()
     {
-        if (!_npc.AnimationController.IsIdling())
+        if (!_npc.AnimationController.IsIdling)
             _npc.AnimationController.ChangeToIdle();
 
         // If waiting for client spot to clear

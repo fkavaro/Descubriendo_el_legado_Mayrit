@@ -15,10 +15,6 @@ public class CharacterAnimationController
     readonly int _idleAnim = Animator.StringToHash("Idle")
         , _walkAnim = Animator.StringToHash("Walk")
         , _runAnim = Animator.StringToHash("Run")
-        , _preJumpAnim = Animator.StringToHash("PreJump")
-        , _jumpAnim = Animator.StringToHash("Jump")
-        , _afterJumpAnim = Animator.StringToHash("AfterJump")
-        , _talkAnim = Animator.StringToHash("Talk") // TODO: actual talk animation
         ;
 
     int _lastAnimation, _currentAnimation;
@@ -188,109 +184,22 @@ public class CharacterAnimationController
     #endregion
 
     #region HELPER PUBLIC METHODS
-    public void ChangeToIdle()
-    {
-        ChangeAnimationTo(_idleAnim);
-    }
+    public void ChangeToIdle() => ChangeAnimationTo(_idleAnim);
 
-    public void ChangeToWalk()
-    {
-        ChangeAnimationTo(_walkAnim);
-    }
+    public void ChangeToWalk() => ChangeAnimationTo(_walkAnim);
 
-    public void ChangeToRun()
-    {
-        ChangeAnimationTo(_runAnim);
-    }
-
-    public void ChangeToPreJump()
-    {
-        ChangeAnimationTo(_preJumpAnim);
-    }
-
-    public void ChangeToJump()
-    {
-        ChangeAnimationTo(_jumpAnim);
-    }
-
-    public void ChangeToAfterJump()
-    {
-        ChangeAnimationTo(_afterJumpAnim);
-    }
-
-    public void ChangeToTalk()
-    {
-        ChangeAnimationTo(_talkAnim);
-    }
+    public void ChangeToRun() => ChangeAnimationTo(_runAnim);
     //|||||||||||||||||||||||||||||||||||||||||
-    public bool IsIdleAnimationFinished()
-    {
-        return IsAnimationFinished(_idleAnim);
-    }
+    public bool IsIdleAnimationFinished => IsAnimationFinished(_idleAnim);
 
-    public bool IsWalkAnimationFinished()
-    {
-        return IsAnimationFinished(_walkAnim);
-    }
+    public bool IsWalkAnimationFinished => IsAnimationFinished(_walkAnim);
 
-    public bool IsRunAnimationFinished()
-    {
-        return IsAnimationFinished(_runAnim);
-    }
-
-    public bool IsPreJumpAnimationFinished()
-    {
-        return IsAnimationFinished(_preJumpAnim);
-    }
-
-    public bool IsJumpAnimationFinished()
-    {
-        return IsAnimationFinished(_jumpAnim);
-    }
-
-    public bool IsAfterJumpAnimationFinished()
-    {
-        return IsAnimationFinished(_afterJumpAnim);
-    }
-
-    public bool IsTalkAnimationFinished()
-    {
-        return IsAnimationFinished(_idleAnim); // TODO: talk animation
-    }
+    public bool IsRunAnimationFinished => IsAnimationFinished(_runAnim);
     //|||||||||||||||||||||||||||||||||||||||||
-    public bool IsIdling()
-    {
-        return IsCurrentAnimation(_idleAnim);
-    }
+    public bool IsIdling => IsCurrentAnimation(_idleAnim);
 
-    public bool IsWalking()
-    {
-        return IsCurrentAnimation(_walkAnim);
-    }
+    public bool IsWalking => IsCurrentAnimation(_walkAnim);
 
-    public bool IsRunning()
-    {
-        return IsCurrentAnimation(_runAnim);
-    }
-
-    public bool IsPreJumping()
-    {
-        return IsCurrentAnimation(_preJumpAnim);
-    }
-
-    public bool IsJumping()
-    {
-        return IsCurrentAnimation(_jumpAnim);
-    }
-
-    public bool IsAfterJumping()
-    {
-        return IsCurrentAnimation(_afterJumpAnim);
-    }
-
-    public bool IsTalking()
-    {
-        return IsCurrentAnimation(_talkAnim);
-    }
+    public bool IsRunning => IsCurrentAnimation(_runAnim);
     #endregion
 }

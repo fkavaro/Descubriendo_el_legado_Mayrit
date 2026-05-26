@@ -57,7 +57,7 @@ where NPCtype : INPC
 
         _npc.ConversationDuration = _otherNPC.ConversationDuration;
 
-        if (!_npc.AnimationController.IsIdling())
+        if (!_npc.AnimationController.IsIdling)
             _npc.AnimationController.ChangeToIdle();
 
         return Node.Status.Running;

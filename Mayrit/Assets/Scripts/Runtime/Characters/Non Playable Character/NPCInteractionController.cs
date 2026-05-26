@@ -187,7 +187,7 @@ public class NPCInteractionController
     {
         _wasStoppedBeforeTalking = _npc.MovementController.IsAgentStopped;
         _npc.MovementController.IsAgentStopped = true;
-        _npc.AnimationController.ChangeToTalk();
+        _npc.AnimationController.ChangeToIdle();
     }
     #endregion
 
