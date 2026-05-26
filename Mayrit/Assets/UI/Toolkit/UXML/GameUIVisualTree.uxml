@@ -647,8 +647,8 @@
                         <ui:Label text="María Zapata Cáceres&#10;José San Martín López&#10; " class="text" style="top: auto;"/>
                     </ui:VisualElement>
                     <ui:VisualElement picking-mode="Ignore" name="Thanks" style="justify-content: center; align-self: stretch;">
-                        <ui:Label text="Agradecimientos" class="header" style="top: auto;"/>
-                        <ui:Label text="Helena Domínguez Del Triunfo&#10;Laura Fuentes Moraleda&#10;Nuria Elisa Morere Molinero" class="text" style="top: auto; margin-left: 15px;"/>
+                        <ui:Label text="Asesoría histórica" class="header" style="top: auto;"/>
+                        <ui:Label text="Nuria Elisa Morere Molinero&#10;Helena Domínguez Del Triunfo" class="text" style="top: auto; margin-left: 15px;"/>
                     </ui:VisualElement>
                 </ui:VisualElement>
                 <ui:VisualElement name="3rdParty" style="flex-grow: 1; justify-content: flex-end; margin-top: 40px;">
@@ -656,7 +656,7 @@
                         <ui:Label text="Recursos de terceros" class="header" style="top: auto;"/>
                         <ui:VisualElement style="flex-grow: 1; margin-bottom: 15px;">
                             <ui:Label text="Audio" class="subHeader" style="top: auto;"/>
-                            <ui:Label text="Música de djovan (Pixabay)" class="text" style="top: auto;"/>
+                            <ui:Label text="De Pixabay.com:&#10;Música de djovan" class="text" style="top: auto;"/>
                         </ui:VisualElement>
                         <ui:VisualElement style="flex-grow: 1;">
                             <ui:Label text="Assets" class="subHeader" style="top: auto;"/>
