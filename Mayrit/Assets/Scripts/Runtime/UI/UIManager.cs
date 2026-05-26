@@ -18,6 +18,7 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     public bool EdgeScrollingValueSet => _edgeScrollingValueSet;
     public bool POIsVisibilityValueSet => _POIsVisibilityValueSet;
     public bool ControlsVisibilityValueSet => _controlsVisibilityValueSet;
+    public bool ModernVisualizationValueSet => _modernVisualizationValueSet;
     public float MusicVolumeValueSet => _musicVolumeValueSet;
     public float SFXVolumeValueSet => _sfxVolumeValueSet;
     public bool IsCursorOverUI => BehaviourSystem.CurrentState.IsCursorOverUI();
@@ -38,6 +39,7 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     [SerializeField] bool _edgeScrollingValueSet = true;
     [SerializeField] bool _POIsVisibilityValueSet = true;
     [SerializeField] bool _controlsVisibilityValueSet = true;
+    [SerializeField] bool _modernVisualizationValueSet = false;
     [SerializeField] float _musicVolumeValueSet = 1f;
     [SerializeField] float _sfxVolumeValueSet = 1f;
     #endregion
@@ -56,7 +58,6 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     public event Action<float> SFXVolumeChangedEvent;
     public event Action<bool> ModernVisualizationToggled;
     public event Action<bool> POIsVisualizationToggledEvent;
-    public bool IsModernVisualizationOn { get => _aerialHUDState._modernVisualizactionSwitch.Value; }
 
     // Stack FSM
     StackFiniteStateMachine<AUIState> _sfsm;
@@ -169,6 +170,12 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     public void SetControlsVisibility(bool newValue)
     {
         _controlsVisibilityValueSet = newValue;
+    }
+
+    public void SetModernVisualizationValue(bool newValue)
+    {
+        _modernVisualizationValueSet = newValue;
+        ModernVisualizationToggled?.Invoke(newValue);
     }
 
     public void InvokeMusicVolumeChangedEvent(float newValue)

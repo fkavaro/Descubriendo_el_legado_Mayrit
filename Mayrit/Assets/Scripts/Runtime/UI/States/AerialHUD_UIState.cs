@@ -149,9 +149,9 @@ public class AerialHUD_UIState : AHUDState
         _soundManager.PlayButtonClickSFX();
     }
 
-    // TODO: move to uiManager
     void OnModernSuperpositionToggled(bool newValue)
     {
+        _uiManager.SetModernVisualizationValue(newValue);
         _soundManager.PlayButtonClickSFX();
     }
 

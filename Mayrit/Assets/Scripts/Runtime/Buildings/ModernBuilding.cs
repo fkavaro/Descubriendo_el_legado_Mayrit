@@ -23,7 +23,6 @@ public class ModernBuilding : MonoBehaviour
         }
     }
 
-    bool _wasActive;
 
     // Dependency Injection
     CameraManager _cameraManager;
@@ -38,40 +37,40 @@ public class ModernBuilding : MonoBehaviour
         _uiManager = ServiceLocator.Instance.Get<UIManager>();
 
         _pointOfInterest.IsBlocked = true;
-        IsActive = _uiManager.IsModernVisualizationOn;
-        _wasActive = IsActive;
+        IsActive = _uiManager.ModernVisualizationValueSet;
     }
 
     void Start()
     {
         // Subscribe to events
-        _cameraManager.CameraStateChangedEvent += OnCameraStateChanged;
+        _cameraManager.CameraStateChangedEvent += FixActivation;
+        _uiManager.ContextualPanelHiddenEvent += FixActivation;
         _uiManager.ModernVisualizationToggled += OnVisualizationToggled;
         _uiManager.ContextualPanelShownEvent += OnContextualPanelShown;
-        _uiManager.ContextualPanelHiddenEvent += OnContextualPanelHidden;
     }
 
     void OnDisable()
     {
         // Unsubscribe from events
-        _cameraManager.CameraStateChangedEvent -= OnCameraStateChanged;
+        _cameraManager.CameraStateChangedEvent -= FixActivation;
+        _uiManager.ContextualPanelHiddenEvent -= FixActivation;
         _uiManager.ModernVisualizationToggled -= OnVisualizationToggled;
         _uiManager.ContextualPanelShownEvent -= OnContextualPanelShown;
-        _uiManager.ContextualPanelHiddenEvent -= OnContextualPanelHidden;
     }
     #endregion
 
     #region CALLBACK METHODS
-    void OnCameraStateChanged()
+    void FixActivation()
     {
         if (_cameraManager.IsInThirdPersonState || _cameraManager.IsInTourStopState)
             IsActive = false;
+        else if (_cameraManager.IsInAerialState)
+            IsActive = _uiManager.ModernVisualizationValueSet;
     }
 
     void OnVisualizationToggled(bool value)
     {
-        IsActive = value;
-        _wasActive = value;
+        IsActive = value && _cameraManager.IsInAerialState;
     }
 
     void OnContextualPanelShown(DataSO data)
@@ -82,12 +81,7 @@ public class ModernBuilding : MonoBehaviour
             return;
         }
 
-        IsActive = data == _pointOfInterest.Data;
-    }
-
-    void OnContextualPanelHidden()
-    {
-        IsActive = _wasActive;
+        IsActive = (data == _pointOfInterest.Data) && _uiManager.ModernVisualizationValueSet;
     }
     #endregion
 }
