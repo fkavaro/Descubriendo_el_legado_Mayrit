@@ -9,12 +9,8 @@ PrefabInstance:
     m_TransformParent: {fileID: 8038429083490279149}
     m_Modifications:
     - target: {fileID: 27795384536913232, guid: f6ee54542fb2bd3478a80558a77cdb24, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 27795384536913232, guid: f6ee54542fb2bd3478a80558a77cdb24, type: 3}
       propertyPath: m_VersionIndex
-      value: 2497
+      value: 2500
       objectReference: {fileID: 0}
     - target: {fileID: 659563412886805032, guid: f6ee54542fb2bd3478a80558a77cdb24, type: 3}
       propertyPath: m_Mesh
@@ -63,10 +59,6 @@ PrefabInstance:
     - target: {fileID: 3756045470309909538, guid: f6ee54542fb2bd3478a80558a77cdb24, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6188783695370323221, guid: f6ee54542fb2bd3478a80558a77cdb24, type: 3}
-      propertyPath: m_Mesh
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -132,7 +124,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4718832079106194637, guid: fdbec69727880d74e85eff7822c2176c, type: 3}
       propertyPath: m_VersionIndex
-      value: 5308
+      value: 5311
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
