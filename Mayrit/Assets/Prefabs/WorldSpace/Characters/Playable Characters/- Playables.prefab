@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7730744442537234426}
   - component: {fileID: 6730459907538565639}
   m_Layer: 0
-  m_Name: Milestone (4)
+  m_Name: 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,7 +46,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Mayrit::MilestoneTracker
   _isActive: 0
-  milestonesActivated: {x: 4, y: 4}
+  milestonesActivated:
+  - {x: 4, y: 4}
 --- !u!1 &1558813873348275060
 GameObject:
   m_ObjectHideFlags: 0
@@ -58,7 +59,7 @@ GameObject:
   - component: {fileID: 4684906252264911778}
   - component: {fileID: 2972832545870005604}
   m_Layer: 0
-  m_Name: Milestone
+  m_Name: 0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -93,7 +94,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Mayrit::MilestoneTracker
   _isActive: 0
-  milestonesActivated: {x: 0, y: 0}
+  milestonesActivated:
+  - {x: 0, y: 0}
 --- !u!1 &1628742803764311701
 GameObject:
   m_ObjectHideFlags: 0
@@ -105,7 +107,7 @@ GameObject:
   - component: {fileID: 1821001226653474845}
   - component: {fileID: 8629995598473616374}
   m_Layer: 0
-  m_Name: Milestone (1)
+  m_Name: 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -140,7 +142,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Mayrit::MilestoneTracker
   _isActive: 0
-  milestonesActivated: {x: 1, y: 1}
+  milestonesActivated:
+  - {x: 1, y: 1}
 --- !u!1 &2244642725486778967
 GameObject:
   m_ObjectHideFlags: 0
@@ -191,7 +194,7 @@ GameObject:
   - component: {fileID: 1636802787651430667}
   - component: {fileID: 1911219510372610716}
   m_Layer: 0
-  m_Name: Milestone (2)
+  m_Name: 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -226,7 +229,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Mayrit::MilestoneTracker
   _isActive: 0
-  milestonesActivated: {x: 2, y: 2}
+  milestonesActivated:
+  - {x: 2, y: 2}
 --- !u!1 &6043305305183514328
 GameObject:
   m_ObjectHideFlags: 0
@@ -238,7 +242,7 @@ GameObject:
   - component: {fileID: 6703955232259652022}
   - component: {fileID: 7104583318524390087}
   m_Layer: 0
-  m_Name: Milestone (6)
+  m_Name: 6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -273,7 +277,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Mayrit::MilestoneTracker
   _isActive: 0
-  milestonesActivated: {x: 6, y: 6}
+  milestonesActivated:
+  - {x: 6, y: 6}
 --- !u!1 &7715087392725186871
 GameObject:
   m_ObjectHideFlags: 0
@@ -285,7 +290,7 @@ GameObject:
   - component: {fileID: 8187147309512798121}
   - component: {fileID: 2542134090444820258}
   m_Layer: 0
-  m_Name: Milestone (5)
+  m_Name: 5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -320,7 +325,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Mayrit::MilestoneTracker
   _isActive: 0
-  milestonesActivated: {x: 5, y: 5}
+  milestonesActivated:
+  - {x: 5, y: 5}
 --- !u!1 &8341865163453778774
 GameObject:
   m_ObjectHideFlags: 0
@@ -332,7 +338,7 @@ GameObject:
   - component: {fileID: 4650025162044283527}
   - component: {fileID: 3297719314554200107}
   m_Layer: 0
-  m_Name: Milestone (3)
+  m_Name: 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -367,7 +373,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Mayrit::MilestoneTracker
   _isActive: 0
-  milestonesActivated: {x: 3, y: 3}
+  milestonesActivated:
+  - {x: 3, y: 3}
 --- !u!1 &8872768694863762895
 GameObject:
   m_ObjectHideFlags: 0
@@ -379,7 +386,7 @@ GameObject:
   - component: {fileID: 9161868646391368021}
   - component: {fileID: 7672079386099737312}
   m_Layer: 0
-  m_Name: Milestone (7)
+  m_Name: 7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -414,7 +421,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Mayrit::MilestoneTracker
   _isActive: 0
-  milestonesActivated: {x: 7, y: 7}
+  milestonesActivated:
+  - {x: 7, y: 7}
 --- !u!1001 &114448335262740067
 PrefabInstance:
   m_ObjectHideFlags: 0

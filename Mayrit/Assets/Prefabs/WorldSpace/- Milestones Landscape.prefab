@@ -733,7 +733,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TerrainNavMeshSurface
   _isActive: 0
-  milestonesActivated: {x: 5, y: 5}
+  milestonesActivated:
+  - {x: 5, y: 5}
   _agentsAvoidancePredictionTime: 0.5
   _pathFindingIterationsPerFrame: 1000
   _terrains:
@@ -1010,7 +1011,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TerrainNavMeshSurface
   _isActive: 0
-  milestonesActivated: {x: 6, y: 6}
+  milestonesActivated:
+  - {x: 6, y: 6}
   _agentsAvoidancePredictionTime: 0.5
   _pathFindingIterationsPerFrame: 1000
   _terrains:
@@ -1938,7 +1940,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TerrainNavMeshSurface
   _isActive: 0
-  milestonesActivated: {x: 4, y: 4}
+  milestonesActivated:
+  - {x: 4, y: 4}
   _agentsAvoidancePredictionTime: 0.5
   _pathFindingIterationsPerFrame: 1000
   _terrains:
@@ -2161,7 +2164,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TerrainNavMeshSurface
   _isActive: 0
-  milestonesActivated: {x: 3, y: 3}
+  milestonesActivated:
+  - {x: 3, y: 3}
   _agentsAvoidancePredictionTime: 0.5
   _pathFindingIterationsPerFrame: 1000
   _terrains:
@@ -3182,7 +3186,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TerrainNavMeshSurface
   _isActive: 0
-  milestonesActivated: {x: 1, y: 1}
+  milestonesActivated:
+  - {x: 1, y: 1}
   _agentsAvoidancePredictionTime: 0.5
   _pathFindingIterationsPerFrame: 1000
   _terrains:
@@ -3459,7 +3464,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TerrainNavMeshSurface
   _isActive: 1
-  milestonesActivated: {x: 0, y: 0}
+  milestonesActivated:
+  - {x: 0, y: 0}
   _agentsAvoidancePredictionTime: 0.5
   _pathFindingIterationsPerFrame: 1000
   _terrains:
@@ -3550,7 +3556,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TerrainNavMeshSurface
   _isActive: 0
-  milestonesActivated: {x: 7, y: 7}
+  milestonesActivated:
+  - {x: -1, y: -1}
+  - {x: 7, y: 7}
   _agentsAvoidancePredictionTime: 0.5
   _pathFindingIterationsPerFrame: 1000
   _terrains:
@@ -3641,7 +3649,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TerrainNavMeshSurface
   _isActive: 0
-  milestonesActivated: {x: 2, y: 2}
+  milestonesActivated:
+  - {x: 2, y: 2}
   _agentsAvoidancePredictionTime: 0.5
   _pathFindingIterationsPerFrame: 1000
   _terrains:

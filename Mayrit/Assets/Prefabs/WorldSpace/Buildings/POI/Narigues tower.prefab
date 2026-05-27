@@ -81,6 +81,22 @@ PrefabInstance:
       propertyPath: m_VersionIndex
       value: 383
       objectReference: {fileID: 0}
+    - target: {fileID: 1504002650440381347, guid: fc5b95d01dc9ae845ad1c50f4c753439, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.2411
+      objectReference: {fileID: 0}
+    - target: {fileID: 1504002650440381347, guid: fc5b95d01dc9ae845ad1c50f4c753439, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.59
+      objectReference: {fileID: 0}
+    - target: {fileID: 1504002650440381347, guid: fc5b95d01dc9ae845ad1c50f4c753439, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2350266320332841681, guid: fc5b95d01dc9ae845ad1c50f4c753439, type: 3}
+      propertyPath: m_VersionIndex
+      value: 2506
+      objectReference: {fileID: 0}
     - target: {fileID: 2464044187345813974, guid: fc5b95d01dc9ae845ad1c50f4c753439, type: 3}
       propertyPath: m_VersionIndex
       value: 343
@@ -147,11 +163,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8060091383190792837, guid: fc5b95d01dc9ae845ad1c50f4c753439, type: 3}
       propertyPath: m_VersionIndex
-      value: 5260
+      value: 5491
       objectReference: {fileID: 0}
     - target: {fileID: 8286100798166023146, guid: fc5b95d01dc9ae845ad1c50f4c753439, type: 3}
       propertyPath: m_VersionIndex
       value: 383
+      objectReference: {fileID: 0}
+    - target: {fileID: 9007528895764058629, guid: fc5b95d01dc9ae845ad1c50f4c753439, type: 3}
+      propertyPath: m_LODs.Array.data[0].screenRelativeHeight
+      value: 0.063994765
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

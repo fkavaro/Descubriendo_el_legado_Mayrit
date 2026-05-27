@@ -8,7 +8,7 @@ public class MilestoneTracker : MonoBehaviour
     public bool _isActive = true;
 
     [Tooltip("Range of milestones where this object is active")]
-    [SerializeField] protected Vector2 milestonesActivated;
+    [SerializeField] protected List<Vector2> milestonesActivated;
 
     // TODO: remove eventually
     //     #region LIFE CYCLE
@@ -39,9 +39,18 @@ public class MilestoneTracker : MonoBehaviour
             return;
         }
 
-        int min = Mathf.Min((int)milestonesActivated.x, (int)milestonesActivated.y);
-        int max = Mathf.Max((int)milestonesActivated.x, (int)milestonesActivated.y);
-        SetChildrenActive(milestoneIdx >= min && milestoneIdx <= max);
+        bool inAnyRange = false;
+
+        foreach (Vector2 milestoneRange in milestonesActivated)
+        {
+            if (milestoneIdx >= milestoneRange.x && milestoneIdx <= milestoneRange.y)
+            {
+                inAnyRange = true;
+                break;
+            }
+        }
+
+        SetChildrenActive(inAnyRange);
     }
 
     #region PRIVATE METHODS

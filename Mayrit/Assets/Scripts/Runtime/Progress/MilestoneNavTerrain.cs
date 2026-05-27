@@ -35,16 +35,19 @@ public class MilestoneNavTerrain : MilestoneTracker
     #region INHERITED METHODS
     public override void SetChildrenActiveGivenIndex(int milestoneIdx)
     {
-        if (milestoneIdx < 0)
+
+        bool inAnyRange = false;
+
+        foreach (Vector2 milestoneRange in milestonesActivated)
         {
-            // Only active if first milestone
-            SetChildrenActive((int)milestonesActivated.x == 0 && (int)milestonesActivated.y == 0);
-            return;
+            if (milestoneIdx >= milestoneRange.x && milestoneIdx <= milestoneRange.y)
+            {
+                inAnyRange = true;
+                break;
+            }
         }
 
-        int min = Mathf.Min((int)milestonesActivated.x, (int)milestonesActivated.y);
-        int max = Mathf.Max((int)milestonesActivated.x, (int)milestonesActivated.y);
-        SetChildrenActive(milestoneIdx >= min && milestoneIdx <= max);
+        SetChildrenActive(inAnyRange);
     }
 
     protected override void SetChildrenActive(bool isActive)
