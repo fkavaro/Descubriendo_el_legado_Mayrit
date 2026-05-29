@@ -334,7 +334,7 @@ MeshRenderer:
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
   m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 2
+  m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -468,7 +468,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 18814
+  m_VersionIndex: 18826
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1706,7 +1706,7 @@ MeshRenderer:
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
   m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 2
+  m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -1840,7 +1840,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 20084
+  m_VersionIndex: 20096
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -2349,7 +2349,7 @@ MeshRenderer:
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
   m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 2
+  m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -2420,10 +2420,10 @@ MonoBehaviour:
   - {x: 25.500137, y: 12.5, z: -209}
   - {x: -23.999985, y: 1, z: -213}
   - {x: -101.000015, y: -13.5, z: -225}
-  - {x: -187.50003, y: -14, z: -230.5}
+  - {x: -191.0192, y: -14, z: -234.46936}
   - {x: -232.00003, y: -23, z: -226.5}
   - {x: -226.00003, y: -23, z: -258.50012}
-  - {x: -194, y: -14, z: -258.5}
+  - {x: -194.67897, y: -14, z: -248.55792}
   - {x: -94.99989, y: -13.5, z: -268.50012}
   - {x: -9.499985, y: 1, z: -262.5}
   - {x: 25.500015, y: 12.5, z: -259.50012}
@@ -2433,47 +2433,47 @@ MonoBehaviour:
   - {x: 401, y: 21.5, z: -313.5}
   - {x: 449.26855, y: 22, z: -279.75726}
   m_Textures0:
-  - {x: 395.53555, y: -229.01538}
-  - {x: 327.09888, y: -223.35141}
-  - {x: 247.19043, y: -219.14363}
-  - {x: 127.27529, y: -188.90305}
-  - {x: 26.313534, y: -208.16492}
-  - {x: -23.870872, y: -212.5745}
-  - {x: -101.69782, y: -225.02853}
-  - {x: -188.02016, y: -230.23262}
-  - {x: -233.04152, y: -226.54181}
-  - {x: -227.05627, y: -258.5207}
-  - {x: -194.50414, y: -258.17133}
-  - {x: -95.712456, y: -268.49194}
-  - {x: -9.406533, y: -262.0606}
-  - {x: 26.313412, y: -258.5971}
-  - {x: 120.29261, y: -261.28006}
-  - {x: 234.72122, y: -296.49393}
-  - {x: 330.5902, y: -327.72354}
-  - {x: 401.52072, y: -313.4235}
-  - {x: 449.70563, y: -279.87573}
+  - {x: 395.5352, y: -229.01144}
+  - {x: 327.09872, y: -223.34453}
+  - {x: 247.1905, y: -219.13298}
+  - {x: 127.275696, y: -188.88855}
+  - {x: 26.314178, y: -208.1455}
+  - {x: -23.870712, y: -212.56194}
+  - {x: -101.69821, y: -225.02333}
+  - {x: -191.53072, y: -234.17268}
+  - {x: -233.04193, y: -226.53639}
+  - {x: -227.05672, y: -258.51416}
+  - {x: -195.18147, y: -248.22809}
+  - {x: -95.712875, y: -268.48508}
+  - {x: -9.406433, y: -262.04666}
+  - {x: 26.314056, y: -258.5753}
+  - {x: 120.293045, y: -261.2617}
+  - {x: 234.72136, y: -296.4788}
+  - {x: 330.59003, y: -327.71194}
+  - {x: 401.52036, y: -313.41595}
+  - {x: 449.70508, y: -279.87253}
   m_Textures2: []
   m_Textures3: []
   m_Tangents:
-  - {x: 0.9998423, y: 0.017549578, z: 0.0027298515, w: -1}
-  - {x: 0.9998201, y: 0.01877919, z: 0.0026660075, w: -1}
-  - {x: 0.99974054, y: 0.022646423, z: 0.0024653685, w: -1}
-  - {x: 0.99958766, y: 0.028632987, z: 0.0021546932, w: -1}
-  - {x: 0.9819734, y: 0.18891591, z: -0.006252977, w: -1}
-  - {x: 0.97999, y: 0.19893281, z: -0.006737058, w: -1}
-  - {x: 0.993191, y: 0.11647222, z: -0.0024203195, w: -1}
-  - {x: 0.9925855, y: 0.12151805, z: -0.0027423182, w: -1}
-  - {x: 0.9795187, y: 0.20123643, z: -0.006858527, w: -1}
-  - {x: 0.97162986, y: 0.23634563, z: -0.0087273335, w: -1}
-  - {x: 0.9902734, y: 0.13908486, z: -0.0037372555, w: -1}
-  - {x: 0.9982617, y: 0.058934588, z: 0.0005779021, w: -1}
-  - {x: 0.975644, y: 0.21922064, z: -0.007814884, w: -1}
-  - {x: 0.9920636, y: 0.1257015, z: -0.0030027397, w: -1}
-  - {x: 0.9996315, y: 0.027053894, z: 0.002236637, w: -1}
-  - {x: 0.999801, y: 0.019778633, z: 0.002614154, w: -1}
-  - {x: 0.9998059, y: 0.019524304, z: 0.0026273185, w: -1}
-  - {x: 0.9998782, y: 0.015347582, z: 0.0028440375, w: -1}
-  - {x: 0.9999464, y: 0.009870513, z: 0.0031280846, w: -1}
+  - {x: 0.99984217, y: 0.017549625, z: 0.002780594, w: -1}
+  - {x: 0.99982, y: 0.018779159, z: 0.0027156482, w: -1}
+  - {x: 0.9997404, y: 0.022646274, z: 0.0025114617, w: -1}
+  - {x: 0.9995876, y: 0.028632913, z: 0.0021955052, w: -1}
+  - {x: 0.9819732, y: 0.18891351, z: -0.006359191, w: -1}
+  - {x: 0.9799906, y: 0.19892615, z: -0.0068510724, w: -1}
+  - {x: 0.99320084, y: 0.11638711, z: -0.002454817, w: -1}
+  - {x: 0.99099034, y: 0.1338884, z: -0.0034809783, w: -1}
+  - {x: 0.97503805, y: 0.22189073, z: -0.008080045, w: -1}
+  - {x: 0.96532017, y: 0.2608694, z: -0.010204057, w: -1}
+  - {x: 0.98814076, y: 0.15348025, z: -0.0046521784, w: -1}
+  - {x: 0.99827, y: 0.058794193, z: 0.0005985144, w: -1}
+  - {x: 0.975644, y: 0.21921586, z: -0.007948137, w: -1}
+  - {x: 0.99206346, y: 0.12570155, z: -0.003051714, w: -1}
+  - {x: 0.9996314, y: 0.027053757, z: 0.0022788446, w: -1}
+  - {x: 0.99980086, y: 0.019778525, z: 0.0026628133, w: -1}
+  - {x: 0.9998058, y: 0.019524347, z: 0.0026763368, w: -1}
+  - {x: 0.99987805, y: 0.015347637, z: 0.0028966954, w: -1}
+  - {x: 0.99994624, y: 0.0098705515, z: 0.0031854552, w: -1}
   m_Colors: []
   m_UnwrapParameters:
     m_HardAngle: 88
@@ -2483,7 +2483,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 13858
+  m_VersionIndex: 15281
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -3498,7 +3498,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 8058
+  m_VersionIndex: 8070
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -3643,7 +3643,7 @@ MeshRenderer:
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
   m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 2
+  m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -3777,7 +3777,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 17252
+  m_VersionIndex: 17264
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -4597,7 +4597,7 @@ MeshRenderer:
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
   m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 2
+  m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -4755,7 +4755,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 3043
+  m_VersionIndex: 3055
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -5239,7 +5239,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 22828
+  m_VersionIndex: 22840
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -5609,7 +5609,7 @@ MeshRenderer:
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
   m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 2
+  m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -5775,7 +5775,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 2944
+  m_VersionIndex: 2956
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -6044,7 +6044,7 @@ MeshRenderer:
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
   m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 2
+  m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -6178,7 +6178,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 25416
+  m_VersionIndex: 25428
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -7228,7 +7228,7 @@ MeshRenderer:
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
   m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 2
+  m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -7362,7 +7362,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 12400
+  m_VersionIndex: 12412
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -7904,7 +7904,7 @@ MeshRenderer:
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
   m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 2
+  m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -8038,7 +8038,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 30795
+  m_VersionIndex: 30807
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -8185,7 +8185,7 @@ MeshRenderer:
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
   m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 2
+  m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -8327,7 +8327,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 4542
+  m_VersionIndex: 4554
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -8955,7 +8955,7 @@ Transform:
   m_GameObject: {fileID: 9222723888542545082}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -16, y: 0, z: -216.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
