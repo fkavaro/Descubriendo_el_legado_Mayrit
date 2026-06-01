@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class EnvironmentManager : MonoBehaviour
@@ -74,13 +75,7 @@ public class EnvironmentManager : MonoBehaviour
     {
         MilestoneSetting _milestoneSetting = GetComponentInParent<MilestoneSetting>();
 
-        _currentTime = _milestoneSetting.MilestonePreviewIndex >= 0
-        ? _milestoneTimes.List[_milestoneSetting.MilestonePreviewIndex]._time
-        : 10f; // Default to 10am if no milestone preview index is set'
-        _wantedTime = _currentTime;
-
-        UpdateLighting();
-        CheckActiveLightSource();
+        SetCurrentTime(_milestoneSetting != null ? _milestoneSetting.MilestonePreviewIndex : -1);
 
         // Get dependencies from ServiceLocator
         _gameManager = ServiceLocator.Instance.Get<GameManager>();
@@ -109,6 +104,19 @@ public class EnvironmentManager : MonoBehaviour
     void OnDisable()
     {
         ServiceLocator.Instance.Unregister(this);
+    }
+    #endregion
+
+    #region PUBLIC METHODS
+    public void SetCurrentTime(int milestoneIdx)
+    {
+        _currentTime = milestoneIdx >= 0
+            ? _milestoneTimes.List[milestoneIdx]._time
+            : 10f;
+        _wantedTime = _currentTime;
+
+        UpdateLighting();
+        CheckActiveLightSource();
     }
     #endregion
 

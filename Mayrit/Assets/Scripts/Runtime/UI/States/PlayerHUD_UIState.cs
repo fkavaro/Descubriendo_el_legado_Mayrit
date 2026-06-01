@@ -117,6 +117,8 @@ public class PlayerHUD_UIState : AHUDState
         bool hasSetNextStop = false;
         foreach (TourStop stop in tourStops)
         {
+            if (stop.Data == null) continue;
+
             Label label = new(stop.Data.Header);
             label.AddToClassList("tourStopItem");
             if (stop == _currentTour.NextTourStop)

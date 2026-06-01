@@ -67,28 +67,6 @@ public class MilestoneNavTerrain : MilestoneTracker
                 child.gameObject.SetActive(isActive);
         }
     }
-
-    //     protected override void OnEditorUpdateChanged(bool updateInEditor)
-    //     {
-    // #if UNITY_EDITOR
-    //         if (Application.isPlaying || this == null) return;
-
-    //         if (!updateInEditor)
-    //         {
-    //             // Only active if first milestone
-    //             SetChildrenActive((int)milestonesActivated.x == 0 && (int)milestonesActivated.y == 0);
-    //             return;
-    //         }
-
-    //         var progressManager = FindAnyObjectByType<ProgressManager>();
-    //         if (progressManager == null) return;
-
-    //         int milestone = progressManager.CurrentMilestoneIndex;
-    //         int min = Mathf.Min((int)milestonesActivated.x, (int)milestonesActivated.y);
-    //         int max = Mathf.Max((int)milestonesActivated.x, (int)milestonesActivated.y);
-    //         SetChildrenActive(milestone >= min && milestone <= max);
-    // #endif
-    //     }
     #endregion
 
     #region PUBLIC METHODS

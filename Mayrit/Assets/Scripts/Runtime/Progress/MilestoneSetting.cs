@@ -9,10 +9,10 @@ using UnityEditor;
 
 public class MilestoneSetting : MonoBehaviour
 {
-    public int MilestonePreviewIndex => _milestonePreview;
+    public int MilestonePreviewIndex => _milestonePreviewIdx;
 
     [Range(-1, 7)]
-    [SerializeField] private int _milestonePreview = -1;
+    [SerializeField] private int _milestonePreviewIdx = -1;
 
 #if UNITY_EDITOR
     private int _lastMilestone = -1;
@@ -24,9 +24,9 @@ public class MilestoneSetting : MonoBehaviour
             return;
 
         // Only update if the milestone value actually changed
-        if (_milestonePreview != _lastMilestone)
+        if (_milestonePreviewIdx != _lastMilestone)
         {
-            _lastMilestone = _milestonePreview;
+            _lastMilestone = _milestonePreviewIdx;
 
             // Defer the update to avoid SendMessage errors during OnValidate
             EditorApplication.delayCall += UpdateAllChildTrackers;
@@ -49,8 +49,14 @@ public class MilestoneSetting : MonoBehaviour
             if (tracker == null) continue;
 
             // Update the tracker's children
-            tracker.SetChildrenActiveGivenIndex(_milestonePreview);
+            tracker.SetChildrenActiveGivenIndex(_milestonePreviewIdx);
         }
+
+        EnvironmentManager environmentManager = FindFirstObjectByType<EnvironmentManager>();
+
+        if (environmentManager != null)
+            environmentManager.SetCurrentTime(_milestonePreviewIdx);
+
     }
 
     // Add a context menu option to manually refresh if needed
