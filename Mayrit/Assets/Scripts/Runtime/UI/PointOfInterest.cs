@@ -191,4 +191,14 @@ public class PointOfInterest : Billboard
         _tutorialManager.TutorialCompletedEvent -= OnTutorialCompleted;
     }
     #endregion
+
+    #region DEBUG GIZMOS
+    void OnDrawGizmos()
+    {
+#if UNITY_EDITOR
+        if (Data != null)
+            UnityEditor.Handles.Label(transform.position, string.IsNullOrEmpty(Data.Header) ? name : Data.Header);
+#endif
+    }
+    #endregion
 }
