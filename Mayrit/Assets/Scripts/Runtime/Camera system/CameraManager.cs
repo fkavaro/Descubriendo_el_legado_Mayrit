@@ -383,6 +383,7 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
 
     void OnTourStopVisited(TourStop tourStop)
     {
+        if (tourStop.Data == null) return;
         if (!tourStop.gameObject.activeInHierarchy)
         {
             Debug.LogWarning($"TourStop '{tourStop.name}' is not active in hierarchy.");

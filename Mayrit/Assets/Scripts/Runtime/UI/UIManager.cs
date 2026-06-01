@@ -279,7 +279,8 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
 
     void OnTourStopVisited(TourStop tourStop)
     {
-        ShowContextualPanel(tourStop.Data);
+        if (tourStop.Data != null)
+            ShowContextualPanel(tourStop.Data);
     }
 
     void OnContextualPanelHidden()

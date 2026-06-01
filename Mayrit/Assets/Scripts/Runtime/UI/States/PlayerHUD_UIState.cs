@@ -159,9 +159,11 @@ public class PlayerHUD_UIState : AHUDState
             _tourManager.TourStopVisitedEvent -= OnTourStopVisited;
     }
 
-    void OnTourStopVisited(TourStop visitedStop)
+    void OnTourStopVisited(TourStop tourStop)
     {
-        if (_tourStopLabels.TryGetValue(visitedStop, out Label label))
+        if (tourStop.Data == null) return;
+
+        if (_tourStopLabels.TryGetValue(tourStop, out Label label))
         {
             label.RemoveFromClassList("next");
             label.RemoveFromClassList("unvisited");

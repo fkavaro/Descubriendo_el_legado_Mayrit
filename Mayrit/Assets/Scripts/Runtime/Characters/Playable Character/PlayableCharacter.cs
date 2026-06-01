@@ -173,6 +173,7 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
 
     void OnTourStopVisited(TourStop tourStop)
     {
+        if (tourStop.Data == null) return;
         SwitchToAtTourStopState(tourStop);
     }
 

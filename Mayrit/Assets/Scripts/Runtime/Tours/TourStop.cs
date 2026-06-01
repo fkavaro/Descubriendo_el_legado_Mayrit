@@ -29,16 +29,15 @@ public class TourStop : MonoBehaviour
     #region INTERNAL PROPERTIES
     public event Action<TourStop> OnVisitedEvent;
 
-    bool _isActive;
-    bool _initialized;
+    bool _isNextTourStop;
     SphereCollider _sphereCollider;
+
+    CameraManager _cameraManager;
     #endregion
 
     #region LIFE CYCLE
     void OnEnable()
     {
-        if (_initialized) return;
-
         if (TryGetComponent(out _sphereCollider))
         {
             _sphereCollider.radius = _colliderRadius;
@@ -54,7 +53,6 @@ public class TourStop : MonoBehaviour
                 _detectionMask = 1 << playableLayer;
         }
 
-        _initialized = true;
         Deactivate();
     }
 
@@ -72,26 +70,32 @@ public class TourStop : MonoBehaviour
         SetAsVisited();
     }
 
+    void Start()
+    {
+        _cameraManager = ServiceLocator.Instance.Get<CameraManager>();
+
+        if (_cameraManager != null)
+            _cameraManager.CameraStateChangedEvent += OnCameraStateChanged;
+    }
+
     void Update()
     {
-        if (!_isActive) return;
+        if (!_isNextTourStop || _vfxGO == null || _data == null) return;
 
-        // TODO
-        //! Rotate VFX
-        if (_vfxGO != null)
-            _vfxGO.transform.Rotate(Vector3.up, 50f * Time.deltaTime, Space.World);
+        _vfxGO.transform.Rotate(Vector3.up, 50f * Time.deltaTime, Space.World);
     }
     #endregion
 
     #region PUBLIC METHODS
     public void Activate()
     {
+        _isNextTourStop = true;
+
         if (_sphereCollider != null)
             _sphereCollider.enabled = true;
 
-        _vfxGO.SetActive(true);
-        _isActive = true;
-        enabled = true;
+        if (_data != null)
+            _vfxGO.SetActive(true);
     }
 
     public void Deactivate()
@@ -100,8 +104,7 @@ public class TourStop : MonoBehaviour
             _sphereCollider.enabled = false;
 
         _vfxGO.SetActive(false);
-        _isActive = false;
-        enabled = false;
+        _isNextTourStop = false;
     }
 
     public void Reset()
@@ -119,9 +122,15 @@ public class TourStop : MonoBehaviour
         _isVisited = true;
         OnVisitedEvent?.Invoke(this);
     }
+
+    private void OnCameraStateChanged()
+    {
+        if (_isNextTourStop && _vfxGO != null && _data != null)
+            _vfxGO.SetActive(_cameraManager.IsInThirdPersonState);
+    }
     #endregion
 
-    #region DEBUG GIZMOW
+    #region DEBUG GIZMOS
     void OnDrawGizmos()
     {
         Gizmos.color = _isVisited ? Color.green : Color.red;
