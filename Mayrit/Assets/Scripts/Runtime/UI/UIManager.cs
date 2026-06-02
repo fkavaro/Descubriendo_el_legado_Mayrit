@@ -253,13 +253,11 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     void OnPlayTourClicked()
     {
         PlayTourClickedEvent?.Invoke();
-        _playerHUDState._showTourEnd = _tourManager.CurrentTour != null && _tourManager.CurrentTour.IsCompleted;
         SwitchToPlayerHUDState();
     }
 
     void OnResetTourClicked()
     {
-        _playerHUDState._showTourEnd = false;
         StartCoroutine(ResetTourWithBlackFadeCoroutine());
     }
 

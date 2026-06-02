@@ -5,7 +5,6 @@ using UnityEngine.UIElements;
 public class PlayerHUD_UIState : AHUDState
 {
     #region  PROPERTIES
-    public bool _showTourEnd;
     Tour _currentTour;
     TourManager _tourManager;
 
@@ -55,7 +54,7 @@ public class PlayerHUD_UIState : AHUDState
 
         PopulateTourStopsUI();
         SubscribeToTourEvents();
-        ShowTourEndVisual(_showTourEnd);
+        ShowTourEndVisual(_currentTour.IsCompleted);
         _compass.IsNextTourStopShown = true;
     }
 
@@ -88,7 +87,7 @@ public class PlayerHUD_UIState : AHUDState
     #endregion
 
     #region PUBLIC METHODS
-    void ShowTourEndVisual(bool show)
+    public void ShowTourEndVisual(bool show)
     {
         if (show)
         {
