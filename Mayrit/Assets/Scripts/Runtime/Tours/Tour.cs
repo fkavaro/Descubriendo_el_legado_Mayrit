@@ -11,7 +11,7 @@ public class Tour : MonoBehaviour
     public bool IsCompleted => _isCompleted;
     public bool HasBeenCompleted => _hasBeenCompleted;
     public TourStop NextTourStop => _nextTourStop;
-    public TourStop LastTourStopinList => GetTourStopFromList(_tourStops.Count - 1);
+    public TourStop LastTourStopInList => GetTourStopFromList(_tourStops.Count - 1);
     #endregion
 
     #region EDITOR PROPERTIES

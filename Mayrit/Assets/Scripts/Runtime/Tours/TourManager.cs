@@ -156,7 +156,7 @@ public class TourManager : MonoBehaviour
             if (_progressManager.WasCurrentMilestoneCompleted)
             {
                 _currentTour.MarkAsCompleted();
-                _playableCharacter.LocateAt(_currentTour.LastTourStopinList.transform);
+                _playableCharacter.LocateAt(_currentTour.LastTourStopInList.transform);
             }
         }
     }
