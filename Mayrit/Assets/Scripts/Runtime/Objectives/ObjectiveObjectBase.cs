@@ -40,14 +40,12 @@ where T : ObjectiveObjectBase<T, TData>
     protected virtual void Start()
     {
         _cameraManager = ServiceLocator.Instance.Get<CameraManager>();
-        if (_cameraManager != null)
-            _cameraManager.CameraStateChangedEvent += OnCameraStateChanged;
+        _cameraManager.CameraStateChangedEvent += OnCameraStateChanged;
     }
 
     protected virtual void OnDisable()
     {
-        if (_cameraManager != null)
-            _cameraManager.CameraStateChangedEvent -= OnCameraStateChanged;
+        _cameraManager.CameraStateChangedEvent -= OnCameraStateChanged;
     }
 
     protected virtual void OnTriggerEnter(Collider other)
