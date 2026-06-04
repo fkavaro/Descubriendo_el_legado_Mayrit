@@ -356,7 +356,7 @@ GameObject:
   - component: {fileID: 480640177727441770}
   - component: {fileID: 6525942383883291630}
   m_Layer: 0
-  m_Name: Stops
+  m_Name: Tour
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1080,7 +1080,7 @@ GameObject:
   - component: {fileID: 1179864783819206197}
   - component: {fileID: 7010523987930723971}
   m_Layer: 0
-  m_Name: Stops
+  m_Name: Tour
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2930,7 +2930,7 @@ GameObject:
   - component: {fileID: 2908307463566521745}
   - component: {fileID: 5784398750240733745}
   m_Layer: 0
-  m_Name: Stops
+  m_Name: Tour
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4118,7 +4118,7 @@ GameObject:
   - component: {fileID: 272484848172547416}
   - component: {fileID: 4583002711855203381}
   m_Layer: 0
-  m_Name: Stops
+  m_Name: Tour
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4266,7 +4266,7 @@ GameObject:
   - component: {fileID: 804347815867626598}
   - component: {fileID: 8297370146534636252}
   m_Layer: 0
-  m_Name: Stops
+  m_Name: Tour
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4522,7 +4522,7 @@ GameObject:
   - component: {fileID: 1558751880388784710}
   - component: {fileID: 7614301539170197858}
   m_Layer: 0
-  m_Name: Stops
+  m_Name: Tour
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5784,7 +5784,7 @@ GameObject:
   - component: {fileID: 4553363182738257788}
   - component: {fileID: 829601864945892959}
   m_Layer: 0
-  m_Name: Stops
+  m_Name: Tour
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6099,7 +6099,7 @@ GameObject:
   - component: {fileID: 4280221786091060859}
   - component: {fileID: 1158088502687938625}
   m_Layer: 0
-  m_Name: Stops
+  m_Name: Tour
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
