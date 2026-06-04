@@ -83,7 +83,8 @@ public class ProgressManager : ABehaviourEntity<FiniteStateMachine<MilestoneStat
             return false;
         }
 
-        return _canSkipTours || _tourManager.CurrentTour.HasBeenCompleted; //Application.isPlaying && Application.isEditor || _tourManager.CurrentTour.HasBeenCompleted// TODO: full line when gold release
+        // TODO: full line when gold release
+        return _canSkipTours || _tourManager.CurrentTour.IsCompleted; //Application.isPlaying && Application.isEditor || _tourManager.CurrentTour.HasBeenCompleted// TODO: full line when gold release
     }
     #endregion
 

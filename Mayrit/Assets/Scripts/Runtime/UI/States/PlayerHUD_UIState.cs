@@ -115,8 +115,8 @@ public class PlayerHUD_UIState : AHUDState
     void UpdateTourStopsUI()
     {
         _nextStopLabel.text = _tourManager.NextTourStop != null ? $"{_tourManager.NextTourStop.Data.Header}" : "Tour completado";
-        _completedTourStopsLabel.text = $"{_tourManager.CurrentTour.VisitedStopsCount}";
-        _totalTourStopsLabel.text = $"{_tourManager.CurrentTour.TotalStopsCount}";
+        _completedTourStopsLabel.text = $"{_tourManager.CurrentTour.ReachedCount}";
+        _totalTourStopsLabel.text = $"{_tourManager.CurrentTour.TotalCount}";
     }
 
     void UpdateCollectiblesUI()

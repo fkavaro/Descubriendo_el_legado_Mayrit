@@ -390,7 +390,8 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
             return;
         }
 
-        SwitchToTourStopCamera(tourStop.Camera);
+        if (IsInThirdPersonState)
+            SwitchToTourStopCamera(tourStop.Camera);
     }
     #endregion
 }

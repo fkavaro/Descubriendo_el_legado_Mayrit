@@ -117,14 +117,14 @@ public class CompassUI : AUIState
 
     void FixTourStopDirection()
     {
-        if (_tourManager.CurrentTour == null || _tourManager.CurrentTour.NextStop == null)
+        if (_tourManager.CurrentTour == null || _tourManager.CurrentTour.CurrentObjective == null)
         {
             _nextTourStopVisual.style.display = DisplayStyle.None;
             _nextTourStopDirection.style.display = DisplayStyle.None;
             return;
         }
 
-        _nextTourStop = _tourManager.CurrentTour.NextStop;
+        _nextTourStop = _tourManager.CurrentTour.CurrentObjective;
 
         // Get the direction to the TourStop in world space
         Vector3 toTourStop = _nextTourStop.transform.position - _mainCamera.transform.position;

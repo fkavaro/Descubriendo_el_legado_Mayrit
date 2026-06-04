@@ -391,15 +391,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5cf3094768d6d649ab5b950a70b8822, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tour
-  _data: {fileID: 11400000, guid: 799be9090fe764741b7dbca714f58c2b, type: 2}
   _isCompleted: 0
-  _hasBeenCompleted: 0
-  _currentStopIdx: 0
-  _nextStop: {fileID: 0}
-  _stops: []
-  _totalValidStopsCount: 0
-  _visitedStopsCount: 0
-  _nextValidStopIdx: 0
+  _objectives: []
+  _currentIdx: 0
+  _totalCount: 0
+  _reachedCount: 0
+  _tourData: {fileID: 11400000, guid: 799be9090fe764741b7dbca714f58c2b, type: 2}
 --- !u!1 &618904953366653466
 GameObject:
   m_ObjectHideFlags: 0
@@ -848,12 +845,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Mayrit::MilestoneCollectibleTracker
   _isCompleted: 0
-  _hasBeenCompleted: 0
-  _collectibles:
-  - {fileID: 5740787042311060675}
-  _nextCollectible: {fileID: 0}
-  _foundCollectiblesCount: 0
-  _totalCollectiblesCount: 0
+  _objectives: []
+  _currentIdx: 0
+  _totalCount: 0
+  _reachedCount: 0
 --- !u!1 &1070526999799410690
 GameObject:
   m_ObjectHideFlags: 0
@@ -1122,15 +1117,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5cf3094768d6d649ab5b950a70b8822, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tour
-  _data: {fileID: 11400000, guid: 099b6408072417c4aba119582c4e12a5, type: 2}
   _isCompleted: 0
-  _hasBeenCompleted: 0
-  _currentStopIdx: 0
-  _nextStop: {fileID: 0}
-  _stops: []
-  _totalValidStopsCount: 0
-  _visitedStopsCount: 0
-  _nextValidStopIdx: 0
+  _objectives: []
+  _currentIdx: 0
+  _totalCount: 0
+  _reachedCount: 0
+  _tourData: {fileID: 11400000, guid: 099b6408072417c4aba119582c4e12a5, type: 2}
 --- !u!1 &1414047418316430077
 GameObject:
   m_ObjectHideFlags: 0
@@ -2975,15 +2967,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5cf3094768d6d649ab5b950a70b8822, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tour
-  _data: {fileID: 11400000, guid: bcba68fbbf70b3f4d91f4610afb85ec1, type: 2}
   _isCompleted: 0
-  _hasBeenCompleted: 0
-  _currentStopIdx: 0
-  _nextStop: {fileID: 0}
-  _stops: []
-  _totalValidStopsCount: 0
-  _visitedStopsCount: 0
-  _nextValidStopIdx: 0
+  _objectives: []
+  _currentIdx: 0
+  _totalCount: 0
+  _reachedCount: 0
+  _tourData: {fileID: 11400000, guid: bcba68fbbf70b3f4d91f4610afb85ec1, type: 2}
 --- !u!1 &3753697486930457346
 GameObject:
   m_ObjectHideFlags: 0
@@ -3030,12 +3019,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Mayrit::MilestoneCollectibleTracker
   _isCompleted: 0
-  _hasBeenCompleted: 0
-  _collectibles:
-  - {fileID: 946464406444488949}
-  _nextCollectible: {fileID: 0}
-  _foundCollectiblesCount: 0
-  _totalCollectiblesCount: 0
+  _objectives: []
+  _currentIdx: 0
+  _totalCount: 0
+  _reachedCount: 0
 --- !u!1 &3849903994436221452
 GameObject:
   m_ObjectHideFlags: 0
@@ -3291,12 +3278,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Mayrit::MilestoneCollectibleTracker
   _isCompleted: 0
-  _hasBeenCompleted: 0
-  _collectibles:
-  - {fileID: 2319805319721078951}
-  _nextCollectible: {fileID: 0}
-  _foundCollectiblesCount: 0
-  _totalCollectiblesCount: 0
+  _objectives: []
+  _currentIdx: 0
+  _totalCount: 0
+  _reachedCount: 0
 --- !u!1 &4239512899846137928
 GameObject:
   m_ObjectHideFlags: 0
@@ -3625,12 +3610,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Mayrit::MilestoneCollectibleTracker
   _isCompleted: 0
-  _hasBeenCompleted: 0
-  _collectibles:
-  - {fileID: 7102738679028334002}
-  _nextCollectible: {fileID: 0}
-  _foundCollectiblesCount: 0
-  _totalCollectiblesCount: 0
+  _objectives: []
+  _currentIdx: 0
+  _totalCount: 0
+  _reachedCount: 0
 --- !u!1 &4815900518647049280
 GameObject:
   m_ObjectHideFlags: 0
@@ -4172,15 +4155,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5cf3094768d6d649ab5b950a70b8822, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tour
-  _data: {fileID: 11400000, guid: 4a608498aabb9b148b70af337528453a, type: 2}
   _isCompleted: 0
-  _hasBeenCompleted: 0
-  _currentStopIdx: 0
-  _nextStop: {fileID: 0}
-  _stops: []
-  _totalValidStopsCount: 0
-  _visitedStopsCount: 0
-  _nextValidStopIdx: 0
+  _objectives: []
+  _currentIdx: 0
+  _totalCount: 0
+  _reachedCount: 0
+  _tourData: {fileID: 11400000, guid: 4a608498aabb9b148b70af337528453a, type: 2}
 --- !u!1 &5222791083186724342
 GameObject:
   m_ObjectHideFlags: 0
@@ -4323,15 +4303,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5cf3094768d6d649ab5b950a70b8822, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tour
-  _data: {fileID: 11400000, guid: 2fdaedf41e19d1f41b7d4e5f8ca3171c, type: 2}
   _isCompleted: 0
-  _hasBeenCompleted: 0
-  _currentStopIdx: 0
-  _nextStop: {fileID: 0}
-  _stops: []
-  _totalValidStopsCount: 0
-  _visitedStopsCount: 0
-  _nextValidStopIdx: 0
+  _objectives: []
+  _currentIdx: 0
+  _totalCount: 0
+  _reachedCount: 0
+  _tourData: {fileID: 11400000, guid: 2fdaedf41e19d1f41b7d4e5f8ca3171c, type: 2}
 --- !u!1 &5333913199125766541
 GameObject:
   m_ObjectHideFlags: 0
@@ -4582,15 +4559,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5cf3094768d6d649ab5b950a70b8822, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tour
-  _data: {fileID: 11400000, guid: e740d0cd2536f0a45ba133bd9ff99a2a, type: 2}
   _isCompleted: 0
-  _hasBeenCompleted: 0
-  _currentStopIdx: 0
-  _nextStop: {fileID: 0}
-  _stops: []
-  _totalValidStopsCount: 0
-  _visitedStopsCount: 0
-  _nextValidStopIdx: 0
+  _objectives: []
+  _currentIdx: 0
+  _totalCount: 0
+  _reachedCount: 0
+  _tourData: {fileID: 11400000, guid: e740d0cd2536f0a45ba133bd9ff99a2a, type: 2}
 --- !u!1 &5594122472885866389
 GameObject:
   m_ObjectHideFlags: 0
@@ -4668,12 +4642,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Mayrit::MilestoneCollectibleTracker
   _isCompleted: 0
-  _hasBeenCompleted: 0
-  _collectibles:
-  - {fileID: 6124003699386141038}
-  _nextCollectible: {fileID: 0}
-  _foundCollectiblesCount: 0
-  _totalCollectiblesCount: 0
+  _objectives: []
+  _currentIdx: 0
+  _totalCount: 0
+  _reachedCount: 0
 --- !u!1 &5823011480537207832
 GameObject:
   m_ObjectHideFlags: 0
@@ -5495,12 +5467,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Mayrit::MilestoneCollectibleTracker
   _isCompleted: 0
-  _hasBeenCompleted: 0
-  _collectibles:
-  - {fileID: 7040693163919392766}
-  _nextCollectible: {fileID: 0}
-  _foundCollectiblesCount: 0
-  _totalCollectiblesCount: 0
+  _objectives: []
+  _currentIdx: 0
+  _totalCount: 0
+  _reachedCount: 0
 --- !u!1 &7188754672528235045
 GameObject:
   m_ObjectHideFlags: 0
@@ -5688,12 +5658,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Mayrit::MilestoneCollectibleTracker
   _isCompleted: 0
-  _hasBeenCompleted: 0
-  _collectibles:
-  - {fileID: 1687089483307665789}
-  _nextCollectible: {fileID: 0}
-  _foundCollectiblesCount: 0
-  _totalCollectiblesCount: 0
+  _objectives: []
+  _currentIdx: 0
+  _totalCount: 0
+  _reachedCount: 0
 --- !u!1 &7367143363076440186
 GameObject:
   m_ObjectHideFlags: 0
@@ -5853,15 +5821,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5cf3094768d6d649ab5b950a70b8822, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tour
-  _data: {fileID: 11400000, guid: 4faef74a71b905b4bbb278a02b7656ae, type: 2}
   _isCompleted: 0
-  _hasBeenCompleted: 0
-  _currentStopIdx: 0
-  _nextStop: {fileID: 0}
-  _stops: []
-  _totalValidStopsCount: 0
-  _visitedStopsCount: 0
-  _nextValidStopIdx: 0
+  _objectives: []
+  _currentIdx: 0
+  _totalCount: 0
+  _reachedCount: 0
+  _tourData: {fileID: 11400000, guid: 4faef74a71b905b4bbb278a02b7656ae, type: 2}
 --- !u!1 &7489955454607721559
 GameObject:
   m_ObjectHideFlags: 0
@@ -6168,15 +6133,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5cf3094768d6d649ab5b950a70b8822, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tour
-  _data: {fileID: 11400000, guid: a432e6917826a17408032211c512f968, type: 2}
   _isCompleted: 0
-  _hasBeenCompleted: 0
-  _currentStopIdx: 0
-  _nextStop: {fileID: 0}
-  _stops: []
-  _totalValidStopsCount: 0
-  _visitedStopsCount: 0
-  _nextValidStopIdx: 0
+  _objectives: []
+  _currentIdx: 0
+  _totalCount: 0
+  _reachedCount: 0
+  _tourData: {fileID: 11400000, guid: a432e6917826a17408032211c512f968, type: 2}
 --- !u!1 &7974893186055380415
 GameObject:
   m_ObjectHideFlags: 0
@@ -6411,12 +6373,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Mayrit::MilestoneCollectibleTracker
   _isCompleted: 0
-  _hasBeenCompleted: 0
-  _collectibles:
-  - {fileID: 4451453134167728963}
-  _nextCollectible: {fileID: 0}
-  _foundCollectiblesCount: 0
-  _totalCollectiblesCount: 0
+  _objectives: []
+  _currentIdx: 0
+  _totalCount: 0
+  _reachedCount: 0
 --- !u!1 &8231908768432041821
 GameObject:
   m_ObjectHideFlags: 0
@@ -9548,17 +9508,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 250122280775840164, guid: 14e2bd451abf6a2478c15174f5b44923, type: 3}
   m_PrefabInstance: {fileID: 350704802917411604}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7102738679028334002 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7371278899231282854, guid: 14e2bd451abf6a2478c15174f5b44923, type: 3}
-  m_PrefabInstance: {fileID: 350704802917411604}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a39519f1458995d4e8a49d993bd308e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Mayrit::Collectible
 --- !u!1001 &381092437563775067
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10803,17 +10752,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 250122280775840164, guid: 14e2bd451abf6a2478c15174f5b44923, type: 3}
   m_PrefabInstance: {fileID: 574660008729176408}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7040693163919392766 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7371278899231282854, guid: 14e2bd451abf6a2478c15174f5b44923, type: 3}
-  m_PrefabInstance: {fileID: 574660008729176408}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a39519f1458995d4e8a49d993bd308e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Mayrit::Collectible
 --- !u!1001 &593412040687121545
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33056,17 +32994,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 250122280775840164, guid: 14e2bd451abf6a2478c15174f5b44923, type: 3}
   m_PrefabInstance: {fileID: 3019474969095498341}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5740787042311060675 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7371278899231282854, guid: 14e2bd451abf6a2478c15174f5b44923, type: 3}
-  m_PrefabInstance: {fileID: 3019474969095498341}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a39519f1458995d4e8a49d993bd308e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Mayrit::Collectible
 --- !u!1001 &3023138851592405287
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -38199,17 +38126,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 250122280775840164, guid: 14e2bd451abf6a2478c15174f5b44923, type: 3}
   m_PrefabInstance: {fileID: 3652665527066009544}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6124003699386141038 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7371278899231282854, guid: 14e2bd451abf6a2478c15174f5b44923, type: 3}
-  m_PrefabInstance: {fileID: 3652665527066009544}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a39519f1458995d4e8a49d993bd308e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Mayrit::Collectible
 --- !u!1001 &3670107842870325363
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -48893,17 +48809,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14e2bd451abf6a2478c15174f5b44923, type: 3}
---- !u!114 &2319805319721078951 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7371278899231282854, guid: 14e2bd451abf6a2478c15174f5b44923, type: 3}
-  m_PrefabInstance: {fileID: 5079376204655101441}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a39519f1458995d4e8a49d993bd308e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Mayrit::Collectible
 --- !u!4 &4973396055359485861 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 250122280775840164, guid: 14e2bd451abf6a2478c15174f5b44923, type: 3}
@@ -61260,17 +61165,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14e2bd451abf6a2478c15174f5b44923, type: 3}
---- !u!114 &4451453134167728963 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7371278899231282854, guid: 14e2bd451abf6a2478c15174f5b44923, type: 3}
-  m_PrefabInstance: {fileID: 6596284787384563173}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a39519f1458995d4e8a49d993bd308e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Mayrit::Collectible
 --- !u!4 &6409232444567012417 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 250122280775840164, guid: 14e2bd451abf6a2478c15174f5b44923, type: 3}
@@ -69821,17 +69715,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14e2bd451abf6a2478c15174f5b44923, type: 3}
---- !u!114 &946464406444488949 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7371278899231282854, guid: 14e2bd451abf6a2478c15174f5b44923, type: 3}
-  m_PrefabInstance: {fileID: 7741282341845200467}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a39519f1458995d4e8a49d993bd308e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Mayrit::Collectible
 --- !u!4 &7500203833044377591 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 250122280775840164, guid: 14e2bd451abf6a2478c15174f5b44923, type: 3}
@@ -73238,17 +73121,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14e2bd451abf6a2478c15174f5b44923, type: 3}
---- !u!114 &1687089483307665789 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7371278899231282854, guid: 14e2bd451abf6a2478c15174f5b44923, type: 3}
-  m_PrefabInstance: {fileID: 8153122712317501403}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a39519f1458995d4e8a49d993bd308e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Mayrit::Collectible
 --- !u!4 &8240788021551001215 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 250122280775840164, guid: 14e2bd451abf6a2478c15174f5b44923, type: 3}

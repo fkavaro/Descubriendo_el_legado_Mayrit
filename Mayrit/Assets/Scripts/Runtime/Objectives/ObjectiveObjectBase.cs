@@ -26,7 +26,7 @@ where T : ObjectiveObjectBase<T, TData>
     #endregion
 
     #region LIFE CYCLE
-    protected virtual void OnEnable()
+    protected virtual void Awake()
     {
         InitializeCollider();
         SetupDefaultLayerMask();
@@ -35,6 +35,8 @@ where T : ObjectiveObjectBase<T, TData>
             _model = transform.Find("Model").gameObject;
         if (_model == null)
             _model = transform.GetChild(0).gameObject;
+
+        Complete();
     }
 
     protected virtual void Start()
@@ -54,6 +56,7 @@ where T : ObjectiveObjectBase<T, TData>
         if (((1 << other.gameObject.layer) & _detectionMask) == 0) return;
 
         Complete();
+        OnReachedEvent?.Invoke((T)this);
     }
     #endregion
 
@@ -70,12 +73,14 @@ where T : ObjectiveObjectBase<T, TData>
         _isReached = true;
         _sphereCollider.enabled = false;
         UpdateVisuals();
-        OnReachedEvent?.Invoke((T)this);
     }
 
     protected virtual void UpdateVisuals()
     {
-        _model.SetActive(!_isReached);
+        if (_data != null)
+            _model.SetActive(!_isReached);
+        else
+            _model.SetActive(false);
     }
 
     protected virtual void InitializeCollider()
@@ -87,6 +92,12 @@ where T : ObjectiveObjectBase<T, TData>
         }
     }
 
+    protected virtual void OnCameraStateChanged()
+    {
+        if (_cameraManager.IsInThirdPersonState)
+            UpdateVisuals();
+    }
+
     private void SetupDefaultLayerMask()
     {
         if (_detectionMask == (LayerMask)~0)
@@ -95,12 +106,6 @@ where T : ObjectiveObjectBase<T, TData>
             if (playableLayer != -1)
                 _detectionMask = 1 << playableLayer;
         }
-    }
-
-    protected virtual void OnCameraStateChanged()
-    {
-        if (!_isReached)
-            _model.SetActive(_cameraManager.IsInThirdPersonState);
     }
     #endregion
 }

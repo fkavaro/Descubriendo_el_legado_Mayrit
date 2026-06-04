@@ -7,9 +7,9 @@ public class CollectiblesManager : MonoBehaviour
 {
     #region PROPERTY HELPERS
     public CollectiblesTracker CurrentTracker => _currentTracker;
-    public Collectible NextCollectible => _currentTracker != null ? _currentTracker.NextCollectible : null;
-    public int FoundCollectiblesCount => _currentTracker != null ? _currentTracker.FoundCollectiblesCount : 0;
-    public int TotalCollectiblesCount => _currentTracker != null ? _currentTracker.TotalCollectiblesCount : 0;
+    public Collectible NextCollectible => _currentTracker != null ? _currentTracker.CurrentValidObjective : null;
+    public int FoundCollectiblesCount => _currentTracker != null ? _currentTracker.ReachedCount : 0;
+    public int TotalCollectiblesCount => _currentTracker != null ? _currentTracker.TotalCount : 0;
     public int AllTotalCollectiblesCount => _allCollectiblesSOs.Count;
     public int AllFoundCollectiblesCount => _allFoundCollectiblesSOs.Count;
 
@@ -79,14 +79,15 @@ public class CollectiblesManager : MonoBehaviour
 
         // Update current
         _currentTracker = tracker;
-        _currentTracker.OnCollectibleFoundEvent += OnCollectibleFound;
+        _currentTracker.Reset();
+        _currentTracker.OnObjectiveReachedEvent += OnCollectibleFound;
     }
 
     void DetachFromTracker()
     {
         if (_currentTracker == null) return;
 
-        _currentTracker.OnCollectibleFoundEvent -= OnCollectibleFound;
+        _currentTracker.OnObjectiveReachedEvent -= OnCollectibleFound;
     }
     #endregion
 

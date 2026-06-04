@@ -7,7 +7,7 @@ public class TourManager : MonoBehaviour
 {
     #region PROPERTY HELPERS
     public Tour CurrentTour => _currentTour;
-    public TourStop NextTourStop => _currentTour != null ? _currentTour.NextStop : null;
+    public TourStop NextTourStop => _currentTour != null ? _currentTour.CurrentValidObjective : null;
     #endregion
 
     #region EDITOR PROPERTIES
@@ -75,18 +75,16 @@ public class TourManager : MonoBehaviour
 
         // Update current
         _currentTour = tour;
-        _currentTour.OnVisitedTourStopEvent += OnTourStopVisited;
-        _currentTour.OnNextTourStopChangeEvent += OnNextTourStopChange;
-        _currentTour.OnTourCompletedEvent += OnTourCompleted;
+        _currentTour.OnObjectiveReachedEvent += OnTourStopVisited;
+        _currentTour.OnCompletedEvent += OnTourCompleted;
     }
 
     void DetachFromCurrentTour()
     {
         if (_currentTour == null) return;
 
-        _currentTour.OnVisitedTourStopEvent -= OnTourStopVisited;
-        _currentTour.OnNextTourStopChangeEvent -= OnNextTourStopChange;
-        _currentTour.OnTourCompletedEvent -= OnTourCompleted;
+        _currentTour.OnObjectiveReachedEvent -= OnTourStopVisited;
+        _currentTour.OnCompletedEvent -= OnTourCompleted;
     }
     #endregion
 
@@ -108,15 +106,13 @@ public class TourManager : MonoBehaviour
 
             if (_progressManager.WasCurrentMilestoneCompleted)
             {
-                _currentTour.MarkAsCompleted();
+                _currentTour.Complete();
                 _playableCharacter.LocateAt(_currentTour.LastStopInList.transform);
             }
         }
     }
 
     void OnTourStopVisited(TourStop tourStop) => TourStopVisitedEvent?.Invoke(tourStop);
-
-    void OnNextTourStopChange(TourStop tourStop) => NextTourStopChangeEvent?.Invoke(tourStop);
 
     void OnContextualPanelHidden()
     {
@@ -135,15 +131,7 @@ public class TourManager : MonoBehaviour
 
     void OnPlayTourClicked()
     {
-        if (_currentTour != null)
-        {
-            _currentTour.StartTour();
-            _soundManager.PlayTourStartSFX();
-        }
-        else
-        {
-            Debug.LogWarning($"[TourManager] No current tour to start when PlayTourClicked.");
-        }
+        _soundManager.PlayTourStartSFX();
     }
 
     void OnResetTourClicked()
