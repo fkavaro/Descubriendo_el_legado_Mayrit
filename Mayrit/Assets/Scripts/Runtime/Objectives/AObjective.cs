@@ -2,8 +2,8 @@ using UnityEngine;
 using System;
 
 [RequireComponent(typeof(SphereCollider))]
-public abstract class ObjectiveObjectBase<T, TData> : MonoBehaviour
-where T : ObjectiveObjectBase<T, TData>
+public abstract class AObjective<T, TData> : MonoBehaviour
+where T : AObjective<T, TData>
 {
     #region EDITOR PROPERTIES
     [Header("Objective Settings")]

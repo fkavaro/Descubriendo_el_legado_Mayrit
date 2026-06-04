@@ -1,7 +1,7 @@
 using UnityEngine;
 using Unity.Cinemachine;
 
-public class TourStop : ObjectiveObjectBase<TourStop, DataSO>
+public class TourStop : AObjective<TourStop, DataSO>
 {
     public CinemachineCamera Camera => _camera;
 

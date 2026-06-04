@@ -1,4 +1,4 @@
-public class CollectiblesTracker : ObjectiveTrackerBase<CollectiblesTracker, Collectible, CollectibleSO>
+public class CollectiblesTracker : AObjectivesTracker<CollectiblesTracker, Collectible, CollectibleSO>
 {
 
 }

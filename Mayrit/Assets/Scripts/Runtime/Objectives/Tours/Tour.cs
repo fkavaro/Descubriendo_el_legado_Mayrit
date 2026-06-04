@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Tour : ObjectiveTrackerBase<Tour, TourStop, DataSO>
+public class Tour : AObjectivesTracker<Tour, TourStop, DataSO>
 {
     [SerializeField] private DataSO _tourData;
     public DataSO TourData => _tourData;

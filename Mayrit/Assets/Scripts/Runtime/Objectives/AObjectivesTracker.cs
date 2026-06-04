@@ -2,9 +2,9 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 
-public abstract class ObjectiveTrackerBase<TTracker, TObject, TData> : MonoBehaviour
-    where TTracker : ObjectiveTrackerBase<TTracker, TObject, TData>
-    where TObject : ObjectiveObjectBase<TObject, TData>
+public abstract class AObjectivesTracker<TTracker, TObject, TData> : MonoBehaviour
+    where TTracker : AObjectivesTracker<TTracker, TObject, TData>
+    where TObject : AObjective<TObject, TData>
 {
     #region EDITOR PROPERTIES
     [Header("Tracker State")]

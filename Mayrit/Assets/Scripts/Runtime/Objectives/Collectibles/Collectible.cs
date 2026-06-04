@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Collectible : ObjectiveObjectBase<Collectible, CollectibleSO>
+public class Collectible : AObjective<Collectible, CollectibleSO>
 {
     #region DEBUG GIZMOS
     void OnDrawGizmos()
