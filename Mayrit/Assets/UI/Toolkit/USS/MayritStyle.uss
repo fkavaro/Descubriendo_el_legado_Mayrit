@@ -367,7 +367,7 @@
     border-left-color: rgba(255, 215, 0, 0.59);
     border-right-color: rgba(255, 215, 0, 0.59);
     border-top-color: rgba(255, 215, 0, 0.59);
-    border-bottom-color: rgba(255, 215, 0, 0.59);
+    border-bottom-color: rgba(185, 156, 0, 0.59);
     border-top-width: 5px;
     border-right-width: 5px;
     border-bottom-width: 5px;

@@ -249,13 +249,16 @@
                         </ui:VisualElement>
                     </ui:VisualElement>
                     <ui:VisualElement name="CollectiblesArea">
-                        <ui:VisualElement name="HintsArea" style="align-self: flex-start; margin-bottom: 15px;">
-                            <ui:Label text="Pista del siguiente coleccionable" class="tourStopItem HUDtext highlighted" style="align-self: flex-start; margin-bottom: 5px;"/>
+                        <ui:VisualElement name="CollectionCompletedArea" style="flex-grow: 1; display: flex;">
+                            <ui:Label text="Colección de este hito completa" class="tourStopItem HUDtext highlighted" style="align-self: flex-start; margin-bottom: 5px;"/>
+                        </ui:VisualElement>
+                        <ui:VisualElement name="HintsArea" style="align-self: flex-start; display: flex;">
+                            <ui:Label text="Siguiente coleccionable" class="tourStopItem HUDtext highlighted" style="align-self: flex-start; margin-bottom: 5px;"/>
                             <ui:VisualElement name="HintsList" style="padding-left: 15px; padding-top: 10px; padding-bottom: 10px; border-top-left-radius: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px; border-bottom-left-radius: 20px; border-left-width: 3px; border-left-color: rgba(76, 87, 142, 0.78); border-right-color: rgba(76, 87, 142, 0.78); border-top-color: rgba(76, 87, 142, 0.78); border-bottom-color: rgba(76, 87, 142, 0.78); align-self: flex-start;">
                                 <ui:Label text="Texto de pista" name="Label" class="HUDtext"/>
                             </ui:VisualElement>
                         </ui:VisualElement>
-                        <ui:VisualElement name="CollectiblesCountArea" style="flex-direction: row; align-self: flex-start; padding-top: 15px; padding-right: 20px; padding-bottom: 15px; padding-left: 15px;">
+                        <ui:VisualElement name="CollectiblesCountArea" style="flex-direction: row; align-self: flex-start; padding-top: 15px; padding-right: 20px; padding-bottom: 15px; padding-left: 15px; margin-top: 15px;">
                             <ui:VisualElement name="BlurBg" class="smallButtonBlurBg" style="flex-grow: 1;"/>
                             <ui:VisualElement name="CountCapsule" style="flex-direction: row; height: 30px; justify-content: center; align-items: center; align-self: center; padding-left: 10px; padding-right: 10px; padding-top: 3px; background-color: rgba(37, 41, 58, 0.86); border-left-color: rgba(76, 87, 142, 0.78); border-right-color: rgba(76, 87, 142, 0.78); border-top-color: rgba(76, 87, 142, 0.78); border-bottom-color: rgba(76, 87, 142, 0.78); border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-top-left-radius: 15px; border-top-right-radius: 15px; border-bottom-right-radius: 15px; border-bottom-left-radius: 15px; margin-right: 10px;">
                                 <ui:Label text="0" name="FoundCollectiblesCount" class="HUDtext" style="margin-bottom: 0; -unity-text-align: middle-left;"/>
@@ -271,13 +274,16 @@
                 <ui:VisualElement name="Up" style="align-self: flex-end;"/>
                 <ui:VisualElement name="Down" style="align-self: flex-end; align-items: flex-end;">
                     <ui:VisualElement name="TourArea" style="top: 0; right: 180px; position: relative; flex-direction: column; display: flex;">
+                        <ui:VisualElement name="TourCompletedArea" style="flex-grow: 1; display: flex;">
+                            <ui:Label text="Tour completado" class="tourStopItem HUDtext highlighted" style="align-self: flex-end; margin-bottom: 5px; -unity-text-align: middle-right;"/>
+                        </ui:VisualElement>
                         <ui:VisualElement name="StopsArea" style="flex-grow: 1; display: flex;">
                             <ui:Label text="Siguiente parada" class="tourStopItem HUDtext highlighted" style="align-self: flex-end; margin-bottom: 5px; -unity-text-align: middle-right;"/>
-                            <ui:VisualElement name="StopsList" style="flex-direction: column; border-left-width: 0; border-bottom-left-radius: 20px; border-top-left-radius: 20px; border-left-color: rgba(255, 215, 0, 0.59); border-right-color: rgba(255, 215, 0, 0.59); border-top-color: rgba(255, 215, 0, 0.59); border-bottom-color: rgba(255, 215, 0, 0.59); padding-left: 0; padding-bottom: 10px; padding-top: 10px; border-top-right-radius: 20px; border-bottom-right-radius: 20px; margin-bottom: 15px; align-self: flex-end; border-right-width: 3px; padding-right: 15px;">
+                            <ui:VisualElement name="StopsList" style="flex-direction: column; border-left-width: 0; border-bottom-left-radius: 20px; border-top-left-radius: 20px; border-left-color: rgba(255, 215, 0, 0.59); border-right-color: rgba(255, 215, 0, 0.59); border-top-color: rgba(255, 215, 0, 0.59); border-bottom-color: rgba(255, 215, 0, 0.59); padding-left: 0; padding-bottom: 10px; padding-top: 10px; border-top-right-radius: 20px; border-bottom-right-radius: 20px; align-self: flex-end; border-right-width: 3px; padding-right: 15px;">
                                 <ui:Label text="Nombre de la parada" name="NextStop" class="HUDtext" style="-unity-text-align: middle-right;"/>
                             </ui:VisualElement>
                         </ui:VisualElement>
-                        <ui:VisualElement name="TourStopsCountArea" style="flex-direction: row; align-self: flex-start; padding-top: 15px; padding-right: 15px; padding-bottom: 15px; padding-left: 20px;">
+                        <ui:VisualElement name="TourStopsCountArea" style="flex-direction: row; align-self: flex-start; padding-top: 15px; padding-right: 15px; padding-bottom: 15px; padding-left: 20px; margin-top: 15px;">
                             <ui:VisualElement name="BlurBg" class="smallButtonBlurBg" style="flex-grow: 1;"/>
                             <ui:Label text="Paradas del tour" class="HUDheader" style="padding-top: 3px;"/>
                             <ui:VisualElement name="CountCapsule" style="flex-direction: row; height: 30px; justify-content: center; align-items: center; align-self: center; padding-left: 10px; padding-right: 10px; padding-top: 3px; background-color: rgba(94, 81, 11, 0.59); border-left-color: rgba(255, 215, 0, 0.59); border-right-color: rgba(255, 215, 0, 0.59); border-top-color: rgba(255, 215, 0, 0.59); border-bottom-color: rgba(255, 215, 0, 0.59); border-top-width: 2px; border-right-width: 2px; border-bottom-width: 2px; border-left-width: 2px; border-top-left-radius: 15px; border-top-right-radius: 15px; border-bottom-right-radius: 15px; border-bottom-left-radius: 15px; margin-right: 0; margin-left: 10px;">
@@ -290,10 +296,13 @@
                 </ui:VisualElement>
             </ui:VisualElement>
             <ui:VisualElement name="CenterAbove" picking-mode="Ignore" style="justify-content: space-around; position: absolute; top: 0; left: 0; right: 0; bottom: auto; display: flex; align-self: center;">
-                <ui:VisualElement name="OnTourEnd" style="flex-grow: 1; width: 560px; align-self: center; padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 20px; margin-top: 40px; display: none;">
+                <ui:VisualElement name="TourCompletedVisual" style="flex-grow: 1; width: 560px; align-self: center; padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 20px; margin-top: 40px; display: flex; position: relative;">
                     <ui:VisualElement name="BlurBg" class="tourEndBlurBg"/>
-                    <ui:Label text="¡Tour completado!" class="header" style="-unity-text-align: upper-center;"/>
-                    <ui:Label text="Pulsa  &lt;b&gt;[ Back ]&lt;/b&gt;  para volver a la  cámara aérea" class="subHeader" style="-unity-text-align: upper-center;"/>
+                    <ui:Label text="Tour completado" class="header" style="-unity-text-align: upper-center;"/>
+                </ui:VisualElement>
+                <ui:VisualElement name="CollectionCompletedVisual" style="flex-grow: 1; width: 560px; align-self: center; padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 20px; margin-top: 40px; display: flex; position: relative;">
+                    <ui:VisualElement name="BlurBg" class="tutorialBlurBg"/>
+                    <ui:Label text="Colección completa" class="header" style="-unity-text-align: upper-center;"/>
                 </ui:VisualElement>
             </ui:VisualElement>
             <ui:VisualElement name="CenterBelow" picking-mode="Ignore" style="position: absolute; bottom: 0; left: 0; right: 0; justify-content: flex-end;">

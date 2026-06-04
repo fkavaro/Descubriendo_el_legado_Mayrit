@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -7,12 +8,14 @@ public class PlayerHUD_UIState : AHUDState
     #region  PROPERTIES
     TourManager _tourManager;
     CollectiblesManager _collectiblesManager;
-    Collectible Collectible => _collectiblesManager.CurrentCollectible;
 
-    VisualElement _onTourEndVisual,
+    VisualElement _tourCompletedVisual,
+        _collectionCompletedVisual,
         _tourArea,
+        _tourCompletedArea,
         _stopsArea,
         _collectiblesArea,
+        _collectionCompletedArea,
         _hintsArea,
         _hintsList;
     Label _nextStopLabel,
@@ -20,6 +23,9 @@ public class PlayerHUD_UIState : AHUDState
         _totalTourStopsLabel,
         _foundCollectiblesLabel,
         _totalCollectiblesLabel;
+
+    bool _shownCompletedTourVisual,
+        _shownCompletedCollectionVisual;
     #endregion
 
     #region CONSTRUCTOR
@@ -33,17 +39,21 @@ public class PlayerHUD_UIState : AHUDState
         base.ConfigureUIElementsOnAwake();
 
         _tourArea = GetByName<VisualElement>("TourArea");
+        _tourCompletedArea = GetByName<VisualElement>("TourCompletedArea", _tourArea);
         _stopsArea = GetByName<VisualElement>("StopsArea", _tourArea);
         _nextStopLabel = GetByName<Label>("NextStop", _stopsArea);
         _completedTourStopsLabel = GetByName<Label>("CompletedTourStopsCount");
         _totalTourStopsLabel = GetByName<Label>("TotalTourStopsCount");
-        _onTourEndVisual = GetByName<VisualElement>("OnTourEnd");
+        _tourCompletedVisual = GetByName<VisualElement>("TourCompletedVisual");
 
         _collectiblesArea = GetByName<VisualElement>("CollectiblesArea");
+
         _hintsArea = GetByName<VisualElement>("HintsArea", _collectiblesArea);
+        _collectionCompletedArea = GetByName<VisualElement>("CollectionCompletedArea", _collectiblesArea);
         _hintsList = GetByName<VisualElement>("HintsList", _hintsArea);
         _foundCollectiblesLabel = GetByName<Label>("FoundCollectiblesCount", _collectiblesArea);
         _totalCollectiblesLabel = GetByName<Label>("TotalCollectiblesCount", _collectiblesArea);
+        _collectionCompletedVisual = GetByName<VisualElement>("CollectionCompletedVisual");
     }
 
     protected override void GetServicesDependenciesOnStart()
@@ -57,16 +67,22 @@ public class PlayerHUD_UIState : AHUDState
             Debug.LogWarning("PlayerHUD_UIState: No TourManager found in ServiceLocator on StartState");
         if (_collectiblesManager == null)
             Debug.LogWarning("PlayerHUD_UIState: No CollectiblesManager found in ServiceLocator on StartState");
+
+        _progressManager.MilestoneChangedEvent += OnMilestoneChanged;
+
+        _shownCompletedTourVisual = false;
+        _shownCompletedCollectionVisual = false;
     }
 
     public override void StartState()
     {
         base.StartState();
 
-        _tourManager.TourStopVisitedEvent += OnTourStopVisited;
-        _collectiblesManager.OnCollectibleFoundEvent += OnCollectibleFound;
+        if (!_tourManager.CurrentTour.IsCompleted)
+            _shownCompletedTourVisual = false;
+        if (!_collectiblesManager.CurrentTracker.IsCompleted)
+            _shownCompletedCollectionVisual = false;
 
-        ShowTourEndVisual(_tourManager.CurrentTour.IsCompleted);
         UpdateTourStopsUI();
         UpdateCollectiblesUI();
         _compass.IsNextTourStopShown = true;
@@ -75,9 +91,6 @@ public class PlayerHUD_UIState : AHUDState
     public override void ExitState()
     {
         base.ExitState();
-
-        _tourManager.TourStopVisitedEvent -= OnTourStopVisited;
-        _collectiblesManager.OnCollectibleFoundEvent -= OnCollectibleFound;
 
         // Unlock cursor and make it visible (has been lock in 3rd person camera state start)
         UnityEngine.Cursor.lockState = CursorLockMode.None;
@@ -90,36 +103,46 @@ public class PlayerHUD_UIState : AHUDState
     protected override void OnContextualPanelShown()
     {
         _tourArea.style.display = DisplayStyle.None;
-        _onTourEndVisual.style.display = DisplayStyle.None;
+        _collectiblesArea.style.display = DisplayStyle.None;
+        _tourCompletedVisual.style.display = DisplayStyle.None;
+        _collectionCompletedVisual.style.display = DisplayStyle.None;
     }
 
     protected override void OnContextualPanelHidden()
     {
         _tourArea.style.display = DisplayStyle.Flex;
-        ShowTourEndVisual(_tourManager.CurrentTour.IsCompleted);
+        _collectiblesArea.style.display = DisplayStyle.Flex;
+        UpdateTourStopsUI();
+        UpdateCollectiblesUI();
     }
     #endregion
 
     #region PRIVATE METHODS
-    void ShowTourEndVisual(bool show)
-    {
-        if (show)
-        {
-            _stopsArea.style.display = DisplayStyle.None;
-            _onTourEndVisual.style.display = DisplayStyle.Flex;
-        }
-        else
-        {
-            _stopsArea.style.display = DisplayStyle.Flex;
-            _onTourEndVisual.style.display = DisplayStyle.None;
-        }
-    }
-
     void UpdateTourStopsUI()
     {
         _nextStopLabel.text = _tourManager.CurrentTourStop != null ? $"{_tourManager.CurrentTourStop.Data.Header}" : "Tour completado";
         _completedTourStopsLabel.text = $"{_tourManager.CurrentTour.ReachedCount}";
         _totalTourStopsLabel.text = $"{_tourManager.CurrentTour.TotalCount}";
+
+        if (_tourManager.CurrentTour.IsCompleted)
+        {
+            _stopsArea.style.display = DisplayStyle.None;
+            _tourCompletedArea.style.display = DisplayStyle.Flex;
+
+            if (!_shownCompletedTourVisual)
+            {
+                _tourCompletedVisual.style.display = DisplayStyle.Flex;
+                _shownCompletedTourVisual = true;
+            }
+            else
+                _tourCompletedVisual.style.display = DisplayStyle.None;
+        }
+        else
+        {
+            _stopsArea.style.display = DisplayStyle.Flex;
+            _tourCompletedArea.style.display = DisplayStyle.None;
+            _tourCompletedVisual.style.display = DisplayStyle.None;
+        }
     }
 
     void UpdateCollectiblesUI()
@@ -130,25 +153,27 @@ public class PlayerHUD_UIState : AHUDState
         _foundCollectiblesLabel.text = $"{foundCollectibles}";
         _totalCollectiblesLabel.text = $"{totalCollectibles}";
 
-        if (foundCollectibles >= totalCollectibles)
+        if (_collectiblesManager.CurrentTracker.IsCompleted)
+        {
             _hintsArea.style.display = DisplayStyle.None;
+            _collectionCompletedArea.style.display = DisplayStyle.Flex;
+
+            if (!_shownCompletedCollectionVisual)
+            {
+                _collectionCompletedVisual.style.display = DisplayStyle.Flex;
+                _shownCompletedCollectionVisual = true;
+            }
+            else
+                _collectionCompletedVisual.style.display = DisplayStyle.None;
+        }
         else
         {
-            PopulateCollectiblesHints();
             _hintsArea.style.display = DisplayStyle.Flex;
+            PopulateCollectiblesHints();
+            _collectionCompletedArea.style.display = DisplayStyle.None;
+            _collectionCompletedVisual.style.display = DisplayStyle.None;
         }
     }
-
-    void OnTourStopVisited(TourStop tourStop)
-    {
-        UpdateTourStopsUI();
-    }
-
-    void OnCollectibleFound(Collectible collectible)
-    {
-        UpdateCollectiblesUI();
-    }
-    #endregion
 
     void PopulateCollectiblesHints()
     {
@@ -162,4 +187,18 @@ public class PlayerHUD_UIState : AHUDState
             _hintsList.Add(hintLabel);
         }
     }
+
+    void Reset()
+    {
+        _shownCompletedTourVisual = false;
+        _shownCompletedCollectionVisual = false;
+    }
+    #endregion
+
+    #region CALLBACK METHODS
+    void OnMilestoneChanged(Milestone_DataSO sO)
+    {
+        Reset();
+    }
+    #endregion
 }
