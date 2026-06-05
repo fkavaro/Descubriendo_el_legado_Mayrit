@@ -22,7 +22,7 @@ public class Collectible : AObjective<Collectible, CollectibleSO>
         base.Start();
 
         _uiManager = ServiceLocator.Instance.Get<UIManager>();
-        _uiManager.ContextualPanelHiddenEvent += OnContextualPanelHidden;
+        _uiManager.StateChangedEvent += OnUIStateChanged;
     }
 
     protected override void OnTriggerEnterAction()
@@ -33,11 +33,13 @@ public class Collectible : AObjective<Collectible, CollectibleSO>
     protected override void OnDisable()
     {
         base.OnDisable();
-        _uiManager.ContextualPanelHiddenEvent -= OnContextualPanelHidden;
+        _uiManager.StateChangedEvent -= OnUIStateChanged;
     }
 
-    void OnContextualPanelHidden()
+    void OnUIStateChanged()
     {
+        if (_uiManager.IsInContextualPanelState) return;
+
         if (_isReached)
             UpdateVisuals();
     }

@@ -68,10 +68,12 @@ public class PauseMenu_UIState : AUIState
         _gameManager.SwitchToGamePlayState();
         _soundManager.PlayButtonClickSFX();
 
-        if (_cameraManager.IsInAerialState || _cameraManager.IsInOrbitalState)
+        if (_cameraManager.IsInAerialState)
             _uiManager.SwitchToAerialHUDState();
-        else // Third Person or TourStop cameras
+        else if (_cameraManager.IsInThirdPersonState)
             _uiManager.SwitchToPlayerHUDState();
+        else
+            _uiManager.SwitchToContextualPanelState();
     }
 
     void OnPauseKeyPressed(InputAction.CallbackContext context)

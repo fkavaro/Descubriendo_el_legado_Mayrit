@@ -44,22 +44,28 @@ public class ModernBuilding : MonoBehaviour
     {
         // Subscribe to events
         _cameraManager.CameraStateChangedEvent += FixActivation;
-        _uiManager.ContextualPanelHiddenEvent += FixActivation;
+        _uiManager.StateChangedEvent += OnUIStateChanged;
         _uiManager.ModernVisualizationToggled += OnVisualizationToggled;
-        _uiManager.ContextualPanelShownEvent += OnContextualPanelShown;
     }
 
     void OnDisable()
     {
         // Unsubscribe from events
         _cameraManager.CameraStateChangedEvent -= FixActivation;
-        _uiManager.ContextualPanelHiddenEvent -= FixActivation;
+        _uiManager.StateChangedEvent -= OnUIStateChanged;
         _uiManager.ModernVisualizationToggled -= OnVisualizationToggled;
-        _uiManager.ContextualPanelShownEvent -= OnContextualPanelShown;
     }
     #endregion
 
     #region CALLBACK METHODS
+    void OnUIStateChanged()
+    {
+        if (_uiManager.IsInContextualPanelState)
+            OnContextualPanelShown(_uiManager.ContextualPanelState.DataToShow);
+        else
+            FixActivation();
+    }
+
     void FixActivation()
     {
         if (_cameraManager.IsInThirdPersonState || _cameraManager.IsInTourStopState)

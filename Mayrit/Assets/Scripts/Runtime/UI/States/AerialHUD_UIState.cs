@@ -19,6 +19,8 @@ public class AerialHUD_UIState : AHUDState
         _nextMilestoneButtonImage;
 
     public Switch _modernVisualizactionSwitch;
+
+    public Action MilestoneInfoClickedEvent;
     #endregion
 
     #region CONSTRUCTOR
@@ -63,8 +65,6 @@ public class AerialHUD_UIState : AHUDState
     {
         base.StartState();
 
-        _switches.style.display = _wasContextualPanelShown ? DisplayStyle.None : DisplayStyle.Flex;
-        _milestoneArea.style.display = _wasContextualPanelShown ? DisplayStyle.None : DisplayStyle.Flex;
         CheckMilestoneButtonsAvailability();
         _playerFollower.Start();
     }
@@ -80,20 +80,6 @@ public class AerialHUD_UIState : AHUDState
     {
         base.UnsubscribeToServicesEventsOnExit();
         _progressManager.MilestoneChangedEvent -= OnMilestoneChanged;
-    }
-    #endregion
-
-    #region HUD STATE INHERITED METHODS
-    protected override void OnContextualPanelShown()
-    {
-        _switches.style.display = DisplayStyle.None;
-        _milestoneArea.style.display = DisplayStyle.None;
-    }
-
-    protected override void OnContextualPanelHidden()
-    {
-        _switches.style.display = DisplayStyle.Flex;
-        _milestoneArea.style.display = DisplayStyle.Flex;
     }
     #endregion
 
@@ -118,7 +104,7 @@ public class AerialHUD_UIState : AHUDState
     #region CALLBACK METHODS
     void OnMilestoneClicked(ClickEvent evt)
     {
-        ShowContextualPanel(_progressManager.CurrentMilestoneData);
+        MilestoneInfoClickedEvent?.Invoke();
         _soundManager.PlayButtonClickSFX();
     }
 

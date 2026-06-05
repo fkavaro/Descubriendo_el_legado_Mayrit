@@ -104,7 +104,7 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
     {
         _uiManager.PlayTourClickedEvent += OnPlayTourClicked;
         _uiManager.ResetTourClickedEvent += OnResetTourClicked;
-        _uiManager.ContextualPanelHiddenEvent += OnContextualPanelHidden;
+        _uiManager.StateChangedEvent += OnUIStateChanged;
         _tourManager.TourStopVisitedEvent += OnTourStopVisited;
         _cameraManager.CameraStateChangedEvent += OnCameraStateChanged;
     }
@@ -113,7 +113,7 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
     {
         _uiManager.PlayTourClickedEvent -= OnPlayTourClicked;
         _uiManager.ResetTourClickedEvent -= OnResetTourClicked;
-        _uiManager.ContextualPanelHiddenEvent -= OnContextualPanelHidden;
+        _uiManager.StateChangedEvent -= OnUIStateChanged;
         _tourManager.TourStopVisitedEvent -= OnTourStopVisited;
         _cameraManager.CameraStateChangedEvent -= OnCameraStateChanged;
     }
@@ -147,8 +147,10 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
         PositionResetEvent?.Invoke();
     }
 
-    void OnContextualPanelHidden()
+    void OnUIStateChanged()
     {
+        if (_uiManager.IsInContextualPanelState) return;
+
         if (!_cameraManager.IsInAerialState)
             SwitchToControlledState();
     }

@@ -24,8 +24,8 @@ public class PlayerHUD_UIState : AHUDState
         _foundCollectiblesLabel,
         _totalCollectiblesLabel;
 
-    bool _shownCompletedTourVisual,
-        _shownCompletedCollectionVisual;
+    public bool ShownCompletedTourVisual,
+        ShownCompletedCollectionVisual;
     #endregion
 
     #region CONSTRUCTOR
@@ -54,6 +54,8 @@ public class PlayerHUD_UIState : AHUDState
         _foundCollectiblesLabel = GetByName<Label>("FoundCollectiblesCount", _collectiblesArea);
         _totalCollectiblesLabel = GetByName<Label>("TotalCollectiblesCount", _collectiblesArea);
         _collectionCompletedVisual = GetByName<VisualElement>("CollectionCompletedVisual");
+
+        Reset();
     }
 
     protected override void GetServicesDependenciesOnStart()
@@ -69,19 +71,11 @@ public class PlayerHUD_UIState : AHUDState
             Debug.LogWarning("PlayerHUD_UIState: No CollectiblesManager found in ServiceLocator on StartState");
 
         _progressManager.MilestoneChangedEvent += OnMilestoneChanged;
-
-        _shownCompletedTourVisual = false;
-        _shownCompletedCollectionVisual = false;
     }
 
     public override void StartState()
     {
         base.StartState();
-
-        if (!_tourManager.CurrentTour.IsCompleted)
-            _shownCompletedTourVisual = false;
-        if (!_collectiblesManager.CurrentTracker.IsCompleted)
-            _shownCompletedCollectionVisual = false;
 
         UpdateTourStopsUI();
         UpdateCollectiblesUI();
@@ -99,24 +93,6 @@ public class PlayerHUD_UIState : AHUDState
     }
     #endregion
 
-    #region HUD STATE INHERITED METHODS
-    protected override void OnContextualPanelShown()
-    {
-        _tourArea.style.display = DisplayStyle.None;
-        _collectiblesArea.style.display = DisplayStyle.None;
-        _tourCompletedVisual.style.display = DisplayStyle.None;
-        _collectionCompletedVisual.style.display = DisplayStyle.None;
-    }
-
-    protected override void OnContextualPanelHidden()
-    {
-        _tourArea.style.display = DisplayStyle.Flex;
-        _collectiblesArea.style.display = DisplayStyle.Flex;
-        UpdateTourStopsUI();
-        UpdateCollectiblesUI();
-    }
-    #endregion
-
     #region PRIVATE METHODS
     void UpdateTourStopsUI()
     {
@@ -129,10 +105,10 @@ public class PlayerHUD_UIState : AHUDState
             _stopsArea.style.display = DisplayStyle.None;
             _tourCompletedArea.style.display = DisplayStyle.Flex;
 
-            if (!_shownCompletedTourVisual)
+            if (!ShownCompletedTourVisual)
             {
                 _tourCompletedVisual.style.display = DisplayStyle.Flex;
-                _shownCompletedTourVisual = true;
+                ShownCompletedTourVisual = true;
             }
             else
                 _tourCompletedVisual.style.display = DisplayStyle.None;
@@ -158,10 +134,10 @@ public class PlayerHUD_UIState : AHUDState
             _hintsArea.style.display = DisplayStyle.None;
             _collectionCompletedArea.style.display = DisplayStyle.Flex;
 
-            if (!_shownCompletedCollectionVisual)
+            if (!ShownCompletedCollectionVisual)
             {
                 _collectionCompletedVisual.style.display = DisplayStyle.Flex;
-                _shownCompletedCollectionVisual = true;
+                ShownCompletedCollectionVisual = true;
             }
             else
                 _collectionCompletedVisual.style.display = DisplayStyle.None;
@@ -190,8 +166,8 @@ public class PlayerHUD_UIState : AHUDState
 
     void Reset()
     {
-        _shownCompletedTourVisual = false;
-        _shownCompletedCollectionVisual = false;
+        ShownCompletedTourVisual = false;
+        ShownCompletedCollectionVisual = false;
     }
     #endregion
 

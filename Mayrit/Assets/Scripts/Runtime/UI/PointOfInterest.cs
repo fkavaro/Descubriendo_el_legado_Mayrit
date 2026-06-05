@@ -163,15 +163,13 @@ public class PointOfInterest : Billboard
 
     void OnClicked(ClickEvent evt)
     {
-        _uiManager.ShowContextualPanel(_orbitalStateSetting.DataToShow);
-        _soundManager.PlayButtonClickSFX();
-
         if (_orbitalStateSetting.Target == null)
         {
             Debug.LogWarning($"[PointOfInterest] can't orbit around null target.", this);
             return;
         }
 
+        _soundManager.PlayButtonClickSFX();
         _cameraManager.SwitchToOrbitalCamera(_orbitalStateSetting);
     }
 

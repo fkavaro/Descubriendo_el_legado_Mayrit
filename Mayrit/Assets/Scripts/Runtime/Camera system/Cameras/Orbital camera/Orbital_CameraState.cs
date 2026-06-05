@@ -26,7 +26,7 @@ public class Orbital_CameraState : ACameraState
         _gameManager.InputActions.Camera.Enable();
 
         _controller.Start(Setting);
-        _uiManager.ShowContextualPanel(Setting.DataToShow);
+        _uiManager.SwitchToContextualPanelState(Setting.DataToShow);
     }
 
     public override void LateUpdateState()

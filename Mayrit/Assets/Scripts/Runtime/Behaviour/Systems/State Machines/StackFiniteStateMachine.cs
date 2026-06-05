@@ -69,19 +69,28 @@ where StateType : AState
             return _stateStack.Peek();
     }
 
+    public StateType PopPreviousState()
+    {
+        // Empty stack
+        if (_stateStack.Count == 0)
+            return null;
+        else // Not empty
+            // Get the last state from the stack and remove it
+            return _stateStack.Pop();
+    }
+
     /// <summary>
     /// Switches to the previous state in the stack,
     /// removing it from the stack.
     /// </summary>
-    public bool SwitchToPreviousStateInStack()
+    public StateType SwitchToPreviousStateInStack()
     {
-        // Empty stack
-        if (_stateStack.Count == 0)
-            return false;
+        StateType previousState = PopPreviousState();
 
-        // Not empty stack
-        SwitchState(_stateStack.Pop());
-        return true;
+        if (previousState != null)
+            SwitchState(previousState);
+
+        return previousState;
     }
     #endregion
 

@@ -16,7 +16,6 @@ public class TourManager : MonoBehaviour
 
     #region INTERNAL PROPERTIES
     public event Action<TourStop> TourStopVisitedEvent;
-    public event Action<TourStop> NextTourStopChangeEvent;
     public event Action<Tour> TourCompletedEvent;
 
     // Dependency Injection
@@ -95,7 +94,7 @@ public class TourManager : MonoBehaviour
         if (type == SceneDatabase.SceneType.Milestone)
         {
             AttachToTour(ServiceLocator.Instance.Get<Tour>());
-            _uiManager.ContextualPanelHiddenEvent += OnContextualPanelHidden;
+            _uiManager.StateChangedEvent += OnUIStateChanged;
             _playableCharacter = ServiceLocator.Instance.Get<PlayableCharacter>();
 
             if (_playableCharacter == null)
@@ -114,13 +113,15 @@ public class TourManager : MonoBehaviour
 
     void OnTourStopVisited(TourStop tourStop) => TourStopVisitedEvent?.Invoke(tourStop);
 
-    void OnContextualPanelHidden()
+    void OnUIStateChanged()
     {
+        if (_uiManager.IsInContextualPanelState) return;
+
         // Invoke completed event if tour is completed
         if (_currentTour != null && _currentTour.IsCompleted)
         {
             _soundManager.PlayTourEndSFX();
-            _uiManager.ContextualPanelHiddenEvent -= OnContextualPanelHidden;
+            _uiManager.StateChangedEvent -= OnUIStateChanged;
         }
     }
 

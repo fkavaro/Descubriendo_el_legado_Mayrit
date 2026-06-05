@@ -58,7 +58,7 @@ public class PathVisualizer
     /// </summary>
     public void Initialize()
     {
-        _tourManager.NextTourStopChangeEvent += OnNextPOIChange;
+        //_tourManager.NextTourStopChangeEvent += OnNextPOIChange;
 
         if (_lineRenderer == null)
             return;
@@ -73,7 +73,7 @@ public class PathVisualizer
     /// </summary>
     public void Deinitialize()
     {
-        _tourManager.NextTourStopChangeEvent -= OnNextPOIChange;
+        //_tourManager.NextTourStopChangeEvent -= OnNextPOIChange;
     }
 
     /// <summary>

@@ -14,16 +14,20 @@ public class ContextualPanelShownConditionSO : ATutorialStepConditionSO
 
     public override void BeginListening()
     {
-        _uiManager.ContextualPanelShownEvent += OnContextualPanelShown;
+        _uiManager.StateChangedEvent += OnUIStateChanged;
     }
 
     public override void EndListening()
     {
-        _uiManager.ContextualPanelShownEvent -= OnContextualPanelShown;
+        _uiManager.StateChangedEvent -= OnUIStateChanged;
     }
 
-    void OnContextualPanelShown(DataSO data)
+    void OnUIStateChanged()
     {
+        if (!_uiManager.IsInContextualPanelState) return;
+
+        DataSO data = _uiManager.ContextualPanelState.DataToShow;
+
         if (_dataTypes.Contains(data.Type))
         {
             EndListening();

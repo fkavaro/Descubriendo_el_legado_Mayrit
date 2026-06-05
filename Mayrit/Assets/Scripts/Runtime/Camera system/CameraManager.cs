@@ -93,8 +93,7 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
 
         // Subscribe to events
         _uiManager.EdgeScrollingToggledEvent += _aerialCameraData.OnIsEdgeScrollingToggled;
-        _uiManager.ContextualPanelHiddenEvent += OnContextualPanelHidden;
-        _uiManager.PlayTourClickedEvent += SwitchToThirdPersonCamera;
+        _uiManager.StateChangedEvent += OnUIStateChanged;
         _tourManager.TourStopVisitedEvent += OnTourStopVisited;
         _collectiblesManager.OnCollectibleFoundEvent += OnCollectibleFound;
 
@@ -120,8 +119,7 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
     void OnDisable()
     {
         // Unsubscribe from events
-        _uiManager.ContextualPanelHiddenEvent -= OnContextualPanelHidden;
-        _uiManager.PlayTourClickedEvent -= SwitchToThirdPersonCamera;
+        _uiManager.StateChangedEvent -= OnUIStateChanged;
         _tourManager.TourStopVisitedEvent -= OnTourStopVisited;
         _collectiblesManager.OnCollectibleFoundEvent -= OnCollectibleFound;
 
@@ -142,6 +140,8 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
 
         if (_playableCharacter != null)
             _playableCharacter.PositionResetEvent -= SwitchToThirdPersonCamera;
+
+        CameraStateChangedEvent?.Invoke();
     }
 
     public void SwitchToOrbitalCamera(OrbitalStateSetting orbitalStateSetting)
@@ -217,8 +217,6 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
 
         if (DebugMode)
             Debug.Log("Switched to aerial camera from third person.");
-
-        CameraStateChangedEvent?.Invoke();
     }
 
     void TransitionFromOrbitalToAerial()
@@ -232,8 +230,6 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
 
         if (DebugMode)
             Debug.Log("Switched to aerial camera from orbital.");
-
-        CameraStateChangedEvent?.Invoke();
     }
 
     Vector3 GetFixedAerialLookAtPosition(Vector3 currentPosition)
@@ -360,8 +356,16 @@ public class CameraManager : ABehaviourEntity<FiniteStateMachine<ACameraState>>
     #endregion
 
     #region EVENT CALLBACKS
-    void OnContextualPanelHidden()
+    void OnUIStateChanged()
     {
+        if (_uiManager.IsInContextualPanelState || _uiManager.IsInLoadingScreenState || _uiManager.IsInPauseState) return;
+
+        if (_uiManager.IsInPlayerHUDState)
+        {
+            SwitchToThirdPersonCamera();
+            return;
+        }
+
         if (IsInOrbitalState)
         {
             if (_orbitalState.Setting.TransitionToApply == CameraTransition.ThirdPersonCamera)
