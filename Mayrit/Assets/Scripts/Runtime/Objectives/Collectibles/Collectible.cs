@@ -28,6 +28,7 @@ public class Collectible : AObjective<Collectible, CollectibleSO>
     protected override void OnTriggerEnterAction()
     {
         Complete();
+        _vfx.SetActive(false);
     }
 
     protected override void OnDisable()

@@ -12,6 +12,7 @@ where T : AObjective<T, TData>
     [SerializeField] protected float _colliderRadius = 2f;
     [SerializeField] protected LayerMask _detectionMask = ~0;
     [SerializeField] protected GameObject _model;
+    [SerializeField] protected GameObject _vfx;
     #endregion
 
     #region INTERNAL PROPERTIES
@@ -35,6 +36,10 @@ where T : AObjective<T, TData>
             _model = transform.Find("Model").gameObject;
         if (_model == null)
             _model = transform.GetChild(0).gameObject;
+        if (_vfx == null)
+            _vfx = transform.Find("VFX").gameObject;
+        if (_vfx == null && transform.childCount > 1)
+            _vfx = transform.GetChild(1).gameObject;
 
         CompleteAndUpdateVisuals();
     }
@@ -69,7 +74,7 @@ where T : AObjective<T, TData>
     public virtual void Reset()
     {
         _isReached = false;
-        if (_sphereCollider != null) _sphereCollider.enabled = true;
+        _sphereCollider.enabled = true;
         UpdateVisuals();
     }
 
@@ -88,12 +93,18 @@ where T : AObjective<T, TData>
     protected virtual void UpdateVisuals()
     {
         if (_data != null)
+        {
             _model.SetActive(!_isReached);
+            _vfx.SetActive(!_isReached);
+        }
         else
+        {
             _model.SetActive(false);
+            _vfx.SetActive(false);
+        }
     }
 
-    protected virtual void InitializeCollider()
+    void InitializeCollider()
     {
         if (TryGetComponent(out _sphereCollider))
         {
@@ -102,13 +113,13 @@ where T : AObjective<T, TData>
         }
     }
 
-    protected virtual void OnCameraStateChanged()
+    void OnCameraStateChanged()
     {
         if (_cameraManager.IsInThirdPersonState)
             UpdateVisuals();
     }
 
-    private void SetupDefaultLayerMask()
+    void SetupDefaultLayerMask()
     {
         if (_detectionMask == (LayerMask)~0)
         {

@@ -8,12 +8,6 @@ public class TourStop : AObjective<TourStop, DataSO>
     [Header("Tour Stop Settings")]
     [SerializeField] private CinemachineCamera _camera;
 
-    void Update()
-    {
-        if (_model != null && _model.activeSelf)
-            _model.transform.Rotate(Vector3.up, 50f * Time.deltaTime, Space.World);
-    }
-
     #region DEBUG GIZMOS
     void OnDrawGizmos()
     {
