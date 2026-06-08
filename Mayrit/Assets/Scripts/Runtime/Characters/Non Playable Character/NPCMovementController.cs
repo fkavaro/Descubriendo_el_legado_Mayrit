@@ -532,13 +532,9 @@ public class NPCMovementController
     #endregion
 
     #region PLAYER PROXIMITY METHODS
-    /// <summary>
-    /// Checks if the player is too close and in front. If so, stops the agent and clears the current destination to trigger path recalculation.
-    /// </summary>
-    /// <returns>True if the player was too close and in front, and the agent was stopped.</returns>
     public bool CheckAndHandlePlayerProximity()
     {
-        if (_player == null || !IsAgentValid) return false;
+        if (_player == null || !IsAgentValid || _player.IsBeingControlled) return false;
 
         float distanceToPlayer = Vector3.Distance(_npc.GO.transform.position, _player.GO.transform.position);
 
