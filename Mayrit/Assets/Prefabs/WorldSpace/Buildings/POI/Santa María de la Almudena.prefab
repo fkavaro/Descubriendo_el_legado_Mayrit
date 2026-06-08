@@ -41,7 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 128149345391807958}
   - component: {fileID: 800612776307782104}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: NavMeshModifierVolume
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3408,7 +3408,7 @@ GameObject:
   - component: {fileID: 1482190129828467039}
   - component: {fileID: 8824610579267579164}
   - component: {fileID: 9093015535903969266}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: "Santa Mar\xEDa de la Almudena"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3570,7 +3570,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1868837887502108796}
   - component: {fileID: 4537691193445670558}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Aljama mosque entrance (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3663,6 +3663,10 @@ PrefabInstance:
       value: Point of interest
       objectReference: {fileID: 0}
     - target: {fileID: 4002786552147983938, guid: 20122a36d24c42945ad2861e326b4edc, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4002786552147983938, guid: 20122a36d24c42945ad2861e326b4edc, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -3710,7 +3714,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1619423442512840311, guid: 1b402a69ccbccf144bc66f703b8f08d7, type: 3}
       propertyPath: m_Layer
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1619423442512840311, guid: 1b402a69ccbccf144bc66f703b8f08d7, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -3726,7 +3730,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1739903349626167979, guid: 1b402a69ccbccf144bc66f703b8f08d7, type: 3}
       propertyPath: m_Layer
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1739903349626167979, guid: 1b402a69ccbccf144bc66f703b8f08d7, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -3806,7 +3810,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6091380364839650983, guid: 1b402a69ccbccf144bc66f703b8f08d7, type: 3}
       propertyPath: m_Layer
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6091380364839650983, guid: 1b402a69ccbccf144bc66f703b8f08d7, type: 3}
       propertyPath: m_StaticEditorFlags

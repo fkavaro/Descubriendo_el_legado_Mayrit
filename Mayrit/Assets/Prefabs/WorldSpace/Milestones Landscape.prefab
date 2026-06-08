@@ -1265,11 +1265,11 @@ MonoBehaviour:
   m_SerializedVersion: 0
   m_AgentTypeID: 0
   m_CollectObjects: 1
-  m_Size: {x: 850, y: 130, z: 900}
-  m_Center: {x: 130, y: 50, z: -30}
+  m_Size: {x: 1000, y: 100, z: 1100}
+  m_Center: {x: 300, y: 60, z: -30}
   m_LayerMask:
     serializedVersion: 2
-    m_Bits: 89
+    m_Bits: 81
   m_UseGeometry: 0
   m_DefaultArea: 0
   m_GenerateLinks: 0
@@ -2237,11 +2237,11 @@ MonoBehaviour:
   m_SerializedVersion: 0
   m_AgentTypeID: 0
   m_CollectObjects: 1
-  m_Size: {x: 850, y: 130, z: 900}
-  m_Center: {x: 130, y: 50, z: -30}
+  m_Size: {x: 1000, y: 100, z: 1100}
+  m_Center: {x: 300, y: 60, z: -30}
   m_LayerMask:
     serializedVersion: 2
-    m_Bits: 89
+    m_Bits: 81
   m_UseGeometry: 0
   m_DefaultArea: 0
   m_GenerateLinks: 0
@@ -4451,11 +4451,11 @@ MonoBehaviour:
   m_SerializedVersion: 0
   m_AgentTypeID: 0
   m_CollectObjects: 1
-  m_Size: {x: 850, y: 130, z: 900}
-  m_Center: {x: 130, y: 50, z: -30}
+  m_Size: {x: 1000, y: 100, z: 1100}
+  m_Center: {x: 300, y: 60, z: -30}
   m_LayerMask:
     serializedVersion: 2
-    m_Bits: 89
+    m_Bits: 81
   m_UseGeometry: 0
   m_DefaultArea: 0
   m_GenerateLinks: 0
@@ -5465,11 +5465,11 @@ MonoBehaviour:
   m_SerializedVersion: 0
   m_AgentTypeID: 0
   m_CollectObjects: 1
-  m_Size: {x: 850, y: 130, z: 900}
-  m_Center: {x: 130, y: 50, z: -30}
+  m_Size: {x: 1000, y: 100, z: 1100}
+  m_Center: {x: 300, y: 60, z: -30}
   m_LayerMask:
     serializedVersion: 2
-    m_Bits: 89
+    m_Bits: 81
   m_UseGeometry: 0
   m_DefaultArea: 0
   m_GenerateLinks: 0
@@ -8680,11 +8680,11 @@ MonoBehaviour:
   m_SerializedVersion: 0
   m_AgentTypeID: 0
   m_CollectObjects: 1
-  m_Size: {x: 460, y: 130, z: 600}
-  m_Center: {x: -60, y: 50, z: 125}
+  m_Size: {x: 1000, y: 100, z: 1100}
+  m_Center: {x: 300, y: 60, z: -30}
   m_LayerMask:
     serializedVersion: 2
-    m_Bits: 89
+    m_Bits: 81
   m_UseGeometry: 0
   m_DefaultArea: 0
   m_GenerateLinks: 0
@@ -8991,11 +8991,11 @@ MonoBehaviour:
   m_SerializedVersion: 0
   m_AgentTypeID: 0
   m_CollectObjects: 1
-  m_Size: {x: 249, y: 130, z: 320}
-  m_Center: {x: -778.5, y: 50, z: -173}
+  m_Size: {x: 1000, y: 100, z: 1100}
+  m_Center: {x: 300, y: 60, z: -30}
   m_LayerMask:
     serializedVersion: 2
-    m_Bits: 89
+    m_Bits: 81
   m_UseGeometry: 0
   m_DefaultArea: 0
   m_GenerateLinks: 0
@@ -9083,11 +9083,11 @@ MonoBehaviour:
   m_SerializedVersion: 0
   m_AgentTypeID: 0
   m_CollectObjects: 1
-  m_Size: {x: 850, y: 130, z: 900}
-  m_Center: {x: 130, y: 50, z: -30}
+  m_Size: {x: 1000, y: 100, z: 1100}
+  m_Center: {x: 300, y: 60, z: -30}
   m_LayerMask:
     serializedVersion: 2
-    m_Bits: 89
+    m_Bits: 81
   m_UseGeometry: 0
   m_DefaultArea: 0
   m_GenerateLinks: 0
@@ -9176,11 +9176,11 @@ MonoBehaviour:
   m_SerializedVersion: 0
   m_AgentTypeID: 0
   m_CollectObjects: 1
-  m_Size: {x: 460, y: 130, z: 600}
-  m_Center: {x: -60, y: 50, z: 125}
+  m_Size: {x: 1000, y: 100, z: 1100}
+  m_Center: {x: 300, y: 60, z: -30}
   m_LayerMask:
     serializedVersion: 2
-    m_Bits: 89
+    m_Bits: 81
   m_UseGeometry: 0
   m_DefaultArea: 0
   m_GenerateLinks: 0

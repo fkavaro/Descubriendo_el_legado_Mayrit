@@ -48,9 +48,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshModifierVolume
   m_SerializedVersion: 0
-  m_Size: {x: 1, y: 1.6688927, z: 1}
-  m_Center: {x: 0, y: 0.75731677, z: 0}
-  m_Area: 0
+  m_Size: {x: 1.2, y: 1.7, z: 1.2}
+  m_Center: {x: 0, y: 0.75, z: 0}
+  m_Area: 1
   m_AffectedAgents: ffffffff
 --- !u!136 &6444136985934830336
 CapsuleCollider:

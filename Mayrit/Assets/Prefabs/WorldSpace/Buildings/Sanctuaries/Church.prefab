@@ -1327,7 +1327,7 @@ GameObject:
   m_Component:
   - component: {fileID: 950529851081839373}
   - component: {fileID: 9048100232118412073}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: LOD Group
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1445,7 +1445,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2062623636518982340}
   - component: {fileID: 4512518676025971956}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: NavMeshModifierVolume
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1480,8 +1480,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshModifierVolume
   m_SerializedVersion: 0
-  m_Size: {x: 13.077995, y: 18, z: 17.921646}
-  m_Center: {x: -2.313137, y: 5.5, z: -1.2835388}
+  m_Size: {x: 13.879068, y: 14.084, z: 18.718216}
+  m_Center: {x: -2.3324594, y: 3.9727716, z: -1.2937069}
   m_Area: 1
   m_AffectedAgents: ffffffff
 --- !u!1001 &2189283130113966664
@@ -1492,6 +1492,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6547628267696245721}
     m_Modifications:
+    - target: {fileID: 1619423442512840311, guid: 1b402a69ccbccf144bc66f703b8f08d7, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1619423442512840311, guid: 1b402a69ccbccf144bc66f703b8f08d7, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
