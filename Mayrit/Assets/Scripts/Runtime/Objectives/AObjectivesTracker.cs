@@ -101,9 +101,9 @@ public abstract class AObjectivesTracker<TTracker, TObject, TData> : MonoBehavio
     #region PRIVATE METHODS
     protected void HandleObjectReached(TObject reachedObj)
     {
-        UpdateStateAndProgress();
-
         OnObjectiveReachedAction(reachedObj);
+
+        UpdateStateAndProgress();
 
         OnObjectiveReachedEvent?.Invoke(reachedObj);
 

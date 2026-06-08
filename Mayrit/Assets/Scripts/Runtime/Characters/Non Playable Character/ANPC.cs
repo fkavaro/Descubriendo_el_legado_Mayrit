@@ -158,6 +158,7 @@ where BehaviourSystemType : ABehaviourSystem
 
 
         _characterModel.SetActive(isActive && _shouldRenderCharacterModel);
+        // TODO if failed, return to pool
         _agent.enabled = isActive;
         _isOutdoors = isActive;
     }
