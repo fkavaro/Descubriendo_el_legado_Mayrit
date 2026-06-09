@@ -154,11 +154,7 @@ public class UIManager : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
         _sfsm?.SwitchState(_informationDisplayState);
     }
     public void SwitchToSettingsMenuState() => _sfsm?.SwitchState(_settingsMenuState);
-    public void SwitchToLoadingScreenState()
-    {
-        _loadingScreenState.DataToShow = _progressManager.CurrentMilestoneData;
-        _sfsm?.SwitchState(_loadingScreenState);
-    }
+    public void SwitchToLoadingScreenState() => _sfsm?.SwitchState(_loadingScreenState);
     public void SwitchToCreditsScreenState() => _sfsm?.SwitchState(_creditsScreenState);
     #endregion
 

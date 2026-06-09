@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UIElements;
 
 public class LoadingScreen_UIState : AUIState
@@ -45,6 +46,9 @@ public class LoadingScreen_UIState : AUIState
         IsContinueClicked = false;
 
         _scenesController.SceneLoadedPartiallyEvent += OnSceneLoadedPartially;
+
+        // Get current milestone data
+        DataToShow = _progressManager.CurrentMilestoneData;
     }
 
     public override void ExitState()

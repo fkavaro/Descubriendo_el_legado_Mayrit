@@ -208,6 +208,12 @@ public class Villager : ANPC<BehaviourTree>
     {
         Reset();
 
+        if (_poolManager == null)
+        {
+            Debug.LogWarning("Pool manager is null, cannot return villager to pool.", this);
+            return;
+        }
+
         _poolManager.ReturnVillagerToPool(this);
     }
 
