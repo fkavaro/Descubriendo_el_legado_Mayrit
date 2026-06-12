@@ -34,8 +34,8 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
     public UISystem UISystem => _uiSystem;
     public SoundSystem SoundSystem => _soundSystem;
     public CameraSystem CameraSystem => _cameraSystem;
+    public ProgressSystem ProgressSystem => _progressSystem;
     public PlayableCharacter PlayableCharacter => _playableCharacter;
-    public ProgressManager ProgressManager => _progressManager;
     #endregion
 
     #region EDITOR PROPERTIES
@@ -52,7 +52,7 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
     [SerializeField] float _sfxVolumeValueSet = 1f;
     #endregion
 
-    #region INTERNAL PROPERTIES
+    #region EVENTS
     public event Action StateChangedEvent;
 
     // UI Events
@@ -67,7 +67,9 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
 
     // Progress Events
     public event Action<Milestone_DataSO> MilestoneChangedEvent;
+    #endregion
 
+    #region INTERNAL PROPERTIES
     GameInputActions _inputActions;
     FiniteStateMachine<AGameState> _fsm;
     MainMenu_GameState _mainMenuState;
@@ -84,7 +86,7 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
     SoundSystem _soundSystem;
     CameraSystem _cameraSystem;
     PlayableCharacter _playableCharacter;
-    ProgressManager _progressManager;
+    ProgressSystem _progressSystem;
     TourManager _tourManager;
     CollectiblesManager _collectiblesManager;
     #endregion
@@ -179,8 +181,8 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
 
         _soundSystem = ServiceLocator.Instance.Get<SoundSystem>();
 
-        _progressManager = ServiceLocator.Instance.Get<ProgressManager>();
-        _progressManager.MilestoneChangedEvent += OnMilestoneChanged;
+        _progressSystem = ServiceLocator.Instance.Get<ProgressSystem>();
+        _progressSystem.MilestoneChangedEvent += OnMilestoneChanged;
 
         base.Start();
     }
@@ -277,7 +279,7 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
         if (!SceneManager.GetSceneByName(SceneDatabase.SceneName.GameplayScene.ToString()).isLoaded)
             _scenesController.NewTransitionPlan()
                 .Load(SceneDatabase.SceneType.Session, SceneDatabase.SceneName.GameplayScene)
-                .Load(SceneDatabase.SceneType.Milestone, ProgressManager.StoredMilestoneScene, setActive: true)
+                .Load(SceneDatabase.SceneType.Milestone, ProgressSystem.StoredMilestoneScene, setActive: true)
                 .WithOverlay()
                 .ClearAssets()
                 .Perform();
@@ -442,13 +444,13 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
 
     void OnPreviousMilestoneClicked()
     {
-        _loadGameState.MilestoneToLoad = _progressManager.SwitchToPreviousMilestone().SceneName;
+        _loadGameState.MilestoneToLoad = _progressSystem.SwitchToPreviousMilestone().SceneName;
         SwitchToLoadGameState();
     }
 
     void OnNextMilestoneClicked()
     {
-        _loadGameState.MilestoneToLoad = _progressManager.SwitchToNextMilestone().SceneName;
+        _loadGameState.MilestoneToLoad = _progressSystem.SwitchToNextMilestone().SceneName;
         SwitchToLoadGameState();
     }
 
@@ -461,7 +463,7 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
     void OnMilestoneInfoClicked()
     {
         // TODO orbital state around whole city
-        _uiSystem.SwitchToInformationDisplayState(_progressManager.CurrentMilestoneData);
+        _uiSystem.SwitchToInformationDisplayState(_progressSystem.CurrentMilestoneData);
     }
 
     void OnContextualPanelClosed()

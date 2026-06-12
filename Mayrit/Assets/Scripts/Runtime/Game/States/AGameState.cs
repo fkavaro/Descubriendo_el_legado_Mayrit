@@ -9,7 +9,7 @@ public abstract class AGameState : AState
     protected GameManager _gameManager;
     protected UISystem UISystem => _gameManager.UISystem;
     protected SoundSystem SoundSystem => _gameManager.SoundSystem;
-    protected ProgressManager ProgressManager => _gameManager.ProgressManager;
+    protected ProgressSystem ProgressSystem => _gameManager.ProgressSystem;
     protected CameraSystem CameraSystem => _gameManager.CameraSystem;
     protected PlayableCharacter PlayableCharacter => _gameManager.PlayableCharacter;
 

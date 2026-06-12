@@ -26,7 +26,7 @@ public class AerialHUD_UIState : AHUDState
     public Action NextMilestoneClickedEvent;
     public Action<bool> ModernVisualizationToggled;
 
-    ProgressManager _progressManager;
+    ProgressSystem _progressSystem;
     #endregion
 
     #region CONSTRUCTOR
@@ -58,7 +58,7 @@ public class AerialHUD_UIState : AHUDState
     {
         base.GetServicesDependenciesOnStart();
 
-        _progressManager = ServiceLocator.Instance.Get<ProgressManager>();
+        _progressSystem = ServiceLocator.Instance.Get<ProgressSystem>();
     }
 
     protected override void SubscribeToServicesEventsOnStart()
@@ -92,13 +92,13 @@ public class AerialHUD_UIState : AHUDState
     #region PRIVATE METHODS
     void CheckMilestoneButtonsAvailability()
     {
-        bool isTherePreviousMilestone = !_progressManager.AtFirstMilestone();
+        bool isTherePreviousMilestone = !_progressSystem.AtFirstMilestone();
 
         _previousMilestoneButton.SetEnabled(isTherePreviousMilestone);
         _previousMilestoneButton.pickingMode = isTherePreviousMilestone ? PickingMode.Position : PickingMode.Ignore;
 
-        bool isCurrentMilestoneCompleted = _progressManager.IsCurrentMilestoneCompleted();
-        bool atLastMilestone = _progressManager.AtLastMilestone();
+        bool isCurrentMilestoneCompleted = _progressSystem.IsCurrentMilestoneCompleted();
+        bool atLastMilestone = _progressSystem.AtLastMilestone();
         bool isNextMilestoneAvailable = !atLastMilestone && isCurrentMilestoneCompleted;
 
         _nextMilestoneButton.SetEnabled(isNextMilestoneAvailable);
@@ -147,7 +147,7 @@ public class AerialHUD_UIState : AHUDState
         _milestoneName.text = mapping.Header;
         _milestoneDate.text = mapping.SubHeader;
 
-        _playerFollower.PlayerTransform = ServiceLocator.Instance.Get<PlayableCharacter>().transform;
+        _playerFollower.PlayerTransform = _gameManager.PlayableCharacter.transform;
     }
     #endregion
 }

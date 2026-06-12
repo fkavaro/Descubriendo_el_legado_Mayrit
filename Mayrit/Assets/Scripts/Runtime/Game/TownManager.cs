@@ -20,7 +20,7 @@ public class TownManager : MonoBehaviour
     public event Action<int> OnPopulationChanged;
 
     // Dependency Injection
-    ProgressManager _progressManager;
+    GameManager _gameManager;
     NPCPoolManager _npcPoolManager;
     #endregion
 
@@ -33,17 +33,17 @@ public class TownManager : MonoBehaviour
     void Start()
     {
         // Get dependencies from ServiceLocator
-        _progressManager = ServiceLocator.Instance.Get<ProgressManager>();
+        _gameManager = ServiceLocator.Instance.Get<GameManager>();
         _npcPoolManager = ServiceLocator.Instance.Get<NPCPoolManager>();
 
         // Subscribe to milestone changes to update population accordingly
-        _progressManager.MilestoneChangedEvent += OnMilestoneChanged;
+        _gameManager.MilestoneChangedEvent += OnMilestoneChanged;
     }
 
     void OnDisable()
     {
         // Unsubscribe from milestone changes
-        _progressManager.MilestoneChangedEvent -= OnMilestoneChanged;
+        _gameManager.MilestoneChangedEvent -= OnMilestoneChanged;
 
         ServiceLocator.Instance.Unregister(this);
     }

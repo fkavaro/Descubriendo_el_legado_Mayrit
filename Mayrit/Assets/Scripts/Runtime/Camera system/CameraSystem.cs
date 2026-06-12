@@ -37,7 +37,6 @@ public class CameraSystem : ABehaviourEntity<FiniteStateMachine<ACameraState>>
     #endregion
 
     #region EVENTS
-    /// <summary>Invoked whenever the camera state changes (aerial, orbital, third-person, tour stop).</summary>
     public event Action CameraStateChangedEvent;
     #endregion
 

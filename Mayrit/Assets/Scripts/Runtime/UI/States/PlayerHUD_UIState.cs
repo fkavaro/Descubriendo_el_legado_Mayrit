@@ -90,6 +90,8 @@ public class PlayerHUD_UIState : AHUDState
         UnityEngine.Cursor.lockState = CursorLockMode.None;
 
         _compass.IsNextTourStopShown = false;
+
+        _gameManager.MilestoneChangedEvent -= OnMilestoneChanged;
     }
     #endregion
 

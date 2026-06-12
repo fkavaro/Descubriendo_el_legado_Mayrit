@@ -47,10 +47,10 @@ public class LoadingScreen_UIState : AUIState
 
         _scenesController.SceneLoadedPartiallyEvent += OnSceneLoadedPartially;
 
-        ProgressManager progressManager = ServiceLocator.Instance.Get<ProgressManager>();
+        ProgressSystem progressSystem = ServiceLocator.Instance.Get<ProgressSystem>();
 
         // Get current milestone data
-        MilestoneData = progressManager.CurrentMilestoneData;
+        MilestoneData = progressSystem.CurrentMilestoneData;
     }
 
     public override void ExitState()

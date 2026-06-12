@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class ProgressManager : ABehaviourEntity<FiniteStateMachine<MilestoneState>>
+public class ProgressSystem : ABehaviourEntity<FiniteStateMachine<MilestoneState>>
 {
     #region PROPERTY HELPERS
     public Milestone_DataSO CurrentMilestoneData => _milestonesData[_currentMilestoneIndex];
@@ -88,7 +88,7 @@ public class ProgressManager : ABehaviourEntity<FiniteStateMachine<MilestoneStat
     {
         if (_tourManager == null || _tourManager.CurrentTour == null)
         {
-            Debug.LogWarning("ProgressManager: No current tour found. Next milestone availability will always return false.");
+            Debug.LogWarning("ProgressSystem: No current tour found. Next milestone availability will always return false.");
             return false;
         }
 
@@ -108,7 +108,7 @@ public class ProgressManager : ABehaviourEntity<FiniteStateMachine<MilestoneStat
             _currentMilestoneIndex++; // To load the next milestone to be completed
 
         if (DebugMode)
-            Debug.Log($"[ProgressManager] Milestone Change index loaded {_currentMilestoneIndex} ({CurrentMilestoneData.Header}).");
+            Debug.Log($"[ProgressSystem] Milestone Change index loaded {_currentMilestoneIndex} ({CurrentMilestoneData.Header}).");
 
         return _currentMilestoneIndex;
     }
@@ -122,7 +122,7 @@ public class ProgressManager : ABehaviourEntity<FiniteStateMachine<MilestoneStat
     {
         GameSaveSystem.SaveMilestoneIdx(_storedMilestoneIndex);
         if (DebugMode)
-            Debug.Log($"ProgressManager: Progress saved. Highest completed milestone index: {_storedMilestoneIndex}");
+            Debug.Log($"ProgressSystem: Progress saved. Highest completed milestone index: {_storedMilestoneIndex}");
     }
     #endregion
 
@@ -152,7 +152,7 @@ public class ProgressManager : ABehaviourEntity<FiniteStateMachine<MilestoneStat
             MilestoneChangedEvent?.Invoke(CurrentMilestoneData);
 
             if (DebugMode)
-                Debug.Log($"[ProgressManager] Milestone Change Event invoked for milestone index {_currentMilestoneIndex} ({CurrentMilestoneData.Header}).");
+                Debug.Log($"[ProgressSystem] Milestone Change Event invoked for milestone index {_currentMilestoneIndex} ({CurrentMilestoneData.Header}).");
         }
     }
 

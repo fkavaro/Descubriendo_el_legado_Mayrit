@@ -9,7 +9,7 @@ public class UIDebugOverlay : MonoBehaviour
     // Dependencies
     UISystem _uiSystem;
     GameManager _gameManager;
-    ProgressManager _progressManager;
+    ProgressSystem _progressSystem;
     CameraSystem _cameraManager;
     EnvironmentManager _environmentManager;
     TownManager _townManager;
@@ -52,7 +52,7 @@ public class UIDebugOverlay : MonoBehaviour
         // Get dependencies from Service Locator
         _uiSystem = ServiceLocator.Instance.Get<UISystem>();
         _gameManager = ServiceLocator.Instance.Get<GameManager>();
-        _progressManager = ServiceLocator.Instance.Get<ProgressManager>();
+        _progressSystem = ServiceLocator.Instance.Get<ProgressSystem>();
         _cameraManager = ServiceLocator.Instance.Get<CameraSystem>();
         _environmentManager = ServiceLocator.Instance.Get<EnvironmentManager>();
         _townManager = ServiceLocator.Instance.Get<TownManager>();
@@ -70,10 +70,10 @@ public class UIDebugOverlay : MonoBehaviour
         else
             GUILayout.Label("GameManager: <null>");
 
-        if (_progressManager != null && _progressManager.BehaviourSystem != null)
-            GUILayout.Label($"ProgressManager state: {_progressManager.BehaviourSystem.CurrentState.StateName}");
+        if (_progressSystem != null && _progressSystem.BehaviourSystem != null)
+            GUILayout.Label($"ProgressSystem state: {_progressSystem.BehaviourSystem.CurrentState.StateName}");
         else
-            GUILayout.Label("ProgressManager: <null>");
+            GUILayout.Label("ProgressSystem: <null>");
 
         if (_cameraManager != null && _cameraManager.BehaviourSystem != null)
             GUILayout.Label($"CameraManager state: {_cameraManager.BehaviourSystem.CurrentState.StateName}");
