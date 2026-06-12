@@ -174,7 +174,8 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
 
     void OnChangeCameraInput(InputAction.CallbackContext context)
     {
-        SwitchToAerialState();
+        if (IsInThirdPersonState)
+            SwitchToAerialState();
     }
 
     protected override void Update()
@@ -471,6 +472,8 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
             SwitchToThirdPersonState();
         else if (IsInAerialState)
             _uiSystem.SwitchToAerialHUDState();
+        else if (IsInPauseState && (_uiSystem.IsInSettingsMenuState || _uiSystem.IsInCreditsScreenState))
+            _uiSystem.SwitchToPauseState();
     }
 
     void OnPlayTourClicked()
