@@ -86,6 +86,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Teatro Real
       objectReference: {fileID: 0}
+    - target: {fileID: 5624735326297088728, guid: 0841cf5c76b5bd54b92192b1fbac4f00, type: 3}
+      propertyPath: _data
+      value: 
+      objectReference: {fileID: 11400000, guid: 270cf4c2c270447458f98e3f481ea6a2, type: 2}
     - target: {fileID: 8405083107310225359, guid: 0841cf5c76b5bd54b92192b1fbac4f00, type: 3}
       propertyPath: m_VersionIndex
       value: 6432
@@ -156,6 +160,10 @@ PrefabInstance:
       propertyPath: m_VersionIndex
       value: 9869
       objectReference: {fileID: 0}
+    - target: {fileID: 7039334064206226707, guid: 82547526f0915144a8b6af01661b087b, type: 3}
+      propertyPath: _data
+      value: 
+      objectReference: {fileID: 11400000, guid: 339abb48add76ca42a8b39229361b366, type: 2}
     - target: {fileID: 7444594075944011122, guid: 82547526f0915144a8b6af01661b087b, type: 3}
       propertyPath: m_Name
       value: Catedral de la Almudena
@@ -182,6 +190,10 @@ PrefabInstance:
       propertyPath: m_VersionIndex
       value: 39388
       objectReference: {fileID: 0}
+    - target: {fileID: 6715644156154762290, guid: 7111637221276ed47938fad8c8091467, type: 3}
+      propertyPath: _data
+      value: 
+      objectReference: {fileID: 11400000, guid: 08c6ff559703b0e45b78e1811acbb7ba, type: 2}
     - target: {fileID: 8644808381158618494, guid: 7111637221276ed47938fad8c8091467, type: 3}
       propertyPath: m_Name
       value: Palacio Real
