@@ -20,8 +20,6 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
     #endregion
 
     #region INTERNAL PROPERTIES
-    public event Action PositionResetEvent;
-
     Vector3 _originalPosition;
     Quaternion _originalRotation;
     PlayableCharacterMovementController _movementController;
@@ -98,12 +96,12 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
     #region EVENTS SUBSCRIPTION
     void SubscribeToServicesEvents()
     {
-        _gameManager.ResetTourClickedEvent += OnResetTourClicked;
+        _gameManager.TourAndPlayerResetEvent += ResetPositionAndRotation;
     }
 
     void UnsubscribeFromServicesEvents()
     {
-        _gameManager.ResetTourClickedEvent -= OnResetTourClicked;
+        _gameManager.TourAndPlayerResetEvent -= ResetPositionAndRotation;
     }
     #endregion
 
@@ -115,19 +113,10 @@ public class PlayableCharacter : ACharacter<FiniteStateMachine<APlayableCharacte
     }
     #endregion
 
-    #region PRIVATE METHODS
+    #region CALLBACK METHODS
     void ResetPositionAndRotation()
     {
         GO.transform.SetPositionAndRotation(_originalPosition, _originalRotation);
-    }
-    #endregion
-
-    #region CALLBACK METHODS
-
-    void OnResetTourClicked()
-    {
-        ResetPositionAndRotation();
-        PositionResetEvent?.Invoke();
     }
     #endregion
 }

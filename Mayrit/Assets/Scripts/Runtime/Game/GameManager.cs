@@ -63,7 +63,7 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
     public event Action<bool> POIsVisualizationToggledEvent;
     public event Action<bool> ControlsVisibilityToggledEvent;
     public event Action PlayTourClickedEvent;
-    public event Action ResetTourClickedEvent;
+    public event Action TourAndPlayerResetEvent;
 
     // Progress Events
     public event Action<Milestone_DataSO> MilestoneChangedEvent;
@@ -143,6 +143,7 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
         _uiSystem = ServiceLocator.Instance.Get<UISystem>();
 
         _uiSystem.POISelectedEvent += OnPOISelected;
+        _uiSystem.TourResetEvent += OnTourResetted;
 
         _uiSystem.MainMenuState.NewGameClickedEvent += OnNewGameClicked;
         _uiSystem.MainMenuState.LoadGameClickedEvent += OnLoadGameClicked;
@@ -318,8 +319,7 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
         if (loadedScenes.TryGetValue(SceneDatabase.SceneType.Milestone, out var milestoneScene))
         {
             _playableCharacter = ServiceLocator.Instance.Get<PlayableCharacter>();
-            // TODO necessary?
-            _playableCharacter.PositionResetEvent += SwitchToThirdPersonState;
+
             SwitchToAerialState();
         }
     }
@@ -479,7 +479,12 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
 
     void OnResetTourClicked()
     {
-        ResetTourClickedEvent?.Invoke();
+        StartCoroutine(_uiSystem.ResetTourAndPlayerFadeInCoroutine());
+    }
+
+    void OnTourResetted()
+    {
+        TourAndPlayerResetEvent?.Invoke();
         SwitchToThirdPersonState();
     }
 

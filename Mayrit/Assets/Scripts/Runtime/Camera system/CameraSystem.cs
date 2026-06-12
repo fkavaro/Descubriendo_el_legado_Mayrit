@@ -126,9 +126,6 @@ public class CameraSystem : ABehaviourEntity<FiniteStateMachine<ACameraState>>
         else if (IsInOrbitalState)
             TransitionFromOrbitalToAerial();
 
-        if (_playableCharacter != null)
-            _playableCharacter.PositionResetEvent -= SwitchToThirdPersonCamera;
-
         CameraStateChangedEvent?.Invoke();
     }
 

@@ -49,6 +49,7 @@ public class UISystem : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     // Events
     public event Action StateChangedEvent;
     public event Action<DataSO, OrbitalCameraSettings> POISelectedEvent;
+    public event Action TourResetEvent;
 
     // Stack FSM
     StackFiniteStateMachine<AUIState> _sfsm;
@@ -143,20 +144,13 @@ public class UISystem : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
         StateChangedEvent?.Invoke();
     }
 
-    void OnResetTourClicked()
-    {
-        StartCoroutine(ResetTourWithBlackFadeCoroutine());
-    }
-
-    IEnumerator ResetTourWithBlackFadeCoroutine()
+    public IEnumerator ResetTourAndPlayerFadeInCoroutine()
     {
         yield return FadeInBlackLoadingScreenCoroutine();
         _playerHUDState.ShownCompletedTourVisual = false;
-        // TODO check this event
-        //ResetTourClickedEvent?.Invoke();
         yield return new WaitForSeconds(_fadeInDuration);
+        TourResetEvent?.Invoke();
         yield return FadeOutBlackLoadingScreenCoroutine();
-        SwitchToPlayerHUDState();
     }
     #endregion
 

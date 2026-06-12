@@ -42,7 +42,7 @@ public class TourManager : MonoBehaviour
 
         // Subscribe to events
         _scenesController.SceneLoadedPartiallyEvent += OnSceneLoadedPartially;
-        _gameManager.ResetTourClickedEvent += OnResetTourClicked;
+        _gameManager.TourAndPlayerResetEvent += OnResetTourClicked;
 
         AttachToTour(ServiceLocator.Instance.Get<Tour>());
     }
@@ -53,7 +53,7 @@ public class TourManager : MonoBehaviour
         // Unsubscribe from events
         _scenesController.SceneLoadedPartiallyEvent -= OnSceneLoadedPartially;
 
-        _gameManager.ResetTourClickedEvent -= OnResetTourClicked;
+        _gameManager.TourAndPlayerResetEvent -= OnResetTourClicked;
 
         DetachFromCurrentTour();
 

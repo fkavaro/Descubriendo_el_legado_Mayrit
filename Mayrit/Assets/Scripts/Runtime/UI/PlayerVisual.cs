@@ -14,6 +14,8 @@ public class PlayerVisual : Billboard
     #endregion
 
     #region INTERNAL PROPERTIES
+    PlayableCharacter PlayableCharacter => _gameManager.PlayableCharacter;
+
     UIDocument _uiDocument;
     Button _playerButton;
 
@@ -68,19 +70,17 @@ public class PlayerVisual : Billboard
     #region PRIVATE METHODS
     void LocateOverPlayer()
     {
-        PlayableCharacter playableCharacter = ServiceLocator.Instance.Get<PlayableCharacter>();
-
-        if (!_gameManager.IsInAerialState || playableCharacter == null)
+        if (!_gameManager.IsInAerialState || PlayableCharacter == null)
         {
             _playerButton.visible = false;
             return;
         }
 
         _playerButton.visible = true;
-        transform.position = playableCharacter.transform.position + 10 * Vector3.up;
+        transform.position = PlayableCharacter.transform.position + 10 * Vector3.up;
 
-        _orbitalCameraSettings.Target = playableCharacter.transform;
-        _data = playableCharacter.CharacterData;
+        _orbitalCameraSettings.Target = PlayableCharacter.transform;
+        _data = PlayableCharacter.CharacterData;
     }
     #endregion
 
