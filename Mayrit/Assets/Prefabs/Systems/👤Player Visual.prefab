@@ -68,15 +68,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dc6c0343babcc14aa6ab5e5af6274d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonVisual
-  freezeXZAxis: 0
-  dynamicScaling: 1
-  disappearWhenFar: 0
+  _freezeXZAxis: 0
+  _dynamicScaling: 1
   scaleRange: {x: 5, y: 30}
   distanceRange: {x: 50, y: 500}
-  _orbitalStateSetting:
-    IsForCharacter: 1
-    DataToShow: {fileID: 0}
+  _data: {fileID: 0}
+  _orbitalCameraSettings:
     Target: {fileID: 0}
-    _orbitSpeed: 5
-    _zoomValue: 7
+    _orbitSpeed: 6
+    _zoomValue: 6
     _horizontalOffset: 2
