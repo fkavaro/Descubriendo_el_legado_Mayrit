@@ -10,8 +10,8 @@ public class ThirdPerson_CameraState : ACameraState
     #endregion
 
     #region CONSTRUCTOR
-    public ThirdPerson_CameraState(CameraSystem cameraManager, ThirdPersonCameraDataSO thirdPersonCameraData, CinemachineCamera camera)
-    : base(cameraManager, "Third person camera", camera, thirdPersonCameraData.SimulationSpeed)
+    public ThirdPerson_CameraState(CameraSystem cameraSystem, ThirdPersonCameraDataSO thirdPersonCameraData, CinemachineCamera camera)
+    : base(cameraSystem, "Third person camera", camera, thirdPersonCameraData.SimulationSpeed)
     {
         _cameraController = new(thirdPersonCameraData, camera);
     }
@@ -39,16 +39,16 @@ public class ThirdPerson_CameraState : ACameraState
         if (!_gameManager.IsInThirdPersonState)
             return;
 
-        if (_cameraManager.PlayableCharacter == null)
+        if (_cameraSystem.PlayableCharacter == null)
         {
             Debug.LogWarning("ThirdPerson_CameraState: No playable character found for third-person camera.");
             return;
         }
 
-        _cameraController.TargetSmoothFollow(_cameraManager.PlayableCharacter.transform);
+        _cameraController.TargetSmoothFollow(_cameraSystem.PlayableCharacter.transform);
 
         // Only allow camera rotation if the playable character is being controlled
-        if (_cameraManager.PlayableCharacter.IsBeingControlled)
+        if (_cameraSystem.PlayableCharacter.IsBeingControlled)
             _cameraController.MouseTracking();
 
         // Ensure cursor remains locked during gameplay

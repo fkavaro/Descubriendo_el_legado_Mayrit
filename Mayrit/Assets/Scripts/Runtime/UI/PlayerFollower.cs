@@ -9,7 +9,7 @@ public class PlayerFollower
     private readonly VisualElement _root;
     private readonly VisualElement _angle;
     UISystem _uiSystem;
-    CameraSystem _cameraManager;
+    CameraSystem _cameraSystem;
     Camera _mainCamera;
 
     public Transform PlayerTransform;
@@ -37,13 +37,13 @@ public class PlayerFollower
     {
         if (_uiSystem == null)
             _uiSystem = ServiceLocator.Instance.Get<UISystem>();
-        if (_cameraManager == null)
-            _cameraManager = ServiceLocator.Instance.Get<CameraSystem>();
+        if (_cameraSystem == null)
+            _cameraSystem = ServiceLocator.Instance.Get<CameraSystem>();
 
         if (_uiSystem == null)
             Debug.LogWarning("PlayerFollower: UISystem not found in ServiceLocator.");
-        if (_cameraManager == null)
-            Debug.LogWarning("PlayerFollower: CameraManager not found in ServiceLocator.");
+        if (_cameraSystem == null)
+            Debug.LogWarning("PlayerFollower: CameraSystem not found in ServiceLocator.");
 
         _mainCamera = Camera.main;
     }
@@ -54,7 +54,7 @@ public class PlayerFollower
             _mainCamera = Camera.main;
 
         if (PlayerTransform == null ||
-            !_cameraManager.IsInAerialState ||
+            !_cameraSystem.IsInAerialState ||
             _mainCamera == null)
         {
             IsShown(false);

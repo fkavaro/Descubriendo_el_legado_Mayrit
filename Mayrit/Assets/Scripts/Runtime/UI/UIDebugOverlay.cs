@@ -10,7 +10,7 @@ public class UIDebugOverlay : MonoBehaviour
     UISystem _uiSystem;
     GameManager _gameManager;
     ProgressSystem _progressSystem;
-    CameraSystem _cameraManager;
+    CameraSystem _cameraSystem;
     EnvironmentManager _environmentManager;
     TownManager _townManager;
     NPCPoolManager _npcPoolManager;
@@ -53,7 +53,7 @@ public class UIDebugOverlay : MonoBehaviour
         _uiSystem = ServiceLocator.Instance.Get<UISystem>();
         _gameManager = ServiceLocator.Instance.Get<GameManager>();
         _progressSystem = ServiceLocator.Instance.Get<ProgressSystem>();
-        _cameraManager = ServiceLocator.Instance.Get<CameraSystem>();
+        _cameraSystem = ServiceLocator.Instance.Get<CameraSystem>();
         _environmentManager = ServiceLocator.Instance.Get<EnvironmentManager>();
         _townManager = ServiceLocator.Instance.Get<TownManager>();
         _npcPoolManager = ServiceLocator.Instance.Get<NPCPoolManager>();
@@ -75,10 +75,10 @@ public class UIDebugOverlay : MonoBehaviour
         else
             GUILayout.Label("ProgressSystem: <null>");
 
-        if (_cameraManager != null && _cameraManager.BehaviourSystem != null)
-            GUILayout.Label($"CameraManager state: {_cameraManager.BehaviourSystem.CurrentState.StateName}");
+        if (_cameraSystem != null && _cameraSystem.BehaviourSystem != null)
+            GUILayout.Label($"CameraSystem state: {_cameraSystem.BehaviourSystem.CurrentState.StateName}");
         else
-            GUILayout.Label("CameraManager: <null>");
+            GUILayout.Label("CameraSystem: <null>");
 
         if (_playableCharacter != null && _playableCharacter.BehaviourSystem != null)
             GUILayout.Label($"PlayableCharacter state: {_playableCharacter.BehaviourSystem.CurrentState.StateName}");

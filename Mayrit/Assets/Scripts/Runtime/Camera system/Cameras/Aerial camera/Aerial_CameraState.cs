@@ -9,8 +9,8 @@ public class Aerial_CameraState : ACameraState
     #endregion
 
     #region CONSTRUCTOR
-    public Aerial_CameraState(CameraSystem cameraManager, AerialCameraDataSO aerialCameraData, CinemachineCamera camera)
-    : base(cameraManager, "Aerial camera", camera, aerialCameraData.SimulationSpeed)
+    public Aerial_CameraState(CameraSystem cameraSystem, AerialCameraDataSO aerialCameraData, CinemachineCamera camera)
+    : base(cameraSystem, "Aerial camera", camera, aerialCameraData.SimulationSpeed)
     {
         _cameraController = new(aerialCameraData, camera);
     }

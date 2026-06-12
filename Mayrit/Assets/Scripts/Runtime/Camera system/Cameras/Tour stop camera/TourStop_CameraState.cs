@@ -4,6 +4,6 @@ using UnityEngine.InputSystem;
 
 public class TourStop_CameraState : ACameraState
 {
-    public TourStop_CameraState(CameraSystem cameraManager, float simulationSpeed)
-    : base(cameraManager, "TourStop camera", null, simulationSpeed) { }
+    public TourStop_CameraState(CameraSystem cameraSystem, float simulationSpeed)
+    : base(cameraSystem, "TourStop camera", null, simulationSpeed) { }
 }

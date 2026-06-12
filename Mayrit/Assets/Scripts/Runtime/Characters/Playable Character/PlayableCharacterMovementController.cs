@@ -22,7 +22,7 @@ public class PlayableCharacterMovementController
     readonly int _obstacleMask;
 
     // Dependency Injection
-    readonly CameraSystem _cameraManager;
+    readonly CameraSystem _cameraSystem;
     readonly GameManager _gameManager;
 
     const float OBSTACLE_CHECK_DISTANCE = 0.25f;
@@ -36,10 +36,10 @@ public class PlayableCharacterMovementController
         _obstacleMask = _player.ObstacleLayers.value;
 
         // Get dependencies from ServiceLocator
-        _cameraManager = ServiceLocator.Instance.Get<CameraSystem>();
+        _cameraSystem = ServiceLocator.Instance.Get<CameraSystem>();
         _gameManager = ServiceLocator.Instance.Get<GameManager>();
 
-        _cameraTarget = _cameraManager.ThirdPersonCamera.LookAt;
+        _cameraTarget = _cameraSystem.ThirdPersonCamera.LookAt;
     }
     #endregion
 

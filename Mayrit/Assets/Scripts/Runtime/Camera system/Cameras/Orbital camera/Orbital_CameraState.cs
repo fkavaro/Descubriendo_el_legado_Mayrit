@@ -11,8 +11,8 @@ public class Orbital_CameraState : ACameraState
     #endregion
 
     #region CONSTRUCTOR
-    public Orbital_CameraState(CameraSystem cameraManager, OrbitalCameraDataSO orbitalCameraData, CinemachineCamera camera)
-    : base(cameraManager, "Orbital camera", camera, orbitalCameraData.SimulationSpeed)
+    public Orbital_CameraState(CameraSystem cameraSystem, OrbitalCameraDataSO orbitalCameraData, CinemachineCamera camera)
+    : base(cameraSystem, "Orbital camera", camera, orbitalCameraData.SimulationSpeed)
     {
         _controller = new(orbitalCameraData, camera);
     }

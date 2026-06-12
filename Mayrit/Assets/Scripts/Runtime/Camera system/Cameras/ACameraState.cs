@@ -21,14 +21,14 @@ public abstract class ACameraState : AState
 
     // Dependency Injection
     protected GameManager _gameManager;
-    protected CameraSystem _cameraManager;
+    protected CameraSystem _cameraSystem;
     #endregion
 
     #region CONSTRUCTOR
-    protected ACameraState(CameraSystem cameraManager, string name, CinemachineCamera camera, float simulationSpeed)
+    protected ACameraState(CameraSystem cameraSystem, string name, CinemachineCamera camera, float simulationSpeed)
     : base(name)
     {
-        _cameraManager = cameraManager;
+        _cameraSystem = cameraSystem;
         _camera = camera;
         _simulationSpeed = simulationSpeed;
     }
