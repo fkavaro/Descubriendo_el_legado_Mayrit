@@ -48,6 +48,7 @@ public class UISystem : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
 
     // Events
     public event Action StateChangedEvent;
+    public event Action<DataSO, OrbitalCameraSettings> POISelectedEvent;
 
     // Stack FSM
     StackFiniteStateMachine<AUIState> _sfsm;
@@ -59,10 +60,6 @@ public class UISystem : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     SettingsMenu_UIState _settingsMenuState;
     LoadingScreen_UIState _loadingScreenState;
     CreditsScreen_UIState _creditsScreenState;
-
-    // Dependency Injection
-    GameManager _gameManager;
-    ProgressManager _progressManager;
     #endregion
 
     #region INHERITED
@@ -112,9 +109,6 @@ public class UISystem : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
 
     protected override void Start()
     {
-        _gameManager = ServiceLocator.Instance.Get<GameManager>();
-        _progressManager = ServiceLocator.Instance.Get<ProgressManager>();
-
         //base.Start(); When main menu scene is loaded
     }
 
@@ -190,6 +184,11 @@ public class UISystem : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     public IEnumerator FadeOutBlackLoadingScreenCoroutine()
     {
         yield return _loadingScreenState.BlackFadeOutCoroutine();
+    }
+
+    public void InvokeSelectedPOIEvent(DataSO data, OrbitalCameraSettings orbitalStateSetting)
+    {
+        POISelectedEvent?.Invoke(data, orbitalStateSetting);
     }
     #endregion
 }

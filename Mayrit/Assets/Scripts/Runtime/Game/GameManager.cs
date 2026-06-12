@@ -142,6 +142,8 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
 
         _uiSystem = ServiceLocator.Instance.Get<UISystem>();
 
+        _uiSystem.POISelectedEvent += OnPOISelected;
+
         _uiSystem.MainMenuState.NewGameClickedEvent += OnNewGameClicked;
         _uiSystem.MainMenuState.LoadGameClickedEvent += OnLoadGameClicked;
         _uiSystem.MainMenuState.SettingsClickedEvent += OnSettingsClicked;
@@ -320,6 +322,12 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
             _playableCharacter.PositionResetEvent += SwitchToThirdPersonState;
             SwitchToAerialState();
         }
+    }
+
+    void OnPOISelected(DataSO data, OrbitalCameraSettings orbitalSettings)
+    {
+        _soundSystem.PlayButtonClickSFX();
+        SwitchToAtPOIState(data, orbitalSettings);
     }
 
     void OnNewGameClicked()

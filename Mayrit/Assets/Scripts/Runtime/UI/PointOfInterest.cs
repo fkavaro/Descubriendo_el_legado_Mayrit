@@ -36,8 +36,7 @@ public class PointOfInterest : Billboard
 
     // Dependency Injection
     GameManager _gameManager;
-    SoundSystem _soundManager;
-    CameraSystem _cameraManager;
+    UISystem _uiSystem;
     TutorialManager _tutorialManager;
     #endregion
 
@@ -67,11 +66,10 @@ public class PointOfInterest : Billboard
         base.Start();
 
         _gameManager = ServiceLocator.Instance.Get<GameManager>();
-        _soundManager = ServiceLocator.Instance.Get<SoundSystem>();
-        _cameraManager = ServiceLocator.Instance.Get<CameraSystem>();
+        _uiSystem = ServiceLocator.Instance.Get<UISystem>();
         _tutorialManager = ServiceLocator.Instance.Get<TutorialManager>();
 
-        _cameraManager.CameraStateChangedEvent += OnCameraStateChanged;
+        _gameManager.StateChangedEvent += OnGameStateChanged;
         _gameManager.POIsVisualizationToggledEvent += OnVisualizationToggled;
         _tutorialManager.ShowPointsOfInterestEvent += OnShowInTutorialEvent;
         _tutorialManager.TutorialCompletedEvent += OnTutorialCompleted;
@@ -98,8 +96,13 @@ public class PointOfInterest : Billboard
     void OnDisable()
     {
         _nameButton?.UnregisterCallback<ClickEvent>(OnClicked);
-        if (_cameraManager != null) _cameraManager.CameraStateChangedEvent -= OnCameraStateChanged;
-        if (_gameManager != null) _gameManager.POIsVisualizationToggledEvent -= OnVisualizationToggled;
+
+        if (_gameManager != null)
+        {
+            _gameManager.StateChangedEvent -= OnGameStateChanged;
+            _gameManager.POIsVisualizationToggledEvent -= OnVisualizationToggled;
+        }
+
         if (_tutorialManager != null)
         {
             _tutorialManager.ShowPointsOfInterestEvent -= OnShowInTutorialEvent;
@@ -141,12 +144,12 @@ public class PointOfInterest : Billboard
         get => _uiDocument.enabled;
         set
         {
-            if (_gameManager == null || _cameraManager == null) return;
+            if (_gameManager == null) return;
 
             bool resolvedValue = value
                 && (!IsBlocked || IsSetAsShown)
                 && _gameManager.POIsVisibilityValueSet
-                && _cameraManager.IsInAerialState
+                && _gameManager.IsInAerialState
                 && _shownDueToTutorial;
 
             if (_uiDocument.enabled == resolvedValue) return;
@@ -172,11 +175,10 @@ public class PointOfInterest : Billboard
             return;
         }
 
-        _soundManager.PlayButtonClickSFX();
-        _cameraManager.SwitchToOrbitalCamera(_orbitalStateSetting);
+        _uiSystem.InvokeSelectedPOIEvent(_data, _orbitalStateSetting);
     }
 
-    void OnCameraStateChanged() => IsShown = true;
+    void OnGameStateChanged() => IsShown = true;
 
     void OnVisualizationToggled(bool value) => IsShown = value;
 

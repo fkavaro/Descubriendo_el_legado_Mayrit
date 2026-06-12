@@ -18,10 +18,8 @@ public class PlayerVisual : Billboard
     Button _playerButton;
 
     // Dependency Injection
-    ScenesController _scenesController;
-    ProgressManager _progressManager;
     GameManager _gameManager;
-    SoundSystem _soundManager;
+    UISystem _uiSystem;
     TutorialManager _tutorialManager;
     #endregion
 
@@ -48,15 +46,11 @@ public class PlayerVisual : Billboard
         base.Start();
 
         // Get dependencies from Service Locator
-        _scenesController = ServiceLocator.Instance.Get<ScenesController>();
-        _progressManager = ServiceLocator.Instance.Get<ProgressManager>();
         _gameManager = ServiceLocator.Instance.Get<GameManager>();
-        _soundManager = ServiceLocator.Instance.Get<SoundSystem>();
+        _uiSystem = ServiceLocator.Instance.Get<UISystem>();
         _tutorialManager = ServiceLocator.Instance.Get<TutorialManager>();
 
         // Subscribe to events and callbacks
-        _scenesController.SceneLoadedPartiallyEvent += OnSceneLoadedPartially;
-        _progressManager.MilestoneChangedEvent += OnMilestoneChanged;
         _gameManager.StateChangedEvent += OnGameStateChanged;
         _tutorialManager.ShowPlayerFollowerEvent += OnShowPlayerFollowerTutorialEvent;
         _tutorialManager.TutorialCompletedEvent += OnTutorialCompleted;
@@ -65,8 +59,6 @@ public class PlayerVisual : Billboard
     void OnDisable()
     {
         // Unsubscribe from events and callbacks
-        _scenesController.SceneLoadedPartiallyEvent -= OnSceneLoadedPartially;
-        _progressManager.MilestoneChangedEvent -= OnMilestoneChanged;
         _gameManager.StateChangedEvent -= OnGameStateChanged;
         _tutorialManager.ShowPlayerFollowerEvent -= OnShowPlayerFollowerTutorialEvent;
         _tutorialManager.TutorialCompletedEvent -= OnTutorialCompleted;
@@ -93,22 +85,10 @@ public class PlayerVisual : Billboard
     #endregion
 
     #region CALLBACK METHODS
-    void OnSceneLoadedPartially(SceneDatabase.SceneType type, SceneDatabase.SceneName name)
-    {
-        // Milestone loaded: locate over player
-        if (type == SceneDatabase.SceneType.Milestone)
-            LocateOverPlayer();
-    }
-
-    void OnMilestoneChanged(Milestone_DataSO milestoneMapping)
-    {
-        LocateOverPlayer();
-    }
 
     void OnGameStateChanged()
     {
-        if (_gameManager.IsInAerialState)
-            LocateOverPlayer();
+        LocateOverPlayer();
     }
 
     void OnPlayerButtonClick(ClickEvent evt)
@@ -125,9 +105,7 @@ public class PlayerVisual : Billboard
             return;
         }
 
-        // TODO invoke event (this should be a service)
-        _gameManager.SwitchToAtPOIState(_data, _orbitalCameraSettings);
-        _soundManager.PlayButtonClickSFX();
+        _uiSystem.InvokeSelectedPOIEvent(_data, _orbitalCameraSettings);
     }
 
     void OnShowPlayerFollowerTutorialEvent(bool isShown)
