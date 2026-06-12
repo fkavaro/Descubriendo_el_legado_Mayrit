@@ -8,22 +8,22 @@ public class PlaySFX : StateMachineBehaviour
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        SoundSystem soundManager = ServiceLocator.Instance.Get<SoundSystem>();
+        SoundSystem soundSystem = ServiceLocator.Instance.Get<SoundSystem>();
 
-        if (soundManager != null)
-            soundManager.PlaySFX(_enterSFXType);
+        if (soundSystem != null)
+            soundSystem.PlaySFX(_enterSFXType);
         else
-            Debug.LogError("PlaySFXEnter: SoundManager service not found!");
+            Debug.LogError("PlaySFXEnter: SoundSystem service not found!");
     }
 
     //OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        SoundSystem soundManager = ServiceLocator.Instance.Get<SoundSystem>();
+        SoundSystem soundSystem = ServiceLocator.Instance.Get<SoundSystem>();
 
-        if (soundManager != null)
-            soundManager.PlaySFX(_exitSFXType);
+        if (soundSystem != null)
+            soundSystem.PlaySFX(_exitSFXType);
         else
-            Debug.LogError("PlaySFXEnter: SoundManager service not found!");
+            Debug.LogError("PlaySFXEnter: SoundSystem service not found!");
     }
 }

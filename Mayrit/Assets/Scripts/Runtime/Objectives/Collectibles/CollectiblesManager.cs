@@ -28,7 +28,7 @@ public class CollectiblesManager : MonoBehaviour
     private readonly Dictionary<int, CollectibleSO> _idToCollectibleMap = new();
 
     ScenesController _scenesController;
-    SoundSystem _soundManager;
+    SoundSystem _soundSystem;
     #endregion
 
     #region LIFE CYCLE
@@ -49,7 +49,7 @@ public class CollectiblesManager : MonoBehaviour
     void Start()
     {
         _scenesController = ServiceLocator.Instance.Get<ScenesController>();
-        _soundManager = ServiceLocator.Instance.Get<SoundSystem>();
+        _soundSystem = ServiceLocator.Instance.Get<SoundSystem>();
 
         _scenesController.SceneLoadedPartiallyEvent += OnSceneLoadedPartially;
     }
@@ -83,7 +83,7 @@ public class CollectiblesManager : MonoBehaviour
         {
             _allFoundCollectiblesSOs.Add(info);
             GameSaveSystem.SaveFoundCollectible(info.ID);
-            _soundManager.PlayTourEndSFX();
+            _soundSystem.PlayTourEndSFX();
         }
         else
             Debug.LogWarning($"[CollectiblesManager] {info.Data.Header} had been already found.");

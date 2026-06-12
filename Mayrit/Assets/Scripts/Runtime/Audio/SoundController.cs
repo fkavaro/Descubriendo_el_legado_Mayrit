@@ -6,18 +6,18 @@ using System.Collections.Generic;
 public class SoundController
 {
     #region GETTERS
-    AudioSource EffectsSource => _soundManager.EffectsSource;
-    AudioSource MusicSource => _soundManager.MusicSource;
-    float MusicFadeDuration => _soundManager.MusicFadeDuration;
-    float ResumeGuardSeconds => _soundManager.ResumeGuardSeconds;
-    List<SoundDatabase.MusicList> MusicLists => _soundManager.MusicLists;
-    List<SoundDatabase.SFXlist> SFXLists => _soundManager.SFXLists;
-    float MusicVolumeSet => _soundManager.MusicVolumeSet;
-    float SFXVolumeSet => _soundManager.SFXVolumeSet;
+    AudioSource EffectsSource => _soundSystem.EffectsSource;
+    AudioSource MusicSource => _soundSystem.MusicSource;
+    float MusicFadeDuration => _soundSystem.MusicFadeDuration;
+    float ResumeGuardSeconds => _soundSystem.ResumeGuardSeconds;
+    List<SoundDatabase.MusicList> MusicLists => _soundSystem.MusicLists;
+    List<SoundDatabase.SFXlist> SFXLists => _soundSystem.SFXLists;
+    float MusicVolumeSet => _soundSystem.MusicVolumeSet;
+    float SFXVolumeSet => _soundSystem.SFXVolumeSet;
     #endregion
 
     #region PROPERTIES
-    readonly SoundSystem _soundManager;
+    readonly SoundSystem _soundSystem;
     SoundDatabase.MusicType _currentMusicType;
     Coroutine _playlistCoroutine;
     readonly Dictionary<SoundDatabase.MusicType, Queue<AudioClip>> _musicQueues = new();
@@ -27,9 +27,9 @@ public class SoundController
     #endregion
 
     #region CONSTRUCTOR
-    public SoundController(SoundSystem soundManager)
+    public SoundController(SoundSystem soundSystem)
     {
-        _soundManager = soundManager;
+        _soundSystem = soundSystem;
         _currentMusicType = SoundDatabase.MusicType.None;
         _suspendAutoAdvance = false;
         _ignoreAdvanceUntilTime = 0f;
@@ -99,7 +99,7 @@ public class SoundController
     /// </summary>
     public void UpdateSFXVolume(float volume)
     {
-        _soundManager.EffectsVolume = volume;
+        _soundSystem.EffectsVolume = volume;
         EffectsSource.volume = volume;
     }
     #endregion
@@ -123,8 +123,8 @@ public class SoundController
         // Start auto-advance loop if not already running
         if (Application.isPlaying && _playlistCoroutine == null)
         {
-            _playlistCoroutine = _soundManager.StartCoroutine(PlaylistLoop());
-            if (_soundManager.DebugMode)
+            _playlistCoroutine = _soundSystem.StartCoroutine(PlaylistLoop());
+            if (_soundSystem.DebugMode)
                 Debug.Log($"[SoundController] Started {type} playlist.");
         }
     }
@@ -148,7 +148,7 @@ public class SoundController
 
         if (_playlistCoroutine != null)
         {
-            _soundManager.StopCoroutine(_playlistCoroutine);
+            _soundSystem.StopCoroutine(_playlistCoroutine);
             _playlistCoroutine = null;
         }
     }
@@ -158,7 +158,7 @@ public class SoundController
     /// </summary>
     public void UpdateMusicVolume(float volume)
     {
-        _soundManager.MusicVolume = volume;
+        _soundSystem.MusicVolume = volume;
         MusicSource.volume = volume;
     }
     #endregion
@@ -201,13 +201,13 @@ public class SoundController
         var nextClip = queue.Dequeue();
         if (nextClip == null) return;
 
-        if (_soundManager.DebugMode)
+        if (_soundSystem.DebugMode)
             Debug.Log($"[SoundController] {_currentMusicType} playlist - Advancing to next track: {nextClip.name}.");
 
         // Direct approach
         MusicSource.Stop();
         MusicSource.clip = nextClip;
-        MusicSource.volume = _soundManager.MusicVolume;
+        MusicSource.volume = _soundSystem.MusicVolume;
         MusicSource.Play();
 
         // For crossfade transitions
@@ -274,8 +274,8 @@ public class SoundController
     {
         // Manual skip ignores guard; if fading, stop fade first
         if (_isFadingMusic)
-            _soundManager.StopAllCoroutines();
-        _playlistCoroutine = _soundManager.StartCoroutine(PlaylistLoop());
+            _soundSystem.StopAllCoroutines();
+        _playlistCoroutine = _soundSystem.StartCoroutine(PlaylistLoop());
         PlayNextTrack();
     }
 
@@ -311,11 +311,11 @@ public class SoundController
         while (elapsed < halfDuration)
         {
             elapsed += Time.deltaTime;
-            MusicSource.volume = Mathf.Lerp(0f, _soundManager.MusicVolume, elapsed / halfDuration);
+            MusicSource.volume = Mathf.Lerp(0f, _soundSystem.MusicVolume, elapsed / halfDuration);
             yield return null;
         }
 
-        MusicSource.volume = _soundManager.MusicVolume;
+        MusicSource.volume = _soundSystem.MusicVolume;
         _isFadingMusic = false;
     }
     #endregion

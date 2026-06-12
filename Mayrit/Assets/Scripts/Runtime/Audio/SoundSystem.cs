@@ -105,7 +105,7 @@ public class SoundSystem : ABehaviourEntity<FiniteStateMachine<AMusicState>>
     {
         if (_effectsSource == null || _musicSource == null)
         {
-            Debug.LogError("SoundManager: AudioSource references are missing!");
+            Debug.LogError("SoundSystem: AudioSource references are missing!");
             return;
         }
 

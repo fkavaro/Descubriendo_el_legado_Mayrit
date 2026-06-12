@@ -50,7 +50,7 @@ public class CameraSystem : ABehaviourEntity<FiniteStateMachine<ACameraState>>
 
     // Dependency Injection
     GameManager _gameManager;
-    SoundSystem _soundManager;
+    SoundSystem _soundSystem;
     PlayableCharacter _playableCharacter;
     #endregion
 
@@ -84,7 +84,7 @@ public class CameraSystem : ABehaviourEntity<FiniteStateMachine<ACameraState>>
         // Get dependencies from ServiceLocator
         _gameManager = ServiceLocator.Instance.Get<GameManager>();
 
-        _soundManager = ServiceLocator.Instance.Get<SoundSystem>();
+        _soundSystem = ServiceLocator.Instance.Get<SoundSystem>();
 
         // Subscribe to events
         _gameManager.EdgeScrollingToggledEvent += _aerialCameraData.OnIsEdgeScrollingToggled;
@@ -131,7 +131,7 @@ public class CameraSystem : ABehaviourEntity<FiniteStateMachine<ACameraState>>
     public void SwitchToOrbitalCamera(OrbitalCameraSettings orbitalStateSetting)
     {
         _orbitalState.Setting = orbitalStateSetting;
-        _soundManager.PlayCameraTransitionSFX();
+        _soundSystem.PlayCameraTransitionSFX();
 
         SyncOrbitalWithAerial();
         _fsm.SwitchState(_orbitalState);
@@ -175,7 +175,7 @@ public class CameraSystem : ABehaviourEntity<FiniteStateMachine<ACameraState>>
     /// <param name="camera">The TourStop camera to switch to.</param>
     public void SwitchToTourStopCamera(CinemachineCamera camera)
     {
-        _soundManager.PlayCameraTransitionSFX();
+        _soundSystem.PlayCameraTransitionSFX();
         _tourStopState.Camera = camera;
         _fsm.SwitchState(_tourStopState);
         CameraStateChangedEvent?.Invoke();
@@ -185,7 +185,7 @@ public class CameraSystem : ABehaviourEntity<FiniteStateMachine<ACameraState>>
     #region PRIVATE METHODS - STATE TRANSITIONS
     void TransitionFromThirdPersonToAerial()
     {
-        _soundManager.PlayCameraTransitionSFX();
+        _soundSystem.PlayCameraTransitionSFX();
         _aerialCamera.LookAt.position = _thirdPersonCamera.LookAt.position;
         Vector3 aerialLookAt = GetFixedAerialLookAtPosition(_aerialCamera.LookAt.position);
         SyncAerialWithThirdPerson();
@@ -198,7 +198,7 @@ public class CameraSystem : ABehaviourEntity<FiniteStateMachine<ACameraState>>
 
     void TransitionFromOrbitalToAerial()
     {
-        _soundManager.PlayCameraTransitionSFX();
+        _soundSystem.PlayCameraTransitionSFX();
         _aerialCamera.LookAt.position = _orbitalCamera.LookAt.position;
         SyncAerialWithOrbital();
         Vector3 aerialLookAt = GetFixedAerialLookAtPosition(_aerialCamera.LookAt.position);

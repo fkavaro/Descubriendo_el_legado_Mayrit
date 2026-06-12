@@ -21,7 +21,7 @@ public class TourManager : MonoBehaviour
     // Dependency Injection
     ScenesController _scenesController;
     GameManager _gameManager;
-    SoundSystem _soundManager;
+    SoundSystem _soundSystem;
     PlayableCharacter _playableCharacter;
     ProgressSystem _progressSystem;
     #endregion
@@ -37,7 +37,7 @@ public class TourManager : MonoBehaviour
         // Get dependencies from Service Locator
         _scenesController = ServiceLocator.Instance.Get<ScenesController>();
         _gameManager = ServiceLocator.Instance.Get<GameManager>();
-        _soundManager = ServiceLocator.Instance.Get<SoundSystem>();
+        _soundSystem = ServiceLocator.Instance.Get<SoundSystem>();
         _progressSystem = ServiceLocator.Instance.Get<ProgressSystem>();
 
         // Subscribe to events
@@ -115,7 +115,7 @@ public class TourManager : MonoBehaviour
     {
         if (_currentTour.IsCompleted && _gameManager.IsInThirdPersonState)
         {
-            _soundManager.PlayTourEndSFX();
+            _soundSystem.PlayTourEndSFX();
             _gameManager.StateChangedEvent -= OnGameStateChanged;
         }
     }
