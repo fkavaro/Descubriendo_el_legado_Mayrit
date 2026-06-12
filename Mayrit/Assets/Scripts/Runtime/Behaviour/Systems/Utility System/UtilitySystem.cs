@@ -37,7 +37,7 @@ public class UtilitySystem : ABehaviourSystem
     /// </summary>
     public override void DebugDecision()
     {
-        _behaviourEntity.CurrentActionInfo = _currentAction.DebugAction();
+        _behaviourEntity.CurrentAction = _currentAction.DebugAction();
     }
     #endregion
 

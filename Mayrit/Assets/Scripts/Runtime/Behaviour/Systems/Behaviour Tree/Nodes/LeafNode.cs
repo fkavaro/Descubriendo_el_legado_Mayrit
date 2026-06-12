@@ -58,7 +58,7 @@ public class LeafNode : Node
 
     public override void DebugDecision()
     {
-        _behaviourEntity.CurrentActionInfo = _nodeName;
+        _behaviourEntity.CurrentAction = _nodeName;
     }
     #endregion
 }

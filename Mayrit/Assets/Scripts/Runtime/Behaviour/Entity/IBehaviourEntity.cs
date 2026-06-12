@@ -8,7 +8,7 @@ public interface IBehaviourEntity
     GameObject GO { get; }
     bool IsExecutionPaused { get; set; }
     bool DebugMode { get; set; }
-    string CurrentActionInfo { get; set; }
+    string CurrentAction { get; set; }
     #endregion
 
     public void StartCoroutine(IEnumerator enumerator);

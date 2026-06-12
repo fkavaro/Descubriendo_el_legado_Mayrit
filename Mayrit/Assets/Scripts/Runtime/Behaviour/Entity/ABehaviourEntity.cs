@@ -28,10 +28,10 @@ where BehaviourSystemType : ABehaviourSystem
         set => _debugMode = value;
     }
 
-    public string CurrentActionInfo
+    public string CurrentAction
     {
-        get => _currentActionInfo;
-        set => _currentActionInfo = value;
+        get => _currentAction;
+        set => _currentAction = value;
     }
     #endregion
 
@@ -41,7 +41,7 @@ where BehaviourSystemType : ABehaviourSystem
     [SerializeField] protected bool _debugMode = false;
     [Tooltip("Whether to pause the execution of the behaviour system or not")]
     [SerializeField] protected bool _isExecutionPaused;
-    [SerializeField, ReadOnly] protected string _currentActionInfo = "";
+    [SerializeField, ReadOnly] protected string _currentAction = "";
     #endregion
 
     #region INTERNAL PROPERTIES

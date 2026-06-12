@@ -47,7 +47,7 @@ where GenericState : AState
         if (_behaviourEntity.DebugMode)
             Debug.Log($"{_behaviourEntity.GO.name} switched to state: {_currentState.StateName}");
 
-        _behaviourEntity.CurrentActionInfo = _currentState.StateName;
+        _behaviourEntity.CurrentAction = _currentState.StateName;
     }
     #endregion
 

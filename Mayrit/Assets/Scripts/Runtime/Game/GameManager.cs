@@ -13,14 +13,21 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
     public bool IsInMainMenuState => _fsm.IsCurrentState(_mainMenuState);
     public bool IsLoadGameState => _fsm.IsCurrentState(_loadGameState);
     public bool IsInPauseState => _fsm.IsCurrentState(_pauseState);
-    public bool IsInAerialState => _fsm.IsCurrentState(_aerialState);
-    public bool IsInThirdPersonState => _fsm.IsCurrentState(_thirdPersonState);
-    public bool IsAtPOIState => _fsm.IsCurrentState(_atPOIState);
+    public bool IsInGameplayState => _fsm.IsCurrentState(_gameplayState);
+    public bool IsInAerialState => _fsm.IsCurrentState(_gameplayState) && GameplayFSM.IsCurrentState(_aerialState);
+    public bool IsGameplayInAerialState => GameplayFSM.IsCurrentState(_aerialState);
+    public bool IsInThirdPersonState => _fsm.IsCurrentState(_gameplayState) && GameplayFSM.IsCurrentState(_thirdPersonState);
+    public bool IsGameplayInThirdPersonState => GameplayFSM.IsCurrentState(_thirdPersonState);
+    public bool IsAtPOIState => _fsm.IsCurrentState(_gameplayState) && GameplayFSM.IsCurrentState(_atPOIState);
+    public bool IsGameplayAtPOIState => GameplayFSM.IsCurrentState(_atPOIState);
     public AtPOI_GameState AtPOIState => _atPOIState;
-    public bool IsAtTourStopState => _fsm.IsCurrentState(_atTourStopState);
+    public bool IsAtTourStopState => _fsm.IsCurrentState(_gameplayState) && GameplayFSM.IsCurrentState(_atTourStopState);
+    public bool IsGameplayAtTourStopState => GameplayFSM.IsCurrentState(_atTourStopState);
     public AtTourStop_GameState TourStopState => _atTourStopState;
-    public bool IsAtCollectibleState => _fsm.IsCurrentState(_atCollectibleState);
+    public bool IsAtCollectibleState => _fsm.IsCurrentState(_gameplayState) && GameplayFSM.IsCurrentState(_atCollectibleState);
+    public bool IsGameplayAtCollectibleState => GameplayFSM.IsCurrentState(_atCollectibleState);
     public AtCollectible_GameState AtCollectibleState => _atCollectibleState;
+    public FiniteStateMachine<AGameState> GameplayFSM => _gameplayState.Fsm;
 
     public float SimulationSpeed => _gameSimulationSpeed;
     public bool EdgeScrollingValueSet => _edgeScrollingValueSet;
@@ -39,6 +46,7 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
     #endregion
 
     #region EDITOR PROPERTIES
+    [SerializeField, ReadOnly] protected string _currentGameplayState = "";
     [Tooltip("Game simulation speed multiplier. Set by Camera states.")]
     [Range(0.1f, 10f)]
     [SerializeField] float _gameSimulationSpeed = 1f;
@@ -75,6 +83,7 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
     MainMenu_GameState _mainMenuState;
     LoadGame_GameState _loadGameState;
     Pause_GameState _pauseState;
+    Gameplay_GameState _gameplayState;
     Aerial_GameState _aerialState;
     ThirdPerson_GameState _thirdPersonState;
     AtPOI_GameState _atPOIState;
@@ -100,21 +109,15 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
         _mainMenuState = new(this);
         _loadGameState = new(this);
         _pauseState = new(this);
+        _gameplayState = new(this);
         _aerialState = new(this);
         _thirdPersonState = new(this);
         _atPOIState = new(this);
         _atTourStopState = new(this);
         _atCollectibleState = new(this);
 
-        // State AwakeState calls
-        _mainMenuState.AwakeState();
-        _loadGameState.AwakeState();
-        _pauseState.AwakeState();
-        _aerialState.AwakeState();
-        _thirdPersonState.AwakeState();
-        _atPOIState.AwakeState();
-        _atTourStopState.AwakeState();
-        _atCollectibleState.AwakeState();
+        _gameplayState.Fsm = new(this);
+        _gameplayState.Fsm.SwitchedStateEvent += OnSwitchedState;
 
         _fsm.SwitchedStateEvent += OnSwitchedState;
         _fsm.SetInitialState(_mainMenuState);
@@ -213,23 +216,45 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
     public void SwitchToMainMenuState() => _fsm.SwitchState(_mainMenuState);
     public void SwitchToLoadGameState() => _fsm.SwitchState(_loadGameState);
     public void SwitchToPauseState() => _fsm.SwitchState(_pauseState);
-    public void SwitchToAerialState() => _fsm.SwitchState(_aerialState);
-    public void SwitchToThirdPersonState() => _fsm.SwitchState(_thirdPersonState);
+    public void SwitchToGameplayState() => _fsm.SwitchState(_gameplayState);
+    public void SwitchToAerialState()
+    {
+        if (!IsInGameplayState)
+            SwitchToGameplayState();
+
+        GameplayFSM.SwitchState(_aerialState);
+    }
+    public void SwitchToThirdPersonState()
+    {
+        if (!IsInGameplayState)
+            SwitchToGameplayState();
+
+        GameplayFSM.SwitchState(_thirdPersonState);
+    }
     public void SwitchToAtPOIState(DataSO data, OrbitalCameraSettings orbitalCameraSettings)
     {
+        if (!IsInGameplayState)
+            SwitchToGameplayState();
+
         _atPOIState.Data = data;
         _atPOIState.OrbitalCameraSettings = orbitalCameraSettings;
-        _fsm.SwitchState(_atPOIState);
+        GameplayFSM.SwitchState(_atPOIState);
     }
     public void SwitchToAtTourStopState(TourStop tourStop)
     {
+        if (!IsInGameplayState)
+            SwitchToGameplayState();
+
         _atTourStopState.TourStop = tourStop;
-        _fsm.SwitchState(_atTourStopState);
+        GameplayFSM.SwitchState(_atTourStopState);
     }
     public void SwitchToAtCollectibleState(Collectible collectible)
     {
+        if (!IsInGameplayState)
+            SwitchToGameplayState();
+
         _atCollectibleState.Collectible = collectible;
-        _fsm.SwitchState(_atCollectibleState);
+        GameplayFSM.SwitchState(_atCollectibleState);
     }
     #endregion
 
@@ -298,6 +323,8 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
     #region CALLBACK METHODS
     void OnSwitchedState()
     {
+        CurrentAction = _fsm.CurrentState?.StateName ?? "None";
+        _currentGameplayState = _gameplayState.Fsm.CurrentState?.StateName ?? "None";
         StateChangedEvent?.Invoke();
     }
 
@@ -421,15 +448,7 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
 
     void OnResumeGameClicked()
     {
-        // TODO return to collectibleState
-        if (_cameraSystem.IsInAerialState)
-            SwitchToAerialState();
-        else if (_cameraSystem.IsInThirdPersonState)
-            SwitchToThirdPersonState();
-        else if (_cameraSystem.IsInOrbitalState)
-            SwitchToAtPOIState(_atPOIState.Data, _atPOIState.OrbitalCameraSettings);
-        else if (_cameraSystem.IsInTourStopState)
-            SwitchToAtTourStopState(_atTourStopState.TourStop);
+        SwitchToGameplayState();
     }
 
     void OnMainMenuClicked()
