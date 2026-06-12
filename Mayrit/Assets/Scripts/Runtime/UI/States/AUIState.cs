@@ -17,7 +17,7 @@ public abstract class AUIState : AState
     protected ScenesController _scenesController;
     protected UISystem _uiSystem;
     protected GameManager _gameManager;
-    protected SoundSystem _soundManager;
+    protected SoundSystem _soundSystem;
     #endregion
 
     #region CONSTRUCTOR
@@ -65,8 +65,8 @@ public abstract class AUIState : AState
             _scenesController = ServiceLocator.Instance.Get<ScenesController>();
         if (_gameManager == null)
             _gameManager = ServiceLocator.Instance.Get<GameManager>();
-        if (_soundManager == null)
-            _soundManager = ServiceLocator.Instance.Get<SoundSystem>();
+        if (_soundSystem == null)
+            _soundSystem = ServiceLocator.Instance.Get<SoundSystem>();
     }
 
     public override void StartState()

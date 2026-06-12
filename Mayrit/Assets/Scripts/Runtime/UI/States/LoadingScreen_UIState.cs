@@ -56,7 +56,6 @@ public class LoadingScreen_UIState : AUIState
     public override void ExitState()
     {
         //base.ExitState(); Dont hide on exit, hide after FadeOutCoroutine
-        _contextualPanelComponent.ExitState();
         _scenesController.SceneLoadedPartiallyEvent -= OnSceneLoadedPartially;
     }
     #endregion
@@ -94,9 +93,8 @@ public class LoadingScreen_UIState : AUIState
     void OnContinueButtonClicked()
     {
         IsContinueClicked = true;
-        _soundManager.PlayButtonClickSFX();
+        _soundSystem.PlayButtonClickSFX();
         _contextualPanelComponent.ExitState();
-        _contextualPanelComponent.ContinueClickedEvent -= OnContinueButtonClicked;
     }
 
     void OnSceneLoadedPartially(SceneDatabase.SceneType type, SceneDatabase.SceneName name)

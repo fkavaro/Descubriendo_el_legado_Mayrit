@@ -77,8 +77,6 @@ public class ContextualPanelComponent : AUIState
     {
         base.StartState();
 
-        _gameManager.InputActions.UI.CloseContextualPanel.performed += OnCloseAction;
-
         if (data == null)
         {
             Debug.LogWarning("[ContextualPanel] No data to show!");
@@ -195,13 +193,6 @@ public class ContextualPanelComponent : AUIState
         _loadingAnimation.style.display = DisplayStyle.None;
         _continueButton.style.display = DisplayStyle.Flex;
     }
-
-    public override void ExitState()
-    {
-        base.ExitState();
-
-        _gameManager.InputActions.UI.CloseContextualPanel.performed -= OnCloseAction;
-    }
     #endregion
 
     #region PUBLIC METHODS
@@ -233,7 +224,7 @@ public class ContextualPanelComponent : AUIState
     void OnCloseButton(ClickEvent evt)
     {
         ClosedEvent?.Invoke();
-        _soundManager.PlayButtonClickSFX();
+        _soundSystem.PlayButtonClickSFX();
         Reset();
     }
 

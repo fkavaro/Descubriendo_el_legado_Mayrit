@@ -3,7 +3,7 @@ using UnityEngine;
 
 
 [Serializable]
-public class OrbitalStateSetting
+public class OrbitalCameraSettings
 {
     public float OrbitSpeed => _orbitSpeed;
     public float ZoomValue => _zoomValue;

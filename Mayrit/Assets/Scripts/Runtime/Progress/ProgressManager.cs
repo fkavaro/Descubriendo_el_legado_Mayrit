@@ -70,8 +70,17 @@ public class ProgressManager : ABehaviourEntity<FiniteStateMachine<MilestoneStat
     #endregion
 
     #region PUBLIC METHODS
-    public void SwitchToNextMilestone() => _fsm.SwitchToNextStateInSequence(out _currentMilestoneIndex);
-    public void SwitchToPreviousMilestone() => _fsm.SwitchToPreviousStateInSequence(out _currentMilestoneIndex);
+    public Milestone_DataSO SwitchToNextMilestone()
+    {
+        _fsm.SwitchToNextStateInSequence(out _currentMilestoneIndex);
+        return CurrentMilestoneData;
+    }
+
+    public Milestone_DataSO SwitchToPreviousMilestone()
+    {
+        _fsm.SwitchToPreviousStateInSequence(out _currentMilestoneIndex);
+        return CurrentMilestoneData;
+    }
     public bool AtFirstMilestone() => _fsm.AtFistStateInSequence();
     public bool AtLastMilestone() => _fsm.AtLastStateInSequence();
 

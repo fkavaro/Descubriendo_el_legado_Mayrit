@@ -16,7 +16,7 @@ public class CreditsScreen_UIState : AUIState
     void OnCloseClicked(ClickEvent evt)
     {
         base.ExitState();
-        _soundManager.PlayButtonClickSFX();
+        _soundSystem.PlayButtonClickSFX();
         CreditsClosedEvent?.Invoke();
     }
 }

@@ -9,6 +9,7 @@ public class InformationDisplay_UIState : AUIState
     public event Action PlayTourClickedEvent;
     public event Action ResetTourClickedEvent;
     public event Action ClosedEvent;
+    public event Action PauseClickedEvent;
 
     public DataSO DataToShow;
 
@@ -27,24 +28,21 @@ public class InformationDisplay_UIState : AUIState
     protected override void ConfigureUIElementsOnAwake()
     {
         _pauseButton = GetButtonAndRegisterCallback("PauseButton", OnPauseClicked);
-
-        _contextualPanelComponent.ContinueClickedEvent += OnStartTour;
-        _contextualPanelComponent.ResetTourClickedEvent += OnResetTour;
-        _contextualPanelComponent.ClosedEvent += OnCloseButton;
     }
 
     public override void StartState()
     {
         base.StartState();
 
+        _contextualPanelComponent.ContinueClickedEvent += OnStartTour;
+        _contextualPanelComponent.ResetTourClickedEvent += OnResetTour;
+        _contextualPanelComponent.ClosedEvent += OnCloseButton;
+
         if (DataToShow == null)
         {
             Debug.LogError("InformationDisplay_UIState: DataToShow is null!");
             return;
         }
-
-        _gameManager.InputActions.UI.Enable();
-        _gameManager.InputActions.UI.Pause.performed += OnPauseKeyPressed;
 
         _contextualPanelComponent.ShowData(DataToShow);
 
@@ -56,19 +54,15 @@ public class InformationDisplay_UIState : AUIState
 
         _contextualPanelComponent.ExitState();
 
-        _gameManager.InputActions.UI.Disable();
-        _gameManager.InputActions.UI.Pause.performed -= OnPauseKeyPressed;
-    }
-
-    void OnPauseKeyPressed(InputAction.CallbackContext context)
-    {
-        OnPauseClicked(null);
+        _contextualPanelComponent.ContinueClickedEvent -= OnStartTour;
+        _contextualPanelComponent.ResetTourClickedEvent -= OnResetTour;
+        _contextualPanelComponent.ClosedEvent -= OnCloseButton;
     }
 
     void OnPauseClicked(ClickEvent evt)
     {
-        _uiSystem.SwitchToPauseState();
-        _soundManager.PlayButtonClickSFX();
+        _soundSystem.PlayButtonClickSFX();
+        PauseClickedEvent?.Invoke();
     }
 
     void OnCloseButton()
@@ -78,13 +72,13 @@ public class InformationDisplay_UIState : AUIState
 
     void OnStartTour()
     {
-        _soundManager.PlayTourStartSFX();
+        _soundSystem.PlayTourStartSFX();
         PlayTourClickedEvent?.Invoke();
     }
 
     void OnResetTour()
     {
-        _soundManager.PlayTourStartSFX();
+        _soundSystem.PlayTourStartSFX();
         ResetTourClickedEvent?.Invoke();
     }
 }

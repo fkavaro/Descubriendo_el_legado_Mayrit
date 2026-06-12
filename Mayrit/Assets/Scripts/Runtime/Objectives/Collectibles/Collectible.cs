@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class Collectible : AObjective<Collectible, CollectibleSO>
 {
-    public OrbitalStateSetting OrbitalStateSetting => _orbitalStateSetting;
+    public OrbitalCameraSettings OrbitalCameraSetting => _orbitalStateSetting;
 
-    [SerializeField] OrbitalStateSetting _orbitalStateSetting;
+    [SerializeField] OrbitalCameraSettings _orbitalStateSetting;
 
     void OnDrawGizmos()
     {

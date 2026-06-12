@@ -10,7 +10,7 @@ public class PointOfInterest : Billboard
     #region EDITOR PROPERTIES
     [Header("Point of interest information")]
     [SerializeField] DataSO _data;
-    [SerializeField] OrbitalStateSetting _orbitalStateSetting;
+    [SerializeField] OrbitalCameraSettings _orbitalStateSetting;
     [Header("Height Adjustment")]
     [SerializeField] bool _hideIfTooFar = true;
     [SerializeField] bool _fixHeight = false;
@@ -21,7 +21,7 @@ public class PointOfInterest : Billboard
 
     #region INTERNAL PROPERTIES
     public DataSO Data => _data;
-    public OrbitalStateSetting OrbitalStateSetting => _orbitalStateSetting;
+    public OrbitalCameraSettings OrbitalCameraSettings => _orbitalStateSetting;
 
     float OriginalHeight => _originalPosition.y;
     float CameraDistance => Vector3.Distance(_originalPosition, _mainCamera.transform.position);
@@ -128,7 +128,8 @@ public class PointOfInterest : Billboard
             return false;
         }
 
-        _nameLabel.text = _data.Header;
+        if (_data != null)
+            _nameLabel.text = _data.Header;
         _nameButton.RegisterCallback<ClickEvent>(OnClicked);
         return true;
     }

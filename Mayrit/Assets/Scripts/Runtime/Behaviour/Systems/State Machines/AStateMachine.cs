@@ -44,6 +44,9 @@ where GenericState : AState
     /// </summary>
     public override void DebugDecision()
     {
+        if (_behaviourEntity.DebugMode)
+            Debug.Log($"{_behaviourEntity.GO.name} switched to state: {_currentState.StateName}");
+
         _behaviourEntity.CurrentActionInfo = _currentState.StateName;
     }
     #endregion

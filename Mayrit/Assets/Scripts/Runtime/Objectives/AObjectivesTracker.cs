@@ -24,7 +24,7 @@ public abstract class AObjectivesTracker<TTracker, TObject, TData> : MonoBehavio
     public event Action<TObject> OnObjectiveReachedEvent;
     public event Action OnCompletedEvent;
 
-    UISystem _uiSystem;
+    GameManager _gameManager;
     #endregion
 
     #region ACCESSORS
@@ -51,13 +51,13 @@ public abstract class AObjectivesTracker<TTracker, TObject, TData> : MonoBehavio
 
     protected virtual void Start()
     {
-        _uiSystem = ServiceLocator.Instance.Get<UISystem>();
-        _uiSystem.StateChangedEvent += OnUIStateChanged;
+        _gameManager = ServiceLocator.Instance.Get<GameManager>();
+        _gameManager.StateChangedEvent += OnGameStateChanged;
     }
 
     protected virtual void OnDisable()
     {
-        _uiSystem.StateChangedEvent -= OnUIStateChanged;
+        _gameManager.StateChangedEvent -= OnGameStateChanged;
         ServiceLocator.Instance.Unregister((TTracker)this);
     }
     #endregion
@@ -91,11 +91,10 @@ public abstract class AObjectivesTracker<TTracker, TObject, TData> : MonoBehavio
     }
     #endregion
 
-    void OnUIStateChanged()
+    void OnGameStateChanged()
     {
-        if (_uiSystem.IsInInformationDisplayState) return;
-
-        _currentObjective?.UpdateModel();
+        if (_gameManager.IsInThirdPersonState)
+            _currentObjective?.UpdateModel();
     }
 
     #region PRIVATE METHODS

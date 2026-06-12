@@ -44,9 +44,6 @@ public abstract class AHUDState : AUIState
             DisplayStyle.None;
 
         _compass.IsShown = true;
-
-        _gameManager.InputActions.UI.Enable();
-        _gameManager.InputActions.UI.Pause.performed += OnPauseKeyPressed;
     }
 
     public override void UpdateState()
@@ -61,22 +58,6 @@ public abstract class AHUDState : AUIState
 
         base.ExitState();
         _compass.IsShown = false;
-
-        _gameManager.InputActions.UI.Disable();
-        _gameManager.InputActions.UI.Pause.performed -= OnPauseKeyPressed;
-    }
-    #endregion
-
-    #region CALLBACK METHODS
-    protected void OnPauseClicked(ClickEvent evt)
-    {
-        _uiSystem.SwitchToPauseState();
-        _soundManager.PlayButtonClickSFX();
-    }
-
-    void OnPauseKeyPressed(InputAction.CallbackContext context)
-    {
-        OnPauseClicked(null);
     }
     #endregion
 }

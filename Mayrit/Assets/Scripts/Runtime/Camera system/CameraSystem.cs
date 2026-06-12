@@ -89,9 +89,6 @@ public class CameraSystem : ABehaviourEntity<FiniteStateMachine<ACameraState>>
 
         // Subscribe to events
         _gameManager.EdgeScrollingToggledEvent += _aerialCameraData.OnIsEdgeScrollingToggled;
-        _gameManager.StateChangedEvent += OnGameStateChanged;
-
-
 
         // Set camera target at min height
         CinemachineOrbitalFollow _orbitalFollow = _aerialCamera.GetComponent<CinemachineOrbitalFollow>();
@@ -114,9 +111,6 @@ public class CameraSystem : ABehaviourEntity<FiniteStateMachine<ACameraState>>
 
     void OnDisable()
     {
-        // Unsubscribe from events
-        _gameManager.StateChangedEvent -= OnGameStateChanged;
-
         ServiceLocator.Instance.Unregister(this);
     }
     #endregion
@@ -138,7 +132,7 @@ public class CameraSystem : ABehaviourEntity<FiniteStateMachine<ACameraState>>
         CameraStateChangedEvent?.Invoke();
     }
 
-    public void SwitchToOrbitalCamera(OrbitalStateSetting orbitalStateSetting)
+    public void SwitchToOrbitalCamera(OrbitalCameraSettings orbitalStateSetting)
     {
         _orbitalState.Setting = orbitalStateSetting;
         _soundManager.PlayCameraTransitionSFX();
@@ -183,11 +177,10 @@ public class CameraSystem : ABehaviourEntity<FiniteStateMachine<ACameraState>>
     /// Switches to TourStop camera mode.
     /// </summary>
     /// <param name="camera">The TourStop camera to switch to.</param>
-    public void SwitchToTourStopCamera(CinemachineCamera camera, DataSO dataToShow)
+    public void SwitchToTourStopCamera(CinemachineCamera camera)
     {
         _soundManager.PlayCameraTransitionSFX();
         _tourStopState.Camera = camera;
-        _tourStopState.DataToShow = dataToShow;
         _fsm.SwitchState(_tourStopState);
         CameraStateChangedEvent?.Invoke();
     }
@@ -340,37 +333,6 @@ public class CameraSystem : ABehaviourEntity<FiniteStateMachine<ACameraState>>
         transform.position = finalPos;
 
         onComplete?.Invoke();
-    }
-    #endregion
-
-    #region EVENT CALLBACKS
-    void OnGameStateChanged()
-    {
-        if (_gameManager.IsInAerialState)
-        {
-            SwitchToAerialCamera();
-        }
-        else if (_gameManager.IsInThirdPersonState)
-        {
-            SwitchToThirdPersonCamera();
-        }
-        else if (_gameManager.IsAtPOIState)
-        {
-            if (_gameManager.AtPOIState.PointOfInterest.Data.IsPlayer)
-            {
-                _playableCharacter = ServiceLocator.Instance.Get<PlayableCharacter>();
-                _playableCharacter.PositionResetEvent += SwitchToThirdPersonCamera;
-            }
-            SwitchToOrbitalCamera(_gameManager.AtPOIState.PointOfInterest.OrbitalStateSetting);
-        }
-        else if (_gameManager.IsAtCollectibleState)
-        {
-            SwitchToOrbitalCamera(_gameManager.AtCollectibleState.Collectible.OrbitalStateSetting);
-        }
-        else if (_gameManager.IsAtTourStopState)
-        {
-            SwitchToTourStopCamera(_gameManager.TourStopState.TourStop.Camera, _gameManager.TourStopState.TourStop.Data);
-        }
     }
     #endregion
 }

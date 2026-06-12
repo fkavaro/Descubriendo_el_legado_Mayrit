@@ -60,7 +60,6 @@ public class ScenesController : MonoBehaviour
         _isLoading = true;
         if (plan.Overlay)
         {
-            Debug.Log($"[ScenesController] Starting scene transition with overlay.");
             // Black if loading main menu
             if (plan.ScenesToLoad.ContainsValue(SceneDatabase.SceneName.MainMenuScene))
                 yield return _uiSystem.FadeInBlackLoadingScreenCoroutine();

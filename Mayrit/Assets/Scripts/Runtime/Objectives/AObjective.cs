@@ -18,7 +18,7 @@ where T : AObjective<T, TData>
     #region INTERNAL PROPERTIES
     public event Action<T> OnReachedEvent;
     protected SphereCollider _sphereCollider;
-    protected CameraSystem _cameraManager;
+    protected GameManager _gameManager;
     #endregion
 
     #region PUBLIC ACCESSORS
@@ -44,13 +44,13 @@ where T : AObjective<T, TData>
 
     protected virtual void Start()
     {
-        _cameraManager = ServiceLocator.Instance.Get<CameraSystem>();
-        _cameraManager.CameraStateChangedEvent += OnCameraStateChanged;
+        _gameManager = ServiceLocator.Instance.Get<GameManager>();
+        _gameManager.StateChangedEvent += OnGameStateChanged;
     }
 
     protected virtual void OnDisable()
     {
-        _cameraManager.CameraStateChangedEvent -= OnCameraStateChanged;
+        _gameManager.StateChangedEvent -= OnGameStateChanged;
     }
 
     protected void OnTriggerEnter(Collider other)
@@ -108,9 +108,9 @@ where T : AObjective<T, TData>
         }
     }
 
-    void OnCameraStateChanged()
+    void OnGameStateChanged()
     {
-        if (_cameraManager.IsInThirdPersonState)
+        if (_gameManager.IsInThirdPersonState)
         {
             UpdateModel();
             UpdateVFX();

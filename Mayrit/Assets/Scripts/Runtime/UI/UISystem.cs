@@ -113,8 +113,6 @@ public class UISystem : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     protected override void Start()
     {
         _gameManager = ServiceLocator.Instance.Get<GameManager>();
-        _gameManager.StateChangedEvent += OnGameStateChanged;
-
         _progressManager = ServiceLocator.Instance.Get<ProgressManager>();
 
         //base.Start(); When main menu scene is loaded
@@ -122,16 +120,12 @@ public class UISystem : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
 
     void OnDisable()
     {
-        _gameManager.StateChangedEvent -= OnGameStateChanged;
         ServiceLocator.Instance.Unregister(this);
     }
     #endregion
 
     #region STATE HANDLERS
-    public void SwitchToMainMenuState()
-    {
-        _sfsm?.SwitchState(_mainMenuState);
-    }
+    public void SwitchToMainMenuState() => _sfsm?.SwitchState(_mainMenuState);
     public void SwitchToAerialHUDState() => _sfsm?.SwitchState(_aerialHUDState);
     public void SwitchToPlayerHUDState() => _sfsm?.SwitchState(_playerHUDState);
     public void SwitchToPauseState() => _sfsm?.SwitchState(_pauseState);
@@ -153,24 +147,6 @@ public class UISystem : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     void OnSwitchedState()
     {
         StateChangedEvent?.Invoke();
-    }
-
-    void OnGameStateChanged()
-    {
-        Debug.Log($"[UISystem] Detected game state change.");
-
-        if (_gameManager.IsInPauseState)
-            SwitchToPauseState();
-        else if (_gameManager.IsInAerialState)
-            SwitchToAerialHUDState();
-        else if (_gameManager.IsInThirdPersonState)
-            SwitchToPlayerHUDState();
-        else if (_gameManager.IsAtPOIState)
-            SwitchToInformationDisplayState(_gameManager.AtPOIState.PointOfInterest.Data);
-        else if (_gameManager.IsAtTourStopState)
-            SwitchToInformationDisplayState(_gameManager.TourStopState.TourStop.Data);
-        else if (_gameManager.IsAtCollectibleState)
-            SwitchToInformationDisplayState(_gameManager.AtCollectibleState.Collectible.Data.Data);
     }
 
     void OnResetTourClicked()
@@ -214,12 +190,6 @@ public class UISystem : ABehaviourEntity<StackFiniteStateMachine<AUIState>>
     public IEnumerator FadeOutBlackLoadingScreenCoroutine()
     {
         yield return _loadingScreenState.BlackFadeOutCoroutine();
-    }
-
-    IEnumerator FadeInSpecatorHUDCoroutine()
-    {
-        SwitchToAerialHUDState();
-        yield return _aerialHUDState.FadeInCoroutine();
     }
     #endregion
 }

@@ -61,7 +61,7 @@ public class ModernBuilding : MonoBehaviour
         else if (_gameManager.IsInAerialState)
             IsActive = _gameManager.ModernVisualizationValueSet;
         else if (_gameManager.IsAtPOIState)
-            IsActive = _gameManager.ModernVisualizationValueSet && _gameManager.AtPOIState.PointOfInterest.Data.IsModernBuilding && _pointOfInterest.Data == _gameManager.AtPOIState.PointOfInterest.Data;
+            IsActive = _gameManager.ModernVisualizationValueSet && _gameManager.AtPOIState.Data.IsModernBuilding && _pointOfInterest.Data == _gameManager.AtPOIState.Data;
     }
 
     void OnVisualizationToggled(bool value)

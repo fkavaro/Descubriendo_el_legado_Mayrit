@@ -25,9 +25,6 @@ public class ThirdPerson_CameraState : ACameraState
         // Keep controller yaw/pitch in sync with the current target rotation
         _cameraController.SyncFromTargetRotation();
 
-        _gameManager.InputActions.Camera.Enable();
-        _gameManager.InputActions.Camera.ExitMode.performed += OnExitCameraMode;
-
         // Lock cursor to screen center and hide it
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -64,18 +61,8 @@ public class ThirdPerson_CameraState : ACameraState
     {
         base.ExitState();
 
-        _gameManager.InputActions.Camera.Disable();
-        _gameManager.InputActions.Camera.ExitMode.performed -= OnExitCameraMode;
-
         // Unlock cursor and make it visible
         Cursor.lockState = CursorLockMode.None;
-    }
-    #endregion
-
-    #region CALLBACK METHODS
-    void OnExitCameraMode(InputAction.CallbackContext context)
-    {
-        _cameraManager.SwitchToAerialCamera();
     }
     #endregion
 }

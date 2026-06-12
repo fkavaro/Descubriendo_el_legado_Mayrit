@@ -27,7 +27,7 @@ public class OrbitalCameraController
     #endregion
 
     #region PUBLIC METHODS
-    public void Start(OrbitalStateSetting _setting)
+    public void Start(OrbitalCameraSettings _setting)
     {
         _camera.Follow = _setting.Target;
         _camera.LookAt = _setting.Target;

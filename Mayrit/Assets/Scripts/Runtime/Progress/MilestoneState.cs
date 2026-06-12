@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class MilestoneState : AState
 {
@@ -11,18 +10,5 @@ public class MilestoneState : AState
     : base(milestoneData.Header)
     {
         _milestoneData = milestoneData;
-    }
-
-    public override void StartState()
-    {
-        // Load milestone scene, if not already loaded
-        if (!SceneManager.GetSceneByName(_milestoneData.SceneName.ToString()).isLoaded)
-            ServiceLocator.Instance.Get<ScenesController>().NewTransitionPlan()
-                .Load(SceneDatabase.SceneType.Milestone, _milestoneData.SceneName, setActive: true)
-                .WithOverlay()
-                .ClearAssets()
-                .Perform();
-
-        base.StartState();
     }
 }

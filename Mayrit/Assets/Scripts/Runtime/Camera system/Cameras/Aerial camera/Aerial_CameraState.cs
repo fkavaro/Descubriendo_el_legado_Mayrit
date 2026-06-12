@@ -17,12 +17,6 @@ public class Aerial_CameraState : ACameraState
     #endregion
 
     #region INHERITED METHODS
-    public override void StartState()
-    {
-        base.StartState();
-
-        _gameManager.InputActions.Camera.Enable();
-    }
 
     public override void LateUpdateState()
     {
@@ -30,13 +24,6 @@ public class Aerial_CameraState : ACameraState
             return;
 
         _cameraController.LateUpdate();
-    }
-
-    public override void ExitState()
-    {
-        base.ExitState();
-
-        _gameManager.InputActions.Camera.Disable();
     }
     #endregion
 }

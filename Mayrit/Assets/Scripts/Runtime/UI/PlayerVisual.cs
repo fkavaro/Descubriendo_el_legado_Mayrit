@@ -10,7 +10,7 @@ public class PlayerVisual : Billboard
     #region EDITOR PROPERTIES
     [SerializeField] DataSO _data;
     [Space]
-    [SerializeField] OrbitalStateSetting _orbitalStateSetting;
+    [SerializeField] OrbitalCameraSettings _orbitalCameraSettings;
     #endregion
 
     #region INTERNAL PROPERTIES
@@ -20,7 +20,7 @@ public class PlayerVisual : Billboard
     // Dependency Injection
     ScenesController _scenesController;
     ProgressManager _progressManager;
-    CameraSystem _cameraManager;
+    GameManager _gameManager;
     SoundSystem _soundManager;
     TutorialManager _tutorialManager;
     #endregion
@@ -50,14 +50,14 @@ public class PlayerVisual : Billboard
         // Get dependencies from Service Locator
         _scenesController = ServiceLocator.Instance.Get<ScenesController>();
         _progressManager = ServiceLocator.Instance.Get<ProgressManager>();
-        _cameraManager = ServiceLocator.Instance.Get<CameraSystem>();
+        _gameManager = ServiceLocator.Instance.Get<GameManager>();
         _soundManager = ServiceLocator.Instance.Get<SoundSystem>();
         _tutorialManager = ServiceLocator.Instance.Get<TutorialManager>();
 
         // Subscribe to events and callbacks
         _scenesController.SceneLoadedPartiallyEvent += OnSceneLoadedPartially;
         _progressManager.MilestoneChangedEvent += OnMilestoneChanged;
-        _cameraManager.CameraStateChangedEvent += OnCameraStateChanged;
+        _gameManager.StateChangedEvent += OnGameStateChanged;
         _tutorialManager.ShowPlayerFollowerEvent += OnShowPlayerFollowerTutorialEvent;
         _tutorialManager.TutorialCompletedEvent += OnTutorialCompleted;
     }
@@ -67,7 +67,7 @@ public class PlayerVisual : Billboard
         // Unsubscribe from events and callbacks
         _scenesController.SceneLoadedPartiallyEvent -= OnSceneLoadedPartially;
         _progressManager.MilestoneChangedEvent -= OnMilestoneChanged;
-        _cameraManager.CameraStateChangedEvent -= OnCameraStateChanged;
+        _gameManager.StateChangedEvent -= OnGameStateChanged;
         _tutorialManager.ShowPlayerFollowerEvent -= OnShowPlayerFollowerTutorialEvent;
         _tutorialManager.TutorialCompletedEvent -= OnTutorialCompleted;
     }
@@ -78,7 +78,7 @@ public class PlayerVisual : Billboard
     {
         PlayableCharacter playableCharacter = ServiceLocator.Instance.Get<PlayableCharacter>();
 
-        if (!_cameraManager.IsInAerialState || playableCharacter == null)
+        if (!_gameManager.IsInAerialState || playableCharacter == null)
         {
             _playerButton.visible = false;
             return;
@@ -87,7 +87,7 @@ public class PlayerVisual : Billboard
         _playerButton.visible = true;
         transform.position = playableCharacter.transform.position + 10 * Vector3.up;
 
-        _orbitalStateSetting.Target = playableCharacter.transform;
+        _orbitalCameraSettings.Target = playableCharacter.transform;
         _data = playableCharacter.CharacterData;
     }
     #endregion
@@ -105,9 +105,10 @@ public class PlayerVisual : Billboard
         LocateOverPlayer();
     }
 
-    void OnCameraStateChanged()
+    void OnGameStateChanged()
     {
-        LocateOverPlayer();
+        if (_gameManager.IsInAerialState)
+            LocateOverPlayer();
     }
 
     void OnPlayerButtonClick(ClickEvent evt)
@@ -118,13 +119,14 @@ public class PlayerVisual : Billboard
             return;
         }
 
-        if (_orbitalStateSetting.Target == null)
+        if (_orbitalCameraSettings.Target == null)
         {
             Debug.LogWarning($"[PlayerVisual] Can't orbit around null target.", this);
             return;
         }
 
-        _cameraManager.SwitchToOrbitalCamera(_orbitalStateSetting);
+        // TODO invoke event (this should be a service)
+        _gameManager.SwitchToAtPOIState(_data, _orbitalCameraSettings);
         _soundManager.PlayButtonClickSFX();
     }
 

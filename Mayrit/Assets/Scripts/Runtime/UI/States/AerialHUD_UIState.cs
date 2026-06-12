@@ -20,6 +20,7 @@ public class AerialHUD_UIState : AHUDState
 
     Switch _modernVisualizactionSwitch;
 
+    public Action PauseClickedEvent;
     public Action MilestoneInfoClickedEvent;
     public Action PreviousMilestoneClickedEvent;
     public Action NextMilestoneClickedEvent;
@@ -107,27 +108,33 @@ public class AerialHUD_UIState : AHUDState
     #endregion
 
     #region CALLBACK METHODS
+    void OnPauseClicked(ClickEvent evt)
+    {
+        _soundSystem.PlayButtonClickSFX();
+        PauseClickedEvent?.Invoke();
+    }
+
     void OnMilestoneClicked(ClickEvent evt)
     {
+        _soundSystem.PlayButtonClickSFX();
         MilestoneInfoClickedEvent?.Invoke();
-        _soundManager.PlayButtonClickSFX();
     }
 
     void OnPreviousMilestoneClicked(ClickEvent evt)
     {
-        _soundManager.PlayButtonClickSFX();
+        _soundSystem.PlayButtonClickSFX();
         PreviousMilestoneClickedEvent?.Invoke();
     }
 
     void OnNextMilestoneClicked(ClickEvent evt)
     {
-        _soundManager.PlayButtonClickSFX();
+        _soundSystem.PlayButtonClickSFX();
         NextMilestoneClickedEvent?.Invoke();
     }
 
     void OnModernSuperpositionToggled(bool newValue)
     {
-        _soundManager.PlayButtonClickSFX();
+        _soundSystem.PlayButtonClickSFX();
         ModernVisualizationToggled?.Invoke(newValue);
     }
 

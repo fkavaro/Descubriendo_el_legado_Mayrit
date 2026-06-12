@@ -45,8 +45,8 @@ public class SettingsMenu_UIState : AUIState
     {
         base.StartState();
 
-        _musicVolumeSlider.value = _soundManager.MusicVolume;
-        _sfxVolumeSlider.value = _soundManager.EffectsVolume;
+        _musicVolumeSlider.value = _soundSystem.MusicVolume;
+        _sfxVolumeSlider.value = _soundSystem.EffectsVolume;
         _showControlsSwitch.Value = _gameManager.ControlsVisibilityValueSet;
         _edgeScrollingSwitch.Value = _gameManager.EdgeScrollingValueSet;
         _tutorialSettings.style.display = GameSaveSystem.LoadTutorialCompletion() ? DisplayStyle.Flex : DisplayStyle.None;
@@ -57,25 +57,25 @@ public class SettingsMenu_UIState : AUIState
     void OnCloseClicked(ClickEvent evt)
     {
         base.ExitState();
-        _soundManager.PlayButtonClickSFX();
+        _soundSystem.PlayButtonClickSFX();
         CloseClickedEvent?.Invoke();
     }
 
     void OnEdgeScrollingToggled(bool newValue)
     {
-        _soundManager.PlayButtonClickSFX();
+        _soundSystem.PlayButtonClickSFX();
         EdgeScrollingToggledEvent?.Invoke(newValue);
     }
 
     void OnShowPOIsToggled(bool newValue)
     {
-        _soundManager.PlayButtonClickSFX();
+        _soundSystem.PlayButtonClickSFX();
         ShowPOIsToggledEvent?.Invoke(newValue);
     }
 
     void OnShowControlsToggled(bool newValue)
     {
-        _soundManager.PlayButtonClickSFX();
+        _soundSystem.PlayButtonClickSFX();
         ShowControlsToggledEvent?.Invoke(newValue);
     }
 

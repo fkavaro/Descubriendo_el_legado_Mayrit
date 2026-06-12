@@ -79,7 +79,7 @@ public class MainMenu_UIState : AUIState
     #region CALLBACK METHODS
     void OnNewGameClicked(ClickEvent evt)
     {
-        _soundManager.PlayButtonClickSFX();
+        _soundSystem.PlayButtonClickSFX();
 
         if (GameSaveSystem.IsThereStoredMilestoneIdx())
         {
@@ -94,21 +94,21 @@ public class MainMenu_UIState : AUIState
 
     void OnConfirmNewGameClicked(ClickEvent evt)
     {
-        _soundManager.PlayButtonClickSFX();
+        _soundSystem.PlayButtonClickSFX();
         NewGameClickedEvent?.Invoke();
         _newGameWarningPopup.style.display = DisplayStyle.None;
     }
 
     void OnCancelNewGameClicked(ClickEvent evt)
     {
-        _soundManager.PlayButtonClickSFX();
+        _soundSystem.PlayButtonClickSFX();
         _newGameWarningPopup.style.display = DisplayStyle.None;
         _buttons.style.display = DisplayStyle.Flex;
     }
 
     void OnLoadGameClicked(ClickEvent evt)
     {
-        _soundManager.PlayButtonClickSFX();
+        _soundSystem.PlayButtonClickSFX();
         LoadGameClickedEvent?.Invoke();
 
     }
@@ -118,7 +118,7 @@ public class MainMenu_UIState : AUIState
         _logoArea.style.display = DisplayStyle.None;
         _rightPanel.style.display = DisplayStyle.None;
         _screen = null; // To avoid hiding the background image
-        _soundManager.PlayButtonClickSFX();
+        _soundSystem.PlayButtonClickSFX();
         SettingsClickedEvent?.Invoke();
     }
 
@@ -126,13 +126,13 @@ public class MainMenu_UIState : AUIState
     {
         _rightPanel.style.display = DisplayStyle.None;
         _screen = null; // To avoid hiding the background image
-        _soundManager.PlayButtonClickSFX();
+        _soundSystem.PlayButtonClickSFX();
         CreditsClickedEvent?.Invoke();
     }
 
     void OnQuitClicked(ClickEvent evt)
     {
-        _soundManager.PlayButtonClickSFX();
+        _soundSystem.PlayButtonClickSFX();
         QuitClickedEvent?.Invoke();
     }
     #endregion

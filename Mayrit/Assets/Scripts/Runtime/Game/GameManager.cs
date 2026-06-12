@@ -2,6 +2,8 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
 {
@@ -28,8 +30,10 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
     public float MusicVolumeValueSet => _musicVolumeValueSet;
     public float SFXVolumeValueSet => _sfxVolumeValueSet;
 
+    public ScenesController ScenesController => _scenesController;
     public UISystem UISystem => _uiSystem;
-    public CameraSystem CameraSystem => _cameraManager;
+    public SoundSystem SoundSystem => _soundSystem;
+    public CameraSystem CameraSystem => _cameraSystem;
     public PlayableCharacter PlayableCharacter => _playableCharacter;
     public ProgressManager ProgressManager => _progressManager;
     #endregion
@@ -77,7 +81,8 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
 
     ScenesController _scenesController;
     UISystem _uiSystem;
-    CameraSystem _cameraManager;
+    SoundSystem _soundSystem;
+    CameraSystem _cameraSystem;
     PlayableCharacter _playableCharacter;
     ProgressManager _progressManager;
     TourManager _tourManager;
@@ -131,6 +136,10 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
         _scenesController.SceneLoadedPartiallyEvent += OnSceneLoadedPartially;
         _scenesController.ScenesLoadedFullyEvent += OnScenesLoadedFully;
 
+        _inputActions.UI.Pause.performed += OnPauseInput;
+        _inputActions.UI.CloseContextualPanel.performed += OnCloseContextualPanelInput;
+        _inputActions.Camera.ExitMode.performed += OnChangeCameraInput;
+
         _uiSystem = ServiceLocator.Instance.Get<UISystem>();
 
         _uiSystem.MainMenuState.NewGameClickedEvent += OnNewGameClicked;
@@ -149,7 +158,7 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
         _uiSystem.CreditsScreenState.CreditsClosedEvent += OnCreditsClosed;
 
         _uiSystem.PauseState.ResumeGameClickedEvent += OnResumeGameClicked;
-        _uiSystem.PauseState.MainMenuClickedEvent += SwitchToMainMenuState;
+        _uiSystem.PauseState.MainMenuClickedEvent += OnMainMenuClicked;
         _uiSystem.PauseState.SettingsClickedEvent += OnSettingsClicked;
         _uiSystem.PauseState.CreditsClickedEvent += OnCreditsClicked;
         _uiSystem.PauseState.QuitClickedEvent += OnQuitClicked;
@@ -158,15 +167,24 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
         _uiSystem.AerialHUDState.NextMilestoneClickedEvent += OnNextMilestoneClicked;
         _uiSystem.AerialHUDState.ModernVisualizationToggled += OnModernVisualizationToggled;
         _uiSystem.AerialHUDState.MilestoneInfoClickedEvent += OnMilestoneInfoClicked;
+        _uiSystem.AerialHUDState.PauseClickedEvent += OnPauseClicked;
 
         _uiSystem.InformationDisplayState.ClosedEvent += OnContextualPanelClosed;
         _uiSystem.InformationDisplayState.PlayTourClickedEvent += OnPlayTourClicked;
         _uiSystem.InformationDisplayState.ResetTourClickedEvent += OnResetTourClicked;
+        _uiSystem.InformationDisplayState.PauseClickedEvent += OnPauseClicked;
+
+        _soundSystem = ServiceLocator.Instance.Get<SoundSystem>();
 
         _progressManager = ServiceLocator.Instance.Get<ProgressManager>();
         _progressManager.MilestoneChangedEvent += OnMilestoneChanged;
 
         base.Start();
+    }
+
+    void OnChangeCameraInput(InputAction.CallbackContext context)
+    {
+        SwitchToAerialState();
     }
 
     protected override void Update()
@@ -187,22 +205,23 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
     #endregion
 
     #region STATES HANDLERS
-    void SwitchToMainMenuState() => _fsm.SwitchState(_mainMenuState);
-    void SwitchToLoadGameState() => _fsm.SwitchState(_loadGameState);
-    void SwitchToPauseState() => _fsm.SwitchState(_pauseState);
-    void SwitchToAerialState() => _fsm.SwitchState(_aerialState);
-    void SwitchToThirdPersonState() => _fsm.SwitchState(_thirdPersonState);
-    void SwitchToAtPOIState(PointOfInterest pointOfInterest)
+    public void SwitchToMainMenuState() => _fsm.SwitchState(_mainMenuState);
+    public void SwitchToLoadGameState() => _fsm.SwitchState(_loadGameState);
+    public void SwitchToPauseState() => _fsm.SwitchState(_pauseState);
+    public void SwitchToAerialState() => _fsm.SwitchState(_aerialState);
+    public void SwitchToThirdPersonState() => _fsm.SwitchState(_thirdPersonState);
+    public void SwitchToAtPOIState(DataSO data, OrbitalCameraSettings orbitalCameraSettings)
     {
-        _atPOIState.PointOfInterest = pointOfInterest;
+        _atPOIState.Data = data;
+        _atPOIState.OrbitalCameraSettings = orbitalCameraSettings;
         _fsm.SwitchState(_atPOIState);
     }
-    void SwitchToAtTourStopState(TourStop tourStop)
+    public void SwitchToAtTourStopState(TourStop tourStop)
     {
         _atTourStopState.TourStop = tourStop;
         _fsm.SwitchState(_atTourStopState);
     }
-    void SwitchToAtCollectibleState(Collectible collectible)
+    public void SwitchToAtCollectibleState(Collectible collectible)
     {
         _atCollectibleState.Collectible = collectible;
         _fsm.SwitchState(_atCollectibleState);
@@ -236,6 +255,41 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
     }
     #endregion
 
+    #region PRIVATE METHODS
+    public void LoadMainMenuScene()
+    {
+        // Load Main Menu Scene, if not already loaded
+        if (!SceneManager.GetSceneByName(SceneDatabase.SceneName.MainMenuScene.ToString()).isLoaded)
+            _scenesController.NewTransitionPlan()
+                .Load(SceneDatabase.SceneType.Session, SceneDatabase.SceneName.MainMenuScene, setActive: true)
+                .Unload(SceneDatabase.SceneType.Milestone) // Unload Milestone scene if it was loaded in a previous session
+                .WithOverlay()
+                .ClearAssets()
+                .Perform();
+    }
+
+    public void LoadGame()
+    {
+        // Load Game Scene, if not already loaded
+        if (!SceneManager.GetSceneByName(SceneDatabase.SceneName.GameplayScene.ToString()).isLoaded)
+            _scenesController.NewTransitionPlan()
+                .Load(SceneDatabase.SceneType.Session, SceneDatabase.SceneName.GameplayScene)
+                .Load(SceneDatabase.SceneType.Milestone, ProgressManager.StoredMilestoneScene, setActive: true)
+                .WithOverlay()
+                .ClearAssets()
+                .Perform();
+    }
+
+    public void LoadMilestone(SceneDatabase.SceneName milestoneToLoad)
+    {
+        _scenesController.NewTransitionPlan()
+            .Load(SceneDatabase.SceneType.Milestone, milestoneToLoad, setActive: true)
+            .WithOverlay()
+            .ClearAssets()
+            .Perform();
+    }
+    #endregion
+
     #region CALLBACK METHODS
     void OnSwitchedState()
     {
@@ -246,7 +300,7 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
     {
         if (name == SceneDatabase.SceneName.GameplayScene)
         {
-            _cameraManager = ServiceLocator.Instance.Get<CameraSystem>();
+            _cameraSystem = ServiceLocator.Instance.Get<CameraSystem>();
 
             _tourManager = ServiceLocator.Instance.Get<TourManager>();
             _tourManager.TourStopVisitedEvent += OnTourStopVisited;
@@ -262,6 +316,8 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
         if (loadedScenes.TryGetValue(SceneDatabase.SceneType.Milestone, out var milestoneScene))
         {
             _playableCharacter = ServiceLocator.Instance.Get<PlayableCharacter>();
+            // TODO necessary?
+            _playableCharacter.PositionResetEvent += SwitchToThirdPersonState;
             SwitchToAerialState();
         }
     }
@@ -271,17 +327,19 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
         GameSaveSystem.ClearAllData();
         SwitchToLoadGameState();
     }
+
     void OnLoadGameClicked()
     {
-        throw new NotImplementedException();
+        SwitchToLoadGameState();
     }
+
     void OnSettingsClicked()
     {
-        throw new NotImplementedException();
+        _uiSystem.SwitchToSettingsMenuState();
     }
     void OnCreditsClicked()
     {
-        throw new NotImplementedException();
+        _uiSystem.SwitchToCreditsScreenState();
     }
 
     void OnQuitClicked()
@@ -292,49 +350,12 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
 #endif
     }
 
-    private void OnCreditsClosed()
-    {
-        throw new NotImplementedException();
-    }
-
-    private void OnResumeGameClicked()
-    {
-        throw new NotImplementedException();
-    }
-
-    private void OnMilestoneInfoClicked()
-    {
-        throw new NotImplementedException();
-    }
-
     void OnSettingsClosed()
     {
         if (IsInMainMenuState)
             _uiSystem.SwitchToMainMenuState();
         else if (IsInPauseState)
             _uiSystem.SwitchToPauseState();
-    }
-
-    void OnPreviousMilestoneClicked()
-    {
-        _progressManager.SwitchToPreviousMilestone();
-    }
-
-    void OnNextMilestoneClicked()
-    {
-        _progressManager.SwitchToNextMilestone();
-    }
-
-    void OnPlayTourClicked()
-    {
-        PlayTourClickedEvent?.Invoke();
-        SwitchToThirdPersonState();
-    }
-
-    void OnResetTourClicked()
-    {
-        ResetTourClickedEvent?.Invoke();
-        SwitchToThirdPersonState();
     }
 
     void OnEdgeScrollingToggled(bool value)
@@ -355,12 +376,6 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
         SFXVolumeChangedEvent?.Invoke(value);
     }
 
-    void OnModernVisualizationToggled(bool value)
-    {
-        _modernVisualizationValueSet = value;
-        ModernVisualizationToggled?.Invoke(value);
-    }
-
     void OnPOIsVisualizationToggled(bool value)
     {
         _POIsVisibilityValueSet = value;
@@ -373,6 +388,73 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
         ControlsVisibilityToggledEvent?.Invoke(value);
     }
 
+    void OnCreditsClosed()
+    {
+        if (IsInMainMenuState)
+            _uiSystem.SwitchToMainMenuState();
+        else if (IsInPauseState)
+            _uiSystem.SwitchToPauseState();
+    }
+
+    void OnPauseInput(InputAction.CallbackContext context)
+    {
+        if (IsInPauseState)
+            OnResumeGameClicked();
+        else
+            SwitchToPauseState();
+    }
+
+    void OnPauseClicked()
+    {
+        SwitchToPauseState();
+    }
+
+    void OnResumeGameClicked()
+    {
+        // TODO return to collectibleState
+        if (_cameraSystem.IsInAerialState)
+            SwitchToAerialState();
+        else if (_cameraSystem.IsInThirdPersonState)
+            SwitchToThirdPersonState();
+        else if (_cameraSystem.IsInOrbitalState)
+            SwitchToAtPOIState(_atPOIState.Data, _atPOIState.OrbitalCameraSettings);
+        else if (_cameraSystem.IsInTourStopState)
+            SwitchToAtTourStopState(_atTourStopState.TourStop);
+    }
+
+    void OnMainMenuClicked()
+    {
+        SwitchToMainMenuState();
+    }
+
+    void OnCloseContextualPanelInput(InputAction.CallbackContext context)
+    {
+        OnContextualPanelClosed();
+    }
+
+    void OnPreviousMilestoneClicked()
+    {
+        _loadGameState.MilestoneToLoad = _progressManager.SwitchToPreviousMilestone().SceneName;
+        SwitchToLoadGameState();
+    }
+
+    void OnNextMilestoneClicked()
+    {
+        _loadGameState.MilestoneToLoad = _progressManager.SwitchToNextMilestone().SceneName;
+        SwitchToLoadGameState();
+    }
+
+    void OnModernVisualizationToggled(bool value)
+    {
+        _modernVisualizationValueSet = value;
+        ModernVisualizationToggled?.Invoke(value);
+    }
+
+    void OnMilestoneInfoClicked()
+    {
+        _uiSystem.SwitchToInformationDisplayState(_progressManager.CurrentMilestoneData);
+    }
+
     void OnContextualPanelClosed()
     {
         if (IsAtPOIState)
@@ -381,8 +463,19 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
             SwitchToThirdPersonState();
     }
 
-    void OnMilestoneChanged(Milestone_DataSO milestoneData) => MilestoneChangedEvent?.Invoke(milestoneData);
+    void OnPlayTourClicked()
+    {
+        PlayTourClickedEvent?.Invoke();
+        SwitchToThirdPersonState();
+    }
 
+    void OnResetTourClicked()
+    {
+        ResetTourClickedEvent?.Invoke();
+        SwitchToThirdPersonState();
+    }
+
+    void OnMilestoneChanged(Milestone_DataSO milestoneData) => MilestoneChangedEvent?.Invoke(milestoneData);
 
     void OnTourStopVisited(TourStop tourStop)
     {

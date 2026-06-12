@@ -7,7 +7,7 @@ public class Orbital_CameraState : ACameraState
 {
     #region PROPERTIES
     readonly OrbitalCameraController _controller;
-    public OrbitalStateSetting Setting;
+    public OrbitalCameraSettings Setting;
     #endregion
 
     #region CONSTRUCTOR
@@ -23,8 +23,6 @@ public class Orbital_CameraState : ACameraState
     {
         base.StartState();
 
-        _gameManager.InputActions.Camera.Enable();
-
         _controller.Start(Setting);
     }
 
@@ -34,13 +32,6 @@ public class Orbital_CameraState : ACameraState
             return;
 
         _controller.LateUpdate();
-    }
-
-    public override void ExitState()
-    {
-        base.ExitState();
-
-        _gameManager.InputActions.Camera.Disable();
     }
     #endregion
 }

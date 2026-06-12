@@ -25,9 +25,7 @@ public abstract class ACameraState : AState
     #endregion
 
     #region CONSTRUCTOR
-    protected ACameraState(CameraSystem cameraManager, string name,
-        CinemachineCamera camera,
-        float simulationSpeed)
+    protected ACameraState(CameraSystem cameraManager, string name, CinemachineCamera camera, float simulationSpeed)
     : base(name)
     {
         _cameraManager = cameraManager;

@@ -39,58 +39,38 @@ public class PauseMenu_UIState : AUIState
 
         _scenesController.SceneLoadedPartiallyEvent += OnSceneLoadedPartially;
     }
-
-    public override void StartState()
-    {
-        base.StartState();
-        _gameManager.InputActions.UI.Enable();
-        _gameManager.InputActions.UI.Pause.performed += OnPauseKeyPressed;
-    }
-
-    public override void ExitState()
-    {
-        //base.ExitState(); Only after main menu loaded
-        _gameManager.InputActions.UI.Disable();
-        _gameManager.InputActions.UI.Pause.performed -= OnPauseKeyPressed;
-    }
     #endregion
 
     #region CALLBACK METHODS
     void OnResumeGameClicked(ClickEvent evt)
     {
-        base.ExitState();
-        _soundManager.PlayButtonClickSFX();
+        _soundSystem.PlayButtonClickSFX();
         ResumeGameClickedEvent?.Invoke();
-    }
-
-    void OnPauseKeyPressed(InputAction.CallbackContext context)
-    {
-        OnResumeGameClicked(null);
     }
 
     void OnMainMenuClicked(ClickEvent evt)
     {
-        _soundManager.PlayButtonClickSFX();
+        _soundSystem.PlayButtonClickSFX();
         MainMenuClickedEvent?.Invoke();
     }
 
     void OnSettingsClicked(ClickEvent evt)
     {
         base.ExitState();
-        _soundManager.PlayButtonClickSFX();
+        _soundSystem.PlayButtonClickSFX();
         SettingsClickedEvent?.Invoke();
     }
 
     void OnCreditsClicked(ClickEvent evt)
     {
         base.ExitState();
-        _soundManager.PlayButtonClickSFX();
+        _soundSystem.PlayButtonClickSFX();
         CreditsClickedEvent?.Invoke();
     }
 
     void OnQuitClicked(ClickEvent evt)
     {
-        _soundManager.PlayButtonClickSFX();
+        _soundSystem.PlayButtonClickSFX();
         QuitClickedEvent?.Invoke();
     }
 
