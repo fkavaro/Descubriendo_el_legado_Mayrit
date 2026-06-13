@@ -320,17 +320,25 @@
                 </ui:VisualElement>
             </ui:VisualElement>
             <ui:VisualElement name="TutorialSteps" picking-mode="Ignore" style="flex-grow: 1; position: absolute; top: 0; left: 0; right: 0; bottom: 0;">
-                <ui:VisualElement name="CharacterControls" style="position: absolute; top: auto; left: 37%; right: auto; bottom: 60px; align-self: center; flex-direction: column; justify-content: center; display: none; width: 500px; align-items: center; padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 20px;">
+                <ui:VisualElement name="CharacterControls" style="align-self: center; flex-direction: row; justify-content: center; display: none; position: absolute; left: auto; bottom: 60px; padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 20px;">
                     <ui:VisualElement name="Bg" class="tutorialBlurBg" style="flex-grow: 1; display: flex;"/>
-                    <ui:Label text="Controles de personaje" name="Subheader" class="subHeader" style="-unity-text-align: upper-center; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;"/>
-                    <ui:Label text="Para orientar la cámara mueve el ratón. Para moverte pulsa las teclas W,A,S o D. Irás más rápido si además pulsas la tecla SHIFT. Para saltar pulsa la tecla SPACE. &#10;Para volver a la cámara aérea pulsa la tecla TAB." name="Text" class="text" style="-unity-text-align: middle-center;"/>
-                    <ui:Image source="project://database/Assets/Imports/External/European%20Forests%20-%20Realistic%20Trees/Source/Textures/Ash/Ash_Bark.png?fileID=2800000&amp;guid=155b3dfe4ba28214384025db4839ab67&amp;type=3#Ash_Bark" name="Image" style="margin-top: 10px; display: none;"/>
+                    <ui:VisualElement style="flex-grow: 1; width: 430px;">
+                        <ui:Label text="Controles de personaje" name="Subheader" class="subHeader" style="margin-top: 0; -unity-text-align: upper-center;"/>
+                        <ui:Label text="Pulsa las teclas [W], [A], [S] o [D], o las de flechas para moverlo. Irá más rápido si además pulsas la tecla [Shift]. &#10;Mueve el ratón para orientar la cámara en cualquier dirección.&#10;Puedes volver a la cámara aérea pulsando [Back]." name="Text" class="text" style="-unity-text-align: middle-center; -unity-font-style: normal;"/>
+                    </ui:VisualElement>
+                    <ui:Instance template="CharacterControlsMapping"/>
                 </ui:VisualElement>
-                <ui:VisualElement name="PointOfInterestCompass" style="position: absolute; top: auto; left: auto; right: 230px; bottom: 17px; align-self: center; flex-direction: column; justify-content: center; display: none; width: 500px; padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 20px;">
+                <ui:VisualElement name="Tour" style="position: absolute; top: auto; left: auto; right: 20px; bottom: 230px; align-self: center; flex-direction: column; justify-content: center; display: none; width: 500px; padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 20px;">
                     <ui:VisualElement name="Bg" class="tutorialBlurBg" style="flex-grow: 1; display: flex;"/>
-                    <ui:Label text="Alcanzar las paradas del tour" name="Subheader" class="subHeader" style="margin-top: 0; -unity-text-align: upper-center; margin-right: 0; margin-bottom: 0; margin-left: 0;"/>
-                    <ui:Label text="Sigue la dirección de la brújula hacia la siguiente  parada. Completarás el tour tras visitarlas todas." name="Text" class="text" style="-unity-text-align: middle-center;"/>
-                    <ui:Image source="project://database/Assets/UI/Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=-1087164816274819069&amp;guid=2196264947afaa74a8b087d37850e618&amp;type=3#arrow-right@2x" name="Image" tint-color="rgb(220, 220, 220)" scale-mode="StretchToFill" style="display: flex; width: 80px; align-self: center; position: absolute; right: -70px; top: 35px; bottom: auto; height: 110px;"/>
+                    <ui:Label text="Completar un Tour" name="Subheader" class="subHeader" style="margin-top: 0; -unity-text-align: upper-center; margin-right: 0; margin-bottom: 0; margin-left: 0;"/>
+                    <ui:Label text="Sigue la dirección de la brújula hacia la siguiente parada. Completarás el Tour tras visitarlas todas." name="Text" class="text" style="-unity-text-align: middle-center;"/>
+                    <ui:Image source="project://database/Assets/UI/Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=-1304905567622442630&amp;guid=2196264947afaa74a8b087d37850e618&amp;type=3#arrow-down@2x" name="Image" tint-color="rgb(220, 220, 220)" scale-mode="StretchToFill" style="display: flex; position: absolute; width: 117px; height: 63px; align-self: center; bottom: -65px; right: 0;"/>
+                </ui:VisualElement>
+                <ui:VisualElement name="Collectibles" style="position: absolute; top: auto; left: 329px; right: auto; bottom: 0; align-self: center; flex-direction: column; justify-content: center; display: none; width: 500px; padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 20px;">
+                    <ui:VisualElement name="Bg" class="tutorialBlurBg" style="flex-grow: 1; display: flex;"/>
+                    <ui:Label text="Encontrar Coleccionables" name="Subheader" class="subHeader" style="margin-top: 0; -unity-text-align: upper-center; margin-right: 0; margin-bottom: 0; margin-left: 0;"/>
+                    <ui:Label text="Sigue las pistas para encontrar cada coleccionable y descubrir información adicional." name="Text" emoji-fallback-support="false" class="text" style="-unity-text-align: middle-center;"/>
+                    <ui:Image source="project://database/Assets/UI/Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=-1008301579157283121&amp;guid=2196264947afaa74a8b087d37850e618&amp;type=3#arrow-left@2x" name="Image" tint-color="rgb(220, 220, 220)" scale-mode="StretchToFill" style="display: flex; position: absolute; width: 63px; height: 117px; align-self: center; bottom: -20px; right: auto; left: -60px; top: auto;"/>
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
@@ -424,10 +432,10 @@
             <ui:Button text="Reiniciar" name="ResetTourButton" class="mediumButton button" style="display: flex; position: relative; align-self: flex-end; flex-shrink: 1; flex-grow: 1; margin-top: 0; margin-right: 25px; margin-bottom: 0; margin-left: 0; width: 65px;"/>
             <ui:Button text="Continuar" name="ContinueButton" class="mediumButton button highlighted" style="display: flex; position: relative; align-self: flex-end; flex-grow: 1; margin-left: 0; margin-right: 0; margin-bottom: 0; margin-top: 0; width: auto; flex-shrink: 1;"/>
         </ui:VisualElement>
-        <ui:VisualElement name="CloseContextualPanelTutorialStep" style="position: absolute; top: 30px; left: auto; right: 760px; bottom: auto; align-self: center; flex-direction: column; justify-content: center; display: none; width: 500px; padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 20px;">
+        <ui:VisualElement name="CloseContextualPanelTutorialStep" style="position: absolute; top: 30px; left: auto; right: 760px; bottom: auto; align-self: center; flex-direction: column; justify-content: center; display: none; width: 400px; padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 20px;">
             <ui:VisualElement name="Bg" class="tutorialBlurBg" style="flex-grow: 1; display: flex;"/>
-            <ui:Label text="Cerrar el panel contextual" name="Subheader" class="subHeader" style="margin-top: 0; -unity-text-align: upper-center;"/>
-            <ui:Label text="Pulsa el botón rojo o la tecla X." name="Text" class="text" style="-unity-text-align: middle-center;"/>
+            <ui:Label text="Cerrar el Panel Contextual" name="Subheader" class="subHeader" style="margin-top: 0; -unity-text-align: upper-center;"/>
+            <ui:Label text="Pulsa el botón rojo o la tecla [Back]." name="Text" class="text" style="-unity-text-align: middle-center;"/>
             <ui:Image source="project://database/Assets/UI/Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=-1087164816274819069&amp;guid=2196264947afaa74a8b087d37850e618&amp;type=3#arrow-right@2x" name="Image" tint-color="rgb(220, 220, 220)" scale-mode="StretchToFill" style="display: flex; width: 80px; align-self: center; position: absolute; height: 110px; right: -70px;"/>
         </ui:VisualElement>
     </ui:VisualElement>
