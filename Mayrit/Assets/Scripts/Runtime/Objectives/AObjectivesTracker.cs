@@ -68,7 +68,7 @@ public abstract class AObjectivesTracker<TTracker, TObject, TData> : MonoBehavio
         _isCompleted = false;
 
         foreach (var obj in _objectives)
-            obj.Reset();
+            obj.Enable();
 
         UpdateStateAndProgress();
     }
@@ -77,7 +77,7 @@ public abstract class AObjectivesTracker<TTracker, TObject, TData> : MonoBehavio
     {
         foreach (var obj in _objectives)
             if (obj.Data != null && allReachedCollectiblesHash.Contains(obj.Data))
-                obj.CompleteAndUpdateVisuals();
+                obj.Disable();
 
         UpdateStateAndProgress();
     }
@@ -87,7 +87,7 @@ public abstract class AObjectivesTracker<TTracker, TObject, TData> : MonoBehavio
         _isCompleted = true;
         _reachedCount = _totalCount;
         foreach (var obj in _objectives)
-            obj.CompleteAndUpdateVisuals();
+            obj.Disable();
     }
     #endregion
 
@@ -160,12 +160,14 @@ public abstract class AObjectivesTracker<TTracker, TObject, TData> : MonoBehavio
         }
         else
         {
-            _currentObjective.Reset();
-            _currentValidObjective.Reset();
+            _currentObjective.Enable();
+            _currentValidObjective.Enable();
 
             _currentObjective.OnReachedEvent += HandleObjectReached;
             if (_currentObjective != _currentValidObjective)
                 _currentValidObjective.OnReachedEvent += HandleObjectReached;
+
+            _currentValidObjective.IsCurrentObjective = true;
         }
     }
     #endregion
@@ -173,7 +175,7 @@ public abstract class AObjectivesTracker<TTracker, TObject, TData> : MonoBehavio
     #region PROTECTED VIRTUAL METHODS
     protected virtual void OnObjectiveReachedAction(TObject reachedObj)
     {
-        reachedObj.CompleteAndUpdateVisuals();
+        reachedObj.Disable();
     }
     #endregion
 }

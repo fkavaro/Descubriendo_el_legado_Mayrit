@@ -8,6 +8,7 @@ where T : AObjective<T, TData>
     #region EDITOR PROPERTIES
     [Header("Objective Settings")]
     [SerializeField] protected TData _data;
+    public bool IsCurrentObjective = false;
     [SerializeField] protected bool _isReached = false;
     [SerializeField] protected float _colliderRadius = 2f;
     [SerializeField] protected LayerMask _detectionMask = ~0;
@@ -63,14 +64,15 @@ where T : AObjective<T, TData>
     #endregion
 
     #region LOGIC
-    public virtual void Reset()
+    public virtual void Enable()
     {
         _isReached = false;
         _sphereCollider.enabled = true;
         UpdateModel();
+        UpdateVFX();
     }
 
-    public virtual void CompleteAndUpdateVisuals()
+    public virtual void Disable()
     {
         Complete();
         UpdateModel();
@@ -86,7 +88,7 @@ where T : AObjective<T, TData>
     public virtual void UpdateModel()
     {
         if (_data != null)
-            _model.SetActive(!_isReached);
+            _model.SetActive(!_isReached && IsCurrentObjective);
         else
             _model.SetActive(false);
     }
@@ -94,7 +96,7 @@ where T : AObjective<T, TData>
     public virtual void UpdateVFX()
     {
         if (_data != null)
-            _vfx.SetActive(!_isReached);
+            _vfx.SetActive(!_isReached && IsCurrentObjective);
         else
             _vfx.SetActive(false);
     }
