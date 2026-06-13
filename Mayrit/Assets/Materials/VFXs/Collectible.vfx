@@ -193,7 +193,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 20
+      m_SerializableObject: 15
     m_Space: -1
   m_Property:
     name: Rate
@@ -708,7 +708,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Gradient, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"colorKeys":[{"color":{"r":0.0,"g":2.308708429336548,"b":12.525971412658692,"a":1.0},"time":0.23529411852359773},{"color":{"r":0.2513088583946228,"g":0.5779175758361816,"b":2.040402889251709,"a":1.0},"time":0.5411764979362488}],"alphaKeys":[{"alpha":1.0,"time":0.12059205025434494},{"alpha":0.6392157077789307,"time":0.7058823704719544},{"alpha":0.0,"time":1.0}],"gradientMode":0}'
+      m_SerializableObject: '{"colorKeys":[{"color":{"r":1.0346934795379639,"g":0.0,"b":3.0228190422058107,"a":1.0},"time":0.2647135257720947},{"color":{"r":1.4767389297485352,"g":0.0,"b":2.7240984439849855,"a":1.0},"time":0.6558785438537598}],"alphaKeys":[{"alpha":1.0,"time":0.12059205025434494},{"alpha":0.6392157077789307,"time":0.8500038385391235},{"alpha":0.0,"time":1.0}],"gradientMode":0}'
     m_Space: -1
   m_Property:
     name: Color
@@ -1901,7 +1901,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.AnimationCurve, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"frames":[{"time":0.0,"value":0.0,"inTangent":0.0,"outTangent":0.0,"tangentMode":0,"leftTangentMode":0,"rightTangentMode":0,"broken":false},{"time":1.0,"value":1.0,"inTangent":0.0,"outTangent":0.0,"tangentMode":0,"leftTangentMode":0,"rightTangentMode":0,"broken":false}],"preWrapMode":8,"postWrapMode":8,"version":1}'
+      m_SerializableObject: '{"frames":[{"time":0.0,"value":0.0,"inTangent":0.0,"outTangent":0.0,"tangentMode":0,"leftTangentMode":0,"rightTangentMode":0,"broken":false},{"time":0.5,"value":1.0,"inTangent":-0.02323034219443798,"outTangent":-0.02323034219443798,"tangentMode":0,"leftTangentMode":0,"rightTangentMode":0,"broken":false},{"time":1.0,"value":0.0,"inTangent":-2.947974920272827,"outTangent":-2.947974920272827,"tangentMode":0,"leftTangentMode":0,"rightTangentMode":0,"broken":false}],"preWrapMode":8,"postWrapMode":8,"version":1}'
     m_Space: -1
   m_Property:
     name: Size
