@@ -471,6 +471,30 @@ PrefabInstance:
       propertyPath: _uiManager
       value: 
       objectReference: {fileID: 1568518587}
+    - target: {fileID: 3618290972786116656, guid: 668020751133b714495ee039980b3080, type: 3}
+      propertyPath: '_tutorialStepsData.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 81cf47cf31628a9488959f78ff8fe443, type: 2}
+    - target: {fileID: 3618290972786116656, guid: 668020751133b714495ee039980b3080, type: 3}
+      propertyPath: '_tutorialStepsData.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 1869c4096faf1014ab866e8d93ad371d, type: 2}
+    - target: {fileID: 3618290972786116656, guid: 668020751133b714495ee039980b3080, type: 3}
+      propertyPath: '_tutorialStepsData.Array.data[3]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 576ecce811f957e48942f8ab196de22a, type: 2}
+    - target: {fileID: 3618290972786116656, guid: 668020751133b714495ee039980b3080, type: 3}
+      propertyPath: '_tutorialStepsData.Array.data[4]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 7123d9c0c1251af49ad1256869232b68, type: 2}
+    - target: {fileID: 3618290972786116656, guid: 668020751133b714495ee039980b3080, type: 3}
+      propertyPath: '_tutorialStepsData.Array.data[5]'
+      value: 
+      objectReference: {fileID: 11400000, guid: d1c9caff75c79b348b5eeb2be8d3d61b, type: 2}
+    - target: {fileID: 3618290972786116656, guid: 668020751133b714495ee039980b3080, type: 3}
+      propertyPath: '_tutorialStepsData.Array.data[6]'
+      value: 
+      objectReference: {fileID: 11400000, guid: e042649145137e342858c4450385154f, type: 2}
     - target: {fileID: 7574419577275873137, guid: 668020751133b714495ee039980b3080, type: 3}
       propertyPath: m_Name
       value: "\U0001F6DFTutorialManager"

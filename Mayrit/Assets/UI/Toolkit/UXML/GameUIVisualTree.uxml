@@ -206,7 +206,7 @@
                         </ui:VisualElement>
                     </ui:VisualElement>
                 </ui:VisualElement>
-                <ui:VisualElement name="Pause" style="position: absolute; top: auto; left: 0; right: auto; bottom: 140px; align-self: center; flex-direction: row; justify-content: center; display: none; padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 20px;">
+                <ui:VisualElement name="Pause" style="position: absolute; top: auto; left: 0; right: auto; bottom: 165px; align-self: center; flex-direction: row; justify-content: center; display: none; padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 20px;">
                     <ui:VisualElement name="Bg" class="tutorialBlurBg" style="flex-grow: 1; display: flex;"/>
                     <ui:VisualElement style="flex-grow: 1; width: 300px;">
                         <ui:Label text="Pausar juego" name="Subheader" class="subHeader" style="margin-top: 0; -unity-text-align: upper-center;"/>
