@@ -10,7 +10,7 @@ public abstract class AHUDState : AUIState
     protected CompassComponent _compass;
 
     VisualElement _hudScreen,
-        _controlsVisualRoot,
+        _controlsMappingRoot,
         _compassVisualRoot;
     #endregion
 
@@ -22,7 +22,7 @@ public abstract class AHUDState : AUIState
     #region INHERITED METHODS
     protected override void ConfigureUIElementsOnAwake()
     {
-        _controlsVisualRoot = GetByName<VisualElement>("ControlsVisual");
+        _controlsMappingRoot = GetByName<VisualElement>("ControlsMapping");
         _hudScreen = GetByName<VisualElement>("HUD", _UIDocument.rootVisualElement);
         _compassVisualRoot = GetByName<VisualElement>("Compass", _hudScreen);
 
@@ -39,7 +39,7 @@ public abstract class AHUDState : AUIState
         _compass.StartState();
 
         // Show controls visual according to UISystem setting
-        _controlsVisualRoot.style.display = _gameManager.ControlsVisibilityValueSet ?
+        _controlsMappingRoot.style.display = _gameManager.ControlsVisibilityValueSet ?
             DisplayStyle.Flex :
             DisplayStyle.None;
 
