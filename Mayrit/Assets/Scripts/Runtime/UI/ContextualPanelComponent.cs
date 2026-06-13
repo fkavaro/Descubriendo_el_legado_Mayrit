@@ -106,6 +106,7 @@ public class ContextualPanelComponent : AUIState
             {
                 var defElement = new Label(definition.WordWithDefinition);
                 defElement.AddToClassList("text");
+                defElement.style.marginTop = 15;
                 _glosaryList.Add(defElement);
             }
             _glosaryArea.style.display = DisplayStyle.Flex;
@@ -148,6 +149,7 @@ public class ContextualPanelComponent : AUIState
             {
                 var sourceElement = new Label(source);
                 sourceElement.AddToClassList("text");
+                sourceElement.style.marginTop = 15;
                 _sourcesList.Add(sourceElement);
             }
             _sourcesArea.style.display = DisplayStyle.Flex;

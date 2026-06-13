@@ -219,41 +219,6 @@
     background-color: rgba(72, 36, 36, 0.39);
 }
 
-.clickableArea {
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    height: 100%;
-    transition-duration: 0.2s;
-    border-top-width: 0;
-    border-right-width: 0;
-    border-bottom-width: 0;
-    border-left-width: 0;
-    background-color: rgba(0, 0, 0, 0);
-    border-top-left-radius: 30px;
-    border-top-right-radius: 30px;
-    border-bottom-right-radius: 30px;
-    border-bottom-left-radius: 30px;
-    border-left-color: rgba(0, 0, 0, 0);
-    border-right-color: rgba(0, 0, 0, 0);
-    border-top-color: rgba(0, 0, 0, 0);
-    border-bottom-color: rgba(0, 0, 0, 0);
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 0;
-    padding-top: 0;
-    padding-right: 0;
-    padding-bottom: 0;
-    padding-left: 0;
-}
-
-.clickableArea:hover {
-    transition-duration: 0.2s;
-    scale: 1.05 1.05;
-}
-
 .poiVisual {
     background-color: rgba(0, 0, 0, 0);
     top: 0;
@@ -309,7 +274,7 @@
     position: absolute;
     width: 120%;
     height: 120%;
-    background-color: rgba(0, 0, 0, 0.92);
+    background-color: rgba(0, 0, 0, 0.94);
     filter: blur(20);
     align-self: center;
     right: -90px;
@@ -317,7 +282,7 @@
 }
 
 .smallButtonBlurBg {
-    background-color: rgba(0, 0, 0, 0.92);
+    background-color: rgba(0, 0, 0, 0.94);
     position: absolute;
     top: 0;
     left: 0;
