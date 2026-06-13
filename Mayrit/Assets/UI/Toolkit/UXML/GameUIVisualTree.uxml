@@ -43,7 +43,7 @@
             <ui:VisualElement name="Left" picking-mode="Ignore" style="flex-grow: 1;">
                 <ui:VisualElement name="Up" style="flex-direction: column; position: absolute; top: 0; left: 0;"/>
                 <ui:VisualElement name="Down" style="flex-grow: 1; position: absolute; left: 0; bottom: 0; align-items: flex-start;">
-                    <ui:VisualElement name="ControlsMapping" style="flex-grow: 1; margin-bottom: 20px; display: flex;">
+                    <ui:VisualElement name="ControlsMapping" style="flex-grow: 1; margin-bottom: 40px; display: flex;">
                         <ui:VisualElement name="BlurBg" class="smallButtonBlurBg"/>
                         <ui:Instance template="AerialControlsMapping" name="AerialControlsMapping"/>
                     </ui:VisualElement>
@@ -51,6 +51,7 @@
                         <ui:VisualElement name="BlurBg" class="smallButtonBlurBg"/>
                         <ui:VisualElement name="TutorialPauseButton" style="align-self: center;">
                             <ui:Button text="| |" name="PauseButton" class="button smallButton" style="align-self: flex-start; position: relative; flex-direction: row;"/>
+                            <ui:Label text="[Esc]" class="HUDtext" style="top: -30px; position: absolute; align-self: center;"/>
                         </ui:VisualElement>
                         <ui:VisualElement name="TutorialModernVisualizationSwitch" style="align-self: center; display: flex;">
                             <Switch text="Edificios modernos" value="false" name="ModernVisualizationSwitch" style="display: flex; margin-right: 20px; margin-left: 15px;"/>
@@ -342,18 +343,18 @@
                     </ui:VisualElement>
                     <ui:VisualElement name="ChangeCameraKey" style="flex-direction: row;">
                         <ui:Label text="[ Back ]" class="HUDtext highlighted" style="-unity-text-align: middle-right; align-self: flex-end; margin-right: 10px;"/>
-                        <ui:Label text="Cambiar de cámara" class="HUDtext" style="-unity-text-align: middle-right;"/>
+                        <ui:Label text="Volver a cámara aérea" class="HUDtext" style="-unity-text-align: middle-right;"/>
                     </ui:VisualElement>
                 </ui:VisualElement>
             </ui:VisualElement>
             <ui:VisualElement name="TutorialSteps" picking-mode="Ignore" style="flex-grow: 1; position: absolute; top: 0; left: 0; right: 0; bottom: 0;">
-                <ui:VisualElement name="CharacterControls" style="align-self: center; flex-direction: row; justify-content: center; display: none; position: absolute; left: auto; bottom: 60px; padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 20px;">
+                <ui:VisualElement name="CharacterControls" style="align-self: center; flex-direction: row; justify-content: center; display: none; position: absolute; left: auto; bottom: 60px; padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 30px;">
                     <ui:VisualElement name="Bg" class="tutorialBlurBg" style="flex-grow: 1; display: flex;"/>
-                    <ui:VisualElement style="flex-grow: 1; width: 430px;">
+                    <ui:VisualElement style="flex-grow: 1; width: 480px; justify-content: center;">
                         <ui:Label text="Controles de personaje" name="Subheader" class="subHeader" style="margin-top: 0; -unity-text-align: upper-center;"/>
-                        <ui:Label text="Pulsa las teclas [W], [A], [S] o [D], o las de flechas para moverlo. Irá más rápido si además pulsas la tecla [Shift]. &#10;Mueve el ratón para orientar la cámara en cualquier dirección.&#10;Puedes volver a la cámara aérea pulsando [Back]." name="Text" class="text" style="-unity-text-align: middle-center; -unity-font-style: normal;"/>
+                        <ui:Label text="Pulsa las teclas [W], [A], [S] o [D], o las de flechas para moverlo. Irá más rápido si además pulsas la tecla [Shift]. Mueve el ratón para orientar la cámara en cualquier dirección.&#10;Puedes volver a la cámara aérea pulsando [Back].&#10;Pulsa [Enter] para continuar con el tutorial." name="Text" class="text" style="-unity-text-align: middle-center; -unity-font-style: normal;"/>
                     </ui:VisualElement>
-                    <ui:Instance template="CharacterControlsMapping"/>
+                    <ui:Instance template="CharacterControlsMapping" style="display: flex;"/>
                 </ui:VisualElement>
                 <ui:VisualElement name="Tour" style="position: absolute; top: auto; left: auto; right: 20px; bottom: 230px; align-self: center; flex-direction: column; justify-content: center; display: none; width: 500px; padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 20px;">
                     <ui:VisualElement name="Bg" class="tutorialBlurBg" style="flex-grow: 1; display: flex;"/>
@@ -366,6 +367,11 @@
                     <ui:Label text="Encontrar Coleccionables" name="Subheader" class="subHeader" style="margin-top: 0; -unity-text-align: upper-center; margin-right: 0; margin-bottom: 0; margin-left: 0;"/>
                     <ui:Label text="Sigue las pistas para encontrar cada coleccionable y descubrir información adicional.&#10;Pulsa [Enter] para contiinuar con el tutorial." name="Text" emoji-fallback-support="false" class="text" style="-unity-text-align: middle-center;"/>
                     <ui:Image source="project://database/Assets/UI/Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=-1008301579157283121&amp;guid=2196264947afaa74a8b087d37850e618&amp;type=3#arrow-left@2x" name="Image" tint-color="rgb(220, 220, 220)" scale-mode="StretchToFill" style="display: flex; position: absolute; width: 63px; height: 117px; align-self: center; bottom: -20px; right: auto; left: -60px; top: auto;"/>
+                </ui:VisualElement>
+                <ui:VisualElement name="CheerUp" style="position: absolute; top: auto; left: auto; right: auto; bottom: 60px; align-self: center; flex-direction: column; justify-content: center; display: none; width: 600px; padding-top: 20px; padding-right: 20px; padding-bottom: 20px; padding-left: 20px;">
+                    <ui:VisualElement name="Bg" class="tutorialBlurBg" style="flex-grow: 1; display: flex;"/>
+                    <ui:Label text="¡Adelante!" name="Subheader" class="subHeader" style="margin-top: 0; -unity-text-align: upper-center; margin-right: 0; margin-bottom: 0; margin-left: 0;"/>
+                    <ui:Label text="Visita las paradas del Tour y explora para encontrar los coleccionables.&#10;Recuerda que puedes volver a la cámara aérea pulsando [Back]." name="Text" emoji-fallback-support="false" parse-escape-sequences="true" class="text" style="-unity-text-align: middle-center;"/>
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
