@@ -52,6 +52,8 @@ public class CollectiblesManager : MonoBehaviour
         _soundSystem = ServiceLocator.Instance.Get<SoundSystem>();
 
         _scenesController.SceneLoadedPartiallyEvent += OnSceneLoadedPartially;
+
+        LoadSavedCollectiblesData();
     }
 
     void OnDisable()

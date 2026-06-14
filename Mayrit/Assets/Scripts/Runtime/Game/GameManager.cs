@@ -51,6 +51,8 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
     public CameraSystem CameraSystem => _cameraSystem;
     public ProgressSystem ProgressSystem => _progressSystem;
     public PlayableCharacter PlayableCharacter => _playableCharacter;
+    public TourManager TourManager => _tourManager;
+    public CollectiblesManager CollectiblesManager => _collectiblesManager;
     #endregion
 
     #region EDITOR PROPERTIES
@@ -193,6 +195,13 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
 
         _progressSystem = ServiceLocator.Instance.Get<ProgressSystem>();
         _progressSystem.MilestoneChangedEvent += OnMilestoneChanged;
+
+        _tourManager = ServiceLocator.Instance.Get<TourManager>();
+        _tourManager.TourStopVisitedEvent += OnTourStopVisited;
+        _tourManager.TourCompletedEvent += OnTourCompleted;
+
+        _collectiblesManager = ServiceLocator.Instance.Get<CollectiblesManager>();
+        _collectiblesManager.OnCollectibleFoundEvent += OnCollectibleFound;
 
         base.Start();
     }
@@ -367,13 +376,6 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
         if (name == SceneDatabase.SceneName.GameplayScene)
         {
             _cameraSystem = ServiceLocator.Instance.Get<CameraSystem>();
-
-            _tourManager = ServiceLocator.Instance.Get<TourManager>();
-            _tourManager.TourStopVisitedEvent += OnTourStopVisited;
-            _tourManager.TourCompletedEvent += OnTourCompleted;
-
-            _collectiblesManager = ServiceLocator.Instance.Get<CollectiblesManager>();
-            _collectiblesManager.OnCollectibleFoundEvent += OnCollectibleFound;
         }
     }
 

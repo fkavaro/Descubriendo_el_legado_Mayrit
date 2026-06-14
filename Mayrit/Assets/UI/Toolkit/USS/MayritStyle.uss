@@ -274,7 +274,7 @@
     position: absolute;
     width: 120%;
     height: 120%;
-    background-color: rgba(0, 0, 0, 0.94);
+    background-color: rgba(0, 0, 0, 0.96);
     filter: blur(20);
     align-self: center;
     right: -90px;
@@ -282,7 +282,7 @@
 }
 
 .smallButtonBlurBg {
-    background-color: rgba(0, 0, 0, 0.94);
+    background-color: rgba(0, 0, 0, 0.9);
     position: absolute;
     top: 0;
     left: 0;

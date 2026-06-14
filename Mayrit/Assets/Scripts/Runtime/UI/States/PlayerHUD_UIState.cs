@@ -6,8 +6,8 @@ using UnityEngine.UIElements;
 public class PlayerHUD_UIState : AHUDState
 {
     #region  PROPERTIES
-    TourManager _tourManager;
-    CollectiblesManager _collectiblesManager;
+    TourManager TourManager => _gameManager.TourManager;
+    CollectiblesManager CollectiblesManager => _gameManager.CollectiblesManager;
 
     VisualElement _tourCompletedVisual,
         _collectionCompletedVisual,
@@ -58,19 +58,6 @@ public class PlayerHUD_UIState : AHUDState
         Reset();
     }
 
-    protected override void GetServicesDependenciesOnStart()
-    {
-        base.GetServicesDependenciesOnStart();
-
-        _tourManager = ServiceLocator.Instance.Get<TourManager>();
-        _collectiblesManager = ServiceLocator.Instance.Get<CollectiblesManager>();
-
-        if (_tourManager == null)
-            Debug.LogWarning("PlayerHUD_UIState: No TourManager found in ServiceLocator on StartState");
-        if (_collectiblesManager == null)
-            Debug.LogWarning("PlayerHUD_UIState: No CollectiblesManager found in ServiceLocator on StartState");
-    }
-
     public override void StartState()
     {
         base.StartState();
@@ -102,11 +89,11 @@ public class PlayerHUD_UIState : AHUDState
     #region PRIVATE METHODS
     void UpdateTourStopsUI()
     {
-        _nextStopLabel.text = _tourManager.CurrentTourStop != null ? $"{_tourManager.CurrentTourStop.Data.Header}" : "Tour completado";
-        _completedTourStopsLabel.text = $"{_tourManager.CurrentTour.ReachedCount}";
-        _totalTourStopsLabel.text = $"{_tourManager.CurrentTour.TotalCount}";
+        _nextStopLabel.text = TourManager.CurrentTourStop != null ? $"{TourManager.CurrentTourStop.Data.Header}" : "Tour completado";
+        _completedTourStopsLabel.text = $"{TourManager.CurrentTour.ReachedCount}";
+        _totalTourStopsLabel.text = $"{TourManager.CurrentTour.TotalCount}";
 
-        if (_tourManager.CurrentTour.IsCompleted)
+        if (TourManager.CurrentTour.IsCompleted)
         {
             _stopsArea.style.display = DisplayStyle.None;
             _tourCompletedArea.style.display = DisplayStyle.Flex;
@@ -129,13 +116,13 @@ public class PlayerHUD_UIState : AHUDState
 
     void UpdateCollectiblesUI()
     {
-        int foundCollectibles = _collectiblesManager.FoundCollectiblesCount;
-        int totalCollectibles = _collectiblesManager.TotalCollectiblesCount;
+        int foundCollectibles = CollectiblesManager.FoundCollectiblesCount;
+        int totalCollectibles = CollectiblesManager.TotalCollectiblesCount;
 
         _foundCollectiblesLabel.text = $"{foundCollectibles}";
         _totalCollectiblesLabel.text = $"{totalCollectibles}";
 
-        if (_collectiblesManager.CurrentTracker.IsCompleted)
+        if (CollectiblesManager.CurrentTracker.IsCompleted)
         {
             _hintsArea.style.display = DisplayStyle.None;
             _collectionCompletedArea.style.display = DisplayStyle.Flex;
@@ -161,7 +148,7 @@ public class PlayerHUD_UIState : AHUDState
     {
         _hintsList.Clear();
 
-        foreach (string hint in _collectiblesManager.CurrentCollectible.Data.Hints)
+        foreach (string hint in CollectiblesManager.CurrentCollectible.Data.Hints)
         {
             Label hintLabel = new(hint);
             hintLabel.AddToClassList("HUDtext");

@@ -14,7 +14,12 @@ public class LoadingScreen_UIState : AUIState
     VisualElement _infoLoadingScreen,
         _blackLoadingScreen;
 
-    public Milestone_DataSO MilestoneData;
+    Label _completedMilestonesCount,
+        _totalMilestonesCount,
+        _allFoundCollectiblesCount,
+        _allTotalCollectiblesCount;
+
+    public Milestone_DataSO MilestoneData => _gameManager.CurrentMilestoneData;
     #endregion
 
     #region CONSTRUCTOR
@@ -30,6 +35,10 @@ public class LoadingScreen_UIState : AUIState
     {
         _blackLoadingScreen = GetByName<VisualElement>("BlackLoadingScreen");
         _infoLoadingScreen = GetByName<VisualElement>("InfoLoadingScreen");
+        _completedMilestonesCount = GetByName<Label>("CompletedMilestonesCount");
+        _totalMilestonesCount = GetByName<Label>("TotalMilestonesCount");
+        _allFoundCollectiblesCount = GetByName<Label>("AllFoundCollectiblesCount");
+        _allTotalCollectiblesCount = GetByName<Label>("AllTotalCollectiblesCount");
 
         _contextualPanelComponent.ContinueClickedEvent += OnContinueButtonClicked;
     }
@@ -46,11 +55,6 @@ public class LoadingScreen_UIState : AUIState
         IsContinueClicked = false;
 
         _scenesController.SceneLoadedPartiallyEvent += OnSceneLoadedPartially;
-
-        ProgressSystem progressSystem = ServiceLocator.Instance.Get<ProgressSystem>();
-
-        // Get current milestone data
-        MilestoneData = progressSystem.CurrentMilestoneData;
     }
 
     public override void ExitState()
@@ -78,6 +82,11 @@ public class LoadingScreen_UIState : AUIState
     {
         yield return BlackFadeInCoroutine();
         _contextualPanelComponent.ShowDataWhileLoading(MilestoneData);
+        _completedMilestonesCount.text = _gameManager.CompletedMilestonesCount.ToString();
+        _totalMilestonesCount.text = _gameManager.TotalMilestonesCount.ToString();
+        _allFoundCollectiblesCount.text = _gameManager.CollectiblesManager.AllFoundCollectiblesCount.ToString();
+        _allTotalCollectiblesCount.text = _gameManager.CollectiblesManager.AllTotalCollectiblesCount.ToString();
+
         _infoLoadingScreen.style.display = DisplayStyle.Flex;
         yield return FadeToAlpha(_infoLoadingScreen, 1f, _fadeInDuration);
     }
