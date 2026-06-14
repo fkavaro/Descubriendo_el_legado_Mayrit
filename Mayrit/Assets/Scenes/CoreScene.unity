@@ -461,17 +461,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7a89f61129452a5489a82033b43ccd22, type: 3}
---- !u!114 &1568518587 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5795229730612990247, guid: f159fddb4a5e56746916cbd293b0859e, type: 3}
-  m_PrefabInstance: {fileID: 1002981176}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2dcb27f4c44252841aca24bb5b0023a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &2209254174389618083
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -577,14 +566,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3618290972786116656, guid: 668020751133b714495ee039980b3080, type: 3}
-      propertyPath: _uiSystem
-      value: 
-      objectReference: {fileID: 1568518587}
-    - target: {fileID: 3618290972786116656, guid: 668020751133b714495ee039980b3080, type: 3}
-      propertyPath: _uiManager
-      value: 
-      objectReference: {fileID: 1568518587}
     - target: {fileID: 7574419577275873137, guid: 668020751133b714495ee039980b3080, type: 3}
       propertyPath: m_Name
       value: "\U0001F6DFTutorialManager"

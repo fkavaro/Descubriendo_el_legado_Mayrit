@@ -9,7 +9,7 @@ public class TutorialManager : ABehaviourEntity<StackFiniteStateMachine<Tutorial
     #region EDITOR PROPERTIES
     [Header("Tutorial Settings")]
     [SerializeField] bool _hasCompletedTutorial = false;
-    [SerializeField] UISystem _uiSystem;
+
     [SerializeField] int _currentStepIndex = -1;
     [SerializeField] List<TutorialStepSO> _tutorialStepsData = new();
     #endregion
@@ -22,7 +22,7 @@ public class TutorialManager : ABehaviourEntity<StackFiniteStateMachine<Tutorial
 
     StackFiniteStateMachine<TutorialState> _fsm;
     ScenesController _scenesController;
-    GameManager _gameManager;
+    UISystem _uiSystem;
     #endregion
 
     #region INHERITED
@@ -49,6 +49,11 @@ public class TutorialManager : ABehaviourEntity<StackFiniteStateMachine<Tutorial
     {
         ServiceLocator.Instance.Register(this);
 
+        _uiSystem = FindFirstObjectByType<UISystem>();
+
+        if (_uiSystem == null)
+            Debug.LogWarning("TutorialManager: UISystem not found in the scene. Please ensure that a UISystem is present.");
+
         base.Awake();
     }
 
@@ -56,8 +61,6 @@ public class TutorialManager : ABehaviourEntity<StackFiniteStateMachine<Tutorial
     {
         _scenesController = ServiceLocator.Instance.Get<ScenesController>();
         _scenesController.ScenesLoadedFullyEvent += OnSceneLoadedFully;
-
-        _gameManager = ServiceLocator.Instance.Get<GameManager>();
 
         // base.Start(); when gameplay scene loaded, to start behaviour system
     }
