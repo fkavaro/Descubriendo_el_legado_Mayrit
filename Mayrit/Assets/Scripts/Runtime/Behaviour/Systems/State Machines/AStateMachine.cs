@@ -108,46 +108,46 @@ where GenericState : AState
     /// <summary>
     /// Switches to the previous state in the list.
     /// </summary>
-    public bool SwitchToPreviousStateInSequence(out int previousStateIndex)
+    public int SwitchToPreviousStateInSequence()
     {
-        previousStateIndex = -1;
+        int previousStateIndex = -1;
 
         if (_statesSequence.Count == 0 || _currentState == null)
-            return false;
+            return previousStateIndex;
 
 
         if (CurrentStateIndex <= 0) // First state
         {
             _currentState.ExitState();
-            return false;
+            return previousStateIndex;
         }
 
         previousStateIndex = CurrentStateIndex - 1;
         GenericState previousState = _statesSequence[previousStateIndex];
         SwitchState(previousState);
-        return true;
+        return previousStateIndex;
     }
 
     /// <summary>
     /// Switches to the next state in the list.
     /// </summary>
-    public virtual bool SwitchToNextStateInSequence(out int nextStateIndex)
+    public virtual int SwitchToNextStateInSequence()
     {
-        nextStateIndex = -1;
+        int nextStateIndex = -1;
 
         if (_statesSequence.Count == 0 || _currentState == null)
-            return false;
+            return nextStateIndex;
 
         if (CurrentStateIndex >= _statesSequence.Count - 1) // Last state
         {
             _currentState.ExitState();
-            return false;
+            return nextStateIndex;
         }
 
         nextStateIndex = CurrentStateIndex + 1;
         GenericState nextState = _statesSequence[nextStateIndex];
         SwitchState(nextState);
-        return true;
+        return nextStateIndex;
     }
 
     public bool AtFistStateInSequence()

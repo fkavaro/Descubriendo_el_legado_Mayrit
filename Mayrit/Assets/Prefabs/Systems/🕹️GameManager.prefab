@@ -46,5 +46,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _debugMode: 0
   _isExecutionPaused: 0
-  _currentActionInfo: 
+  _currentAction: 
+  _currentGameplayState: 
   _gameSimulationSpeed: 1
+  _lastCompletedMilestoneIndex: -1
+  _currentMilestoneIndex: 0
+  _totalMilestonesCount: 0
+  _milestonesData:
+  - {fileID: 11400000, guid: f2bb9dbbbd8680e49951173cf8421d33, type: 2}
+  - {fileID: 11400000, guid: ac7fb0edc51022647a07584a227848be, type: 2}
+  - {fileID: 11400000, guid: e36c1b1b22173084fb54fb5770e29a42, type: 2}
+  - {fileID: 11400000, guid: 570459c56f0eb0c4d9c7786152646e4f, type: 2}
+  - {fileID: 11400000, guid: ba545476b83664246b41f5a21c2e31f6, type: 2}
+  - {fileID: 11400000, guid: 2835fd8344d0dd54aa0a4199aad67e1d, type: 2}
+  - {fileID: 11400000, guid: 7433d4c770832014cbfe261209c7ac25, type: 2}
+  - {fileID: 11400000, guid: 6e29148e6009fa547b7fd1f9d753c14b, type: 2}
+  _IsEdgeScrollingMovementEnabled: 1
+  _arePOIsVisualized: 1
+  _areControlsMappingDisplayed: 1
+  _areModernBuildingsDisplayed: 0
+  _canSkipMilestones: 0
+  _musicVolume: 1
+  _sfxVolume: 1

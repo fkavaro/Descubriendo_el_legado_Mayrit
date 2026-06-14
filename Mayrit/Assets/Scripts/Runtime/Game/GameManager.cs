@@ -10,6 +10,7 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
     #region PROPERTY HELPERS
     public GameInputActions InputActions => _inputActions;
 
+    // Game states
     public bool IsInMainMenuState => _fsm.IsCurrentState(_mainMenuState);
     public bool IsLoadGameState => _fsm.IsCurrentState(_loadGameState);
     public bool IsInPauseState => _fsm.IsCurrentState(_pauseState);
@@ -22,6 +23,19 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
     public bool IsAtCollectibleState => _fsm.IsCurrentState(_gameplayState) && _gameplayState.IsInAtCollectibleState();
 
     public float SimulationSpeed => _gameSimulationSpeed;
+
+    // Progress system
+    public List<Milestone_DataSO> MilestonesData => _progressSystem.MilestonesData;
+    public Milestone_DataSO CurrentMilestoneData => MilestonesData[_currentMilestoneIndex];
+    public int LastCompletedMilestoneIndex => _lastCompletedMilestoneIndex;
+    public int CurrentMilestoneIndex => _currentMilestoneIndex;
+    public int CompletedMilestonesCount => _lastCompletedMilestoneIndex + 1;
+    public int TotalMilestonesCount => MilestonesData.Count;
+    public bool IsCurrentMilestoneCompleted => _canSkipMilestones || _tourManager.CurrentTour.IsCompleted;
+    public bool WasCurrentMilestoneCompleted => _currentMilestoneIndex <= _lastCompletedMilestoneIndex;
+    public SceneDatabase.SceneName StoredMilestoneScene => MilestonesData[GetStoredMilestone()].SceneName;
+
+    // Settings
     public bool IsEdgeScrollingMovementEnabled => _IsEdgeScrollingMovementEnabled;
     public bool ArePOIsVisualized => _arePOIsVisualized;
     public bool AreControlsMappingsDisplayed => _areControlsMappingDisplayed;
@@ -30,6 +44,7 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
     public float MusicVolume => _musicVolume;
     public float SFXVolume => _sfxVolume;
 
+    // Systems dependencies
     public ScenesController ScenesController => _scenesController;
     public UISystem UISystem => _uiSystem;
     public SoundSystem SoundSystem => _soundSystem;
@@ -43,6 +58,12 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
     [Tooltip("Game simulation speed multiplier. Set by Camera states.")]
     [Range(0.1f, 10f)]
     [SerializeField] float _gameSimulationSpeed = 1f;
+
+    [Header("Progress")]
+    [Range(-1, 7)]
+    [SerializeField] int _lastCompletedMilestoneIndex = -1;
+    [Range(0, 7)]
+    [SerializeField] int _currentMilestoneIndex = 0;
 
     [Header("Settings values")]
     [SerializeField] bool _IsEdgeScrollingMovementEnabled = true;
@@ -264,9 +285,7 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
         // Keep physics timestep consistent with timeScale (default fixedDeltaTime is 0.02)
         Time.fixedDeltaTime = 0.02f * Mathf.Max(Time.timeScale, minSpeed);
     }
-    #endregion
 
-    #region PRIVATE METHODS
     public void LoadMainMenuScene()
     {
         // Load Main Menu Scene, if not already loaded
@@ -285,7 +304,7 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
         if (!SceneManager.GetSceneByName(SceneDatabase.SceneName.GameplayScene.ToString()).isLoaded)
             _scenesController.NewTransitionPlan()
                 .Load(SceneDatabase.SceneType.Session, SceneDatabase.SceneName.GameplayScene)
-                .Load(SceneDatabase.SceneType.Milestone, ProgressSystem.StoredMilestoneScene, setActive: true)
+                .Load(SceneDatabase.SceneType.Milestone, StoredMilestoneScene, setActive: true)
                 .WithOverlay()
                 .ClearAssets()
                 .Perform();
@@ -299,16 +318,50 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
             .ClearAssets()
             .Perform();
     }
+
+    public bool AtFirstMilestone() => _progressSystem.AtFirstMilestone();
+    public bool AtLastMilestone() => _progressSystem.AtLastMilestone();
     #endregion
 
-    #region CALLBACK METHODS
+    #region PRIVATE METHODS
+    int GetStoredMilestone()
+    {
+        PlayerProgressData saveData = GameSaveSystem.LoadAllData();
+        _lastCompletedMilestoneIndex = Mathf.Clamp(saveData.StoredMilestoneIndex, -1, MilestonesData.Count - 1); // Could be -1 if no valid data found
+        _currentMilestoneIndex = _lastCompletedMilestoneIndex;
+
+        if (_lastCompletedMilestoneIndex < MilestonesData.Count - 1) // Not at last milestone
+            _currentMilestoneIndex++; // To load the next milestone to be completed
+
+        if (DebugMode)
+            Debug.Log($"[ProgressSystem] Milestone Change index loaded {_currentMilestoneIndex} ({CurrentMilestoneData.Header}).");
+
+        return _currentMilestoneIndex;
+    }
+
+    void UpdateCompletedMilestoneIndex()
+    {
+        _lastCompletedMilestoneIndex = Mathf.Max(_lastCompletedMilestoneIndex, _currentMilestoneIndex);
+    }
+
+    void SaveProgress()
+    {
+        GameSaveSystem.SaveMilestoneIdx(_lastCompletedMilestoneIndex);
+        if (DebugMode)
+            Debug.Log($"ProgressSystem: Progress saved. Highest completed milestone index: {_lastCompletedMilestoneIndex}");
+    }
+    #endregion
+
+    #region STATE CALLBACK METHOD
     void OnSwitchedState()
     {
         CurrentAction = _fsm.CurrentState?.StateName ?? "None";
         _currentGameplayState = _gameplayState.Fsm.CurrentState?.StateName ?? "None";
         StateChangedEvent?.Invoke();
     }
+    #endregion
 
+    #region SCENE LOADING CALLBACK METHODS
     void OnSceneLoadedPartially(SceneDatabase.SceneType type, SceneDatabase.SceneName name)
     {
         if (name == SceneDatabase.SceneName.GameplayScene)
@@ -317,6 +370,7 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
 
             _tourManager = ServiceLocator.Instance.Get<TourManager>();
             _tourManager.TourStopVisitedEvent += OnTourStopVisited;
+            _tourManager.TourCompletedEvent += OnTourCompleted;
 
             _collectiblesManager = ServiceLocator.Instance.Get<CollectiblesManager>();
             _collectiblesManager.OnCollectibleFoundEvent += OnCollectibleFound;
@@ -333,13 +387,43 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
             SwitchToAerialState();
         }
     }
+    #endregion
 
-    void OnPOISelected(DataSO data, OrbitalCameraSettings orbitalSettings)
+    #region PROGRESS CALLBACK METHODS
+    void OnMilestoneChanged(Milestone_DataSO milestoneData) => MilestoneChangedEvent?.Invoke(milestoneData);
+
+    void OnTourStopVisited(TourStop tourStop)
     {
-        _soundSystem.PlayButtonClickSFX();
-        SwitchToAtPOIState(data, orbitalSettings);
+        if (tourStop.Data == null) return;
+        if (!tourStop.gameObject.activeInHierarchy)
+        {
+            Debug.LogWarning($"TourStop '{tourStop.name}' is not active in hierarchy.");
+            return;
+        }
+
+        SwitchToAtTourStopState(tourStop);
     }
 
+    void OnTourCompleted(Tour tour)
+    {
+        UpdateCompletedMilestoneIndex();
+        SaveProgress();
+    }
+
+    void OnCollectibleFound(Collectible collectible)
+    {
+        if (collectible.Data == null) return;
+        if (!collectible.gameObject.activeInHierarchy)
+        {
+            Debug.LogWarning($"Collectible '{collectible.name}' is not active in hierarchy.");
+            return;
+        }
+
+        SwitchToAtCollectibleState(collectible);
+    }
+    #endregion
+
+    #region UI CALLBACK METHODS
     void OnNewGameClicked()
     {
         GameSaveSystem.ClearAllData();
@@ -470,13 +554,15 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
 
     void OnPreviousMilestoneClicked()
     {
-        _loadGameState.MilestoneToLoad = _progressSystem.SwitchToPreviousMilestone().SceneName;
+        _currentMilestoneIndex = _progressSystem.SwitchToPreviousMilestone();
+        _loadGameState.MilestoneToLoad = CurrentMilestoneData.SceneName;
         SwitchToLoadGameState();
     }
 
     void OnNextMilestoneClicked()
     {
-        _loadGameState.MilestoneToLoad = _progressSystem.SwitchToNextMilestone().SceneName;
+        _currentMilestoneIndex = _progressSystem.SwitchToNextMilestone();
+        _loadGameState.MilestoneToLoad = CurrentMilestoneData.SceneName;
         SwitchToLoadGameState();
     }
 
@@ -489,7 +575,7 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
     void OnMilestoneInfoClicked()
     {
         // TODO orbital state around whole city
-        _uiSystem.SwitchToInformationDisplayState(_progressSystem.CurrentMilestoneData);
+        _uiSystem.SwitchToInformationDisplayState(CurrentMilestoneData);
     }
 
     void OnContextualPanelClosed()
@@ -522,30 +608,10 @@ public class GameManager : ABehaviourEntity<FiniteStateMachine<AGameState>>
         SwitchToThirdPersonState();
     }
 
-    void OnMilestoneChanged(Milestone_DataSO milestoneData) => MilestoneChangedEvent?.Invoke(milestoneData);
-
-    void OnTourStopVisited(TourStop tourStop)
+    void OnPOISelected(DataSO data, OrbitalCameraSettings orbitalSettings)
     {
-        if (tourStop.Data == null) return;
-        if (!tourStop.gameObject.activeInHierarchy)
-        {
-            Debug.LogWarning($"TourStop '{tourStop.name}' is not active in hierarchy.");
-            return;
-        }
-
-        SwitchToAtTourStopState(tourStop);
-    }
-
-    void OnCollectibleFound(Collectible collectible)
-    {
-        if (collectible.Data == null) return;
-        if (!collectible.gameObject.activeInHierarchy)
-        {
-            Debug.LogWarning($"Collectible '{collectible.name}' is not active in hierarchy.");
-            return;
-        }
-
-        SwitchToAtCollectibleState(collectible);
+        _soundSystem.PlayButtonClickSFX();
+        SwitchToAtPOIState(data, orbitalSettings);
     }
     #endregion
 }

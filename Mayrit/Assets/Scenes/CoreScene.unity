@@ -186,7 +186,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2738208781067544222, guid: f2ef195e03d1d9f42b446ab9d417ae05, type: 3}
       propertyPath: m_Name
-      value: "\u2197\uFE0FProgressManager"
+      value: "\u2197\uFE0FProgressSystem"
       objectReference: {fileID: 0}
     - target: {fileID: 5479522367331021950, guid: f2ef195e03d1d9f42b446ab9d417ae05, type: 3}
       propertyPath: m_LocalPosition.x

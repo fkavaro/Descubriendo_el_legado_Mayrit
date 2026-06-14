@@ -5,29 +5,19 @@ using System.Collections.Generic;
 
 public class ProgressSystem : ABehaviourEntity<FiniteStateMachine<MilestoneState>>
 {
-    #region PROPERTY HELPERS
-    public Milestone_DataSO CurrentMilestoneData => _milestonesData[_currentMilestoneIndex];
-    public SceneDatabase.SceneName StoredMilestoneScene => _milestonesData[GetStoredMilestone()].SceneName;
-    public bool WasCurrentMilestoneCompleted => _currentMilestoneIndex <= _storedMilestoneIndex;
-    #endregion
-
     #region EDITOR PROPERTIES
     [Header("Milestones")]
-    [Range(-1, 7)]
-    [SerializeField] int _storedMilestoneIndex;
-    [Range(0, 7)]
-    [SerializeField] int _currentMilestoneIndex = 0;
     [SerializeField] List<Milestone_DataSO> _milestonesData = new();
     #endregion
 
     #region INTERNAL PROPERTIES
+    public List<Milestone_DataSO> MilestonesData => _milestonesData;
     public event Action<Milestone_DataSO> MilestoneChangedEvent;
 
     FiniteStateMachine<MilestoneState> _fsm;
 
     ScenesController _scenesController;
     GameManager _gameManager;
-    TourManager _tourManager;
     #endregion
 
     #region INHERITED
@@ -45,15 +35,14 @@ public class ProgressSystem : ABehaviourEntity<FiniteStateMachine<MilestoneState
     #region LIFE CYCLE
     protected override void Awake()
     {
-        ServiceLocator.Instance.Register(this);
-
         base.Awake();
+
+        ServiceLocator.Instance.Register(this);
     }
 
     protected override void Start()
     {
         _scenesController = ServiceLocator.Instance.Get<ScenesController>();
-        _scenesController.SceneLoadedPartiallyEvent += OnSceneLoadedPartially;
         _scenesController.ScenesLoadedFullyEvent += OnScenesLoadedFully;
 
         _gameManager = ServiceLocator.Instance.Get<GameManager>();
@@ -63,99 +52,36 @@ public class ProgressSystem : ABehaviourEntity<FiniteStateMachine<MilestoneState
 
     void OnDisable()
     {
-        _scenesController.SceneLoadedPartiallyEvent -= OnSceneLoadedPartially;
         _scenesController.ScenesLoadedFullyEvent -= OnScenesLoadedFully;
         ServiceLocator.Instance.Unregister(this);
     }
     #endregion
 
     #region PUBLIC METHODS
-    public Milestone_DataSO SwitchToNextMilestone()
-    {
-        _fsm.SwitchToNextStateInSequence(out _currentMilestoneIndex);
-        return CurrentMilestoneData;
-    }
-
-    public Milestone_DataSO SwitchToPreviousMilestone()
-    {
-        _fsm.SwitchToPreviousStateInSequence(out _currentMilestoneIndex);
-        return CurrentMilestoneData;
-    }
+    public int SwitchToNextMilestone() => _fsm.SwitchToNextStateInSequence();
+    public int SwitchToPreviousMilestone() => _fsm.SwitchToPreviousStateInSequence();
     public bool AtFirstMilestone() => _fsm.AtFistStateInSequence();
     public bool AtLastMilestone() => _fsm.AtLastStateInSequence();
-
-    public bool IsCurrentMilestoneCompleted()
-    {
-        if (_gameManager.CanSkipMilestones)
-            return true;
-
-        return _tourManager.CurrentTour.IsCompleted;
-    }
-    #endregion
-
-    #region PRIVATE METHODS
-    int GetStoredMilestone()
-    {
-        PlayerProgressData saveData = GameSaveSystem.LoadAllData();
-        _storedMilestoneIndex = Mathf.Clamp(saveData.StoredMilestoneIndex, -1, _milestonesData.Count - 1); // Could be -1 if no valid data found
-        _currentMilestoneIndex = _storedMilestoneIndex;
-
-        if (_storedMilestoneIndex < _milestonesData.Count - 1) // Not at last milestone
-            _currentMilestoneIndex++; // To load the next milestone to be completed
-
-        if (DebugMode)
-            Debug.Log($"[ProgressSystem] Milestone Change index loaded {_currentMilestoneIndex} ({CurrentMilestoneData.Header}).");
-
-        return _currentMilestoneIndex;
-    }
-
-    void UpdateStoredMilestoneIndex()
-    {
-        _storedMilestoneIndex = Mathf.Max(_storedMilestoneIndex, _currentMilestoneIndex);
-    }
-
-    void SaveProgress()
-    {
-        GameSaveSystem.SaveMilestoneIdx(_storedMilestoneIndex);
-        if (DebugMode)
-            Debug.Log($"ProgressSystem: Progress saved. Highest completed milestone index: {_storedMilestoneIndex}");
-    }
     #endregion
 
     #region CALLBACK METHODS
-
-    void OnSceneLoadedPartially(SceneDatabase.SceneType type, SceneDatabase.SceneName name)
-    {
-        if (name == SceneDatabase.SceneName.GameplayScene)
-        {
-            _tourManager = ServiceLocator.Instance.Get<TourManager>();
-            _tourManager.TourCompletedEvent += OnTourCompleted;
-        }
-    }
-
     void OnScenesLoadedFully(Dictionary<SceneDatabase.SceneType, SceneDatabase.SceneName> loadedScenes, List<SceneDatabase.SceneType> unloadedTypes)
     {
         // If gameplay scene loaded, start behaviour system
         if (loadedScenes.ContainsValue(SceneDatabase.SceneName.GameplayScene))
         {
-            _fsm.SetInitialStateFromSequence(_currentMilestoneIndex);
+            _fsm.SetInitialStateFromSequence(_gameManager.CurrentMilestoneIndex);
             base.Start();
         }
 
         // If milestone loaded, invoke event
         if (loadedScenes.TryGetValue(SceneDatabase.SceneType.Milestone, out var milestoneScene))
         {
-            MilestoneChangedEvent?.Invoke(CurrentMilestoneData);
+            MilestoneChangedEvent?.Invoke(_gameManager.CurrentMilestoneData);
 
             if (DebugMode)
-                Debug.Log($"[ProgressSystem] Milestone Change Event invoked for milestone index {_currentMilestoneIndex} ({CurrentMilestoneData.Header}).");
+                Debug.Log($"[ProgressSystem] Milestone Change Event invoked for milestone index {_gameManager.CurrentMilestoneIndex} ({_gameManager.CurrentMilestoneData.Header}).");
         }
-    }
-
-    void OnTourCompleted(Tour tour)
-    {
-        UpdateStoredMilestoneIndex();
-        SaveProgress();
     }
     #endregion
 }

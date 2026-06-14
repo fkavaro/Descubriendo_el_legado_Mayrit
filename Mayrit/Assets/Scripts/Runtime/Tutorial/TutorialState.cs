@@ -87,6 +87,6 @@ public class TutorialState : AUIState
 
         _hiddenElements.Clear();
 
-        _fsm.SwitchToNextStateInSequence(out _);
+        _fsm.SwitchToNextStateInSequence();
     }
 }

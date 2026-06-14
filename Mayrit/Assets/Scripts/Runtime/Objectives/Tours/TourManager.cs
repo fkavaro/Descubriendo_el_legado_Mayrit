@@ -23,7 +23,6 @@ public class TourManager : MonoBehaviour
     GameManager _gameManager;
     SoundSystem _soundSystem;
     PlayableCharacter _playableCharacter;
-    ProgressSystem _progressSystem;
     #endregion
 
     #region LIFE CYCLE
@@ -38,7 +37,6 @@ public class TourManager : MonoBehaviour
         _scenesController = ServiceLocator.Instance.Get<ScenesController>();
         _gameManager = ServiceLocator.Instance.Get<GameManager>();
         _soundSystem = ServiceLocator.Instance.Get<SoundSystem>();
-        _progressSystem = ServiceLocator.Instance.Get<ProgressSystem>();
 
         // Subscribe to events
         _scenesController.SceneLoadedPartiallyEvent += OnSceneLoadedPartially;
@@ -101,7 +99,7 @@ public class TourManager : MonoBehaviour
                 return;
             }
 
-            if (_progressSystem.WasCurrentMilestoneCompleted)
+            if (_gameManager.WasCurrentMilestoneCompleted)
             {
                 _currentTour.Complete();
                 _playableCharacter.LocateAt(_currentTour.LastStopInList.transform);
