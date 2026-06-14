@@ -15,7 +15,6 @@ public class MainMenu_UIState : AUIState
 
     VisualElement _newGameWarningPopup,
         _buttons,
-        _logoArea,
         _rightPanel;
 
     public event Action NewGameClickedEvent;
@@ -33,7 +32,6 @@ public class MainMenu_UIState : AUIState
     #region INHERITED METHODS
     protected override void ConfigureUIElementsOnAwake()
     {
-        _logoArea = GetByName<VisualElement>("LogoArea");
         _rightPanel = GetByName<VisualElement>("RightPanel");
 
         _buttons = GetByName<VisualElement>("Buttons");
@@ -56,7 +54,6 @@ public class MainMenu_UIState : AUIState
 
         CheckLoadButtonAvailability();
 
-        _logoArea.style.display = DisplayStyle.Flex;
         _rightPanel.style.display = DisplayStyle.Flex;
 
         base.StartState();
@@ -115,7 +112,6 @@ public class MainMenu_UIState : AUIState
 
     void OnSettingsClicked(ClickEvent evt)
     {
-        _logoArea.style.display = DisplayStyle.None;
         _rightPanel.style.display = DisplayStyle.None;
         _screen = null; // To avoid hiding the background image
         _soundSystem.PlayButtonClickSFX();

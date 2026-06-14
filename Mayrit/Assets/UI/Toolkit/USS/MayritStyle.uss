@@ -15,9 +15,9 @@
     padding-left: 0;
     letter-spacing: 15px;
     white-space: normal;
-    -unity-text-align: upper-center;
     -unity-font-definition: url("project://database/Assets/TextMesh%20Pro/Fonts/ElMessiri-Bold.ttf?fileID=12800000&guid=2d588446ee149eb408d77b917fa04672&type=3#ElMessiri-Bold");
     text-shadow: 0 -3px 10px rgb(77, 77, 77);
+    -unity-text-align: upper-center;
 }
 
 .subtitle {

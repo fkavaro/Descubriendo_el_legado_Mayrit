@@ -3,36 +3,30 @@
     <ui:Template name="CharacterControlsMapping" src="project://database/Assets/UI/Toolkit/UXML/CharacterControlsMapping.uxml?fileID=9197481963319205126&amp;guid=9d1997096be6e754ea996ec8050acd49&amp;type=3#CharacterControlsMapping"/>
     <ui:Template name="PlayerVisualTree" src="project://database/Assets/UI/Toolkit/UXML/PlayerVisualTree.uxml?fileID=9197481963319205126&amp;guid=1f3fc5bf0d1b2d545b5129799909dbff&amp;type=3#PlayerVisualTree"/>
     <Style src="project://database/Assets/UI/Toolkit/USS/MayritStyle.uss?fileID=7433441132597879392&amp;guid=7a6c8e791557401438e2762dac509247&amp;type=3#MayritStyle"/>
-    <ui:VisualElement name="MainMenu" style="-unity-text-align: middle-center; flex-grow: 1; justify-content: center; align-self: stretch; display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgb(17, 17, 17); flex-direction: row;">
-        <ui:VisualElement name="MainMenuBgImage" style="background-image: url(&quot;project://database/Assets/Imports/Background%201.png?fileID=2800000&amp;guid=45191b62e64522742a762b45f9987ec1&amp;type=3#Background 1&quot;); position: absolute; top: -10px; left: -633px; right: auto; bottom: auto; width: 2567px; height: 1473px;"/>
-        <ui:VisualElement name="Menu" style="flex-grow: 1; flex-direction: row; justify-content: flex-end;">
-            <ui:VisualElement name="LogoArea" style="flex-grow: 1; position: absolute; align-self: flex-start; left: 0; top: 0; height: 215px; width: 1220px; justify-content: flex-end;">
-                <ui:VisualElement name="Logo" style="height: 100px;">
-                    <ui:Label text="MAYRIT" enable-rich-text="true" class="title"/>
-                </ui:VisualElement>
+    <ui:VisualElement name="MainMenu" style="-unity-text-align: middle-center; flex-grow: 1; display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgb(17, 17, 17); flex-direction: row-reverse;">
+        <ui:Image source="project://database/Assets/Imports/Images/MainMenu.png?fileID=2800000&amp;guid=cc72ced940cf26b4e94ae872810ecc80&amp;type=3#MainMenu" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0;"/>
+        <ui:VisualElement name="RightPanel" class="contextualPanel" style="position: relative; flex-shrink: 0; flex-grow: 0; display: flex;">
+            <ui:VisualElement name="BlurBg" class="contextualPanelBlurBg"/>
+            <ui:VisualElement name="TitleArea" style="justify-content: center; align-self: center; height: 300px; padding-top: 60px;">
+                <ui:Label text="Descubriendo el legado" enable-rich-text="true" class="subHeader"/>
+                <ui:Label text="MAYRIT" enable-rich-text="true" class="title"/>
             </ui:VisualElement>
-            <ui:VisualElement name="RightPanel" class="contextualPanel" style="position: relative; flex-shrink: 0; flex-grow: 0; display: flex;">
-                <ui:VisualElement name="BlurBg" class="contextualPanelBlurBg"/>
-                <ui:VisualElement name="TitleArea" style="justify-content: center; align-self: center; height: 300px;">
-                    <ui:Label text="Menú principal" name="Title" class="subtitle"/>
-                </ui:VisualElement>
-                <ui:VisualElement name="Buttons" style="display: flex; margin-top: 50px;">
-                    <ui:Button text="Cargar partida" name="LoadGameButton" class="button highlighted"/>
-                    <ui:Button text="Nueva partida" name="NewGameButton" class="button"/>
-                    <ui:Button text="Ajustes" name="SettingsButton" class="button"/>
-                    <ui:Button text="Créditos" name="CreditsButton" class="button" style="position: relative; margin-top: 100px;"/>
-                    <ui:Button text="Salir" name="QuitButton" class="button" style="margin-top: 15px;"/>
-                </ui:VisualElement>
-                <ui:VisualElement name="NewGameWarning" style="display: none; position: absolute; align-self: center; top: 450px;">
-                    <ui:VisualElement name="Pop-up" class="section" style="flex-grow: 0; width: 490px; height: 300px; justify-content: space-between; align-self: center; display: flex;">
-                        <ui:VisualElement style="justify-content: space-between; align-self: stretch; padding-top: 35px; padding-right: 40px; padding-bottom: 0; padding-left: 40px;">
-                            <ui:Label text="¿Seguro que quieres empezar una nueva partida?" class="subHeader" style="margin-top: 0; margin-right: 0; margin-bottom: 15px; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; -unity-text-align: upper-center;"/>
-                            <ui:Label text="Se borrará la partida anterior." class="text" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; -unity-text-align: middle-center;"/>
-                        </ui:VisualElement>
-                        <ui:VisualElement style="justify-content: space-between; align-self: stretch; flex-direction: row;">
-                            <ui:Button text="Sí" name="ConfirmNewGameButton" class="button mediumButton" style="width: 180px; position: relative;"/>
-                            <ui:Button text="No" name="CancelNewGameButton" class="button mediumButton highlighted" style="width: 180px; position: relative;"/>
-                        </ui:VisualElement>
+            <ui:VisualElement name="Buttons" style="display: flex; margin-top: 50px;">
+                <ui:Button text="Cargar partida" name="LoadGameButton" class="button highlighted"/>
+                <ui:Button text="Nueva partida" name="NewGameButton" class="button"/>
+                <ui:Button text="Ajustes" name="SettingsButton" class="button"/>
+                <ui:Button text="Créditos" name="CreditsButton" class="button" style="position: relative; margin-top: 100px;"/>
+                <ui:Button text="Salir" name="QuitButton" class="button" style="margin-top: 15px;"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="NewGameWarning" style="display: none; position: absolute; align-self: center; top: 450px;">
+                <ui:VisualElement name="Pop-up" class="section" style="flex-grow: 0; width: 490px; height: 300px; justify-content: space-between; align-self: center; display: flex;">
+                    <ui:VisualElement style="justify-content: space-between; align-self: stretch; padding-top: 35px; padding-right: 40px; padding-bottom: 0; padding-left: 40px;">
+                        <ui:Label text="¿Seguro que quieres empezar una nueva partida?" class="subHeader" style="margin-top: 0; margin-right: 0; margin-bottom: 15px; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; -unity-text-align: upper-center;"/>
+                        <ui:Label text="Se borrará la partida anterior." class="text" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; -unity-text-align: middle-center;"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement style="justify-content: space-between; align-self: stretch; flex-direction: row;">
+                        <ui:Button text="Sí" name="ConfirmNewGameButton" class="button mediumButton" style="width: 180px; position: relative;"/>
+                        <ui:Button text="No" name="CancelNewGameButton" class="button mediumButton highlighted" style="width: 180px; position: relative;"/>
                     </ui:VisualElement>
                 </ui:VisualElement>
             </ui:VisualElement>
@@ -411,7 +405,7 @@
     <ui:VisualElement name="LoadingScreen" picking-mode="Ignore" style="flex-grow: 1; flex-direction: row; justify-content: space-between; position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: none;">
         <ui:VisualElement name="BlackLoadingScreen" style="flex-grow: 1; background-color: rgb(0, 0, 0); display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0;"/>
         <ui:VisualElement name="InfoLoadingScreen" style="flex-grow: 1; display: flex; background-color: rgb(0, 0, 0); flex-direction: row-reverse;">
-            <ui:VisualElement name="BgImage" style="background-image: url(&quot;project://database/Assets/Imports/Mayrit%20BG.png?fileID=2800000&amp;guid=dc96fb47ec256064d9e5056199f72ec6&amp;type=3#Mayrit BG&quot;); position: absolute; background-size: 100% 100%; width: 100%; height: 100%; display: flex;"/>
+            <ui:Image name="BgImage" source="project://database/Assets/Imports/Images/Milestone7.png?fileID=2800000&amp;guid=f30560049db39ac4bae0f98d7d2a8848&amp;type=3#Milestone7" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0;"/>
             <ui:VisualElement name="OverlayArea" style="position: absolute; top: 0; left: 0; right: 700px; bottom: 0; margin-top: 30px; margin-right: 30px; margin-bottom: 30px; margin-left: 30px; flex-direction: column-reverse; display: flex;">
                 <ui:VisualElement style="position: relative; align-self: flex-start; flex-direction: column;">
                     <ui:VisualElement name="MilestonesCountArea" style="padding-top: 15px; padding-right: 20px; padding-bottom: 15px; padding-left: 20px; margin-top: 0; flex-direction: row; align-self: flex-start; margin-bottom: 0;">
@@ -434,7 +428,7 @@
                         <ui:Label text="Coleccionables encontrados (Total)" class="HUDheader" style="padding-top: 3px;"/>
                     </ui:VisualElement>
                 </ui:VisualElement>
-                <ui:VisualElement style="margin-bottom: 50px;">
+                <ui:VisualElement style="margin-bottom: 75px;">
                     <ui:Label text="Descripción de foto" name="BgImageCaption" class="HUDtext" style="align-self: center;"/>
                 </ui:VisualElement>
             </ui:VisualElement>
@@ -462,10 +456,10 @@
                 </ui:VisualElement>
                 <ui:VisualElement name="DescriptionArea" class="section" style="display: flex; margin-bottom: 20px;">
                     <ui:Label text="Descripción" class="subHeader"/>
-                    <ui:Label text="*Era la principal, la de la oración del viernes, y por la que la población tenía carácter de medina/ciudad. Sobre esta se levantó la Iglesia de Santa María de la Almudena, derribada para ensanchar la calle Mayor, en el entorno de las actuales calles Mayor y Bailén, en la zona que hoy conocemos como Las Vistillas.  Tenía cinco naves perpendiculares al muro de la alquibla (el que da a la Meca), con su característico mihrab u hornacina decorada, donde después se abrió la entrada principal de la iglesia. &#10;En su parte opuesta, es decir, noroeste, había un patio con su alminar, que dio lugar después al campanario cristiano. Sería una torre cuadrada con el cuerpo superior retranqueado que suelen tener las mezquitas del occidente islámico. Estaría rematada por un ŷamur.  En sus conquistas, los cristianos acostumbraban a consagrar sus parroquias principales bajo la titulación de Santa María como signo de protección cuando antes había sido mezquita." name="Description" class="text"/>
+                    <ui:Label text="*Era la principal, la de la oración del viernes, y por la que la población tenía carácter de medina/ciudad. Sobre esta se levantó la Iglesia de Santa María de la Almudena, derribada para ensanchar la calle Mayor, en el entorno de las actuales calles Mayor y Bailén, en la zona que hoy conocemos como Las Vistillas.  Tenía cinco naves perpendiculares al muro de la alquibla (el que da a la Meca), con su característico mihrab u hornacina decorada, donde después se abrió la entrada principal de la iglesia. &#10;En su parte opuesta, es decir, noroeste, había un patio con su alminar, que dio lugar después al campanario cristiano. Sería una torre cuadrada con el cuerpo superior retranqueado que suelen tener las mezquitas del occidente islámico. Estaría rematada por un ŷamur.  En sus conquistas, los cristianos acostumbraban a consagrar sus parroquias principales bajo la titulación de Santa María como signo de protección cuando antes había sido mezquita." name="Description" class="text" style="margin-bottom: 15px;"/>
                     <ui:VisualElement name="ImageArea" style="flex-grow: 1; display: flex;">
-                        <ui:VisualElement name="Image" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Imports/Data%20images/Iglesia%20de%20Santa%20Maria.jpg?fileID=2800000&amp;guid=30e84b69ac325604a9737e73910905af&amp;type=3#Iglesia de Santa Maria&quot;); height: 300px; width: 100%; flex-shrink: 0; border-top-left-radius: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px; border-bottom-left-radius: 20px; margin-top: 20px; margin-bottom: 20px; display: flex;"/>
-                        <ui:Label text="Pie de foto" name="Caption" class="text"/>
+                        <ui:Image name="Image" source="project://database/Assets/Imports/Images/Milestone0.png?fileID=2800000&amp;guid=d8837052f93d9b645ad062446ab6c6af&amp;type=3#Milestone0" style="aspect-ratio: 1.777778;"/>
+                        <ui:Label text="Pie de foto" name="Caption" class="text" style="margin-top: 15px;"/>
                     </ui:VisualElement>
                 </ui:VisualElement>
                 <ui:VisualElement name="ConservationArea" class="section" style="margin-bottom: 20px;">
