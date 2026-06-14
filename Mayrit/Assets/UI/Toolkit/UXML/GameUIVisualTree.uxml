@@ -428,9 +428,6 @@
                         <ui:Label text="Coleccionables encontrados (Total)" class="HUDheader" style="padding-top: 3px;"/>
                     </ui:VisualElement>
                 </ui:VisualElement>
-                <ui:VisualElement style="margin-bottom: 75px;">
-                    <ui:Label text="Descripción de foto" name="BgImageCaption" class="HUDtext" style="align-self: center;"/>
-                </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

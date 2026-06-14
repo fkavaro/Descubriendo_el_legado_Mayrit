@@ -20,6 +20,8 @@ public class LoadingScreen_UIState : AUIState
         _allFoundCollectiblesCount,
         _allTotalCollectiblesCount;
 
+    Image _bgImage;
+
     public Milestone_DataSO MilestoneData => _gameManager.CurrentMilestoneData;
     #endregion
 
@@ -42,6 +44,8 @@ public class LoadingScreen_UIState : AUIState
         _allFoundCollectiblesCount = GetByName<Label>("AllFoundCollectiblesCount", _overlayArea);
         _allTotalCollectiblesCount = GetByName<Label>("AllTotalCollectiblesCount", _overlayArea);
 
+        _bgImage = GetByName<Image>("BgImage");
+
         _contextualPanelComponent.ContinueClickedEvent += OnContinueButtonClicked;
     }
 
@@ -53,6 +57,8 @@ public class LoadingScreen_UIState : AUIState
         _infoLoadingScreen.style.display = DisplayStyle.None;
         _blackLoadingScreen.style.opacity = 0f;
         _blackLoadingScreen.style.display = DisplayStyle.None;
+
+        _bgImage.sprite = MilestoneData.BgImage;
 
         IsContinueClicked = false;
 
