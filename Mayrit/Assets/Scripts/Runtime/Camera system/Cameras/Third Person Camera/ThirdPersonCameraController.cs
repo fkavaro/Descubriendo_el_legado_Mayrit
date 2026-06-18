@@ -109,9 +109,12 @@ public class ThirdPersonCameraController
         if (playerTransform == null)
             return;
 
+        // Offset the camera target slightly above the player for better framing
+        Vector3 newTargetPosition = new(playerTransform.position.x, playerTransform.position.y + 1f, playerTransform.position.z);
+
         _cameraTarget.position = Vector3.Lerp(
             _cameraTarget.position,
-            playerTransform.position,
+            newTargetPosition,
             Time.unscaledDeltaTime * _followSpeed
         );
     }
