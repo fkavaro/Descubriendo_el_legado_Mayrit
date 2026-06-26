@@ -172,11 +172,13 @@ public class SoundController
     {
         while (_currentMusicType != SoundDatabase.MusicType.None)
         {
-            // Skip if paused/unfocused or within resume guard window
             if (!_suspendAutoAdvance && Time.unscaledTime >= _ignoreAdvanceUntilTime)
             {
-                if (MusicSource.clip == null || (MusicSource.clip != null && !MusicSource.isPlaying))
+                if (MusicSource.clip == null || (!MusicSource.isPlaying && !_isFadingMusic))
+                {
                     PlayNextTrack();
+                    yield return null;
+                }
             }
             yield return null;
         }
@@ -272,11 +274,19 @@ public class SoundController
     /// </summary>
     public void SkipToNextMusicTrack()
     {
-        // Manual skip ignores guard; if fading, stop fade first
-        if (_isFadingMusic)
-            _soundSystem.StopAllCoroutines();
-        _playlistCoroutine = _soundSystem.StartCoroutine(PlaylistLoop());
+        if (_playlistCoroutine != null)
+        {
+            _soundSystem.StopCoroutine(_playlistCoroutine);
+            _playlistCoroutine = null;
+        }
+
+        _soundSystem.StopAllCoroutines();
+        _isFadingMusic = false;
+
         PlayNextTrack();
+
+        if (_currentMusicType != SoundDatabase.MusicType.None)
+            _playlistCoroutine = _soundSystem.StartCoroutine(PlaylistLoop());
     }
 
     /// <summary>
