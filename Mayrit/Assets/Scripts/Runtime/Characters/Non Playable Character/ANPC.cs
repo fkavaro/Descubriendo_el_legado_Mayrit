@@ -6,6 +6,7 @@ using UnityEngine.AI;
 /// Abstract base class for NPC (Non-Playable Character).
 /// </summary>
 [RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(Collider))]
 public abstract class ANPC<BehaviourSystemType> : ACharacter<BehaviourSystemType>, INPC
 where BehaviourSystemType : ABehaviourSystem
 {
@@ -115,6 +116,7 @@ where BehaviourSystemType : ABehaviourSystem
     protected NPCMovementController _movementController;
     protected NPCInteractionController _interactionController;
     protected NavMeshAgent _agent;
+    protected Collider _collider;
     protected CooldownDecorator _conversationCooldownNode;
     protected NPCPoolManager _poolManager;
     #endregion
@@ -124,6 +126,7 @@ where BehaviourSystemType : ABehaviourSystem
     {
         _animationController = new(this, this, CharacterAnimator);
         _agent = GetComponent<NavMeshAgent>();
+        _collider = GetComponent<Collider>();
         _movementController = new(this);
         _interactionController = new(this, _agent, _interactionRange, _conversationCooldownNode);
         base.Awake();
@@ -181,10 +184,12 @@ where BehaviourSystemType : ABehaviourSystem
             }
 
             _agent.enabled = true;
+            _collider.enabled = true;
         }
         else
         {
             _agent.enabled = false;
+            _collider.enabled = false;
         }
 
         _characterModel.SetActive(isActive && _shouldRenderCharacterModel);
