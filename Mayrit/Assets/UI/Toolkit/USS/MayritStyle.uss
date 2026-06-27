@@ -114,18 +114,6 @@
     font-size: 25px;
     -unity-font-style: normal;
     color: rgb(255, 255, 255);
-    border-left-color: rgb(153, 153, 153);
-    border-right-color: rgb(153, 153, 153);
-    border-top-color: rgb(153, 153, 153);
-    border-bottom-color: rgb(153, 153, 153);
-    border-top-width: 0;
-    border-right-width: 0;
-    border-bottom-width: 4px;
-    border-left-width: 0;
-    border-top-left-radius: 17px;
-    border-top-right-radius: 17px;
-    border-bottom-right-radius: 17px;
-    border-bottom-left-radius: 17px;
     margin-top: 15px;
     -unity-text-align: middle-center;
     transition-duration: 0.2s;
@@ -138,17 +126,19 @@
     padding-left: 0;
     -unity-font-definition: url("project://database/Assets/TextMesh%20Pro/Fonts/ElMessiri-Bold.ttf?fileID=12800000&guid=2d588446ee149eb408d77b917fa04672&type=3#ElMessiri-Bold");
     text-shadow: 0 1px 5px rgb(128, 128, 128);
-    background-color: rgba(24, 24, 24, 0);
+    background-color: rgba(0, 0, 0, 0);
+    background-image: url("project://database/Assets/Imports/Logo/Icon%20base%20border%20wide.png?fileID=21300000&guid=a6b4265945203e343bf001d787b1b7c3&type=3#Icon base border wide");
+    -unity-background-image-tint-color: rgba(255, 255, 255, 0.02);
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
 }
 
 .button:hover {
-    border-left-color: rgb(220, 220, 220);
-    border-right-color: rgb(220, 220, 220);
-    border-top-color: rgb(220, 220, 220);
-    border-bottom-color: rgb(220, 220, 220);
     -unity-font-style: normal;
-    background-color: rgba(24, 24, 24, 0.59);
     scale: 1.05 1.05;
+    -unity-background-image-tint-color: rgba(255, 255, 255, 0.12);
 }
 
 .button.highlighted {
@@ -156,10 +146,7 @@
     height: 70px;
     align-self: center;
     transition-duration: 0.2s;
-    border-left-color: rgb(86, 98, 159);
-    border-right-color: rgb(86, 98, 159);
-    border-top-color: rgb(86, 98, 159);
-    border-bottom-color: rgb(86, 98, 159);
+    -unity-background-image-tint-color: rgba(255, 171, 0, 0.08);
 }
 
 .button.highlighted:hover {
@@ -175,11 +162,7 @@
     padding-right: 0;
     padding-bottom: 0;
     padding-left: 0;
-    border-left-color: rgb(100, 114, 185);
-    border-right-color: rgb(100, 114, 185);
-    border-top-color: rgb(100, 114, 185);
-    border-bottom-color: rgb(100, 114, 185);
-    background-color: rgba(39, 48, 94, 0.59);
+    -unity-background-image-tint-color: rgba(255, 171, 0, 0.2);
 }
 
 .button.mediumButton {
@@ -201,22 +184,16 @@
     width: 60px;
     height: 60px;
     -unity-font-style: normal;
+    background-image: url("project://database/Assets/Imports/Logo/Icon%20base%20border.png?fileID=21300000&guid=828d16e56826ef040bb9c29e736cf097&type=3#Icon base border");
 }
 
 .button.closeButton {
-    border-left-color: rgb(103, 60, 60);
-    border-right-color: rgb(103, 60, 60);
-    border-top-color: rgb(103, 60, 60);
-    border-bottom-color: rgb(103, 60, 60);
     font-size: 30px;
+    -unity-background-image-tint-color: rgba(255, 81, 81, 0.08);
 }
 
 .button.closeButton:hover {
-    border-left-color: rgb(154, 86, 85);
-    border-right-color: rgb(154, 86, 85);
-    border-top-color: rgb(154, 86, 85);
-    border-bottom-color: rgb(154, 86, 85);
-    background-color: rgba(72, 36, 36, 0.39);
+    -unity-background-image-tint-color: rgba(255, 45, 45, 0.2);
 }
 
 .poiVisual {
@@ -318,47 +295,25 @@
 }
 
 .tourEndBlurBg {
-    background-color: rgba(94, 81, 11, 0.59);
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    border-top-left-radius: 30px;
-    border-top-right-radius: 30px;
-    border-bottom-right-radius: 30px;
-    border-bottom-left-radius: 30px;
     filter: blur(3);
-    border-left-color: rgba(255, 215, 0, 0.59);
-    border-right-color: rgba(255, 215, 0, 0.59);
-    border-top-color: rgba(255, 215, 0, 0.59);
-    border-bottom-color: rgba(185, 156, 0, 0.59);
-    border-top-width: 5px;
-    border-right-width: 5px;
-    border-bottom-width: 5px;
-    border-left-width: 5px;
+    background-image: url("project://database/Assets/Imports/Logo/Icon%20base%20fill%20wide.png?fileID=21300000&guid=ef5b0f483cd28b745ba53aafb50504eb&type=3#Icon base fill wide");
+    -unity-background-image-tint-color: rgb(156, 132, 0);
 }
 
 .collectionBlurBg {
-    background-color: rgba(61, 40, 67, 0.86);
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    border-top-left-radius: 30px;
-    border-top-right-radius: 30px;
-    border-bottom-right-radius: 30px;
-    border-bottom-left-radius: 30px;
     filter: blur(3);
-    border-left-color: rgba(130, 61, 115, 0.78);
-    border-right-color: rgba(130, 61, 115, 0.78);
-    border-top-color: rgba(130, 61, 115, 0.78);
-    border-bottom-color: rgba(106, 41, 92, 0.78);
-    border-top-width: 5px;
-    border-right-width: 5px;
-    border-bottom-width: 5px;
-    border-left-width: 5px;
+    background-image: url("project://database/Assets/Imports/Logo/Icon%20base%20fill%20wide.png?fileID=21300000&guid=ef5b0f483cd28b745ba53aafb50504eb&type=3#Icon base fill wide");
+    -unity-background-image-tint-color: rgba(84, 27, 105, 0.78);
 }
 
 Switch {

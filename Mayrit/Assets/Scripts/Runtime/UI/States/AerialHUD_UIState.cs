@@ -15,7 +15,8 @@ public class AerialHUD_UIState : AHUDState
         _previousMilestoneButton;
     VisualElement _milestoneArea,
         _playerFollowerRoot,
-        _nextMilestoneButtonImage;
+        _nextMilestoneButtonImage,
+        _previousMilestoneButtonImage;
 
     Switch _modernVisualizactionSwitch;
 
@@ -40,6 +41,7 @@ public class AerialHUD_UIState : AHUDState
         _pauseButton = GetButtonAndRegisterCallback("PauseButton", OnPauseClicked);
         _milestoneArea = GetByName<VisualElement>("MilestoneArea");
         _milestoneInfoButton = GetButtonAndRegisterCallback("MilestoneInfoButton", OnMilestoneClicked, _milestoneArea);
+        _previousMilestoneButtonImage = GetByName<VisualElement>("LeftArrow", _previousMilestoneButton);
         _previousMilestoneButton = GetButtonAndRegisterCallback("PreviousMilestoneButton", OnPreviousMilestoneClicked, _milestoneArea);
         _nextMilestoneButtonImage = GetByName<VisualElement>("RightArrow", _nextMilestoneButton);
         _nextMilestoneButton = GetButtonAndRegisterCallback("NextMilestoneButton", OnNextMilestoneClicked, _milestoneArea);
@@ -74,6 +76,7 @@ public class AerialHUD_UIState : AHUDState
 
         _previousMilestoneButton.SetEnabled(isTherePreviousMilestone);
         _previousMilestoneButton.pickingMode = isTherePreviousMilestone ? PickingMode.Position : PickingMode.Ignore;
+        _previousMilestoneButtonImage.pickingMode = isTherePreviousMilestone ? PickingMode.Position : PickingMode.Ignore;
 
         bool isCurrentMilestoneCompleted = _gameManager.IsCurrentMilestoneCompleted;
         bool atLastMilestone = _gameManager.AtLastMilestone();
