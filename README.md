@@ -1,109 +1,77 @@
-# Mayrit
+# Descubriendo el legado: Mayrit — El videojuego como ventana al patrimonio invisible del Madrid andalusí
+
+<img width="1290" height="726" alt="Descubriendo el legado Mayrit - Cover (1080p)" src="https://github.com/user-attachments/assets/e837559e-ca9a-4be6-9192-739792cbe063" />
+
 
 ## Sinopsis
+**Descubriendo el legado: Mayrit** es un videojuego educativo y de exploración histórica diseñado y desarrollado como Trabajo de Fin de Grado (TFG) para la Universidad Rey Juan Carlos. El proyecto tiene como objetivo unificar, contextualizar y visibilizar el rico patrimonio material e inmaterial del Madrid islámico y medieval (s. IX al s. XIII), a menudo desconocido para la mayoría de la sociedad actual. 
 
-Mayrit es un videojuego que sumerge al jugador en la época del Madrid musulmán, permitiéndole experimentar la vida de diferentes ciudadanos y personajes históricos, y presenciar el desarrollo del asentamiento fortificado. El juego abarca desde la fundación de la ciudad hasta la conquista cristiana, mostrando la evolución de Mayrit y su sociedad a través de diversas perspectivas. El objetivo principal es dar a conocer el rico patrimonio histórico y cultural musulmán, tanto material como inmaterial, y su influencia en la ciudad incluso en la actualidad.
+A través de un viaje cronológico dividido en hitos históricos, el jugador puede experimentar el urbanismo y la evolución de la ciudad desde momentos previos a su fundación por el Emir Mohamed I en torno al año 860 d.C. hasta la consolidación de la muralla cristiana en torno al 1230 d.C., redescubriendo el legado andalusí que subyace en la topografía de la capital moderna.
+
+---
 
 ## Mecánicas Principales
 
-- **Control de diferentes personajes**: Cada uno con jugabilidad y narrativa específicas. La narrativa se desarrollará a medida que el jugador completa los objetivos propios del personaje/etapa, proporcionando contexto histórico y justificando su impacto en la ciudad.
+- **Progresión Cronológica (Milestones):** El juego se divide en 8 hitos históricos independientes que transforman dinámicamente el urbanismo y la sociedad de la escena.
+- **Cambio de Perspectiva:** Transición fluida de cámaras gestionada por el usuario. Se puede alternar entre una **cámara aérea de espectador** (para analizar el crecimiento de la ciudad y seleccionar Puntos de Interés) y una **cámara en tercera persona** para controlar directamente al personaje jugable en el terreno.
+- **Tours Históricos Guiados (Objetivo Principal):** Cada hito cuenta con un recorrido de paradas fijas (*TourStops*) gestionadas por TourManager y guiadas por una brújula en el HUD.
+- **Búsqueda de Coleccionables (Objetivo Secundario):** Para incentivar la orientación espacial y la comprensión del diseño urbano, cada hito esconde objetos coleccionables únicos con pistas sobre su ubicación mostradas en pantalla.
+- **Modo de Visualización Moderna:** El HUD integra un componente Switch en el UI Document que permite superponer y activar/desactivar modelos 3D de estructuras modernas (como el Palacio Real o el Teatro Real) sobre el terreno original para comparar el pasado y el presente.
+- **Simulación de Vida (NPCs Dinámicos):** Los aldeanos de la ciudad cuentan con rutinas complejas gestionadas por árboles de comportamiento (*Behavior Trees*). Trabajan en edificios y puestos de mercado, acuden a santuarios e interactuan entre sí dinámicamente.
 
-- **Cambio de Perspectiva**: El jugador cambiará entre tercera persona (para las actividades de los personajes) y una vista global de la ciudad (para la observación de la ciudad).
+---
 
-- **Exploración**: El jugador podrá explorar un entorno 3D que representa la ciudad de Mayrit en diferentes etapas de su desarrollo.
+## Períodos Históricos (Hitos de Juego)
 
-- **Progresión histórica**: La construcción de edificios y la llegada de nuevos personajes seguirán una línea temporal basada en la historia de Madrid.
+El sistema de progreso (`ProgressSystem`) notifica al bucle principal de juego los cambios entre las siguientes 8 etapas históricas que marcan la evolución de la ciudad:
 
-## Períodos Históricos
+1. **Contexto previo a la fundación (Primera mitad del s. IX):** Análisis topográfico y ambiental del terreno original antes del asentamiento.
+2. **Fundación de Mayrit (Segunda mitad del s. IX):** Establecimiento formal de la ciudad por el Emir Mohamed I mediante la construcción de un enclave fortificado (*hisn*).
+3. **Definición de la almudena (Finales del s. IX):** Construcción de la muralla islámica primigenia en torno al núcleo civil derivado del *hisn*.
+4. **Ataque de Ramiro II (932):** Primer gran conflicto documentado con los reinos cristianos.
+5. **Estancia de Almanzor (977):** Consolidación militar y paso del célebre caudillo andalusí por la plaza de Mayrit.
+6. **Madraza de Maslama al-Mayriti (1004):** Período de esplendor científico y cultural marcado por la figura del sabio madrileño.
+7. **Conquista y Capitulación (1085):** Transición del poder islámico al cristiano bajo el reinado de Alfonso VI.
+8. **Finalización de la muralla cristiana (1230):** Consolidación de la Villa medieval y cierre de la cerca defensiva castellana.
 
-El juego incluye 8 hitos históricos principales que marcan la evolución de Mayrit:
+---
 
-1. **Visión** - Los inicios y la concepción de Mayrit
-2. **Fundación** - El establecimiento formal de la ciudad
-3. **Albacar** - Desarrollo del recinto amurallado exterior
-4. **Almudayna** - Construcción de la alcazaba o ciudadela
-5. **Ataque de Ramiro II** - Conflictos con los reinos cristianos
-6. **Almanzor** - Época del poderoso caudillo musulmán
-7. **Escuela** - Desarrollo educativo y cultural
-8. **Conquista** - La conquista cristiana que marca el final del período musulmán
+## Requisitos Técnicos y Optimización
 
-## Requisitos Técnicos
+### Stack Tecnológico
+- **Motor Gráfico:** Unity (HDRP en su versión 6.3)
+- **Herramienta de Interfaz:** UI Toolkit (UIDocument) con la fuente de acento árabe ElMessiri
+- **Plataforma Objetivo:** PC (Windows)
 
-### Requisitos de Sistema
-- **Motor**: Unity 6000.1.11f1
-- **Plataforma**: PC (Windows)
-- **Resolución**: 1024x768 (mínima)
+### Estrategias de Rendimiento
+Para garantizar una tasa de frames fluida renderizando entornos abiertos detallados con cientos de elementos, se integraron las siguientes técnicas:
+- **Multi-Scene Workflow:** Flujo de carga asíncrona mediante un `ScenesController`. El juego descarga el menú principal (`MainMenu`) y monta en paralelo la escena de *Gameplay* base junto a la escena específica de datos de oclusión del hito correspondiente.
+- **Occlusion Culling por Hito:** Al independizar los hitos en escenas, cada una almacena sus propios datos optimizados para mejorar el rendimiento.
+- **Culling de Comportamiento:** Desactivación automática del modelo y el renderizado de mallas de NPCs cuando la cámara se distancia, manteniendo únicamente la ejecución de su lógica subycente.
+- **LODs e Imposters:** Configuración de niveles de detalle (*LOD Groups*) en los modelos finales de edificios (con versiones simplificadas en la última franja) y uso de *Imposters* dinámicos en los árboles.
+- **Ajustes Avanzados de Render:** Uso de resoluciones dinámicas por *Software Training Post-processing* (STP) de Unity, Antialiasing Temporal (TAA) y optimización de cielos mediante gradientes y capas de nubes planas en lugar de volumétricas costosas.
 
-### Requisitos de Desarrollo
-- Unity 6000.1.11f1 o superior
-- Visual Studio o Visual Studio Code
-- .NET Framework compatible con Unity
-
-## Estructura del Proyecto
-
-```
-Mayrit/
-├── Assets/
-│   ├── Scripts/
-│   │   ├── Camera system/     # Sistema de cámaras (tercera persona, espectador, orbital)
-│   │   ├── Characters/        # Sistema de personajes jugables
-│   │   ├── Game/             # Lógica principal del juego
-│   │   ├── Information/      # Sistema de información contextual
-│   │   ├── Objects/          # Objetos interactivos
-│   │   ├── Progress/         # Gestión de progreso e hitos históricos
-│   │   ├── UI/               # Interfaz de usuario
-│   │   └── Utils/            # Utilidades generales
-│   ├── Scenes/
-│   │   ├── MainMenuScene.unity    # Menú principal
-│   │   ├── GameScene.unity        # Escena principal del juego
-│   │   └── PacoScene.unity        # Escena de desarrollo
-│   ├── Prefabs/              # Prefabricados de Unity
-│   ├── Terrain/              # Terrenos y entornos 3D
-│   └── UI/                   # Elementos de interfaz
-├── ProjectSettings/          # Configuración del proyecto Unity
-└── README.md                # Este archivo
-```
+---
 
 ## Instalación y Configuración
 
-1. **Clonar el repositorio**:
-   ```bash
-   git clone https://github.com/fkavaro/Mayrit.git
-   cd Mayrit
-   ```
+1. **Clonar el repositorio:**
+    git clone https://github.com/fkavaro/Mayrit.git
 
-2. **Abrir en Unity**:
-   - Abrir Unity Hub
-   - Hacer clic en "Add project from disk"
-   - Seleccionar la carpeta `Mayrit/` del proyecto
-   - Asegurarse de tener Unity 6000.1.11f1 instalado
+2. **Abrir el proyecto:**
+    - Inicia Unity Hub.
+    - Haz clic en "Add project from disk".
+    - Selecciona la carpeta raíz del proyecto.
+    - Asegúrate de abrir el proyecto utilizando Unity con soporte para HDRP.
 
-3. **Configuración inicial**:
-   - El proyecto debería cargar automáticamente todas las dependencias
-   - La escena principal se encuentra en `Assets/Scenes/GameScene.unity`
+3. **Ejecución inicial:**
+    - Para que el ciclo de carga funcione correctamente, abre y ejecuta el juego partiendo siempre desde la escena Assets/Scenes/CoreScene.unity.
 
-## Desarrollo
-
-### Arquitectura
-
-El proyecto utiliza varios patrones de diseño:
-
-- **Singleton**: Para managers principales (GameManager, CameraManager, ProgressManager, UIManager)
-- **State Machine**: Para la gestión de estados de cámara y progreso
-- **ScriptableObjects**: Para almacenar información de personajes, edificios e hitos históricos
-- **Observer Pattern**: Para eventos de cambio de hito y actualización de tiempo
-
-### Sistemas Principales
-
-- **Sistema de Cámaras**: Gestiona múltiples tipos de cámara (tercera persona, espectador, orbital)
-- **Sistema de Personajes**: Controla el movimiento, animaciones y comportamiento de personajes
-- **Sistema de Progreso**: Maneja la progresión temporal e histórica del juego
-- **Sistema de Información**: Proporciona contenido educativo contextual
+---
 
 ## Créditos
 
-**Desarrollado por**: Universidad Rey Juan Carlos
+El videojuego ha sido desarrollado de forma colectiva como Proyecto de Fin de Grado por:
 
-## Licencia
-
-[Información de licencia por determinar]
+- **Desarrollo de Software, UI/UX, Worldbuilding y Level Design:** Álvaro Moreno García
+- **Modelado 3D de Entornos, Edificios, Personajes y Animación:** Francisco Rodríguez Martínez
