@@ -23,16 +23,47 @@ A través de un viaje cronológico dividido en hitos históricos, el jugador pue
 
 ## Períodos Históricos (Hitos de Juego)
 
-El sistema de progreso (`ProgressSystem`) notifica al bucle principal de juego los cambios entre las siguientes 8 etapas históricas que marcan la evolución de la ciudad:
+Las siguientes 8 etapas históricas marcan la evolución de la ciudad:
 
-1. **Contexto previo a la fundación (Primera mitad del s. IX):** Análisis topográfico y ambiental del terreno original antes del asentamiento.
-2. **Fundación de Mayrit (Segunda mitad del s. IX):** Establecimiento formal de la ciudad por el Emir Mohamed I mediante la construcción de un enclave fortificado (*hisn*).
-3. **Definición de la almudena (Finales del s. IX):** Construcción de la muralla islámica primigenia en torno al núcleo civil derivado del *hisn*.
-4. **Ataque de Ramiro II (932):** Primer gran conflicto documentado con los reinos cristianos.
-5. **Estancia de Almanzor (977):** Consolidación militar y paso del célebre caudillo andalusí por la plaza de Mayrit.
-6. **Madraza de Maslama al-Mayriti (1004):** Período de esplendor científico y cultural marcado por la figura del sabio madrileño.
-7. **Conquista y Capitulación (1085):** Transición del poder islámico al cristiano bajo el reinado de Alfonso VI.
-8. **Finalización de la muralla cristiana (1230):** Consolidación de la Villa medieval y cierre de la cerca defensiva castellana.
+### 1. Contexto previo a la fundación (Primera mitad del s. IX)
+Análisis topográfico y ambiental del terreno original antes del asentamiento islámico.
+
+<img width="2560" height="1440" alt="g0" src="https://github.com/user-attachments/assets/b9af9738-03ea-41af-baa8-c5a4d7cf55c4" />
+
+### 2. Fundación de Mayrit (Segunda mitad del s. IX)
+Establecimiento formal de la ciudad por el Emir Mohamed I mediante la construcción de un enclave fortificado (*hisn*).
+
+<img width="2560" height="1440" alt="h1" src="https://github.com/user-attachments/assets/24a8f5de-2820-44a4-a1bf-11426b66d62c" />
+
+### 3. Definición de la almudena (Finales del s. IX)
+Construcción de la muralla islámica primigenia en torno al núcleo civil derivado del *hisn*.
+
+<img width="2560" height="1440" alt="b2" src="https://github.com/user-attachments/assets/36c6e235-2053-4fca-8c08-dab252157053" />
+
+### 4. Ataque de Ramiro II (932)
+Primer gran conflicto documentado con los reinos cristianos.
+
+<img width="2560" height="1440" alt="c3" src="https://github.com/user-attachments/assets/c339c355-081d-4114-9f5a-a6a19f7396f3" />
+
+### 5. Estancia de Almanzor (977)
+Consolidación militar y paso del célebre caudillo andalusí por la plaza de Mayrit.
+
+<img width="2560" height="1440" alt="Milestone4" src="https://github.com/user-attachments/assets/8b4cea3f-41a8-463c-a4e3-280cee2e8b0a" />
+
+### 6. Madraza de Maslama al-Mayriti (1004)
+Período de esplendor científico y cultural marcado por la figura del sabio madrileño.
+
+<img width="2560" height="1440" alt="i5" src="https://github.com/user-attachments/assets/b2f90e77-4fe8-4284-857a-535ce42c386b" />
+
+### 7. Conquista y Capitulación (1085)
+Transición del poder islámico al cristiano bajo el reinado de Alfonso VI.
+
+<img width="2560" height="1440" alt="j6" src="https://github.com/user-attachments/assets/9dfed22e-bdd4-405b-b539-7cfc491bcf3f" />
+
+### 8. Finalización de la muralla cristiana (1230)
+Consolidación de la Villa medieval y cierre de la cerca defensiva castellana.
+
+<img width="2560" height="1440" alt="f7" src="https://github.com/user-attachments/assets/83095e0a-08e0-49df-805a-b2a4e55be7a2" />
 
 ---
 
