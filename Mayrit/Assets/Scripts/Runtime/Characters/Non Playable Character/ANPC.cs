@@ -152,6 +152,7 @@ where BehaviourSystemType : ABehaviourSystem
     }
     #endregion
 
+    #region PUBLIC METHODS
     public void SetCharacterAndAgentActive(bool isActive)
     {
         if (_characterModel == null)
@@ -201,4 +202,5 @@ where BehaviourSystemType : ABehaviourSystem
         _characterModel.SetActive(false);
         _isOutdoors = false;
     }
+    #endregion
 }

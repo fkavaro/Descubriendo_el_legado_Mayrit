@@ -69,7 +69,28 @@ public class NPCMovementController
     }
     #endregion
 
-    #region IF STOPPED METHODS
+    #region AGENT STATE METHODS
+    /// <summary>
+    /// Applies movement configuration to the agent and NPC.
+    /// Enables walking, sets path, and updates visual state.
+    /// </summary>
+    private void ApplyMovementState(NavMeshPath path)
+    {
+        SetAgentAutomaticRotation(true);
+        _agent.SetPath(path);
+        IsAgentStopped = false;
+
+        // Update visuals
+        _npc.SetCharacterAndAgentActive(true);
+        _npc.AnimationController.ChangeToWalk();
+    }
+
+    public void SetAgentAutomaticRotation(bool value)
+    {
+        if (_agent.updateRotation != value)
+            _agent.updateRotation = value;
+    }
+
     void SetIfAgentIsStopped(bool isStopped)
     {
         if (!IsAgentValid)
@@ -232,21 +253,6 @@ public class NPCMovementController
             Debug.LogWarning($"[{_npc.Name}.MovementController] could not calculate a valid path to target position.", _npc.GO);
 
         return false;
-    }
-
-    /// <summary>
-    /// Applies movement configuration to the agent and NPC.
-    /// Enables walking, sets path, and updates visual state.
-    /// </summary>
-    private void ApplyMovementState(NavMeshPath path)
-    {
-        _agent.updateRotation = true;
-        _agent.SetPath(path);
-        IsAgentStopped = false;
-
-        // Update visuals
-        _npc.SetCharacterAndAgentActive(true);
-        _npc.AnimationController.ChangeToWalk();
     }
 
     public bool TrySetDestinationStall(out Spot stallSpot, bool onlyOpen = false)
@@ -433,7 +439,7 @@ public class NPCMovementController
         if (!IsAgentValid)
             return;
 
-        _agent.updateRotation = false;
+        SetAgentAutomaticRotation(false);
         _agent.transform.rotation = targetRotation;
     }
 
@@ -464,7 +470,7 @@ public class NPCMovementController
         if (HasRotationCompleted(targetRotation))
             return true;
 
-        _agent.updateRotation = false;
+        SetAgentAutomaticRotation(false);
 
         // Rotate only on Y-axis (XZ plane)
         float currentYaw = _agent.transform.eulerAngles.y;

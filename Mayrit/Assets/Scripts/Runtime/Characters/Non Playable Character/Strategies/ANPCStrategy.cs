@@ -39,6 +39,9 @@ where NPCtype : INPC
     {
         if (!_npc.MovementController.IsDestinationSpot(destinationSpot))
             return _npc.MovementController.TrySetDestinationSpot(destinationSpot);
+        else // Ensure automatic rotation
+            _npc.MovementController.SetAgentAutomaticRotation(true);
+
         return true;
     }
 }
