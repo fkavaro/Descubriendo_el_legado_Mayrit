@@ -109,6 +109,12 @@ public class ContextualPanelComponent : AUIState
 
             foreach (var definition in data.GlosaryDefinitions)
             {
+                if (definition == null)
+                {
+                    Debug.LogWarning($"[ContextualPanel] Glosary definition is null in {data.Header}");
+                    continue;
+                }
+
                 var defElement = new Label(definition.WordWithDefinition);
                 defElement.AddToClassList("text");
                 defElement.style.marginTop = 15;
